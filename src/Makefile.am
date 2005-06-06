@@ -1,6 +1,6 @@
 noinst_PROGRAMS = blb
 
-blb_SOURCES = blackbeard.cpp blackbeard.hpp 
+blb_SOURCES = blackbeard.cpp
 
 AM_CXXFLAGS = @SDL_CFLAGS@ -Iengine
 
