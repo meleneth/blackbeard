@@ -1,4 +1,4 @@
 #!/bin/sh
 
-chmod +x fix-perms genclassfile reconf
+chmod +x fix-perms.sh genclassfile reconf
 
