@@ -1,6 +1,7 @@
 #ifndef ___newsgroup_inc
 #define ___newsgroup_inc 1
 
+#include<string>
 #include"SDL.h"
 
 class NewsGroup {
