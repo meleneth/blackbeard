@@ -5,5 +5,4 @@ libengine_a_SOURCES = newsgroup.cpp newsgroup.hpp config.cpp config.hpp console.
 bt_SOURCES = blackbeardt.cpp libengine.a
 
 AM_CXXFLAGS = @SDL_CFLAGS@  -I../../libs/glpng
-bt_LDFLAGS = -L. -lengine
-
+bt_LDADD=-L. -lengine -lncurses @SDL_LIBS@
