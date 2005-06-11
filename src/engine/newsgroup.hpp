@@ -1,9 +1,11 @@
 #ifndef ___newsgroup_inc
 #define ___newsgroup_inc 1
 
-#include<string>
+#include"newsgrouppost.hpp"
+
 #include"SDL.h"
 #include<string>
+#include<list>
 
 class NewsGroup {
     public:
@@ -13,6 +15,7 @@ class NewsGroup {
         int Foo(void);
 
         std::string name;
+        std::list< NewsGroupPost * > messages;
     private:
         // Private members go here.
     protected:
