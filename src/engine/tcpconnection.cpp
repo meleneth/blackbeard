@@ -1,4 +1,5 @@
 #include "tcpconnection.hpp"
+#include "console.hpp"
 
 // Public data members go here.
 TCPConnection::TCPConnection(std::string hostname, int port) // Constructor
@@ -25,24 +26,23 @@ TCPConnection::TCPConnection(std::string hostname, int port) // Constructor
         exit(1);
     }
 
-    if ((numbytes=recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
-        perror("recv");
-        exit(1);
-    }
-
-    buf[numbytes] = '\0';
-
-    printf("Received: %s",buf);
-
 }
+
+
     
 TCPConnection::~TCPConnection() // Destructor
 {
     close(sockfd);
 }
 
-int TCPConnection::Foo(void)
+int TCPConnection::has_data_waiting(void)
 {
+    if ((numbytes=recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
+        perror("recv");
+        exit(1);
+    }
+    buf[numbytes] = '\0';
+    console->log(buf);
 }
 
 // Private members go here.

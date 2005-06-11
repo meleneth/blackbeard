@@ -33,4 +33,6 @@ class Console {
         // Protected members go here.
 };
 
+extern Console *console;
+
 #endif

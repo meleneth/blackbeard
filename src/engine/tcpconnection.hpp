@@ -23,7 +23,9 @@ class TCPConnection {
         // Public data members go here.
         TCPConnection::TCPConnection(std::string hostname, int port); // Constructor
         TCPConnection::~TCPConnection(); // Destructor
-        int Foo(void);
+        int has_data_waiting(void);
+        void send_line(std::string line);
+        std::string get_line(void);
 
         int sockfd, numbytes;  
         char buf[MAXDATASIZE];
