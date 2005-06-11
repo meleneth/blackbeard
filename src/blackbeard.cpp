@@ -6,7 +6,7 @@ Console *console;
 int main(int argc, char *argv[])
 {
     std::string servername = "localhost";
-    std::string groupname = "alt.binaries.moocows";
+    std::string groupname = "misc.test";
 
     console = new Console();
     console->print_logs = 1;
