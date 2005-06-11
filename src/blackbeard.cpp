@@ -28,6 +28,7 @@ int main(int argc, char *argv[])
 
     while(1){
         // Select loop here
+        //netcentral->tick();
 
         SDL_Delay(10);
 
@@ -44,7 +45,6 @@ int main(int argc, char *argv[])
             }
         }
         console->render();
-        netcentral->tick();
         mvaddstr(LINES-1, 0, input.c_str());
         refresh();
     }
