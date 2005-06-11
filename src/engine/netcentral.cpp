@@ -20,7 +20,9 @@ void NetCentral::tick(void)
     read_fds = master;
 
     for(i = connections.begin(); i != connections.end(); ++i){
-        
+        if((*i)->has_data_waiting()){
+            console->log((*i)->get_line());
+        }
     }
 }
 

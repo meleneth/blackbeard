@@ -45,5 +45,13 @@ int TCPConnection::has_data_waiting(void)
     console->log(buf);
 }
 
+std::string TCPConnection::get_line(void)
+{
+    if(!has_data_waiting()){
+        return NULL;
+    }
+    return "moo";
+}
+
 // Private members go here.
 // Protected members go here.
