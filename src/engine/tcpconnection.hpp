@@ -3,10 +3,12 @@
 
 #include"SDL.h"
 
+#include<string>
+
 class TCPConnection {
     public:
         // Public data members go here.
-        TCPConnection::TCPConnection(int bar); // Constructor
+        TCPConnection::TCPConnection(std::string hostname, int port); // Constructor
         TCPConnection::~TCPConnection(); // Destructor
         int Foo(void);
     private:
