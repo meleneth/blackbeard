@@ -1,19 +1,10 @@
 #include "tcpconnection.hpp"
 
 // Public data members go here.
-TCPConnection::TCPConnection(int bar) // Constructor
+TCPConnection::TCPConnection(std::string hostname, int port) // Constructor
 {
-  int sockfd, numbytes;  
-    char buf[MAXDATASIZE];
-    struct hostent *he;
-    struct sockaddr_in their_addr; // connector's address information 
 
-    if (argc != 2) {
-        fprintf(stderr,"usage: client hostname\n");
-        exit(1);
-    }
-
-    if ((he=gethostbyname(argv[1])) == NULL) {  // get the host info 
+    if ((he=gethostbyname(hostname.c_str())) == NULL) {  // get the host info 
         perror("gethostbyname");
         exit(1);
     }
@@ -24,7 +15,7 @@ TCPConnection::TCPConnection(int bar) // Constructor
     }
 
     their_addr.sin_family = AF_INET;    // host byte order 
-    their_addr.sin_port = htons(PORT);  // short, network byte order 
+    their_addr.sin_port = htons(port);  // short, network byte order 
     their_addr.sin_addr = *((struct in_addr *)he->h_addr);
     memset(&(their_addr.sin_zero), '\0', 8);  // zero the rest of the struct 
 
@@ -43,13 +34,11 @@ TCPConnection::TCPConnection(int bar) // Constructor
 
     printf("Received: %s",buf);
 
-    close(sockfd);
-
-    return 0;
 }
     
 TCPConnection::~TCPConnection() // Destructor
 {
+    close(sockfd);
 }
 
 int TCPConnection::Foo(void)
