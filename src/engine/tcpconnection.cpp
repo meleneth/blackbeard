@@ -104,6 +104,7 @@ std::string TCPConnection::get_line(void)
         return NULL;
     }
     std::string line = *lines.begin();
+    lines.pop_front();
     return line;
 }
 

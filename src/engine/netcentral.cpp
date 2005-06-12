@@ -5,7 +5,6 @@
 NetCentral::NetCentral(void) // Constructor
 {
     FD_ZERO(&master);    // clear the master and temp sets
-    FD_ZERO(&read_fds);
     fdmax = 0;
     console->log("NetCentral() initialized");
 }
@@ -16,10 +15,25 @@ NetCentral::~NetCentral() // Destructor
 
 void NetCentral::tick(void)
 {
+    if(connections.size() == 0){
+        return;
+    }
     std::list<TCPConnection *>::iterator i;
-    read_fds = master;
+    FD_ZERO(&read_fds);
 
-    if (select(fdmax+1, &read_fds, NULL, NULL, NULL) == -1) {
+    struct timeval tv;
+    tv.tv_sec = 0;
+    tv.tv_usec = 0;
+    fdmax = 0;
+
+    for(i = connections.begin(); i != connections.end(); ++i){
+        FD_SET((*i)->sockfd, &read_fds);
+        if(fdmax < (*i)->sockfd){
+            fdmax = (*i)->sockfd;
+        }
+    }
+
+    if (select(fdmax+1, &read_fds, NULL, NULL, &tv) == -1) {
         perror("select");
         exit(1);
     }

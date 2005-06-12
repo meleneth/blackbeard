@@ -15,11 +15,13 @@ int main(int argc, char *argv[])
     std::string groupname = "misc.test";
 
     do_init();
-    console = new Console();
+    console = new Console(COLS, LINES);
 
     NetCentral *netcentral = new NetCentral();
 
-    netcentral->add_connection(new TCPConnection("localhost", 119));
+    TCPConnection *connection = new TCPConnection("localhost", 119);
+
+    netcentral->add_connection(connection);
 
     console->log("Connected");
     console->log("Connecting to " + servername + " to grab article list for group " + groupname);
@@ -38,7 +40,7 @@ int main(int argc, char *argv[])
                 std::string line;
                 line = "> " + input;
                 console->log(line);
-                //client->send_line(input);
+                connection->send_command(input);
                 input = "";
             }else {
                 input += (char)key;
