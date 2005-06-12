@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 
     while(1){
         // Select loop here
-        //netcentral->tick();
+        netcentral->tick();
 
         SDL_Delay(10);
 
