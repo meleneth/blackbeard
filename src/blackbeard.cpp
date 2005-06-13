@@ -1,38 +1,35 @@
-#include"console.hpp"
-#include"tcpconnection.hpp"
-#include"netcentral.hpp"
 #include<stdio.h>
 #include<signal.h>
 #include<ncurses.h>
 
+#include"console.hpp"
+#include"tcpconnection.hpp"
+#include"netcentral.hpp"
+#include"config.hpp"
+
+
 Console *console;
+Config *config;
 void do_init(void);
 static void finish(int sig);
 
 int main(int argc, char *argv[])
 {
-    std::string servername = "localhost";
-    std::string groupname = "misc.test";
-
     do_init();
-    console = new Console(COLS, LINES);
 
     NetCentral *netcentral = new NetCentral();
-
     TCPConnection *connection = new TCPConnection("localhost", 119);
 
     netcentral->add_connection(connection);
 
-    
-
     console->log("Connected");
-    console->log("Connecting to " + servername + " to grab article list for group " + groupname);
+    console->log("Connecting to " + config->news_server + " to grab article list for group " + config->newsgroup);
 
     connection->send_command("mode reader");
     console->log("Switched to reader mode.");
 
-    console->log("Requesting article list for " + groupname);
-    connection->send_command("group " + groupname);
+    console->log("Requesting article list for " + config->news_server);
+    connection->send_command("group " + config->newsgroup);
 
     std::string input("");
 
@@ -64,12 +61,18 @@ int main(int argc, char *argv[])
 
 void do_init(void)
 {
+    // ncurses
     initscr();
     keypad(stdscr, TRUE);
     nonl();
     cbreak();
     noecho();
     nodelay(stdscr, 1);
+    
+    // global objects
+    console = new Console(COLS, LINES);
+    config = new Config();
+    config->read_config_file();
 }
 
 static void finish(int sig)
