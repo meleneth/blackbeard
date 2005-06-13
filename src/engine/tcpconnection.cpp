@@ -94,8 +94,8 @@ void TCPConnection::read_packets(void)
         perror("recv");
         exit(1);
     }
-    buf[numbytes] = '\0';
-    console->log(buf);
+    buf_end_pos += numbytes;
+    slice_buffer_strings();
 }
 
 std::string TCPConnection::get_line(void)
