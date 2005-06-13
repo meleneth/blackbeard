@@ -32,7 +32,7 @@ void Console::render(void)
 
     for(i = loglines.begin() ; (i != loglines.end()) && counter != -1; ++i)
     {
-        mvaddstr(counter, 0,  i->c_str());
+        mvaddnstr(counter, 0,  i->c_str(), -1);
         counter--;
     }
     refresh();
