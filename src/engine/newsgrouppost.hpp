@@ -8,7 +8,7 @@ class NewsGroupPost {
         // Public data members go here.
         NewsGroupPost::NewsGroupPost(int bar); // Constructor
         NewsGroupPost::~NewsGroupPost(); // Destructor
-        int Foo(void);
+
     private:
         // Private members go here.
     protected:

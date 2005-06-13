@@ -12,12 +12,20 @@ class NewsGroup {
         // Public data members go here.
         NewsGroup(int bar); // Constructor
         ~NewsGroup(); // Destructor
-        int Foo(void);
+	
+	int status_code();
 
-        std::string name;
         std::list< NewsGroupPost * > messages;
+
     private:
-        // Private members go here.
+	int return_code;
+
+	long first_article_number;
+	long last_article_number;
+	long current_article_number;
+	long number_of_articles;
+	std::string last_group_name;
+
     protected:
         // Protected members go here.
 };

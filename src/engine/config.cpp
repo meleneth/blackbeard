@@ -9,9 +9,5 @@ Config::~Config() // Destructor
 {
 }
 
-int Config::Foo(void)
-{
-}
-
 // Private members go here.
 // Protected members go here.

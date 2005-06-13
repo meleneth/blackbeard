@@ -8,7 +8,6 @@ class Config {
         // Public data members go here.
         Config(int bar); // Constructor
         ~Config(); // Destructor
-        int Foo(void);
     private:
         // Private members go here.
     protected:
