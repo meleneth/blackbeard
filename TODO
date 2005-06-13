@@ -1,0 +1,13 @@
+integrate SQLite <- store group status
+    I'm thinking one table per group, all group tables setup the same
+
+figure out decoding <- UUDecode and what?
+    hopefully we can download and decode directly without having to write the encoded form to disk
+
+read preferences file <- ~/.blackbeardrc
+
+implement command / response system
+
+write header fetcher
+
+write body fetcher
