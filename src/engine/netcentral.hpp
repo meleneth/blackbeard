@@ -4,7 +4,7 @@
 #include<list>
 #include"SDL.h"
 
-#include"tcpconnection.hpp"
+#include"nntpserver.hpp"
 
 class NetCentral {
     public:
@@ -13,9 +13,9 @@ class NetCentral {
         NetCentral::~NetCentral(); // Destructor
 
         void tick(void);
-        void add_connection(TCPConnection *connection);
+        void add_connection(NNTPServer *connection);
 
-        std::list<TCPConnection *> connections;
+        std::list<NNTPServer *> connections;
         int fdmax;
 
         fd_set master;   // master file descriptor list

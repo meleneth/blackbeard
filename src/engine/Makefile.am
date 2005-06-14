@@ -1,7 +1,7 @@
 noinst_LIBRARIES = libengine.a
 noinst_PROGRAMS = bt
 
-libengine_a_SOURCES = newsgroup.cpp newsgroup.hpp config.cpp config.hpp console.cpp console.hpp newsgrouppost.cpp newsgrouppost.hpp tcpconnection.hpp tcpconnection.cpp netcentral.cpp netcentral.hpp news_constants.hpp
+libengine_a_SOURCES = newsgroup.cpp newsgroup.hpp config.cpp config.hpp console.cpp console.hpp newsgrouppost.cpp newsgrouppost.hpp tcpconnection.cpp tcpconnection.hpp netcentral.cpp netcentral.hpp news_constants.hpp nntpserver.cpp nntpserver.hpp
 bt_SOURCES = blackbeardt.cpp libengine.a
 
 AM_CXXFLAGS = @SDL_CFLAGS@ -Wall

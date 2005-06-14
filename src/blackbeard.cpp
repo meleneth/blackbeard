@@ -18,13 +18,14 @@ int main(int argc, char *argv[])
     do_init();
 
     NetCentral *netcentral = new NetCentral();
-    TCPConnection *connection = new TCPConnection("localhost", 119);
+    NNTPServer *connection = new NNTPServer("localhost", 1199);
 
     netcentral->add_connection(connection);
-
     console->log("Connected");
     console->log("Connecting to " + config->news_server + " to grab article list for group " + config->news_group);
 
+    console->log("Logging into server");
+    connection->login("arnuga", "leper56");
     connection->send_command("mode reader");
     console->log("Switched to reader mode.");
 

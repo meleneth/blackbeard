@@ -18,7 +18,7 @@ void NetCentral::tick(void)
     if(connections.size() == 0){
         return;
     }
-    std::list<TCPConnection *>::iterator i;
+    std::list<NNTPServer *>::iterator i;
     FD_ZERO(&read_fds);
 
     struct timeval tv;
@@ -49,7 +49,7 @@ void NetCentral::tick(void)
     }
 }
 
-void NetCentral::add_connection(TCPConnection *connection)
+void NetCentral::add_connection(NNTPServer *connection)
 {
     connections.push_front(connection);
     if(fdmax < connection->sockfd){

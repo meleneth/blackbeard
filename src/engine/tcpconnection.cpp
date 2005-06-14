@@ -27,7 +27,6 @@ TCPConnection::TCPConnection(std::string hostname, int port) // Constructor
         perror("connect");
         exit(1);
     }
-
 }
     
 TCPConnection::~TCPConnection() // Destructor
