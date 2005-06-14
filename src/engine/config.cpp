@@ -10,8 +10,10 @@
 #define CONFIGFILENAME "/.blackbeardrc"
 
 using std::ofstream;
+using std::ifstream;
 using std::ios;
 using std::endl;
+using std::string;
 
 // Public data members go here.
 Config::Config() // Constructor
@@ -31,14 +33,40 @@ Config::~Config() // Destructor
 void Config::read_config_file(void)
 {
     struct stat my_stats;
-
+    char linebuffer[1024];
 
     console->log("reading " + config_filename);
     if(stat(config_filename.c_str(), &my_stats) == -1){
         console->log("Initializing config files");
         setup_files();
-    }else{
-        console->log("I want to load it but you didnt teach me how");
+    }
+
+    ifstream in;
+    in.open(config_filename.c_str(), ios::in);
+    in.getline(linebuffer, 1024);
+
+    while(!in.eof()){
+        std::string line = strdup(linebuffer);
+        unsigned int index;
+        index = line.find_first_of("#");
+
+        if(index != string::npos)
+            line.erase(index);
+
+        index = line.find("=");
+        if(index != string::npos){
+            std::string cmd = line.substr(0, index);
+            std::string value = line.substr(index+1, line.size() - (index +1));
+
+            if(0 == cmd.compare("news_server")){
+                news_server = value;
+            } else if(0 == cmd.compare("news_group")){
+                news_group = value;
+            } else {
+                console->log("Unknown line: " + line);
+            }
+        }
+        in.getline(linebuffer, 1024);
     }
 }
 
