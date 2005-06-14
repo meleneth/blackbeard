@@ -35,6 +35,7 @@ void Config::read_config_file(void)
 
     console->log("reading " + config_filename);
     if(stat(config_filename.c_str(), &my_stats) == -1){
+        console->log("Initializing config files");
         setup_files();
     }else{
         console->log("I want to load it but you didnt teach me how");
