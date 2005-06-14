@@ -14,7 +14,12 @@ class Config {
         void setup_files(void);
 
         std::string news_server;
-        std::string newsgroup;
+        std::string news_group;
+        std::string home_dir;
+        std::string blackbeard_dir;
+        std::string config_filename;
+        std::string username;
+        std::string password;
     private:
         // Private members go here.
     protected:

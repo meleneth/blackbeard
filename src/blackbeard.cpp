@@ -23,13 +23,13 @@ int main(int argc, char *argv[])
     netcentral->add_connection(connection);
 
     console->log("Connected");
-    console->log("Connecting to " + config->news_server + " to grab article list for group " + config->newsgroup);
+    console->log("Connecting to " + config->news_server + " to grab article list for group " + config->news_group);
 
     connection->send_command("mode reader");
     console->log("Switched to reader mode.");
 
     console->log("Requesting article list for " + config->news_server);
-    connection->send_command("group " + config->newsgroup);
+    connection->send_command("group " + config->news_group);
 
     std::string input("");
 
