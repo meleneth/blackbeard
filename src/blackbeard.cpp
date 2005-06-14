@@ -18,7 +18,7 @@ int main(int argc, char *argv[])
     do_init();
 
     NetCentral *netcentral = new NetCentral();
-    NNTPServer *connection = new NNTPServer("localhost", 1199);
+    TCPConnection *connection = new TCPConnection("localhost", 119);
 
     netcentral->add_connection(connection);
     console->log("Connected");
