@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
 void do_init(void)
 {
     // ncurses
+    signal(SIGINT, finish);
     initscr();
     keypad(stdscr, TRUE);
     nonl();

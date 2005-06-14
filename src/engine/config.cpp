@@ -20,7 +20,7 @@ Config::Config() // Constructor
 {
     news_server = "localhost";
     news_group  = "misc.test";
-    home_dir = strdup(getenv("HOME"));
+    home_dir = getenv("HOME");
     blackbeard_dir = home_dir + "/blackbeard";
     config_filename = home_dir + CONFIGFILENAME;
 
@@ -46,7 +46,7 @@ void Config::read_config_file(void)
     in.getline(linebuffer, 1024);
 
     while(!in.eof()){
-        std::string line = strdup(linebuffer);
+        std::string line = linebuffer;
         unsigned int index;
         index = line.find_first_of("#");
 
