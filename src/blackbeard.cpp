@@ -1,6 +1,6 @@
-#include<stdio.h>
-#include<signal.h>
-#include<ncurses.h>
+#include <stdio.h>
+#include <signal.h>
+#include <ncurses.h>
 
 #include"console.hpp"
 #include"tcpconnection.hpp"
@@ -12,6 +12,7 @@ Console *console;
 Config *config;
 void do_init(void);
 static void finish(int sig);
+void create_nntp_thread(void);
 
 int main(int argc, char *argv[])
 {
@@ -26,11 +27,21 @@ int main(int argc, char *argv[])
 
     console->log("Logging into server");
     connection->login("arnuga", "leper56");
-    connection->send_command("mode reader");
-    console->log("Switched to reader mode.");
 
-    console->log("Requesting article list for " + config->news_server);
-    connection->send_command("group " + config->news_group);
+    console->log("Selecting group " + config->news_group);
+    connection->group(config->news_group);
+    connection->xover();
+    connection->last();
+    connection->help();
+    connection->date();
+    connection->next();
+    connection->stat();
+
+    long art_id = 1;
+    connection->xover(1);
+    connection->article(art_id);
+    connection->head(art_id);
+    connection->body(art_id);
 
     std::string input("");
 
@@ -84,4 +95,3 @@ static void finish(int sig)
     printf("\n\n\nBomb out!\n\n\n");
     exit(0);
 }
-

@@ -19,7 +19,7 @@ using std::string;
 Config::Config() // Constructor
 {
     news_server = "localhost";
-    news_group  = "misc.test";
+    news_group  = "alt.test";
     home_dir = getenv("HOME");
     blackbeard_dir = home_dir + "/blackbeard";
     config_filename = home_dir + CONFIGFILENAME;
@@ -77,7 +77,7 @@ void Config::setup_files(void)
     ofstream out;
     out.open(config_filename.c_str(), ios::out);
     out << "news_server=localhost" << endl;
-    out << "news_group=misc.test" << endl;
+    out << "news_group=alt.text" << endl;
     out.close();
 }
 

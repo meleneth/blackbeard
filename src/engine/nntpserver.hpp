@@ -14,10 +14,23 @@ class NNTPServer : public TCPConnection {
         NNTPServer::~NNTPServer(); // Destructor
 
        int NNTPServer::status();
-       bool NNTPServer::login(std::string username, std::string password);
-       bool NNTPServer::quit();
-       std::string NNTPServer::group(std::string groupname);
-       std::list<std::string> NNTPServer::xover();
+       void NNTPServer::login(std::string username, std::string password);
+       void NNTPServer::quit();
+       void NNTPServer::group(std::string groupname);
+       void NNTPServer::list();
+       void NNTPServer::listgroup();
+       void NNTPServer::xover();
+       void NNTPServer::xover(long article_id);
+       void NNTPServer::xover_format();
+       void NNTPServer::article(long article_id);
+       void NNTPServer::head(long article_id);
+       void NNTPServer::body(long article_id);
+       void NNTPServer::last();
+       void NNTPServer::help();
+       void NNTPServer::date();
+       void NNTPServer::next();
+       void NNTPServer::post();
+       void NNTPServer::stat();
 
 	int server_status;
     private:
