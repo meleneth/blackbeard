@@ -47,7 +47,7 @@ void Config::read_config_file(void)
 
     while(!in.eof()){
         std::string line = linebuffer;
-        unsigned int index;
+        size_t index;
         index = line.find_first_of("#");
 
         if(index != string::npos)
