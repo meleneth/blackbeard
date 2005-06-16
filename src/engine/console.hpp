@@ -13,9 +13,9 @@
 class Console {
     public:
         // Public data members go here.
-        Console::Console(); // Constructor
-        Console::Console(Uint16 x, Uint16 y); // Constructor
-        Console::~Console(); // Destructor
+        Console(); // Constructor
+        Console(Uint16 x, Uint16 y); // Constructor
+        ~Console(); // Destructor
 
         void render(void);
         void check_input(char key);

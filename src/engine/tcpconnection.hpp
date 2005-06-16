@@ -22,8 +22,9 @@
 class TCPConnection {
     public:
         // Public data members go here.
-        TCPConnection::TCPConnection(std::string hostname, int port); // Constructor
-        TCPConnection::~TCPConnection(); // Destructor
+        TCPConnection(std::string hostname, int port); // Constructor
+        ~TCPConnection(); // Destructor
+
         int has_data_waiting(void);
         void send_line(std::string line);
         void slice_buffer_strings(void);

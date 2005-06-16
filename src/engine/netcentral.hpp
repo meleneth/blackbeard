@@ -9,8 +9,8 @@
 class NetCentral {
     public:
         // Public data members go here.
-        NetCentral::NetCentral(void); // Constructor
-        NetCentral::~NetCentral(); // Destructor
+        NetCentral(void); // Constructor
+        ~NetCentral(); // Destructor
 
         void tick(void);
         void add_connection(NNTPServer *connection);

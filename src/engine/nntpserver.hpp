@@ -10,27 +10,27 @@
 class NNTPServer : public TCPConnection {
     public:
         // Public data members go here.
-        NNTPServer::NNTPServer(std::string hostname, int port); // Constructor
-        NNTPServer::~NNTPServer(); // Destructor
+        NNTPServer(std::string hostname, int port); // Constructor
+        ~NNTPServer(); // Destructor
 
-       int NNTPServer::status();
-       void NNTPServer::login(std::string username, std::string password);
-       void NNTPServer::quit();
-       void NNTPServer::group(std::string groupname);
-       void NNTPServer::list();
-       void NNTPServer::listgroup();
-       void NNTPServer::xover();
-       void NNTPServer::xover(long article_id);
-       void NNTPServer::xover_format();
-       void NNTPServer::article(long article_id);
-       void NNTPServer::head(long article_id);
-       void NNTPServer::body(long article_id);
-       void NNTPServer::last();
-       void NNTPServer::help();
-       void NNTPServer::date();
-       void NNTPServer::next();
-       void NNTPServer::post();
-       void NNTPServer::stat();
+       int status();
+       void login(std::string username, std::string password);
+       void quit();
+       void group(std::string groupname);
+       void list();
+       void listgroup();
+       void xover();
+       void xover(long article_id);
+       void xover_format();
+       void article(long article_id);
+       void head(long article_id);
+       void body(long article_id);
+       void last();
+       void help();
+       void date();
+       void next();
+       void post();
+       void stat();
 
 	int server_status;
     private:
