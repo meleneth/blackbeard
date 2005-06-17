@@ -5,7 +5,6 @@
 
 #include"console.hpp"
 #include"tcpconnection.hpp"
-#include"netcentral.hpp"
 #include"netthread.hpp"
 #include"config.hpp"
 
