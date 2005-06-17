@@ -132,7 +132,7 @@ void NNTPServer::send_command(std::string command)
         std::string response = get_line();
         console->log(response);
     }
-    
+    console->log("[-<>-]");
 }
 // Private members go here.
 // Protected members go here.
