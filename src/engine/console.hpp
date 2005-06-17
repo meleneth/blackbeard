@@ -27,6 +27,7 @@ class Console {
         std::string input;
         Uint16 xres, yres;
         Uint32 print_logs;
+        Uint32 print_on_delete;
     private:
         // Private members go here.
     protected:

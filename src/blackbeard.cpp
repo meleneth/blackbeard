@@ -1,10 +1,12 @@
-#include <stdio.h>
-#include <signal.h>
-#include <ncurses.h>
+#include<stdio.h>
+#include<signal.h>
+#include<ncurses.h>
+#include<pth.h>
 
 #include"console.hpp"
 #include"tcpconnection.hpp"
 #include"netcentral.hpp"
+#include"netthread.hpp"
 #include"config.hpp"
 
 
@@ -13,42 +15,17 @@ Config *config;
 void do_init(void);
 static void finish(int sig);
 void create_nntp_thread(void);
+void shut_down(void);
 
 int main(int argc, char *argv[])
 {
     do_init();
 
-    NetCentral *netcentral = new NetCentral();
-    NNTPServer *connection = new NNTPServer(config->news_server, 119);
-
-    netcentral->add_connection(connection);
-    console->log("Connected");
-    console->log("Connecting to " + config->news_server + " to grab article list for group " + config->news_group);
-
-    console->log("Logging into server");
-    connection->login("arnuga", "leper56");
-
-    console->log("Selecting group " + config->news_group);
-    connection->group(config->news_group);
-    connection->xover();
-    connection->last();
-    connection->help();
-    connection->date();
-    connection->next();
-    connection->stat();
-
-    long art_id = 1;
-    connection->xover(1);
-    connection->article(art_id);
-    connection->head(art_id);
-    connection->body(art_id);
-
     std::string input("");
+    NetThread *net_thread = new NetThread(config);
+    net_thread->Start();
 
     while(1){
-        // Select loop here
-        netcentral->tick();
-
         SDL_Delay(10);
 
         int key = getch();
@@ -57,7 +34,7 @@ int main(int argc, char *argv[])
                 std::string line;
                 line = "> " + input;
                 console->log(line);
-                connection->send_command(input);
+                net_thread->connection->send_command(input);
                 input = "";
             }else {
                 input += (char)key;
@@ -66,6 +43,7 @@ int main(int argc, char *argv[])
         console->render();
         mvaddstr(LINES-1, 0, input.c_str());
         refresh();
+        pth_yield(NULL);
     }
     finish(0);
 
@@ -84,14 +62,22 @@ void do_init(void)
     
     // global objects
     console = new Console(COLS, LINES);
+    console->print_on_delete = 1;
     config = new Config();
     config->read_config_file();
+
+    // Pth
+    pth_init();
 }
 
 static void finish(int sig)
 {
-    delete console;
     endwin();
-    printf("\n\n\nBomb out!\n\n\n");
+    delete console;
     exit(0);
+}
+
+void shut_down(void)
+{
+    finish(0);
 }

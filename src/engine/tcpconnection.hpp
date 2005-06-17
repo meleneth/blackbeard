@@ -23,13 +23,13 @@ class TCPConnection {
     public:
         // Public data members go here.
         TCPConnection(std::string hostname, int port); // Constructor
-        ~TCPConnection(); // Destructor
+        virtual ~TCPConnection(); // Destructor
 
         int has_data_waiting(void);
         void send_line(std::string line);
         void slice_buffer_strings(void);
         void read_packets(void);
-        void send_command(std::string command);
+        virtual void send_command(std::string command);
         void sendall(std::string cmd);
         std::string get_line(void);
 

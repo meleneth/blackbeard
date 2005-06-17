@@ -1,6 +1,8 @@
 #include "tcpconnection.hpp"
 #include "console.hpp"
 
+#include<pth.h>
+
 // Public data members go here.
 TCPConnection::TCPConnection(std::string hostname, int port) // Constructor
 {
@@ -79,7 +81,7 @@ void TCPConnection::sendall(std::string cmd)
     const char *nbuf = cmd.c_str();
 
     while(total < num_bytes) {
-        n = send(sockfd, nbuf+total, bytesleft, 0);
+        n = pth_send(sockfd, nbuf+total, bytesleft, 0);
         if (n == -1) { break; }
         total += n;
         bytesleft -= n;
@@ -89,7 +91,7 @@ void TCPConnection::sendall(std::string cmd)
 void TCPConnection::read_packets(void)
 {
     // will only be called when we have data waiting
-    if ((numbytes=recv(sockfd, buf + buf_end_pos, MAXDATASIZE - buf_end_pos, 0)) == -1) {
+    if ((numbytes=pth_recv(sockfd, buf + buf_end_pos, MAXDATASIZE - buf_end_pos, 0)) == -1) {
         perror("recv");
         exit(1);
     }

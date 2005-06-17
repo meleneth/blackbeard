@@ -10,6 +10,7 @@ Console::Console() // Constructor
     print_logs = 0;
     box_log("Console Initialized");
     input = "";
+    print_on_delete = 0;
 }
 
 Console::Console(Uint16 x, Uint16 y) // Constructor
@@ -21,6 +22,13 @@ Console::Console(Uint16 x, Uint16 y) // Constructor
     
 Console::~Console() // Destructor
 {
+    if(print_on_delete){
+        std::list<std::string>::iterator i;
+        for(i = loglines.begin(); i != loglines.end() ; ++i)
+        {
+            printf("%s\n", i->c_str());
+        }
+    }
 }
 
 void Console::render(void)

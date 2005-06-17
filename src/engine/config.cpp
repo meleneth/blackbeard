@@ -23,6 +23,7 @@ Config::Config() // Constructor
     home_dir = getenv("HOME");
     blackbeard_dir = home_dir + "/blackbeard";
     config_filename = home_dir + CONFIGFILENAME;
+    news_port = 119;
 
 }
     

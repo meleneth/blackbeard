@@ -13,6 +13,8 @@ class NNTPServer : public TCPConnection {
         NNTPServer(std::string hostname, int port); // Constructor
         ~NNTPServer(); // Destructor
 
+        virtual void send_command(std::string cmd);
+
        int status();
        void login(std::string username, std::string password);
        void quit();

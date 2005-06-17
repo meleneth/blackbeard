@@ -20,6 +20,8 @@ class Config {
         std::string config_filename;
         std::string username;
         std::string password;
+
+        Uint32 news_port;
     private:
         // Private members go here.
     protected:

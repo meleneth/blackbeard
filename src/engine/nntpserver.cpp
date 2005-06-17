@@ -1,7 +1,11 @@
+#include<sstream>
+
 #include "nntpserver.hpp"
 #include "tcpconnection.hpp"
 #include "news_constants.hpp"
 #include "console.hpp"
+
+#include"globals.hpp"
 
 // Public data members go here.
 NNTPServer::NNTPServer(std::string hostname, int port) : TCPConnection(hostname, port) // Constructor
@@ -52,22 +56,30 @@ void NNTPServer::xover()
 
 void NNTPServer::xover(long article_id)
 {
-    send_command(XOVER + article_id + '-');
+    std::stringstream buf;
+    buf << XOVER << article_id << "-";
+    send_command(buf.str());
 }
 
 void NNTPServer::article(long article_id)
 {
-    send_command(ARTICLE + article_id);
+    std::stringstream buf;
+    buf << ARTICLE << article_id;
+    send_command(buf.str());
 }
 
 void NNTPServer::head(long article_id)
 {
-    send_command(HEAD + article_id);
+    std::stringstream buf;
+    buf << HEAD << article_id;
+    send_command(buf.str());
 }
 
 void NNTPServer::body(long article_id)
 {
-    send_command(BODY + article_id);
+    std::stringstream buf;
+    buf << BODY << article_id;
+    send_command(buf.str());
 }
 
 void NNTPServer::last()
@@ -102,6 +114,26 @@ void NNTPServer::stat()
 void NNTPServer::xover_format()
 {
     send_command(OVERVIEW_FMT);
+}
+
+void NNTPServer::send_command(std::string command)
+{
+    if(has_data_waiting()){
+        console->log("It is an error to try to send a command with the following data ready to be read:");
+        console->log(get_line());
+        shut_down();
+    }
+
+    console->log("Sending command: " + command);
+    TCPConnection::send_command(command);
+    read_packets();
+    slice_buffer_strings();
+
+    while(has_data_waiting()){
+        std::string response = get_line();
+        console->log(response);
+    }
+    
 }
 // Private members go here.
 // Protected members go here.

@@ -1,6 +1,6 @@
 #!/bin/sh
 rm -f config.cache
-aclocal 
+aclocal --acdir=`pth-config --acdir`
 autoconf
 autoheader
 automake -a
