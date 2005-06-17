@@ -24,9 +24,13 @@ Console::~Console() // Destructor
 {
     if(print_on_delete){
         std::list<std::string>::iterator i;
-        for(i = loglines.begin(); i != loglines.end() ; ++i)
+        for(i = loglines.end(); ;)
         {
+            --i;
             printf("%s\n", i->c_str());
+            if ( i == loglines.begin()){
+                break;
+            }
         }
     }
 }
