@@ -127,7 +127,6 @@ void NNTPServer::send_command(std::string command)
     console->log("Sending command: " + command);
     TCPConnection::send_command(command);
     read_packets();
-    slice_buffer_strings();
 
     while(has_data_waiting()){
         std::string response = get_line();

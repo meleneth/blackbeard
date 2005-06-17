@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
                 std::string line;
                 line = "> " + input;
                 console->log(line);
-                net_thread->connection->send_command(input);
+                net_thread->connection->TCPConnection::send_command(input);
                 input = "";
             }else {
                 input += (char)key;

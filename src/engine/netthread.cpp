@@ -37,7 +37,6 @@ void NetThread::Execute(void)
 
     while(1){
         connection->read_packets();
-        connection->slice_buffer_strings();
         while(connection->has_data_waiting()){
             console->log(connection->get_line());
         }
