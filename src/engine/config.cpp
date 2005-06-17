@@ -63,6 +63,10 @@ void Config::read_config_file(void)
                 news_server = value;
             } else if(0 == cmd.compare("news_group")){
                 news_group = value;
+            } else if(0 == cmd.compare("username")){
+                username = value;
+            } else if(0 == cmd.compare("password")){
+                password = value;
             } else {
                 console->log("Unknown line: " + line);
             }

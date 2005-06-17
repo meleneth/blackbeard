@@ -24,8 +24,8 @@ int NNTPServer::status()
 
 void NNTPServer::login(std::string username, std::string password)
 {
-    send_command("authinfo user arnuga");
-    send_command("authinfo pass leper56");
+    send_command("authinfo user " + username);
+    send_command("authinfo pass " + password);
     send_command(MODE_READER);
 }
 
