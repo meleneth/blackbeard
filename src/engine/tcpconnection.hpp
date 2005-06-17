@@ -1,7 +1,7 @@
 #ifndef ___tcpconnection_inc
 #define ___tcpconnection_inc 1
 
-#include"SDL.h"
+#include"SDL_types.h"
 
 #include<string>
 #include<list>

@@ -1,7 +1,7 @@
 #ifndef ___thread_inc
 #define ___thread_inc 1
 
-#include"SDL.h"
+#include"SDL_types.h"
 #include"pth.h"
 
 class Thread {

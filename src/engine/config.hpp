@@ -1,7 +1,7 @@
 #ifndef ___config_inc
 #define ___config_inc 1
 
-#include"SDL.h"
+#include"SDL_types.h"
 #include<string>
 
 class Config {

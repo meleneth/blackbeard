@@ -1,8 +1,8 @@
 noinst_PROGRAMS = blb
 
-blb_SOURCES = blackbeard.cpp engine/libengine.a
+blb_SOURCES = blackbeard.cpp
 
-AM_CXXFLAGS = @SDL_CFLAGS@ -Iengine -Wall
+AM_CXXFLAGS = -Iengine -Wall
 
 SUBDIRS = engine
-LDADD = -Lengine -lengine -lncurses -lpth @SDL_LIBS@
+LDADD = -Lengine -lengine -lncurses -lpth 

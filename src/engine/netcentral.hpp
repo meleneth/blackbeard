@@ -2,7 +2,7 @@
 #define ___netcentral_inc 1
 
 #include<list>
-#include"SDL.h"
+#include"SDL_types.h"
 
 #include"nntpserver.hpp"
 

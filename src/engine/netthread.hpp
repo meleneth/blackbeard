@@ -1,7 +1,7 @@
 #ifndef ___netthread_inc
 #define ___netthread_inc 1
 
-#include"SDL.h"
+#include"SDL_types.h"
 #include"thread.hpp"
 #include"nntpserver.hpp"
 #include"config.hpp"

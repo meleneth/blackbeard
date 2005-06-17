@@ -26,8 +26,7 @@ int main(int argc, char *argv[])
     net_thread->Start();
 
     while(1){
-        SDL_Delay(10);
-
+        pth_nap(pth_time(0, 30));
         int key = getch();
         if(key != ERR){
             if(key == 13){

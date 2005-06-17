@@ -4,7 +4,7 @@
 #include<list>
 #include<iostream> // Evil
 
-#include<SDL.h>
+#include<SDL_types.h>
 
 #include<sstream>
 

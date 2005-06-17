@@ -1,7 +1,7 @@
 #ifndef ___newsgrouppost_inc
 #define ___newsgrouppost_inc 1
 
-#include"SDL.h"
+#include"SDL_types.h"
 
 class NewsGroupPost {
     public:

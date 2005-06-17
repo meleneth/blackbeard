@@ -3,7 +3,7 @@
 
 #include"newsgrouppost.hpp"
 
-#include"SDL.h"
+#include"SDL_types.h"
 #include<string>
 #include<list>
 

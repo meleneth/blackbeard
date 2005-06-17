@@ -1,7 +1,7 @@
 #ifndef ___nntpserver_inc
 #define ___nntpserver_inc 1
 
-#include"SDL.h"
+#include"SDL_types.h"
 
 #include "tcpconnection.hpp"
 #include<string>
