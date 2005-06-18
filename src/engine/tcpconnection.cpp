@@ -29,6 +29,7 @@ TCPConnection::TCPConnection(std::string hostname, int port) // Constructor
         perror("connect");
         exit(1);
     }
+    connected = 1;
 }
     
 TCPConnection::~TCPConnection() // Destructor
@@ -74,6 +75,8 @@ void TCPConnection::send_command(std::string command)
 
 void TCPConnection::sendall(std::string cmd)
 {
+    if(!connected)
+        return;
     int total = 0;        // how many bytes we've sent
     int bytesleft = cmd.length(); // how many we have left to send
     int num_bytes = bytesleft;
@@ -91,12 +94,13 @@ void TCPConnection::sendall(std::string cmd)
 void TCPConnection::read_packets(void)
 {
     // will only be called when we have data waiting
-    console->log("Calling recv()");
+    if(!connected)
+        return;
+
     if ((numbytes=recv(sockfd, buf + buf_end_pos, MAXDATASIZE - buf_end_pos, 0)) == -1) {
-        perror("recv");
-        exit(1);
+        console->log("Error from recv - disconnecting");
+        connected = 0;
     }
-    console->log("done with  recv()");
     buf_end_pos += numbytes;
     slice_buffer_strings();
 }

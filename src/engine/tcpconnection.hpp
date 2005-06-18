@@ -39,6 +39,7 @@ class TCPConnection {
         struct hostent *he;
         struct sockaddr_in their_addr; // connector's address information 
         std::list<std::string> lines;
+        int connected;
     private:
         // Private members go here.
     protected:
