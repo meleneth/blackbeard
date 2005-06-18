@@ -41,6 +41,7 @@ int main(int argc, char *argv[])
         console->render();
         mvaddstr(LINES-1, 0, input.c_str());
         refresh();
+        sched_yield();
     }
     finish(0);
 
@@ -62,7 +63,6 @@ void do_init(void)
     console->print_on_delete = 1;
     config = new Config();
     config->read_config_file();
-
 }
 
 static void finish(int sig)
