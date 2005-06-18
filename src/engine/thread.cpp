@@ -14,7 +14,7 @@ Thread::~Thread() // Destructor
 void Thread::Start(void)
 {
     console->log("Spawning thread..");
-    ThreadId = pth_spawn(PTH_ATTR_DEFAULT, Thread::EntryPoint, this);
+    pthread_create(&ThreadId, NULL, Thread::EntryPoint, this);
 }
 
 /*static */

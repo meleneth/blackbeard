@@ -1,7 +1,7 @@
 #include<stdio.h>
 #include<signal.h>
 #include<ncurses.h>
-#include<pth.h>
+#include<pthread.h>
 
 #include"console.hpp"
 #include"tcpconnection.hpp"
@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     net_thread->Start();
 
     while(1){
-        pth_nap(pth_time(0, 10));
+       // pth_nap(pth_time(0, 10));
         int key = getch();
         if(key != ERR){
             if(key == 13){
@@ -41,7 +41,6 @@ int main(int argc, char *argv[])
         console->render();
         mvaddstr(LINES-1, 0, input.c_str());
         refresh();
-        pth_yield(NULL);
     }
     finish(0);
 
@@ -64,8 +63,6 @@ void do_init(void)
     config = new Config();
     config->read_config_file();
 
-    // Pth
-    pth_init();
 }
 
 static void finish(int sig)

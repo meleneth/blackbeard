@@ -2,7 +2,7 @@
 #define ___thread_inc 1
 
 #include"SDL_types.h"
-#include"pth.h"
+#include"pthread.h"
 
 class Thread {
     public:
@@ -14,7 +14,7 @@ class Thread {
         static void *EntryPoint(void*);
         virtual void Execute(void);
 
-        pth_t ThreadId;
+        pthread_t ThreadId;
             // Private members go here.
     protected:
             // Protected members go here.
