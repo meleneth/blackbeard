@@ -5,4 +5,4 @@ blb_SOURCES = blackbeard.cpp
 AM_CXXFLAGS = -Iengine -Wall
 
 SUBDIRS = engine
-LDADD = -Lengine -lengine -lncurses -lpth 
+LDADD = -Lengine -lengine -lncurses -lpthread

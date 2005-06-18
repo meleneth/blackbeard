@@ -5,4 +5,4 @@ libengine_a_SOURCES = newsgroup.cpp newsgroup.hpp config.cpp config.hpp console.
 bt_SOURCES = blackbeardt.cpp libengine.a
 
 AM_CXXFLAGS = -Wall
-bt_LDADD=-L. -lengine -lncurses 
+bt_LDADD=-L. -lengine -lncurses -lpthread
