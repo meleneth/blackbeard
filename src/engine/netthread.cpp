@@ -33,6 +33,7 @@ void NetThread::Execute(void)
     connection->head(art_id);
     connection->body(art_id);
 
+    console->log("---- End of pre-configured commands ----");
     while(1){
         connection->read_packets();
         while(connection->has_data_waiting()){
