@@ -25,7 +25,7 @@ int main(int argc, char *argv[])
     net_thread->Start();
 
     while(1){
-        usleep(10);
+//        usleep(10);
         int key = getch();
         if(key != ERR){
             if(key == 13){

@@ -15,6 +15,8 @@ class NNTPServer : public TCPConnection {
 
         virtual void send_command(std::string cmd);
 
+        void read_multiline_response(void);
+
        int status();
        void login(std::string username, std::string password);
        void quit();

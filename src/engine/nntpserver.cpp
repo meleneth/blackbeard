@@ -11,6 +11,8 @@
 NNTPServer::NNTPServer(std::string hostname, int port) : TCPConnection(hostname, port) // Constructor
 {
     server_status = 0;
+    read_packets();
+    console->log(get_line());
 }
     
 NNTPServer::~NNTPServer() // Destructor
@@ -53,17 +55,7 @@ void NNTPServer::xover()
 {
     send_command(XOVER);
 
-    int data_end = 0;
-    while(data_end = 0){
-        if(has_data_waiting()){
-            std::string line = get_line();
-            if(line.length() == 4 && line[0] == '.')
-                data_end=1;
-        }else{
-            read_packets();
-        }
-    }
-
+    read_multiline_response();
 }
 
 void NNTPServer::xover(long article_id)
@@ -71,6 +63,9 @@ void NNTPServer::xover(long article_id)
     std::stringstream buf;
     buf << XOVER << article_id << "-";
     send_command(buf.str());
+
+    read_multiline_response();
+
 }
 
 void NNTPServer::article(long article_id)
@@ -78,6 +73,8 @@ void NNTPServer::article(long article_id)
     std::stringstream buf;
     buf << ARTICLE << article_id;
     send_command(buf.str());
+
+    read_multiline_response();
 }
 
 void NNTPServer::head(long article_id)
@@ -85,6 +82,8 @@ void NNTPServer::head(long article_id)
     std::stringstream buf;
     buf << HEAD << article_id;
     send_command(buf.str());
+
+    read_multiline_response();
 }
 
 void NNTPServer::body(long article_id)
@@ -92,6 +91,8 @@ void NNTPServer::body(long article_id)
     std::stringstream buf;
     buf << BODY << article_id;
     send_command(buf.str());
+
+    read_multiline_response();
 }
 
 void NNTPServer::last()
@@ -102,6 +103,7 @@ void NNTPServer::last()
 void NNTPServer::help()
 {
     send_command(HELP);
+    read_multiline_response();
 }
 
 void NNTPServer::date()
@@ -128,6 +130,23 @@ void NNTPServer::xover_format()
     send_command(OVERVIEW_FMT);
 }
 
+void NNTPServer::read_multiline_response()
+{
+    int data_end = 0;
+    while(data_end == 0){
+        if(has_data_waiting()){
+            std::string line = get_line();
+            console->log("Considering (" + line + ")");
+            if((line.length() == 1 ) && (line[0] == '.')){
+                data_end=1;
+                console->log("Found end of multi-line response");
+            }
+        }else{
+            read_packets();
+        }
+    }
+}
+
 void NNTPServer::send_command(std::string command)
 {
     if(has_data_waiting()){
@@ -140,10 +159,8 @@ void NNTPServer::send_command(std::string command)
     TCPConnection::send_command(command);
 
     read_packets();
-    while(has_data_waiting()){
-        std::string response = get_line();
-        console->log(response);
-    }
+    std::string response = get_line();
+    console->log(response);
     console->log("[-<>-]");
 }
 // Private members go here.

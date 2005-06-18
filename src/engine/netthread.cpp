@@ -17,12 +17,10 @@ void NetThread::Execute(void)
     console->log("Initialized.");
     console->log("Connecting to " + config->news_server + " to grab article list for group " + config->news_group);
 
-    console->log("Logging into server");
-    connection->login(config->username, config->password);
-
     console->log("Selecting group " + config->news_group);
     connection->group(config->news_group);
     connection->xover();
+
     connection->last();
     connection->help();
     connection->date();

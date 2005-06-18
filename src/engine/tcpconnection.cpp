@@ -65,6 +65,10 @@ void TCPConnection::slice_buffer_strings(void)
         index++;
     }
 
+//  int num_bytes = buf_end_pos - buf_start_pos;
+//    memmove(buf, buf + buf_start_pos, num_bytes);
+//    buf_end_pos = num_bytes;
+
 }
 
 void TCPConnection::send_command(std::string command)
