@@ -52,6 +52,18 @@ void NNTPServer::listgroup()
 void NNTPServer::xover()
 {
     send_command(XOVER);
+
+    int data_end = 0;
+    while(data_end = 0){
+        if(has_data_waiting()){
+            std::string line = get_line();
+            if(line.length() == 4 && line[0] == '.')
+                data_end=1;
+        }else{
+            read_packets();
+        }
+    }
+
 }
 
 void NNTPServer::xover(long article_id)
