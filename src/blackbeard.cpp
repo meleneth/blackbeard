@@ -41,7 +41,6 @@ int main(int argc, char *argv[])
         console->render();
         mvaddstr(LINES-1, 0, input.c_str());
         refresh();
-        sched_yield();
     }
     finish(0);
 

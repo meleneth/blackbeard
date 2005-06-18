@@ -91,10 +91,12 @@ void TCPConnection::sendall(std::string cmd)
 void TCPConnection::read_packets(void)
 {
     // will only be called when we have data waiting
+    console->log("Calling recv()");
     if ((numbytes=recv(sockfd, buf + buf_end_pos, MAXDATASIZE - buf_end_pos, 0)) == -1) {
         perror("recv");
         exit(1);
     }
+    console->log("done with  recv()");
     buf_end_pos += numbytes;
     slice_buffer_strings();
 }

@@ -40,7 +40,6 @@ void NetThread::Execute(void)
         while(connection->has_data_waiting()){
             console->log(connection->get_line());
         }
-        sched_yield();
     }
 }
 
