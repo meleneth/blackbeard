@@ -54,7 +54,7 @@ void NNTPServer::xover()
 {
     send_command(XOVER);
 
-    read_multiline_response();
+    read_xover_response();
 }
 
 void NNTPServer::xover(long article_id)
@@ -63,7 +63,7 @@ void NNTPServer::xover(long article_id)
     buf << XOVER << article_id << "-";
     send_command(buf.str());
 
-    read_multiline_response();
+    read_xover_response();
 
 }
 
@@ -139,6 +139,28 @@ void NNTPServer::read_multiline_response()
             if((line.length() == 1 ) && (line[0] == '.')){
                 data_end=1;
               //  console->log("Found end of multi-line response");
+            }
+        }else{
+            read_packets();
+        }
+    }
+}
+
+void NNTPServer::read_xover_response()
+{
+    int data_end = 0;
+    while(data_end == 0){
+        if(has_data_waiting()){
+            std::string line = get_line();
+            //console->log("Considering (" + line + ")");
+            if((line.length() == 1 ) && (line[0] == '.')){
+                data_end=1;
+              //  console->log("Found end of multi-line response");
+            }else{
+                if(line[0] == '.'){
+
+                }
+                newsgroup->header_scoop(line);
             }
         }else{
             read_packets();

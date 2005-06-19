@@ -117,13 +117,6 @@ std::string TCPConnection::get_line(void)
     }
     std::string line = *lines.begin();
     lines.pop_front();
-
-    size_t index;
-    for(index = 0; index < line.length() ; index++){
-        if(line[index] == '\t'){
-            line[index] = '|';
-        }
-    }
     
     return line;
 }

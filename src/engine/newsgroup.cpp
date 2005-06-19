@@ -9,6 +9,7 @@ using std::string;
 NewsGroup::NewsGroup(string group_name) // Constructor
 {
     name = group_name;
+    console->log("Creation of object for " + group_name);
 }
     
 NewsGroup::~NewsGroup() // Destructor
@@ -22,9 +23,11 @@ void NewsGroup::header_scoop(string xover_line)
 
     Tokenize(xover_line, header_pieces, "\t");
 
-    for(i = header_pieces.begin() ; i != header_pieces.end() ; ++i){
-        console->log(*i);
-    }
+    console->log(header_pieces[1]);
+
+    //for(i = header_pieces.begin() ; i != header_pieces.end() ; ++i){
+    //    console->log(*i);
+    //}
 }
 
 int NewsGroup::status_code()
