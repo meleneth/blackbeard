@@ -1,10 +1,12 @@
 #include "newsgroup.hpp"
 #include"news_constants.hpp"
 #include"globals.hpp"
+#include"strutil.hpp"
 
+using std::string;
 
 // Public data members go here.
-NewsGroup::NewsGroup(std::string group_name) // Constructor
+NewsGroup::NewsGroup(string group_name) // Constructor
 {
     name = group_name;
 }
@@ -13,24 +15,15 @@ NewsGroup::~NewsGroup() // Destructor
 {
 }
 
-void NewsGroup::header_scoop(std::string xover_line)
+void NewsGroup::header_scoop(string xover_line)
 {
-    std::list <std::string> header_pieces;
+    vector<string> header_pieces;
+    vector<string>::iterator i;
 
-    size_t start, end;
-    start = 0;
-    end = 0;
+    Tokenize(xover_line, header_pieces, "\t");
 
-    while(end < xover_line.length()){
-        console->log(xover_line.substr(start, end - 1));
-        if(xover_line[end] == '\t'){
-            xover_line[end] = 0;
-            std::string line_bit = xover_line.substr(start, end);
-            header_pieces.push_back(line_bit);
-            console->log(line_bit);
-            start = end +1;
-        }
-        end++;
+    for(i = header_pieces.begin() ; i != header_pieces.end() ; ++i){
+        console->log(*i);
     }
 }
 

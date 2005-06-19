@@ -15,14 +15,16 @@ print EP <<"HERE";
 #define ___${infile}_inc 1
 
 #include"SDL_types.hpp.h"
-#include"globals.hpp"
 
 class ${classname} {
     public:
         // Public data members go here.
-        ${classname}(int bar); // Constructor
-        ~${classname}(); // Destructor
+        ${classname}(int bar);
+        ~${classname}(); 
+
         int Foo(void);
+
+        
     private:
         // Private members go here.
     protected:
@@ -37,13 +39,14 @@ close(EP);
 open (EP, ">$infile.cpp");
 print EP <<"HERE";
 #include "${infile}.hpp"
+#include"globals.hpp"
 
 // Public data members go here.
-${classname}::${classname}(int bar) // Constructor
+${classname}::${classname}(int bar) 
 {
 }
     
-${classname}::~${classname}() // Destructor
+${classname}::~${classname}() 
 {
 }
 
