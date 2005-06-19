@@ -42,23 +42,26 @@ const int ACCESS_RESTRICTION  = 502;
 const int PROGRAM_FAULT       = 503;
 
 /* Extended NNTP commands (rfc 2980) */    
-const char* AUTH_USER   = "authinfo user ";
-const char* AUTH_PASS   = "authinfo pass ";
-const char* ARTICLE     = "article ";
-const char* BODY        = "body ";
-const char* DATE        = "date ";
-const char* GROUP       = "group ";
-const char* HEAD        = "head ";
-const char* HELP        = "help";
-const char* LAST        = "last";
-const char* LIST        = "list";
-const char* LISTGROUP   = "listgroup";
-const char* MODE_READER = "mode reader";
-const char* NEXT        = "next";
-const char* POST        = "post ";
-const char* QUIT        = "quit";
-const char* STAT        = "stat ";
-const char* XOVER       = "xover ";
+const char* AUTH_USER    = "authinfo user ";
+const char* AUTH_PASS    = "authinfo pass ";
+const char* ARTICLE      = "article ";
+const char* BODY         = "body ";
+const char* DATE         = "date ";
+const char* GROUP        = "group ";
+const char* HEAD         = "head ";
+const char* HELP         = "help";
+const char* LAST         = "last";
+const char* LIST         = "list";
+const char* LISTGROUP    = "listgroup";
+const char* MODE_READER  = "mode reader";
+const char* NEXT         = "next";
+const char* POST         = "post ";
+const char* QUIT         = "quit";
+const char* STAT         = "stat ";
+const char* XOVER        = "xover ";
 const char* OVERVIEW_FMT = "LIST OVERVIEW.FMT";
+
+/* Responses (rfc 2980) */
+const char* AUTH_REQUIRED = "480";
 
 #endif

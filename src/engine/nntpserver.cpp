@@ -28,7 +28,6 @@ void NNTPServer::login(std::string username, std::string password)
 {
     send_command("authinfo user " + username);
     send_command("authinfo pass " + password);
-    send_command(MODE_READER);
 }
 
 void NNTPServer::quit()
@@ -162,6 +161,12 @@ void NNTPServer::send_command(std::string command)
     std::string response = get_line();
     console->log(response);
     console->log("[-<>-]");
+
+    std::string server_response = response.substr(0, 3);
+    if(0 == server_response.compare(AUTH_REQUIRED)){
+        login(config->username, config->password);
+        return send_command(command);
+    }
 }
 // Private members go here.
 // Protected members go here.
