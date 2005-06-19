@@ -1,7 +1,7 @@
 #include "decoder.hpp"
 
 // Public data members go here.
-Decoder::Decoder(int bar) // Constructor
+Decoder::Decoder() // Constructor
 {
 }
     

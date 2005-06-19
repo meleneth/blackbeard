@@ -18,7 +18,6 @@ print EP <<"HERE";
 
 class ${classname} {
     public:
-        // Public data members go here.
         ${classname}(int bar);
         ~${classname}(); 
 
@@ -26,9 +25,7 @@ class ${classname} {
 
         
     private:
-        // Private members go here.
     protected:
-        // Protected members go here.
 };
 
 #endif
@@ -41,7 +38,6 @@ print EP <<"HERE";
 #include "${infile}.hpp"
 #include"globals.hpp"
 
-// Public data members go here.
 ${classname}::${classname}(int bar) 
 {
 }
@@ -54,8 +50,6 @@ int ${classname}::Foo(void)
 {
 }
 
-// Private members go here.
-// Protected members go here.
 HERE
 
 close EP;

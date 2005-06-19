@@ -1,7 +1,7 @@
 #include "yenc_decoder.hpp"
 
 // Public data members go here.
-yEncDecoder::yEncDecoder(int bar) :Decoder(bar)// Constructor
+yEncDecoder::yEncDecoder() :Decoder()// Constructor
 {
 }
     

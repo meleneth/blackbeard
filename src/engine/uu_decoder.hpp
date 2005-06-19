@@ -6,14 +6,12 @@
 
 class UUDecoder : public Decoder {
     public:
-        // Public data members go here.
-        UUDecoder(int bar); // Constructor
-        ~UUDecoder(); // Destructor
+        UUDecoder(); 
+        ~UUDecoder();
+
         int Foo(void);
     private:
-        // Private members go here.
     protected:
-        // Protected members go here.
 };
 
 #endif
