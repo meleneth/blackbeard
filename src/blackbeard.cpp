@@ -3,14 +3,15 @@
 #include<ncurses.h>
 #include<pthread.h>
 
-#include"console.hpp"
 #include"tcpconnection.hpp"
 #include"netthread.hpp"
-#include"config.hpp"
+#include"globals.hpp"
 
 
 Console *console;
 Config *config;
+NewsGroup *newsgroup;
+
 void do_init(void);
 static void finish(int sig);
 void create_nntp_thread(void);
@@ -62,6 +63,8 @@ void do_init(void)
     console->print_on_delete = 1;
     config = new Config();
     config->read_config_file();
+
+    newsgroup = new NewsGroup(config->news_group);
 }
 
 static void finish(int sig)

@@ -2,66 +2,66 @@
 #define ___news_constants_inc 1
 
 /* Quick Code Checks (first char of NNTP code) */
-const int CMD_OK      = 2;
-const int CMD_ERROR   = 4;
-const int CMD_UNKNOWN = 5;
+#define CMD_OK       2
+#define CMD_ERROR    4
+#define CMD_UNKNOWN  5
 
 /* Base NNTP commands rfc(977) */
-const int READY_POST          = 200;
-const int READY_NOT_POST      = 201;
-const int SLAVE_MODE          = 202;
-const int CLOSING             = 205;
-const int GROUP_SELECTED      = 211;
-const int LIST_FOLLOWS        = 215;
-const int BOTH_FOLLOW         = 220;
-const int HEAD_FOLLOWS        = 221;
-const int BODY_FOLLOWS        = 222;
-const int ARTICLE_OK          = 223;
-const int GLIST_FOLLOWS       = 231;
-const int TRANSFER_OK         = 235;
-const int POST_OK             = 240;
-const int AUTH_OK             = 281;
-const int SEND_TRANSFER       = 335;
-const int SEND_POST           = 340;
-const int DISCONNECTED        = 400;
-const int NO_SUCH_GROUP       = 411;
-const int NO_GROUP_SELECTED   = 412;
-const int NO_ARTICLE_SELECTED = 420;
-const int NO_NEXT             = 421;
-const int NO_PREVIOUS         = 422;
-const int NO_ARTICLE_NUMBER   = 423;
-const int NO_ARTICLE_FOUND    = 430;
-const int NOT_WANTED          = 435;
-const int TRANSFER_FAILED     = 436;
-const int REJECTED            = 437;
-const int NO_POSTING_ALLOWED  = 440;
-const int POST_FAILED         = 441;
-const int COMMAND_ERROR       = 500;
-const int COMMAND_SYNTAX      = 501;
-const int ACCESS_RESTRICTION  = 502;
-const int PROGRAM_FAULT       = 503;
+#define READY_POST           200
+#define READY_NOT_POST       201
+#define SLAVE_MODE           202
+#define CLOSING              205
+#define GROUP_SELECTED       211
+#define LIST_FOLLOWS         215
+#define BOTH_FOLLOW          220
+#define HEAD_FOLLOWS         221
+#define BODY_FOLLOWS         222
+#define ARTICLE_OK           223
+#define GLIST_FOLLOWS        231
+#define TRANSFER_OK          235
+#define POST_OK              240
+#define AUTH_OK              281
+#define SEND_TRANSFER        335
+#define SEND_POST            340
+#define DISCONNECTED         400
+#define NO_SUCH_GROUP        411
+#define NO_GROUP_SELECTED    412
+#define NO_ARTICLE_SELECTED  420
+#define NO_NEXT              421
+#define NO_PREVIOUS          422
+#define NO_ARTICLE_NUMBER    423
+#define NO_ARTICLE_FOUND     430
+#define NOT_WANTED           435
+#define TRANSFER_FAILED      436
+#define REJECTED             437
+#define NO_POSTING_ALLOWED   440
+#define POST_FAILED          441
+#define COMMAND_ERROR        500
+#define COMMAND_SYNTAX       501
+#define ACCESS_RESTRICTION   502
+#define PROGRAM_FAULT        503
 
 /* Extended NNTP commands (rfc 2980) */    
-const char* AUTH_USER    = "authinfo user ";
-const char* AUTH_PASS    = "authinfo pass ";
-const char* ARTICLE      = "article ";
-const char* BODY         = "body ";
-const char* DATE         = "date ";
-const char* GROUP        = "group ";
-const char* HEAD         = "head ";
-const char* HELP         = "help";
-const char* LAST         = "last";
-const char* LIST         = "list";
-const char* LISTGROUP    = "listgroup";
-const char* MODE_READER  = "mode reader";
-const char* NEXT         = "next";
-const char* POST         = "post ";
-const char* QUIT         = "quit";
-const char* STAT         = "stat ";
-const char* XOVER        = "xover ";
-const char* OVERVIEW_FMT = "LIST OVERVIEW.FMT";
+#define AUTH_USER     "authinfo user "
+#define AUTH_PASS     "authinfo pass "
+#define ARTICLE       "article "
+#define BODY          "body "
+#define DATE          "date "
+#define GROUP         "group "
+#define HEAD          "head "
+#define HELP          "help"
+#define LAST          "last"
+#define LIST          "list"
+#define LISTGROUP     "listgroup"
+#define MODE_READER   "mode reader"
+#define NEXT          "next"
+#define POST          "post "
+#define QUIT          "quit"
+#define STAT          "stat "
+#define XOVER         "xover "
+#define OVERVIEW_FMT  "LIST OVERVIEW.FMT"
 
 /* Responses (rfc 2980) */
-const char* AUTH_REQUIRED = "480";
+#define AUTH_REQUIRED  "480"
 
 #endif
