@@ -14,7 +14,8 @@ print EP <<"HERE";
 #ifndef ___${infile}_inc
 #define ___${infile}_inc 1
 
-#include"SDL.h"
+#include"SDL_types.hpp.h"
+#include"globals.hpp"
 
 class ${classname} {
     public:

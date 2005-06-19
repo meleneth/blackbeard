@@ -22,11 +22,13 @@ void NewsGroup::header_scoop(std::string xover_line)
     end = 0;
 
     while(end < xover_line.length()){
+        console->log(xover_line.substr(start, end - 1));
         if(xover_line[end] == '\t'){
+            xover_line[end] = 0;
             std::string line_bit = xover_line.substr(start, end);
             header_pieces.push_back(line_bit);
             console->log(line_bit);
-            start = end + 1;
+            start = end +1;
         }
         end++;
     }

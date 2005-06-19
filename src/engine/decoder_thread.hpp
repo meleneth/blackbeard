@@ -1,7 +1,7 @@
 #ifndef ___decoder_thread_inc
 #define ___decoder_thread_inc 1
 
-#include"SDL.h"
+#include"SDL_types.h"
 #include"thread.hpp"
 #include"decoder.hpp"
 

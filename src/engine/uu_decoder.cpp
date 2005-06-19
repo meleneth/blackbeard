@@ -1,7 +1,7 @@
 #include "uu_decoder.hpp"
 
 // Public data members go here.
-UUDecoder::UUDecoder(int bar) // Constructor
+UUDecoder::UUDecoder(int bar) :Decoder(bar)// Constructor
 {
 }
     

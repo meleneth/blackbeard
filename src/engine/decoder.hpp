@@ -1,7 +1,7 @@
 #ifndef ___decoder_inc
 #define ___decoder_inc 1
 
-#include"SDL.h"
+#include"SDL_types.h"
 
 class Decoder {
     public:
