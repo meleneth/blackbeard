@@ -136,10 +136,10 @@ void NNTPServer::read_multiline_response()
     while(data_end == 0){
         if(has_data_waiting()){
             std::string line = get_line();
-            console->log("Considering (" + line + ")");
+            //console->log("Considering (" + line + ")");
             if((line.length() == 1 ) && (line[0] == '.')){
                 data_end=1;
-                console->log("Found end of multi-line response");
+              //  console->log("Found end of multi-line response");
             }
         }else{
             read_packets();
