@@ -17,7 +17,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define MAXDATASIZE 900000
+#define MAXDATASIZE 9000
 
 class TCPConnection {
     public:
