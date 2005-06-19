@@ -27,5 +27,5 @@ void test_header_scoop(void)
     console->log("Test NewsGroup::header_scoop");
     NewsGroup *group = new NewsGroup("alt.binaries.erotica.tigger");
 
-    group->header_scoop("2329    Star Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (256/258)        Homer P Wylde <brick@house.com> 18 Jun 2005 05:50:02 GMT<d90cma$9hk$2328@answer.sectorfour>             345632  2678    Xref: answer.sectorfour misc.test:2329 "); 
+    group->header_scoop("2321\tStar Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (248/258)\tHomer P Wylde <brick@house.com>\t18 Jun 2005 05:50:02 GMT\t<d90cma$9hk$2320@answer.sectorfour>\t\t344451\t2669\tXref: answer.sectorfour misc.test:2321");
 }

@@ -22,17 +22,14 @@ void NewsGroup::header_scoop(std::string xover_line)
     end = 0;
 
     while(end < xover_line.length()){
-        end++;
-        if(xover_line[end] == ' '){
+        if(xover_line[end] == '\t'){
             std::string line_bit = xover_line.substr(start, end);
             header_pieces.push_back(line_bit);
             console->log(line_bit);
-            start = end;
+            start = end + 1;
         }
+        end++;
     }
-
-    
-
 }
 
 int NewsGroup::status_code()
