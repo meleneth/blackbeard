@@ -23,11 +23,13 @@ void NewsGroup::header_scoop(string xover_line)
 
     Tokenize(xover_line, header_pieces, "\t");
 
-    console->log(header_pieces[1]);
+    digest_subject_line(header_pieces[0], header_pieces[1]);
 
-    //for(i = header_pieces.begin() ; i != header_pieces.end() ; ++i){
-    //    console->log(*i);
-    //}
+}
+
+void NewsGroup::digest_subject_line(std::string message_id, std::string subject)
+{
+    console->log("(" + message_id + ") " + subject);
 }
 
 int NewsGroup::status_code()

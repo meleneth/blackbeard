@@ -13,6 +13,7 @@ class NewsGroup {
         NewsGroup(std::string group_name); // Constructor
         ~NewsGroup(); // Destructor
         void header_scoop(std::string xover_line);
+        void digest_subject_line(std::string message_id, std::string subject);
         
         int status_code();
 
