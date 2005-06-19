@@ -1,9 +1,12 @@
 #include"console.hpp"
 #include"newsgroup.hpp"
+#include"stringpattern.hpp"
+#include"assert.h"
 
 Console *console;
 
 void test_header_scoop(void);
+void test_string_pattern(void);
 
 int main(int argc, char *argv[])
 {
@@ -18,8 +21,24 @@ int main(int argc, char *argv[])
     console->log(buf);
     console->log(my_string);
 
+    test_string_pattern();
     test_header_scoop();
 	return 0;
+}
+
+void test_string_pattern(void)
+{
+    console->log("Test StringPattern");
+    StringPattern *s = new StringPattern();
+
+    s->add_breaker(" - File ");
+    s->add_breaker(" of ");
+    s->add_breaker(": \"");
+    s->add_breaker("\" yEnc (");
+    s->add_breaker("/");
+    s->add_breaker(")");
+
+    assert(s->does_match("Star Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (248/258)"));
 }
 
 void test_header_scoop(void)
