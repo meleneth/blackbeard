@@ -6,7 +6,8 @@ libengine_a_SOURCES = newsgroup.cpp newsgroup.hpp config.cpp config.hpp console.
 					  news_constants.hpp nntpserver.cpp nntpserver.hpp thread.cpp thread.hpp \
 					  netthread.cpp netthread.hpp decoder.cpp decoder.hpp decoder_thread.cpp \
 					  decoder_thread.hpp yenc_decoder.cpp yenc_decoder.hpp uu_decoder.cpp \
-					  uu_decoder.hpp strutil.hpp strutil.cpp stringpattern.cpp stringpattern.hpp
+					  uu_decoder.hpp strutil.hpp strutil.cpp stringpattern.cpp stringpattern.hpp \
+					  post_set.cpp post_set.hpp post_file.cpp post_file.hpp
 bt_SOURCES = blackbeardt.cpp libengine.a
 
 AM_CXXFLAGS = -Wall -D_REENTRANT

@@ -12,7 +12,8 @@ NNTPServer::NNTPServer(std::string hostname, int port) : TCPConnection(hostname,
 {
     server_status = 0;
     read_packets();
-    console->log(get_line());
+    newsgroup->status = get_line();
+    console->log(newsgroup->status);
 }
     
 NNTPServer::~NNTPServer() // Destructor
@@ -52,19 +53,22 @@ void NNTPServer::listgroup()
 
 void NNTPServer::xover()
 {
+    newsgroup->status = "Updating articles..";
     send_command(XOVER);
 
     read_xover_response();
+    newsgroup->status = "Idle";
 }
 
 void NNTPServer::xover(long article_id)
 {
+    newsgroup->status = "Updating articles..";
     std::stringstream buf;
     buf << XOVER << article_id << "-";
     send_command(buf.str());
 
     read_xover_response();
-
+    newsgroup->status = "Idle";
 }
 
 void NNTPServer::article(long article_id)

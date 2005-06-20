@@ -1,6 +1,7 @@
 #include "console.hpp"
 #include <ncurses.h>
 
+#include"globals.hpp"
 
 // Public data members go here.
 Console::Console() // Constructor
@@ -42,7 +43,12 @@ void Console::render(void)
 
     erase();
 
-    for(i = loglines.begin() ; (i != loglines.end()) && counter != -1; ++i)
+    if(newsgroup){
+        string groupline = newsgroup->name + " ( " + newsgroup->status + " )";
+        mvaddnstr(0, 0, groupline.c_str(), -1);
+    }
+
+    for(i = loglines.begin() ; (i != loglines.end()) && counter > 4; ++i)
     {
         mvaddnstr(counter, 0,  i->c_str(), -1);
         counter--;

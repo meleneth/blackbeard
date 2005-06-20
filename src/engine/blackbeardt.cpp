@@ -4,6 +4,7 @@
 #include"assert.h"
 
 Console *console;
+NewsGroup *newsgroup;
 
 void test_header_scoop(void);
 void test_string_pattern(void);

@@ -2,23 +2,28 @@
 #define ___newsgroup_inc 1
 
 #include"newsgrouppost.hpp"
+#include"post_set.hpp"
 
 #include"SDL_types.h"
 #include<string>
 #include<list>
 
+using std::list;
+using std::string;
 class NewsGroup {
     public:
         // Public data members go here.
-        NewsGroup(std::string group_name); // Constructor
+        NewsGroup(string group_name); // Constructor
         ~NewsGroup(); // Destructor
-        void header_scoop(std::string xover_line);
-        void digest_subject_line(std::string message_id, std::string subject);
+        void header_scoop(string xover_line);
+        void digest_subject_line(string message_id, string subject);
         
         int status_code();
 
-        std::list< NewsGroupPost * > messages;
-        std::string name;
+        list< NewsGroupPost * > messages;
+        list<PostSet *> postsets;
+        string name;
+        string status;
 
     private:
         int return_code;
