@@ -46,6 +46,12 @@ void Console::render(void)
     if(newsgroup){
         string groupline = newsgroup->name + " ( " + newsgroup->status + " )";
         mvaddnstr(0, 0, groupline.c_str(), -1);
+        
+        list<PostSet *>::iterator p;
+        for(p = newsgroup->postsets.begin() ; p != newsgroup->postsets.end() ; ++p){
+        mvaddnstr(1, 0, (*p)->status().c_str(), -1);
+        }
+        
     }
 
     for(i = loglines.begin() ; (i != loglines.end()) && counter > 4; ++i)

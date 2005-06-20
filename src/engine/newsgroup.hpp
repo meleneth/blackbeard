@@ -3,6 +3,7 @@
 
 #include"newsgrouppost.hpp"
 #include"post_set.hpp"
+#include"stringpattern.hpp"
 
 #include"SDL_types.h"
 #include<string>
@@ -10,6 +11,7 @@
 
 using std::list;
 using std::string;
+
 class NewsGroup {
     public:
         // Public data members go here.
@@ -17,6 +19,8 @@ class NewsGroup {
         ~NewsGroup(); // Destructor
         void header_scoop(string xover_line);
         void digest_subject_line(string message_id, string subject);
+
+        PostSet *postset_for_subject(string subject);
         
         int status_code();
 
@@ -24,7 +28,7 @@ class NewsGroup {
         list<PostSet *> postsets;
         string name;
         string status;
-
+        StringPattern *easy_match;
     private:
         int return_code;
 

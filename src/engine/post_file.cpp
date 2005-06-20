@@ -1,7 +1,7 @@
 #include "post_file.hpp"
 #include"globals.hpp"
 
-PostFile::PostFile(int bar) 
+PostFile::PostFile() 
 {
 }
     
@@ -9,7 +9,7 @@ PostFile::~PostFile()
 {
 }
 
-int PostFile::Foo(void)
+void PostFile::part(string part_no, string max_port_no)
 {
 }
 

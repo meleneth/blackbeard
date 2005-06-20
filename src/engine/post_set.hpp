@@ -12,14 +12,19 @@ using std::vector;
 
 class PostSet {
     public:
-        PostSet(int bar);
+        PostSet(string subject);
         ~PostSet(); 
     
-        int Foo(void);
+        string completed_percent(void);
+        PostFile *file(string file_num, string max_file_num, string file_name);
+        string status(void);
 
         string subject;
         vector<PostFile *> files;
-        
+
+        string num_files;
+        string num_pieces;
+        string num_finished_pieces;
     private:
     protected:
 };

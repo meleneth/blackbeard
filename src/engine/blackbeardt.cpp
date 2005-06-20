@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
 {
     console = new Console();
     console->print_logs = 1;
+    newsgroup = new NewsGroup("misc.test");
 
     char buf[10] = "hello";
     std::string my_string = buf;

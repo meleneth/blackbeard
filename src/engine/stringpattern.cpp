@@ -43,7 +43,6 @@ void StringPattern::pieces(string target, vector<string>& result)
         if(index != string::npos){
             string flesh = target.substr(0, index);
             result.push_back(flesh);
-            console->log("Fleshy bit: " + flesh);
             target.erase(0, (*i).length() + index);
         }else{
             return;
