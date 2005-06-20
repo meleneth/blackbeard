@@ -39,6 +39,10 @@ void test_string_pattern(void)
     s->add_breaker(")");
 
     assert(s->does_match("Star Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (248/258)"));
+    assert(!s->does_match("Star Wars Clone Wars \"Clone Wars Chapter 20.mpg\" yEnc (248/258)"));
+
+    vector<string> pieces;
+    s->pieces("Star Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (248/258)", pieces);
 }
 
 void test_header_scoop(void)
