@@ -11,6 +11,7 @@
 Console *console;
 Config *config;
 NewsGroup *newsgroup;
+PostSet *current_postset;
 
 void do_init(void);
 static void finish(int sig);
@@ -59,6 +60,7 @@ void do_init(void)
     nodelay(stdscr, 1);
     
     // global objects
+    current_postset = NULL;
     console = new Console(COLS, LINES);
     console->print_on_delete = 1;
     config = new Config();
