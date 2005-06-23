@@ -25,7 +25,7 @@ class NewsGroup {
         int status_code();
 
         list< NewsGroupPost * > messages;
-        list<PostSet *> postsets;
+        list< PostSet * > postsets;
         string name;
         string status;
         StringPattern *easy_match;

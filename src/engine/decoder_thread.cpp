@@ -9,7 +9,7 @@ DecoderThread::~DecoderThread() // Destructor
 {
 }
 
-int DecoderThread::Foo(void)
+void DecoderThread::Foo(void)
 {
 }
 

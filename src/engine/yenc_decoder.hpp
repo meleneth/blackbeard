@@ -7,9 +7,9 @@
 class yEncDecoder : public Decoder {
     public:
         yEncDecoder(); 
-        ~yEncDecoder(); 
+        virtual ~yEncDecoder(); 
 
-        int Foo(void);
+        virtual void decode(void);
     private:
     protected:
 };

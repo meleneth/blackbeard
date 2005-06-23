@@ -9,7 +9,7 @@ yEncDecoder::~yEncDecoder() // Destructor
 {
 }
 
-int yEncDecoder::Foo(void)
+void yEncDecoder::decode(void)
 {
 }
 

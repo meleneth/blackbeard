@@ -10,9 +10,9 @@ class Decoder {
     public:
         // Public data members go here.
         Decoder(); // Constructor
-        ~Decoder(); // Destructor
+        virtual ~Decoder(); // Destructor
 
-        int Foo(void);
+        virtual void decode(void);
 
         string filename;
     private:

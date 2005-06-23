@@ -10,7 +10,7 @@ class DecoderThread : public Thread {
         // Public data members go here.
         DecoderThread(int bar); // Constructor
         ~DecoderThread(); // Destructor
-        int Foo(void);
+        void Foo(void);
     private:
         // Private members go here.
     protected:

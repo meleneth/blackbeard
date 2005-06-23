@@ -9,7 +9,7 @@ Decoder::~Decoder() // Destructor
 {
 }
 
-int Decoder::Foo(void)
+void Decoder::decode(void)
 {
 }
 
