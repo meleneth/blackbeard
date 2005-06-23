@@ -5,6 +5,7 @@
 #include"thread.hpp"
 #include"nntpserver.hpp"
 #include"config.hpp"
+#include"post_set.hpp"
 
 class NetThread : public Thread {
     public:
@@ -12,6 +13,7 @@ class NetThread : public Thread {
         NetThread(Config *cfg); // Constructor
         ~NetThread(); // Destructor
         virtual void Execute(void);
+        void retrieve(PostSet *postset);
 
         Config *config;
         NNTPServer *connection;

@@ -22,7 +22,12 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, string message_id)
             console->log("Not adding nonsensicle part no");
         }else{
             pieces[part_no] = message_id;
+            seen_pieces++;
         }
     }
 }
 
+string PostFile::status(void)
+{
+    return "XX/XXX pieces seen";
+}

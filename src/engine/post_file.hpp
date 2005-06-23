@@ -14,8 +14,10 @@ class PostFile {
         ~PostFile(); 
 
         void part(Uint32 part, Uint32 total_parts, string message_id);
+        string status(void);
 
         Uint32 num_pieces;
+        Uint32 seen_pieces;
         
         vector<string> pieces;
     private:

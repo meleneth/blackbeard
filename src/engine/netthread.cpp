@@ -1,5 +1,6 @@
 #include "netthread.hpp"
 #include "console.hpp"
+#include"globals.hpp"
 
 // Public data members go here.
 NetThread::NetThread(Config *cfg) // Constructor
@@ -21,6 +22,10 @@ void NetThread::Execute(void)
     connection->group(config->news_group);
     connection->xover();
 
+    if(current_postset){
+        retrieve(current_postset);
+    }
+/*
     connection->last();
     connection->help();
     connection->date();
@@ -32,7 +37,7 @@ void NetThread::Execute(void)
     connection->article(art_id);
     connection->head(art_id);
     connection->body(art_id);
-
+*/
     console->log("---- End of pre-configured commands ----");
     while(1){
         connection->read_packets();
@@ -40,6 +45,10 @@ void NetThread::Execute(void)
             console->log(connection->get_line());
         }
     }
+}
+
+void NetThread::retrieve(PostSet *postset)
+{
 }
 
 // Private members go here.
