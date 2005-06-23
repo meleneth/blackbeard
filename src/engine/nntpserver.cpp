@@ -4,6 +4,7 @@
 #include "tcpconnection.hpp"
 #include "news_constants.hpp"
 #include "console.hpp"
+#include "newsgrouppost.hpp"
 
 #include"globals.hpp"
 
@@ -95,7 +96,7 @@ void NNTPServer::body(long article_id)
     buf << BODY << article_id;
     send_command(buf.str());
 
-    read_multiline_response();
+    read_body_response();
 }
 
 void NNTPServer::last()
@@ -131,6 +132,27 @@ void NNTPServer::stat()
 void NNTPServer::xover_format()
 {
     send_command(OVERVIEW_FMT);
+}
+
+void NNTPServer::read_body_response()
+{
+    NewsGroupPost *newsgrouppost = new NewsGroupPost;
+    int data_end = 0;
+    while(data_end == 0){
+        if(has_data_waiting()){
+            std::string line = get_line();
+            if((line.length() == 1 ) && (line[0] == '.')){
+                data_end=1;
+            }else{
+                if(line[0] == '.'){
+                    line.erase(0,1);
+                }
+                newsgrouppost->lines.push_back(line);
+            }
+        }else{
+            read_packets();
+        }
+    }
 }
 
 void NNTPServer::read_multiline_response()

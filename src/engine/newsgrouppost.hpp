@@ -3,12 +3,19 @@
 
 #include"SDL_types.h"
 
+#include<string>
+#include<list>
+
+using std::list;
+using std::string;
+
 class NewsGroupPost {
     public:
         // Public data members go here.
-        NewsGroupPost(int bar); // Constructor
+        NewsGroupPost(); // Constructor
         ~NewsGroupPost(); // Destructor
 
+        list<string> lines;
     private:
         // Private members go here.
     protected:

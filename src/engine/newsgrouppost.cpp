@@ -1,7 +1,7 @@
 #include "newsgrouppost.hpp"
 
 // Public data members go here.
-NewsGroupPost::NewsGroupPost(int bar) // Constructor
+NewsGroupPost::NewsGroupPost() // Constructor
 {
 }
     

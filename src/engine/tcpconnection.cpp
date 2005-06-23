@@ -4,7 +4,7 @@
 #include<pthread.h>
 
 // Public data members go here.
-TCPConnection::TCPConnection(std::string hostname, int port) // Constructor
+TCPConnection::TCPConnection(string hostname, int port) // Constructor
 {
     buf_start_pos = 0;
     buf_end_pos = 0;
@@ -52,7 +52,7 @@ void TCPConnection::slice_buffer_strings(void)
             buf[index] = 0;
         if(buf[index] == '\n'){
             buf[index] = 0;
-            std::string line = buf + buf_start_pos;
+            string line = buf + buf_start_pos;
             lines.push_back(line);
             buf_start_pos = index+1;
             if(buf_start_pos==buf_end_pos){
@@ -72,13 +72,13 @@ void TCPConnection::slice_buffer_strings(void)
 
 }
 
-void TCPConnection::send_command(std::string command)
+void TCPConnection::send_command(string command)
 {
     command += "\r\n";
     sendall(command);
 }
 
-void TCPConnection::sendall(std::string cmd)
+void TCPConnection::sendall(string cmd)
 {
     if(!connected)
         return;
@@ -110,12 +110,12 @@ void TCPConnection::read_packets(void)
     slice_buffer_strings();
 }
 
-std::string TCPConnection::get_line(void)
+string TCPConnection::get_line(void)
 {
     if(!has_data_waiting()){
         return NULL;
     }
-    std::string line = *lines.begin();
+    string line = *lines.begin();
     lines.pop_front();
     
     return line;

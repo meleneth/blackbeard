@@ -19,18 +19,21 @@
 
 #define MAXDATASIZE 9000
 
+using std::list;
+using std::string;
+
 class TCPConnection {
     public:
         // Public data members go here.
-        TCPConnection(std::string hostname, int port); // Constructor
+        TCPConnection(string hostname, int port); // Constructor
         virtual ~TCPConnection(); // Destructor
 
         int has_data_waiting(void);
-        void send_line(std::string line);
+        void send_line(string line);
         void slice_buffer_strings(void);
         void read_packets(void);
-        virtual void send_command(std::string command);
-        void sendall(std::string cmd);
+        virtual void send_command(string command);
+        void sendall(string cmd);
         std::string get_line(void);
 
         int sockfd, numbytes;  
@@ -38,7 +41,7 @@ class TCPConnection {
         int buf_start_pos, buf_end_pos;
         struct hostent *he;
         struct sockaddr_in their_addr; // connector's address information 
-        std::list<std::string> lines;
+        list<string> lines;
         int connected;
     private:
         // Private members go here.

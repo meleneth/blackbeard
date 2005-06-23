@@ -17,6 +17,7 @@ class NNTPServer : public TCPConnection {
 
         void read_multiline_response(void);
         void read_xover_response(void);
+        void read_body_response(void);
 
        int status();
        void login(std::string username, std::string password);
