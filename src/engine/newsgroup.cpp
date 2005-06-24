@@ -42,7 +42,7 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
         vector<string> pieces;
         easy_match->pieces(subject, pieces);
         newsgroup->postset_for_subject(pieces[0])
-                 ->file(pieces[1], pieces[2], pieces[3])
+                 ->file(atoi(pieces[1].c_str()), atoi(pieces[2].c_str()), pieces[3])
                  ->part(atoi(pieces[4].c_str()), atoi(pieces[5].c_str()), message_id);
     }
 }

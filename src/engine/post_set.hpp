@@ -16,15 +16,15 @@ class PostSet {
         ~PostSet(); 
     
         string completed_percent(void);
-        PostFile *file(string file_num, string max_file_num, string file_name);
+        PostFile *file(Uint32 file_num, Uint32 max_file_num, string file_name);
         string status(void);
 
         string subject;
         vector<PostFile *> files;
 
-        string num_files;
-        string num_pieces;
-        string num_finished_pieces;
+        Uint32 num_files;
+        Uint32 num_pieces;
+        Uint32 num_finished_pieces;
     private:
     protected:
 };

@@ -11,6 +11,7 @@ PostSet *current_postset;
 
 void test_header_scoop(void);
 void test_string_pattern(void);
+void test_postset_objects(void);
 
 int main(int argc, char *argv[])
 {
@@ -29,6 +30,7 @@ int main(int argc, char *argv[])
 
     test_string_pattern();
     test_header_scoop();
+    test_postset_objects();
 	return 0;
 }
 
@@ -57,4 +59,13 @@ void test_header_scoop(void)
     NewsGroup *group = new NewsGroup("alt.binaries.erotica.tigger");
 
     group->header_scoop("2321\tStar Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (248/258)\tHomer P Wylde <brick@house.com>\t18 Jun 2005 05:50:02 GMT\t<d90cma$9hk$2320@answer.sectorfour>\t\t344451\t2669\tXref: answer.sectorfour misc.test:2321");
+}
+
+void test_postset_objects(void)
+{
+    console->log("Test PostSet");
+
+    PostSet *post = new PostSet("brick brothers presents");
+    PostFile *info = post->file(1, 2, "info.txt");
+    PostFile *sfv = post->file(2, 2, "checksum.SFV");
 }
