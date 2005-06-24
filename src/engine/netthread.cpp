@@ -20,7 +20,7 @@ void NetThread::Execute(void)
 
     console->log("Selecting group " + config->news_group);
     connection->group(config->news_group);
-    connection->xover();
+    connection->xover(1);
 
     if(current_postset){
         retrieve(current_postset);
