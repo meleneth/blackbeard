@@ -9,7 +9,7 @@ yEncDecoder::~yEncDecoder() // Destructor
 {
 }
 
-void yEncDecoder::decode(void)
+void yEncDecoder::decode(NewsGroupPost *newsgrouppost)
 {
 }
 

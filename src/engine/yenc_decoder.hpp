@@ -3,13 +3,14 @@
 
 #include"SDL_types.h"
 #include"decoder.hpp"
+#include"newsgrouppost.hpp"
 
 class yEncDecoder : public Decoder {
     public:
         yEncDecoder(); 
         virtual ~yEncDecoder(); 
 
-        virtual void decode(void);
+        virtual void decode(NewsGroupPost *newsgrouppost);
     private:
     protected:
 };

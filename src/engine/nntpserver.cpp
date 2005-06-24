@@ -5,6 +5,7 @@
 #include "news_constants.hpp"
 #include "console.hpp"
 #include "newsgrouppost.hpp"
+#include "yenc_decoder.hpp"
 
 #include"globals.hpp"
 
@@ -153,6 +154,8 @@ void NNTPServer::read_body_response()
             read_packets();
         }
     }
+    yEncDecoder *yencdecoder = new yEncDecoder;
+    yencdecoder->decode(newsgrouppost);
 }
 
 void NNTPServer::read_multiline_response()
