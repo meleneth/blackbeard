@@ -1,6 +1,10 @@
 #include "post_file.hpp"
 #include"globals.hpp"
 
+#include<sstream>
+
+using std::stringstream;
+
 PostFile::PostFile() 
 {
     num_pieces = 0;
@@ -29,5 +33,7 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, string message_id)
 
 string PostFile::status(void)
 {
-    return "XX/XXX pieces seen";
+    stringstream status;
+    status << seen_pieces << "/" << num_pieces << " pieces seen";
+    return status.str();
 }
