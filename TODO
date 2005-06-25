@@ -1,13 +1,39 @@
-integrate SQLite <- store group status
-    I'm thinking one table per group, all group tables setup the same
+Decoders:
+    Implement UUDecoder
+    Implement yEnc Decoder
+    Implement MIME Decoder
+    Optimize Decoders
 
-figure out decoding <- UUDecode and what?
-    hopefully we can download and decode directly without having to write the encoded form to disk
 
-read preferences file <- ~/.blackbeardrc
+Threads:
+    multiple net threads
+    job control thread 
+    console render thread
+    input thread
+    main() waiting for thread_join
+    file decoder thread 
+    locking <- only needed in job control for the job list and 
+               file decode to only mmap the file once (I think)
 
-implement command / response system
 
-write header fetcher
+Pattern matching:
+    I want to be able to do this:
 
-write body fetcher
+    StringSplitter *splitter = new Stringsplitter();
+    splitter << "(" << FILE_NUM << ")" << OTHER_TEXT;
+
+    and have it be able to handle the parsing from there.
+
+
+Interface:
+    need to be able to use arrow keys to flip between PostSets
+    need to be able to mark PostSet for retrieval
+    show pieces of the file queue instead of the big log
+    have small log window, with scrollback
+    only allow typing when you're on the log window
+    typing is sending commands to system, not directly interupting TCP streams
+    tab to switch panes
+
+General:
+    Add ability to check cross-posted groups for missing pieces
+
