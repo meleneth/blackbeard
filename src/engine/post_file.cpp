@@ -43,6 +43,7 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, string message_id)
 string PostFile::status(void)
 {
     stringstream status;
+    status << filename << " - ";
     status << seen_pieces << "/" << num_pieces-1 << " pieces seen   " 
            << downloaded_pieces << "/"  << num_pieces-1 << " pieces downloaded  ";
     if(num_pieces > 0)
