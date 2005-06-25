@@ -58,6 +58,7 @@ void NetThread::retrieve(PostSet *postset)
 
     for (v=postset->files.begin(); v!=postset->files.end(); ++v){
         if(*v){
+            current_postfile = *v;
             console->log("Retrieveing " + (*v)->filename);
             for (s=(*v)->pieces.begin(); s!=(*v)->pieces.end(); ++s){
                 if((*s).compare("")){
@@ -67,6 +68,7 @@ void NetThread::retrieve(PostSet *postset)
 
                     delete newsgrouppost;
                     delete yencdecoder;
+                    (*v)->downloaded_pieces++;
                 }
             }
         }

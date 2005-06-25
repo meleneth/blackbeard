@@ -93,11 +93,14 @@ void NNTPServer::head(long article_id)
 
 NewsGroupPost * NNTPServer::body(string article_id)
 {
+    newsgroup->status = "Fetching body " + article_id;
     std::stringstream buf;
     buf << BODY << article_id;
     send_command(buf.str());
 
-    return read_body_response();
+    NewsGroupPost *post = read_body_response();
+    newsgroup->status = "Idle";
+    return post;
 }
 
 void NNTPServer::last()

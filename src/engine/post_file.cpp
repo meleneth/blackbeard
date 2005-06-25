@@ -8,6 +8,8 @@ using std::stringstream;
 PostFile::PostFile() 
 {
     num_pieces = 0;
+    seen_pieces = 0;
+    downloaded_pieces = 0;
 }
     
 PostFile::~PostFile() 
@@ -41,6 +43,10 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, string message_id)
 string PostFile::status(void)
 {
     stringstream status;
-    status << seen_pieces << "/" << num_pieces << " pieces seen";
+    status << seen_pieces << "/" << num_pieces-1 << " pieces seen   " 
+           << downloaded_pieces << "/"  << num_pieces-1 << " pieces downloaded  ";
+    if(num_pieces > 0)
+           status << ((double)downloaded_pieces / (double)num_pieces) * (double) 100
+                  << "%";
     return status.str();
 }
