@@ -18,7 +18,8 @@ class PostFile {
 
         Uint32 num_pieces;
         Uint32 seen_pieces;
-        
+        string filename;
+
         vector<string> pieces;
     private:
     protected:

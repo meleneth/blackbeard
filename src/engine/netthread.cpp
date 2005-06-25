@@ -53,12 +53,22 @@ void NetThread::retrieve(PostSet *postset)
 {
     vector< PostFile * >::iterator v;
     vector< string >::iterator s;
-    
+
+    console->log("Retrieving PostSet");
+
     for (v=postset->files.begin(); v!=postset->files.end(); ++v){
-        for (s=(*v)->pieces.begin(); s!=(*v)->pieces.end(); ++s){
-            NewsGroupPost *newsgrouppost = connection->body(*s);
-            yEncDecoder *yencdecoder = new yEncDecoder;
-            yencdecoder->decode(newsgrouppost);
+        if(*v){
+            console->log("Retrieveing " + (*v)->filename);
+            for (s=(*v)->pieces.begin(); s!=(*v)->pieces.end(); ++s){
+                if((*s).compare("")){
+                    NewsGroupPost *newsgrouppost = connection->body(*s);
+                    yEncDecoder *yencdecoder = new yEncDecoder;
+                    yencdecoder->decode(newsgrouppost);
+
+                    delete newsgrouppost;
+                    delete yencdecoder;
+                }
+            }
         }
     }
 }

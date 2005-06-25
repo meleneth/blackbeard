@@ -23,8 +23,18 @@ string PostSet::completed_percent(void)
 
 PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
 {
-    num_files = max_file_num;
-    return new PostFile();
+    if(!num_files){
+        num_files = max_file_num;
+        files.resize(num_files + 1);
+    }
+
+    if(files[file_num]){
+        return files[file_num];
+    }
+    
+    files[file_num] = new PostFile();
+    files[file_num]->filename = file_name;
+    return files[file_num];
 }
 
 string PostSet::status(void)

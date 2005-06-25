@@ -18,6 +18,13 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, string message_id)
 {
     if(num_pieces == 0){
         num_pieces = max_part_no;
+        pieces.resize(num_pieces + 1);
+
+        pieces[max_part_no] = "";
+        while(max_part_no){
+            max_part_no--;
+            pieces[max_part_no] = "";
+        }
     }else{
         if(max_part_no != num_pieces){
             console->log("Unhandled error: num pieces changed on message");
