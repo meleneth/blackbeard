@@ -91,13 +91,13 @@ void NNTPServer::head(long article_id)
     read_multiline_response();
 }
 
-void NNTPServer::body(string article_id)
+NewsGroupPost * NNTPServer::body(string article_id)
 {
     std::stringstream buf;
     buf << BODY << article_id;
     send_command(buf.str());
 
-    read_body_response();
+    return read_body_response();
 }
 
 void NNTPServer::last()
@@ -135,7 +135,7 @@ void NNTPServer::xover_format()
     send_command(OVERVIEW_FMT);
 }
 
-void NNTPServer::read_body_response()
+NewsGroupPost *NNTPServer::read_body_response()
 {
     NewsGroupPost *newsgrouppost = new NewsGroupPost;
     int data_end = 0;
@@ -154,8 +154,7 @@ void NNTPServer::read_body_response()
             read_packets();
         }
     }
-    yEncDecoder *yencdecoder = new yEncDecoder;
-    yencdecoder->decode(newsgrouppost);
+    return newsgrouppost;
 }
 
 void NNTPServer::read_multiline_response()

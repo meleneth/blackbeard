@@ -4,6 +4,7 @@
 #include"SDL_types.h"
 
 #include "tcpconnection.hpp"
+#include "newsgrouppost.hpp"
 #include<string>
 #include<list>
 
@@ -19,7 +20,7 @@ class NNTPServer : public TCPConnection {
 
         void read_multiline_response(void);
         void read_xover_response(void);
-        void read_body_response(void);
+        NewsGroupPost *read_body_response(void);
 
        int status();
        void login(string username, string password);
@@ -32,7 +33,7 @@ class NNTPServer : public TCPConnection {
        void xover_format();
        void article(long article_id);
        void head(long article_id);
-       void body(string article_id);
+       NewsGroupPost *body(string article_id);
        void last();
        void help();
        void date();

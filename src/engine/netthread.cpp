@@ -1,6 +1,8 @@
 #include "netthread.hpp"
 #include "console.hpp"
 #include"globals.hpp"
+#include"newsgrouppost.hpp"
+#include"yenc_decoder.hpp"
 
 // Public data members go here.
 NetThread::NetThread(Config *cfg) // Constructor
@@ -49,6 +51,16 @@ void NetThread::Execute(void)
 
 void NetThread::retrieve(PostSet *postset)
 {
+    vector< PostFile * >::iterator v;
+    vector< string >::iterator s;
+    
+    for (v=postset->files.begin(); v!=postset->files.end(); ++v){
+        for (s=(*v)->pieces.begin(); s!=(*v)->pieces.end(); ++s){
+            NewsGroupPost *newsgrouppost = connection->body(*s);
+            yEncDecoder *yencdecoder = new yEncDecoder;
+            yencdecoder->decode(newsgrouppost);
+        }
+    }
 }
 
 // Private members go here.
