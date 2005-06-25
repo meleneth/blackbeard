@@ -7,22 +7,24 @@
 #include<string>
 #include<list>
 
+using std::string;
+
 class NNTPServer : public TCPConnection {
     public:
         // Public data members go here.
         NNTPServer(std::string hostname, int port); // Constructor
         ~NNTPServer(); // Destructor
 
-        virtual void send_command(std::string cmd);
+        virtual void send_command(string cmd);
 
         void read_multiline_response(void);
         void read_xover_response(void);
         void read_body_response(void);
 
        int status();
-       void login(std::string username, std::string password);
+       void login(string username, string password);
        void quit();
-       void group(std::string groupname);
+       void group(string groupname);
        void list();
        void listgroup();
        void xover();
@@ -30,7 +32,7 @@ class NNTPServer : public TCPConnection {
        void xover_format();
        void article(long article_id);
        void head(long article_id);
-       void body(long article_id);
+       void body(string article_id);
        void last();
        void help();
        void date();

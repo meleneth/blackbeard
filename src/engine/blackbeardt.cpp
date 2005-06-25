@@ -7,6 +7,7 @@
 Console *console;
 NewsGroup *newsgroup;
 PostSet *current_postset;
+PostFile *current_postfile;
 
 
 void test_header_scoop(void);

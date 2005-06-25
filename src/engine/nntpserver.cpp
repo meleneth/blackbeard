@@ -27,7 +27,7 @@ int NNTPServer::status()
     return server_status;
 }
 
-void NNTPServer::login(std::string username, std::string password)
+void NNTPServer::login(string username, std::string password)
 {
     send_command("authinfo user " + username);
     send_command("authinfo pass " + password);
@@ -38,7 +38,7 @@ void NNTPServer::quit()
     send_command(QUIT);
 }
 
-void NNTPServer::group(std::string groupname)
+void NNTPServer::group(string groupname)
 {
     send_command(GROUP + groupname);
 }
@@ -91,7 +91,7 @@ void NNTPServer::head(long article_id)
     read_multiline_response();
 }
 
-void NNTPServer::body(long article_id)
+void NNTPServer::body(string article_id)
 {
     std::stringstream buf;
     buf << BODY << article_id;

@@ -12,6 +12,7 @@ Console *console;
 Config *config;
 NewsGroup *newsgroup;
 PostSet *current_postset;
+PostFile *current_postfile;
 
 void do_init(void);
 static void finish(int sig);
@@ -61,6 +62,7 @@ void do_init(void)
     
     // global objects
     current_postset = NULL;
+    current_postfile = NULL;
     console = new Console(COLS, LINES);
     console->print_on_delete = 1;
     config = new Config();
