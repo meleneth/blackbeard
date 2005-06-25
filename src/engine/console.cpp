@@ -39,7 +39,7 @@ Console::~Console() // Destructor
 void Console::render(void)
 {
     std::list<std::string>::iterator i;
-    Sint16 counter=yres-2;
+    Sint16 counter=yres-3;
 
     erase();
 
@@ -48,9 +48,14 @@ void Console::render(void)
         mvaddnstr(0, 0, groupline.c_str(), -1);
         
         list<PostSet *>::iterator p;
+        attron(A_BOLD);
         for(p = newsgroup->postsets.begin() ; p != newsgroup->postsets.end() ; ++p){
-        mvaddnstr(1, 0, (*p)->status().c_str(), -1);
+            mvaddnstr(1, 0, (*p)->status().c_str(), -1);
         }
+        if(current_postfile){
+            mvaddnstr(yres-2, 0, current_postfile->status().c_str(), -1);
+        }
+        attroff(A_BOLD);
         
     }
 
