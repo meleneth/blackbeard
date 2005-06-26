@@ -27,16 +27,18 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, string message_id)
             max_part_no--;
             pieces[max_part_no] = "";
         }
+        max_part_no = num_pieces;
+    }
+
+    if(max_part_no != num_pieces){
+        console->log("Unhandled error: num pieces changed on message");
+    }
+
+    if(part_no > max_part_no){
+        console->log("Not adding nonsensicle part no");
     }else{
-        if(max_part_no != num_pieces){
-            console->log("Unhandled error: num pieces changed on message");
-        }
-        if(part_no > max_part_no){
-            console->log("Not adding nonsensicle part no");
-        }else{
-            pieces[part_no] = message_id;
-            seen_pieces++;
-        }
+        pieces[part_no] = message_id;
+        seen_pieces++;
     }
 }
 
