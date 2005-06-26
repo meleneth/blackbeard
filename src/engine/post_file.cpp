@@ -46,8 +46,8 @@ string PostFile::status(void)
 {
     stringstream status;
     status << filename << " - ";
-    status << seen_pieces << "/" << num_pieces-1 << " pieces seen   " 
-           << downloaded_pieces << "/"  << num_pieces-1 << " pieces downloaded  ";
+    status << seen_pieces << "/" << num_pieces << " pieces seen   " 
+           << downloaded_pieces << "/"  << num_pieces << " pieces downloaded  ";
     if(num_pieces > 0)
            status << ((double)downloaded_pieces / (double)num_pieces) * (double) 100
                   << "%";
