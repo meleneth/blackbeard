@@ -72,7 +72,7 @@ void NetThread::retrieve(PostSet *postset)
                 if((*s).compare("")){
                     NewsGroupPost *newsgrouppost = connection->body(*s);
                     yEncDecoder *yencdecoder = new yEncDecoder;
-                    yencdecoder->decode(newsgrouppost, dest_dir + postset->subject);
+                    yencdecoder->decode(newsgrouppost, dest_dir + "/" + (*v)->filename);
 
                     delete newsgrouppost;
                     delete yencdecoder;

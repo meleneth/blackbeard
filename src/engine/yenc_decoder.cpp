@@ -20,7 +20,7 @@ void yEncDecoder::decode(NewsGroupPost *newsgrouppost, string filename)
     if(stat(filename.c_str(), &my_stats) == -1){
         fh = fopen(filename.c_str(), "w");
     } else {
-        fh = fopen(filename.c_str(), ">w");
+        fh = fopen(filename.c_str(), "r+");
     }
     fclose(fh);
 }
