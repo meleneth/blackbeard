@@ -6,23 +6,33 @@
 // Public data members go here.
 yEncDecoder::yEncDecoder() :Decoder()// Constructor
 {
+    status = S_MESSAGE;
 }
     
 yEncDecoder::~yEncDecoder() // Destructor
 {
 }
 
-void yEncDecoder::decode(NewsGroupPost *newsgrouppost, string filename)
+void yEncDecoder::decode_line(string line)
 {
-    struct stat my_stats;
-    FILE *fh;
-
-    if(stat(filename.c_str(), &my_stats) == -1){
-        fh = fopen(filename.c_str(), "w");
-    } else {
-        fh = fopen(filename.c_str(), "r+");
+    if(S_MESSAGE == status){
+        string header = "=ybegin";
+        if(0 == header.compare(line.substr(0, header.length()))){
+            status = S_BODY;
+        } else {
+            header = "=ypart";
+            if(0 == header.compare(line.substr(0, header.length()))){
+                status = S_BODY;
+            }
+        }
+    }else{
+        string footer="=yend";
+        if(0 == footer.compare(line.substr(0, footer.length()))){
+            status = S_MESSAGE;
+        } else {
+            fwrite(line.c_str(), 1, line.length(), fileptr);
+        }
     }
-    fclose(fh);
 }
 
 // Private members go here.

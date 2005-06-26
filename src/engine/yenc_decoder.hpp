@@ -7,12 +7,16 @@
 
 using std::string;
 
+typedef enum yEnc_STATUS { S_MESSAGE, S_BODY };
+
 class yEncDecoder : public Decoder {
     public:
         yEncDecoder(); 
         virtual ~yEncDecoder(); 
 
-        virtual void decode(NewsGroupPost *newsgrouppost, string filename);
+        virtual void decode_line(string line);
+
+        enum yEnc_STATUS status;
     private:
     protected:
 };
