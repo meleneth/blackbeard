@@ -1,6 +1,9 @@
 #ifndef ___news_constants_inc
 #define ___news_constants_inc 1
 
+typedef enum { SP_SUBJECT, SP_FILENO, SP_MAXFILENO,
+               SP_FILENAME, SP_PARTNO, SP_MAXPARTNO } SubjectPart;
+
 /* Quick Code Checks (first char of NNTP code) */
 #define CMD_OK       2
 #define CMD_ERROR    4

@@ -1,4 +1,5 @@
-#include "stringpattern.hpp"
+#include"news_constants.hpp"
+#include"stringpattern.hpp"
 #include"globals.hpp"
 
 // Public data members go here.

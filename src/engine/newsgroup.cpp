@@ -10,7 +10,9 @@ NewsGroup::NewsGroup(string group_name) // Constructor
 {
     name = group_name;
     console->log("Creation of object for " + group_name);
-
+  
+// another fine blb post - File 1 of 1: "blb" yEnc (1/4)
+    
     easy_match = new StringPattern();
     easy_match->add_breaker(" - File ");
     easy_match->add_breaker(" of ");
