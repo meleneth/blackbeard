@@ -3,11 +3,13 @@
 #include"stringpattern.hpp"
 #include"post_set.hpp"
 #include"assert.h"
+#include"jobqueue.hpp"
 
 Console *console;
 NewsGroup *newsgroup;
 PostSet *current_postset;
 PostFile *current_postfile;
+JobQueue *jobqueue;
 
 
 void test_header_scoop(void);

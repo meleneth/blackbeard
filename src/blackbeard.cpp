@@ -5,6 +5,7 @@
 
 #include"tcpconnection.hpp"
 #include"netthread.hpp"
+#include"decoder_thread.hpp"
 #include"globals.hpp"
 
 
@@ -13,6 +14,7 @@ Config *config;
 NewsGroup *newsgroup;
 PostSet *current_postset;
 PostFile *current_postfile;
+JobQueue *jobqueue;
 
 void do_init(void);
 static void finish(int sig);
@@ -24,8 +26,12 @@ int main(int argc, char *argv[])
     do_init();
 
     std::string input("");
+
     NetThread *net_thread = new NetThread(config);
     net_thread->Start();
+
+    DecoderThread *decoder_thread = new DecoderThread();
+    decoder_thread->Start();
 
     while(1){
 //        usleep(10);

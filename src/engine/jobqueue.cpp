@@ -11,9 +11,12 @@ JobQueue::~JobQueue()
 
 Decoder *JobQueue::get_next_decoder_job(void)
 {
-    Decoder *job = *decoder_jobs.begin();
-    decoder_jobs.pop_front();
-    return job;
+    if(decoder_jobs.size()){
+        Decoder *job = *decoder_jobs.begin();
+        decoder_jobs.pop_front();
+        return job;
+    }
+    return NULL;
 }
 
 void JobQueue::add_decoder_job(Decoder *job)

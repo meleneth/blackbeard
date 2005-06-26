@@ -8,9 +8,9 @@
 class DecoderThread : public Thread {
     public:
         // Public data members go here.
-        DecoderThread(int bar); // Constructor
+        DecoderThread(); // Constructor
         ~DecoderThread(); // Destructor
-        void Foo(void);
+        virtual void Execute(void);
     private:
         // Private members go here.
     protected:
