@@ -5,12 +5,14 @@
 #include"decoder.hpp"
 #include"newsgrouppost.hpp"
 
+using std::string;
+
 class yEncDecoder : public Decoder {
     public:
         yEncDecoder(); 
         virtual ~yEncDecoder(); 
 
-        virtual void decode(NewsGroupPost *newsgrouppost);
+        virtual void decode(NewsGroupPost *newsgrouppost, string filename);
     private:
     protected:
 };

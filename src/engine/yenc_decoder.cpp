@@ -1,3 +1,5 @@
+#include <sys/types.h>
+#include <sys/stat.h>
 #include "yenc_decoder.hpp"
 #include<stdio.h>
 
@@ -10,9 +12,16 @@ yEncDecoder::~yEncDecoder() // Destructor
 {
 }
 
-void yEncDecoder::decode(NewsGroupPost *newsgrouppost)
+void yEncDecoder::decode(NewsGroupPost *newsgrouppost, string filename)
 {
-    FILE *fh = fopen("newsgrouppost", "w");
+    struct stat my_stats;
+    FILE *fh;
+
+    if(stat(filename.c_str(), &my_stats) == -1){
+        fh = fopen(filename.c_str(), "w");
+    } else {
+        fh = fopen(filename.c_str(), ">w");
+    }
     fclose(fh);
 }
 

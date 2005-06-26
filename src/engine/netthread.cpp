@@ -1,5 +1,7 @@
-#include "netthread.hpp"
-#include "console.hpp"
+#include<sys/types.h>
+#include<sys/stat.h>
+#include"netthread.hpp"
+#include"console.hpp"
 #include"globals.hpp"
 #include"newsgrouppost.hpp"
 #include"yenc_decoder.hpp"
@@ -51,11 +53,17 @@ void NetThread::Execute(void)
 
 void NetThread::retrieve(PostSet *postset)
 {
+    struct stat my_stats;
     vector< PostFile * >::iterator v;
     vector< string >::iterator s;
 
     console->log("Retrieving PostSet");
 
+    string dest_dir = config->blackbeard_dir + "/" + postset->subject;
+    console->log(dest_dir);
+    if(stat(dest_dir.c_str(), &my_stats) == -1){
+        mkdir(dest_dir.c_str(), 01777);
+    }
     for (v=postset->files.begin(); v!=postset->files.end(); ++v){
         if(*v){
             current_postfile = *v;
@@ -64,7 +72,7 @@ void NetThread::retrieve(PostSet *postset)
                 if((*s).compare("")){
                     NewsGroupPost *newsgrouppost = connection->body(*s);
                     yEncDecoder *yencdecoder = new yEncDecoder;
-                    yencdecoder->decode(newsgrouppost);
+                    yencdecoder->decode(newsgrouppost, dest_dir + postset->subject);
 
                     delete newsgrouppost;
                     delete yencdecoder;
