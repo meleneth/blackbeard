@@ -1,13 +1,12 @@
 Decoders:
     Implement UUDecoder
-    Implement yEnc Decoder
+*   Implement yEnc Decoder
     Implement MIME Decoder
     Optimize Decoders
 
 
 Threads:
     multiple net threads
-    job control thread 
     console render thread
     input thread
     main() waiting for thread_join

@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
     NetThread *net_thread = new NetThread(config);
     net_thread->Start();
 
-//    DecoderThread *decoder_thread = new DecoderThread();
-//    decoder_thread->Start();
+    DecoderThread *decoder_thread = new DecoderThread();
+    decoder_thread->Start();
 
     while(1){
 //        usleep(10);
@@ -73,6 +73,7 @@ void do_init(void)
     console->print_on_delete = 1;
     config = new Config();
     config->read_config_file();
+    jobqueue = new JobQueue();
 
     newsgroup = new NewsGroup(config->news_group);
 }

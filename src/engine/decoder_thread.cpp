@@ -14,7 +14,9 @@ void DecoderThread::Execute(void)
 {
     Decoder *decoder;
     while(1){
-        if(NULL != (decoder = jobqueue->get_next_decoder_job())){
+        decoder = jobqueue->get_next_decoder_job();
+        if(NULL != decoder){
+            console->log("I gotta job!");
         }
     }
 }
