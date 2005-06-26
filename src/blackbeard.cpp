@@ -30,8 +30,8 @@ int main(int argc, char *argv[])
     NetThread *net_thread = new NetThread(config);
     net_thread->Start();
 
-    DecoderThread *decoder_thread = new DecoderThread();
-    decoder_thread->Start();
+//    DecoderThread *decoder_thread = new DecoderThread();
+//    decoder_thread->Start();
 
     while(1){
 //        usleep(10);
