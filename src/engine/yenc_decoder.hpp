@@ -4,6 +4,7 @@
 #include"SDL_types.h"
 #include"decoder.hpp"
 #include"newsgrouppost.hpp"
+#include"stringpattern.hpp"
 
 using std::string;
 
@@ -17,6 +18,9 @@ class yEncDecoder : public Decoder {
         virtual void decode_line(string line);
 
         enum yEnc_STATUS status;
+        StringPattern *header_pattern;
+        StringPattern *part_pattern;
+        StringPattern *footer_pattern;
     private:
     protected:
 };
