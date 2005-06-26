@@ -14,7 +14,7 @@ void DecoderThread::Execute(void)
 {
     Decoder *decoder;
     while(1){
-        if(decoder = jobqueue->get_next_decoder_job()){
+        if((decoder = jobqueue->get_next_decoder_job()) != NULL){
         }
     }
 }
