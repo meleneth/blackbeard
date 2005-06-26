@@ -5,6 +5,7 @@
 #include"decoder.hpp"
 #include"newsgrouppost.hpp"
 #include"stringpattern.hpp"
+#include<string>
 
 using std::string;
 
@@ -16,6 +17,7 @@ class yEncDecoder : public Decoder {
         virtual ~yEncDecoder(); 
 
         virtual void decode_line(string line);
+        string do_the_math(string line);
 
         enum yEnc_STATUS status;
         StringPattern *header_pattern;

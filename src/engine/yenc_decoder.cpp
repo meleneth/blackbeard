@@ -4,6 +4,11 @@
 #include"globals.hpp"
 #include<stdio.h>
 
+#define ASCII_NULL  0x00 
+#define ASCII_LF    0x0A
+#define ASCII_CR    0x0D
+#define ASCII_EQ    0x3D     
+//
 // Public data members go here.
 yEncDecoder::yEncDecoder() :Decoder()// Constructor
 {
@@ -27,7 +32,18 @@ yEncDecoder::yEncDecoder() :Decoder()// Constructor
 yEncDecoder::~yEncDecoder() // Destructor
 {
 }
-
+string yEncDecoder::do_the_math(string line)
+{
+    size_t index;
+    for (index = 0; index < line.length(); ++index){
+        line[index] -= 42;
+        if (ASCII_EQ == line[index]){
+            line.erase(index);
+            line[index] -= 64;
+        }
+    }
+    return line;
+}
 void yEncDecoder::decode_line(string line)
 {
     if(S_MESSAGE == status){
@@ -47,7 +63,8 @@ void yEncDecoder::decode_line(string line)
             console->log("yEnd footer found");
             status = S_MESSAGE;
         } else {
-            fwrite(line.c_str(), 1, line.length(), fileptr);
+            string decoded_line = do_the_math(line);
+            fwrite(decoded_line.c_str(), 1, decoded_line.length(), fileptr);
         }
     }
 }
