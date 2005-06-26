@@ -55,6 +55,9 @@ void yEncDecoder::decode_line(string line)
             if(part_pattern->does_match(line)){
                 console->log("yPart header found");
                 status = S_BODY;
+                vector<string> result;
+                part_pattern->pieces(line, result);
+                fseek(fileptr, atoi(result[1].c_str()), SEEK_SET);
             }
         }
     }else{
@@ -68,6 +71,8 @@ void yEncDecoder::decode_line(string line)
         }
     }
 }
+
+
 
 // Private members go here.
 // Protected members go here.
