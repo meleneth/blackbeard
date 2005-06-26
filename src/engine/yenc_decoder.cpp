@@ -36,11 +36,11 @@ string yEncDecoder::do_the_math(string line)
 {
     size_t index;
     for (index = 0; index < line.length(); ++index){
-        line[index] -= 42;
         if (ASCII_EQ == line[index]){
-            line.erase(index);
+            line.erase(index, 1);
             line[index] -= 64;
         }
+        line[index] -= 42;
     }
     return line;
 }
@@ -57,7 +57,7 @@ void yEncDecoder::decode_line(string line)
                 status = S_BODY;
                 vector<string> result;
                 part_pattern->pieces(line, result);
-                fseek(fileptr, atoi(result[1].c_str()), SEEK_SET);
+                fseek(fileptr, atoi(result[1].c_str()) -1, SEEK_SET);
             }
         }
     }else{

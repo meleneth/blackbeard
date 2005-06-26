@@ -5,6 +5,8 @@
 #include"assert.h"
 #include"jobqueue.hpp"
 
+#include<string>
+
 Console *console;
 NewsGroup *newsgroup;
 PostSet *current_postset;
@@ -14,7 +16,10 @@ JobQueue *jobqueue;
 
 void test_header_scoop(void);
 void test_string_pattern(void);
+void test_strings(void);
 void test_postset_objects(void);
+
+using std::string;
 
 int main(int argc, char *argv[])
 {
@@ -23,6 +28,22 @@ int main(int argc, char *argv[])
     newsgroup = new NewsGroup("misc.test");
     
 
+
+    test_strings();
+    test_string_pattern();
+    test_header_scoop();
+    test_postset_objects();
+	return 0;
+}
+
+void test_strings(void)
+{
+    console->log("Test Strings");
+    string bar= "hello";
+    bar.erase(2, 1);
+    console->log(bar);
+    assert(0 == bar.compare("helo"));
+
     char buf[10] = "hello";
     std::string my_string = buf;
     
@@ -30,11 +51,6 @@ int main(int argc, char *argv[])
 
     console->log(buf);
     console->log(my_string);
-
-    test_string_pattern();
-    test_header_scoop();
-    test_postset_objects();
-	return 0;
 }
 
 void test_string_pattern(void)
