@@ -5,6 +5,7 @@
 // Public data members go here.
 StringPattern::StringPattern() 
 {
+    part_order.resize(SP_LASTPART);
 }
     
 StringPattern::~StringPattern() 
@@ -32,6 +33,11 @@ int StringPattern::does_match(string target)
 void StringPattern::add_breaker(string target)
 {
     breakers.push_back(target);
+}
+
+void StringPattern::add_breaker(SubjectPart target)
+{
+    part_order[target] = (SubjectPart)breakers.size();
 }
 
 void StringPattern::pieces(string target, vector<string>& result)
