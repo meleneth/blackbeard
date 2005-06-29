@@ -73,6 +73,7 @@ void Config::read_config_file(void)
         }
         in.getline(linebuffer, 1024);
     }
+    in.close();
 }
 
 void Config::setup_files(void)

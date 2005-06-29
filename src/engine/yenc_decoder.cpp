@@ -31,7 +31,11 @@ yEncDecoder::yEncDecoder() :Decoder()// Constructor
     
 yEncDecoder::~yEncDecoder() // Destructor
 {
+    delete header_pattern;
+    delete part_pattern;
+    delete footer_pattern;
 }
+
 string yEncDecoder::do_the_math(string line)
 {
     size_t index;
@@ -48,12 +52,10 @@ void yEncDecoder::decode_line(string line)
 {
     if(S_MESSAGE == status){
         if(header_pattern->does_match(line)){
-            console->log("yBegin header found");
             status = S_BODY;
             
         } else {
             if(part_pattern->does_match(line)){
-                console->log("yPart header found");
                 status = S_BODY;
                 vector<string> result;
                 part_pattern->pieces(line, result);
@@ -63,7 +65,6 @@ void yEncDecoder::decode_line(string line)
     }else{
         string footer="=yend";
         if(0 == footer.compare(line.substr(0, footer.length()))){
-            console->log("yEnd footer found");
             status = S_MESSAGE;
         } else {
             string decoded_line = do_the_math(line);
