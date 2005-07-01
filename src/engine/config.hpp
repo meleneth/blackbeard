@@ -4,6 +4,8 @@
 #include"SDL_types.h"
 #include<string>
 
+using std::string;
+
 class Config {
     public:
         // Public data members go here.
@@ -13,13 +15,13 @@ class Config {
         void read_config_file(void);
         void setup_files(void);
 
-        std::string news_server;
-        std::string news_group;
-        std::string home_dir;
-        std::string blackbeard_dir;
-        std::string config_filename;
-        std::string username;
-        std::string password;
+        string news_server;
+        string news_group;
+        string home_dir;
+        string blackbeard_dir;
+        string config_filename;
+        string username;
+        string password;
 
         Uint32 news_port;
     private:

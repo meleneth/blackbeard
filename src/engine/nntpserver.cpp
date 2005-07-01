@@ -9,8 +9,11 @@
 
 #include"globals.hpp"
 
+using std::string;
+using std::stringstream;
+
 // Public data members go here.
-NNTPServer::NNTPServer(std::string hostname, int port) : TCPConnection(hostname, port) // Constructor
+NNTPServer::NNTPServer(string hostname, int port) : TCPConnection(hostname, port) // Constructor
 {
     server_status = 0;
     read_packets();
@@ -27,7 +30,7 @@ int NNTPServer::status()
     return server_status;
 }
 
-void NNTPServer::login(string username, std::string password)
+void NNTPServer::login(string username, string password)
 {
     send_command("authinfo user " + username);
     send_command("authinfo pass " + password);
@@ -65,7 +68,7 @@ void NNTPServer::xover()
 void NNTPServer::xover(long article_id)
 {
     newsgroup->status = "Updating articles..";
-    std::stringstream buf;
+    stringstream buf;
     buf << XOVER << article_id << "-";
     send_command(buf.str());
 
@@ -75,7 +78,7 @@ void NNTPServer::xover(long article_id)
 
 void NNTPServer::article(long article_id)
 {
-    std::stringstream buf;
+    stringstream buf;
     buf << ARTICLE << article_id;
     send_command(buf.str());
 
@@ -84,7 +87,7 @@ void NNTPServer::article(long article_id)
 
 void NNTPServer::head(long article_id)
 {
-    std::stringstream buf;
+    stringstream buf;
     buf << HEAD << article_id;
     send_command(buf.str());
 
@@ -94,7 +97,7 @@ void NNTPServer::head(long article_id)
 NewsGroupPost * NNTPServer::body(string article_id)
 {
     newsgroup->status = "Fetching body " + article_id;
-    std::stringstream buf;
+    stringstream buf;
     buf << BODY << article_id;
     send_command(buf.str());
 
@@ -144,7 +147,7 @@ NewsGroupPost *NNTPServer::read_body_response()
     int data_end = 0;
     while(data_end == 0){
         if(has_data_waiting()){
-            std::string line = get_line();
+            string line = get_line();
             if((line.length() == 1 ) && (line[0] == '.')){
                 data_end=1;
             }else{
@@ -165,7 +168,7 @@ void NNTPServer::read_multiline_response()
     int data_end = 0;
     while(data_end == 0){
         if(has_data_waiting()){
-            std::string line = get_line();
+            string line = get_line();
             //console->log("Considering (" + line + ")");
             if((line.length() == 1 ) && (line[0] == '.')){
                 data_end=1;
@@ -186,7 +189,7 @@ void NNTPServer::read_xover_response()
     int data_end = 0;
     while(data_end == 0){
         if(has_data_waiting()){
-            std::string line = get_line();
+            string line = get_line();
             if((line.length() == 1 ) && (line[0] == '.')){
                 data_end=1;
             }else{
@@ -201,7 +204,7 @@ void NNTPServer::read_xover_response()
     }
 }
 
-void NNTPServer::send_command(std::string command)
+void NNTPServer::send_command(string command)
 {
     if(has_data_waiting()){
         console->log("It is an error to try to send a command with the following data ready to be read:");
@@ -213,11 +216,11 @@ void NNTPServer::send_command(std::string command)
     TCPConnection::send_command(command);
 
     read_packets();
-    std::string response = get_line();
+    string response = get_line();
     console->log(response);
     console->log("[-<>-]");
 
-    std::string server_response = response.substr(0, 3);
+    string server_response = response.substr(0, 3);
     if(0 == server_response.compare(AUTH_REQUIRED)){
         login(config->username, config->password);
         return send_command(command);

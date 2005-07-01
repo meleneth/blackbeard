@@ -21,11 +21,13 @@ static void finish(int sig);
 void create_nntp_thread(void);
 void shut_down(void);
 
+using std::string;
+
 int main(int argc, char *argv[])
 {
     do_init();
 
-    std::string input("");
+    string input("");
 
     NetThread *net_thread = new NetThread(config);
     net_thread->Start();
@@ -38,7 +40,7 @@ int main(int argc, char *argv[])
         int key = getch();
         if(key != ERR){
             if(key == 13){
-                std::string line;
+                string line;
                 line = "> " + input;
                 console->log(line);
                 net_thread->connection->TCPConnection::send_command(input);

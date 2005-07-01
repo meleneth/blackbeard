@@ -3,6 +3,9 @@
 
 #include"globals.hpp"
 
+using std::string;
+using std::list;
+
 // Public data members go here.
 Console::Console() // Constructor
 {
@@ -24,7 +27,7 @@ Console::Console(Uint16 x, Uint16 y) // Constructor
 Console::~Console() // Destructor
 {
     if(print_on_delete){
-        std::list<std::string>::iterator i;
+        list<string>::iterator i;
         for(i = loglines.end(); ;)
         {
             --i;
@@ -38,7 +41,7 @@ Console::~Console() // Destructor
 
 void Console::render(void)
 {
-    std::list<std::string>::iterator i;
+    list<string>::iterator i;
     Sint16 counter=yres-3;
 
     erase();
@@ -71,7 +74,7 @@ void Console::check_input(char key)
 {
     if(key != ERR){
         if(key == 13){
-            std::string line;
+            string line;
             line = "> " + input;
             log(line);
             input = "";
@@ -81,7 +84,7 @@ void Console::check_input(char key)
     }
 }
 
-void Console::log(std::string line)
+void Console::log(string line)
 {
     loglines.push_front(line);
     if(print_logs){
@@ -89,14 +92,14 @@ void Console::log(std::string line)
     }
 }
 
-void Console::fatal(std::string line)
+void Console::fatal(string line)
 {
     log(line);
 }
 
-void Console::box_log(std::string line)
+void Console::box_log(string line)
 {
-    std::string Border(line.length() + 2, '-');
+    string Border(line.length() + 2, '-');
 
     log("+" + Border + "+");
     log("| " + line + " |");
