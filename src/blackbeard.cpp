@@ -22,6 +22,10 @@ void create_nntp_thread(void);
 void shut_down(void);
 
 using std::string;
+using std::stringstream;
+
+#define KEY_LEFTARROW 260
+#define KEY_RIGHTARROW 261
 
 int main(int argc, char *argv[])
 {
@@ -46,7 +50,16 @@ int main(int argc, char *argv[])
                 net_thread->connection->TCPConnection::send_command(input);
                 input = "";
             }else {
-                input += (char)key;
+                switch(key){
+                    case KEY_LEFTARROW:
+                        console->log("LeftArrow");
+                        break;
+                    case KEY_RIGHTARROW:
+                        console->log("RightArrow");
+                        break;
+                    default:
+                        input += (char)key;
+                }
             }
         }
         console->render();
