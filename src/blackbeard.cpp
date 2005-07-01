@@ -67,7 +67,8 @@ int main(int argc, char *argv[])
                         i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), current_postset);
                         if(newsgroup->postsets.end() != i){
                             i++;
-                            current_postset = *i;
+                            if(newsgroup->postsets.end() != i)
+                                current_postset = *i;
                         }
                         break;
                     default:
