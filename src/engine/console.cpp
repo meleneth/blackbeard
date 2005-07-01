@@ -4,6 +4,7 @@
 #include"globals.hpp"
 
 using std::string;
+using std::stringstream;
 using std::list;
 
 // Public data members go here.
@@ -43,6 +44,9 @@ void Console::render(void)
 {
     list<string>::iterator i;
     Sint16 counter=yres-3;
+    Uint32 num_postsets = 0;
+    Uint32 num_postfiles = 0;
+    Uint32 current_postset_no = 0;
 
     erase();
 
@@ -54,8 +58,18 @@ void Console::render(void)
         attron(A_BOLD);
         for(p = newsgroup->postsets.begin() ; p != newsgroup->postsets.end() ; ++p){
             mvaddnstr(1, 0, (*p)->status().c_str(), -1);
+            num_postsets++;
+            num_postfiles += (*p)->num_files;
+            if(current_postset == *p){
+                current_postset_no = num_postsets;
+            }
         }
         if(current_postfile){
+            mvaddnstr(yres-2, 0, current_postfile->status().c_str(), -1);
+
+            stringstream buf;
+            buf << "(" << current_postset_no << "/" << num_postsets << ") postsets";
+            mvaddnstr(1, xres - (buf.str().length() + 2), buf.str().c_str(), -1);
             mvaddnstr(yres-2, 0, current_postfile->status().c_str(), -1);
         }
         attroff(A_BOLD);
