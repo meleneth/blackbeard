@@ -37,10 +37,18 @@ Interface:
     tab to switch panes
     progress bar for postset downloads (brian)
     multiple newsgroups
-
+    allow views of like panes - 
+        newsgroups
+        postsets
+    allow search - 
+        newsgroups
+        postsets
+    browse all newsgroups
+    
 General:
     Add ability to check cross-posted groups for missing pieces
     Add resize support (ncurses)
     Add net jobs
 *   Add decoder jobs
+    Persistance, with SQLite
 
