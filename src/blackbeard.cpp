@@ -3,9 +3,12 @@
 #include<ncurses.h>
 #include<pthread.h>
 
+#include<algorithm>
+
 #include"tcpconnection.hpp"
 #include"netthread.hpp"
 #include"decoder_thread.hpp"
+#include"post_set.hpp"
 #include"globals.hpp"
 
 
@@ -23,6 +26,7 @@ void shut_down(void);
 
 using std::string;
 using std::stringstream;
+using std::list;
 
 #define KEY_LEFTARROW 260
 #define KEY_RIGHTARROW 261
@@ -38,6 +42,7 @@ int main(int argc, char *argv[])
 
     DecoderThread *decoder_thread = new DecoderThread();
     decoder_thread->Start();
+    list<PostSet *>::iterator i;
 
     while(1){
 //        usleep(10);
@@ -52,10 +57,18 @@ int main(int argc, char *argv[])
             }else {
                 switch(key){
                     case KEY_LEFTARROW:
-                        console->log("LeftArrow");
+                        i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), current_postset);
+                        if(newsgroup->postsets.begin() != i){
+                            i--;
+                            current_postset = *i;
+                        }
                         break;
                     case KEY_RIGHTARROW:
-                        console->log("RightArrow");
+                        i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), current_postset);
+                        if(newsgroup->postsets.end() != i){
+                            i++;
+                            current_postset = *i;
+                        }
                         break;
                     default:
                         input += (char)key;

@@ -8,7 +8,12 @@
 
 #include<sstream>
 
+#include"post_set.hpp"
+
 #define MAKE_STRING( msg )  ( ((std::ostringstream&)(std::ostringstream() << msg)).str() )
+
+using std::list;
+using std::string;
 
 class Console {
     public:
@@ -23,8 +28,10 @@ class Console {
         void fatal(std::string line);
         void box_log(std::string line);
 
-        std::list<std::string> loglines;
-        std::string input;
+        void render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num_postsets);
+
+        list<std::string> loglines;
+        string input;
         Uint16 xres, yres;
         Uint32 print_logs;
         Uint32 print_on_delete;

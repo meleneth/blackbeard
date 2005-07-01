@@ -56,20 +56,18 @@ void Console::render(void)
         
         list<PostSet *>::iterator p;
         attron(A_BOLD);
+        
         for(p = newsgroup->postsets.begin() ; p != newsgroup->postsets.end() ; ++p){
-            mvaddnstr(1, 0, (*p)->status().c_str(), -1);
             num_postsets++;
             num_postfiles += (*p)->num_files;
             if(current_postset == *p){
                 current_postset_no = num_postsets;
             }
         }
-        if(current_postfile){
-            mvaddnstr(yres-2, 0, current_postfile->status().c_str(), -1);
 
-            stringstream buf;
-            buf << "(" << current_postset_no << "/" << num_postsets << ") postsets";
-            mvaddnstr(1, xres - (buf.str().length() + 2), buf.str().c_str(), -1);
+        render_current_postset(current_postset, current_postset_no, num_postsets);
+
+        if(current_postfile){
             mvaddnstr(yres-2, 0, current_postfile->status().c_str(), -1);
         }
         attroff(A_BOLD);
@@ -82,6 +80,20 @@ void Console::render(void)
         counter--;
     }
     refresh();
+}
+
+void Console::render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num_postsets)
+{
+    if(!set)
+        return;
+    mvaddnstr(1, 0, set->status().c_str(), -1);
+    stringstream buf;
+
+    buf << "(" << postset_no << "/" << num_postsets << ") postsets";
+
+    mvaddnstr(1, xres - (buf.str().length() + 2), buf.str().c_str(), -1);
+
+    mvaddnstr(yres-2, 0, current_postfile->status().c_str(), -1);
 }
 
 void Console::check_input(char key)
