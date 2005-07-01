@@ -64,3 +64,8 @@ string StringPattern::get_piece(Uint32 index)
     return results[part_order[index]];
 }
 
+Uint32 StringPattern::get_piecen(Uint32 index)
+{
+    return atoi(get_piece(index).c_str());
+}
+

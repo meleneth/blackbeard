@@ -56,11 +56,11 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
         if((*sp)->does_match(subject)){
             (*sp)->pieces(subject);
             current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
-            current_postfile = current_postset->file(atoi((*sp)->get_piece(SP_FILENO).c_str()), 
-                                                     atoi((*sp)->get_piece(SP_MAXFILENO).c_str()), 
+            current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
+                                                     (*sp)->get_piecen(SP_MAXFILENO), 
                                                      (*sp)->get_piece(SP_FILENAME));
-            current_postfile->part(atoi((*sp)->get_piece(SP_PARTNO).c_str()), 
-                                   atoi((*sp)->get_piece(SP_MAXPARTNO).c_str()), message_id);
+            current_postfile->part((*sp)->get_piecen(SP_PARTNO), 
+                                   (*sp)->get_piecen(SP_MAXPARTNO), message_id);
             console->log("matched subject pattern");
         }
     }

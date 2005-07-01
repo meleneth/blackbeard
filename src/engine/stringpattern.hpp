@@ -23,6 +23,7 @@ class StringPattern {
         int does_match(string target);
         void pieces(string target);
         string get_piece(Uint32 index);
+        Uint32 get_piecen(Uint32 index);
 
         list<string> breakers;
         vector<Uint32> part_order;
