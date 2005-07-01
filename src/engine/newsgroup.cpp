@@ -62,7 +62,6 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
             current_postfile->part(atoi((*sp)->get_piece(SP_PARTNO).c_str()), 
                                    atoi((*sp)->get_piece(SP_MAXPARTNO).c_str()), message_id);
             console->log("matched subject pattern");
-            printf("XXXXXXXXXX\n");
         }
     }
 }
