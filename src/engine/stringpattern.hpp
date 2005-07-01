@@ -14,16 +14,17 @@ using std::string;
 class StringPattern {
     public:
         // Public data members go here.
-        StringPattern();
+        StringPattern(Uint32 max_part_no);
         ~StringPattern(); 
         
         void add_breaker(string pattern);
-        void add_breaker(SubjectPart pattern);
+        void add_breaker(Uint32 part_no);
+
         int does_match(string target);
-        void pieces(string target, vector<string>& result);
+        void pieces(string target);
 
         list<string> breakers;
-        vector<SubjectPart> part_order;
+        vector<Uint32> part_order;
 
         vector<string> results;
     private:

@@ -3,9 +3,9 @@
 #include"globals.hpp"
 
 // Public data members go here.
-StringPattern::StringPattern() 
+StringPattern::StringPattern(Uint32 max_part_no)
 {
-    part_order.resize(SP_LASTPART);
+    part_order.resize(max_part_no);
 }
     
 StringPattern::~StringPattern() 
@@ -35,21 +35,22 @@ void StringPattern::add_breaker(string target)
     breakers.push_back(target);
 }
 
-void StringPattern::add_breaker(SubjectPart target)
+void StringPattern::add_breaker(Uint32 target)
 {
-    part_order[target] = (SubjectPart)breakers.size();
+    part_order[target] = breakers.size();
 }
 
-void StringPattern::pieces(string target, vector<string>& result)
+void StringPattern::pieces(string target)
 {
     list<string>::iterator i;
+    results.clear();
     i = breakers.begin();
     while(i != breakers.end()){
         size_t index = target.find(*i);
 
         if(index != string::npos){
             string flesh = target.substr(0, index);
-            result.push_back(flesh);
+            results.push_back(flesh);
             target.erase(0, (*i).length() + index);
         }else{
             return;

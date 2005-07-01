@@ -15,17 +15,17 @@ yEncDecoder::yEncDecoder() :Decoder()// Constructor
     status = S_MESSAGE;
 
 //=ybegin line=128 size=123456 name=mybinary.dat
-    header_pattern = new StringPattern();
+    header_pattern = new StringPattern(3);
     header_pattern->add_breaker("=ybegin line=");
     header_pattern->add_breaker(" size=");
     header_pattern->add_breaker(" name=");
 
 //=ypart begin=1 end=100000
-    part_pattern = new StringPattern();
+    part_pattern = new StringPattern(2);
     part_pattern->add_breaker("=ypart begin=");
     part_pattern->add_breaker(" end=");
 
-    footer_pattern = new StringPattern();
+    footer_pattern = new StringPattern(1);
     footer_pattern->add_breaker("yend");
 }
     
@@ -57,9 +57,8 @@ void yEncDecoder::decode_line(string line)
         } else {
             if(part_pattern->does_match(line)){
                 status = S_BODY;
-                vector<string> result;
-                part_pattern->pieces(line, result);
-                fseek(fileptr, atoi(result[1].c_str()) -1, SEEK_SET);
+                part_pattern->pieces(line);
+                fseek(fileptr, atoi(part_pattern->results[1].c_str()) -1, SEEK_SET);
             }
         }
     }else{

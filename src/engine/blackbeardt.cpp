@@ -56,7 +56,7 @@ void test_strings(void)
 void test_string_pattern(void)
 {
     console->log("Test StringPattern");
-    StringPattern *s = new StringPattern();
+    StringPattern *s = new StringPattern(6);
 
     s->add_breaker(" - File ");
     s->add_breaker(" of ");
@@ -68,8 +68,7 @@ void test_string_pattern(void)
     assert(s->does_match("Star Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (248/258)"));
     assert(!s->does_match("Star Wars Clone Wars \"Clone Wars Chapter 20.mpg\" yEnc (248/258)"));
 
-    vector<string> pieces;
-    s->pieces("Star Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (248/258)", pieces);
+    s->pieces("Star Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (248/258)");
 }
 
 void test_header_scoop(void)
