@@ -10,9 +10,11 @@
 #define ASCII_EQ    0x3D     
 //
 // Public data members go here.
-yEncDecoder::yEncDecoder() :Decoder()// Constructor
+yEncDecoder::yEncDecoder(NewsGroupPost *newsgrouppost, string filename) :Decoder()// Constructor
 {
     status = S_MESSAGE;
+    this->filename = filename;
+    this->post = newsgrouppost;
 
 //=ybegin line=128 size=123456 name=mybinary.dat
     header_pattern = new StringPattern(3);

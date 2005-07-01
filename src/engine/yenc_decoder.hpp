@@ -13,7 +13,7 @@ typedef enum yEnc_STATUS { S_MESSAGE, S_BODY };
 
 class yEncDecoder : public Decoder {
     public:
-        yEncDecoder(); 
+        yEncDecoder(NewsGroupPost *newsgrouppost, string filename); 
         virtual ~yEncDecoder(); 
 
         virtual void decode_line(string line);

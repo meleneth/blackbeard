@@ -11,9 +11,12 @@ Decoder::Decoder() // Constructor
     
 Decoder::~Decoder() // Destructor
 {
+    if(post){
+        delete post;
+    }
 }
 
-void Decoder::decode(NewsGroupPost *newsgrouppost, string filename)
+void Decoder::decode()
 {
     struct stat my_stats;
     list<string>::iterator s;
@@ -23,7 +26,7 @@ void Decoder::decode(NewsGroupPost *newsgrouppost, string filename)
     } else {
         fileptr = fopen(filename.c_str(), "r+");
     }
-    for (s=newsgrouppost->lines.begin(); s!=newsgrouppost->lines.end(); ++s){
+    for (s=post->lines.begin(); s!=post->lines.end(); ++s){
         decode_line(*s);
     }
     fclose(fileptr);

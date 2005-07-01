@@ -13,11 +13,13 @@ class Decoder {
         Decoder(); // Constructor
         virtual ~Decoder(); // Destructor
 
-        virtual void decode(NewsGroupPost *newsgrouppost, string filename);
+        virtual void decode();
         virtual void decode_line(string line);
 
         string filename;
         FILE *fileptr;
+
+        NewsGroupPost *post;
     private:
         // Private members go here.
     protected:
