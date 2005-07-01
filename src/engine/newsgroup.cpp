@@ -13,13 +13,23 @@ NewsGroup::NewsGroup(string group_name) // Constructor
   
 // another fine blb post - File 1 of 1: "blb" yEnc (1/4)
     
-    easy_match = new StringPattern(SP_LASTPART);
-    easy_match->add_breaker(" - File ");
-    easy_match->add_breaker(" of ");
-    easy_match->add_breaker(": \"");
-    easy_match->add_breaker("\" yEnc (");
-    easy_match->add_breaker("/");
-    easy_match->add_breaker(")");
+    pattern = new StringPattern(SP_LASTPART);
+    pattern->add_breaker(" - File ");
+    pattern->add_breaker(" of ");
+    pattern->add_breaker(": \"");
+    pattern->add_breaker("\" yEnc (");
+    pattern->add_breaker("/");
+    pattern->add_breaker(")");
+    subject_patterns.push_front(pattern);
+    
+//new and improved blackbeard arrr - "blb" yEnc (1/6)
+    
+    pattern = new StringPattern(SP_LASTPART);
+    pattern->add_breaker("- \"");
+    pattern->add_breaker("\" yEnc (");
+    pattern->add_breaker("/");
+    pattern->add_breaker(")");
+    subject_patterns.push_front(pattern);
 }
     
 NewsGroup::~NewsGroup() // Destructor
@@ -40,11 +50,20 @@ void NewsGroup::header_scoop(string xover_line)
 void NewsGroup::digest_subject_line(string message_id, string subject)
 {
     console->log("(" + message_id + ") " + subject);
-    if(easy_match->does_match(subject)){
-        easy_match->pieces(subject);
-        current_postset = newsgroup->postset_for_subject(easy_match->results[0]);
-        current_postfile = current_postset->file(atoi(easy_match->results[1].c_str()), atoi(easy_match->results[2].c_str()), easy_match->results[3]);
-        current_postfile->part(atoi(easy_match->results[4].c_str()), atoi(easy_match->results[5].c_str()), message_id);
+    list< StringPattern * >::iterator sp;
+
+    for (sp = subject_patterns.begin(); sp != subject_patterns.end(); ++sp){
+        if((*sp)->does_match(subject)){
+            (*sp)->pieces(subject);
+            current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
+            current_postfile = current_postset->file(atoi((*sp)->get_piece(SP_FILENO).c_str()), 
+                                                     atoi((*sp)->get_piece(SP_MAXFILENO).c_str()), 
+                                                     (*sp)->get_piece(SP_FILENAME));
+            current_postfile->part(atoi((*sp)->get_piece(SP_PARTNO).c_str()), 
+                                   atoi((*sp)->get_piece(SP_MAXPARTNO).c_str()), message_id);
+            console->log("matched subject pattern");
+            printf("XXXXXXXXXX\n");
+        }
     }
 }
 

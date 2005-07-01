@@ -24,11 +24,12 @@ class NewsGroup {
         
         int status_code();
 
+        list< StringPattern * > subject_patterns;
         list< NewsGroupPost * > messages;
         list< PostSet * > postsets;
-        string name;
+        StringPattern *pattern;
         string status;
-        StringPattern *easy_match;
+        string name;
     private:
         int return_code;
 
@@ -39,7 +40,6 @@ class NewsGroup {
         std::string last_group_name;
 
     protected:
-        // Protected members go here.
 };
 
 #endif

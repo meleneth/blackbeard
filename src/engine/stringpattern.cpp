@@ -2,7 +2,6 @@
 #include"stringpattern.hpp"
 #include"globals.hpp"
 
-// Public data members go here.
 StringPattern::StringPattern(Uint32 max_part_no)
 {
     part_order.resize(max_part_no);
@@ -60,5 +59,8 @@ void StringPattern::pieces(string target)
     }
 }
 
-// Private members go here.
-// Protected members go here.
+string StringPattern::get_piece(Uint32 index)
+{
+    return results[part_order[index]];
+}
+
