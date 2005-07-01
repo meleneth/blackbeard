@@ -32,6 +32,7 @@ Interface:
     only allow typing when you're on the log window
     typing is sending commands to system, not directly interupting TCP streams
     tab to switch panes
+    progress bar for postset downloads (brian)
 
 General:
     Add ability to check cross-posted groups for missing pieces
