@@ -2,7 +2,9 @@
 #include"globals.hpp"
 
 #include<sstream>
+#include<iomanip>
 using std::stringstream;
+using std::setprecision;
 
 PostSet::PostSet(string subject) 
 {
@@ -18,7 +20,18 @@ PostSet::~PostSet()
 
 string PostSet::completed_percent(void)
 {
-    return " 00.00%";
+    Uint32 total_pieces = 0;
+    Uint32 downloaded_pieces = 0;
+    vector<PostFile *>::iterator v;
+
+    for (v = files.begin(); v != files.end(); ++v){
+        total_pieces += (*v)->num_pieces;
+        num_pieces += (*v)->downloaded_pieces;
+    }
+
+    stringstream buf;
+    buf << setprecision(2) << downloaded_pieces / total_pieces << "%";
+    return buf.str();
 }
 
 PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)

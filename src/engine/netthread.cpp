@@ -68,6 +68,7 @@ void NetThread::retrieve(PostSet *postset)
         if(*v){
             current_postfile = *v;
             console->log("Retrieveing " + (*v)->filename);
+            (*v)->downloaded_pieces = 0;
             for (s=(*v)->pieces.begin(); s!=(*v)->pieces.end(); ++s){
                 if((*s).compare("")){
                     NewsGroupPost *newsgrouppost = connection->body(*s);
