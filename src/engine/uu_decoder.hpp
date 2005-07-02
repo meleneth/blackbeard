@@ -6,10 +6,13 @@
 
 class UUDecoder : public Decoder {
     public:
-        UUDecoder(); 
+        UUDecoder(NewsGroupPost *newsgrouppost, Uint32 piece_no); 
         virtual ~UUDecoder();
 
         virtual void decode_line(string line);
+        virtual void open_file();
+
+        Uint32 piece_no;
     private:
     protected:
 };
