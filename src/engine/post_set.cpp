@@ -27,14 +27,15 @@ string PostSet::completed_percent(void)
     for (v = files.begin(); v != files.end(); ++v){
         if(*v){
             total_pieces += (*v)->num_pieces;
-            num_pieces += (*v)->downloaded_pieces;
+            downloaded_pieces += (*v)->downloaded_pieces;
         }
     }
 
     if(total_pieces == downloaded_pieces)
         return "100%";
+
     stringstream buf;
-    buf << setprecision(3) << downloaded_pieces / total_pieces << "%";
+    buf << setprecision(3) << (double)downloaded_pieces / (double)total_pieces * (double) 100 << "%";
     return buf.str();
 }
 
