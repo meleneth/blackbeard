@@ -14,20 +14,30 @@ NewsGroup::NewsGroup(string group_name) // Constructor
 // another fine blb post - File 1 of 1: "blb" yEnc (1/4)
     
     pattern = new StringPattern(SP_LASTPART);
+    pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker(" - File ");
+    pattern->add_breaker(SP_FILENO);
     pattern->add_breaker(" of ");
+    pattern->add_breaker(SP_MAXFILENO);
     pattern->add_breaker(": \"");
+    pattern->add_breaker(SP_FILENAME);
     pattern->add_breaker("\" yEnc (");
+    pattern->add_breaker(SP_PARTNO);
     pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
     subject_patterns.push_front(pattern);
     
 //new and improved blackbeard arrr - "blb" yEnc (1/6)
     
     pattern = new StringPattern(SP_LASTPART);
+    pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker("- \"");
+    pattern->add_breaker(SP_FILENAME);
     pattern->add_breaker("\" yEnc (");
+    pattern->add_breaker(SP_PARTNO);
     pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
     subject_patterns.push_front(pattern);
 }
