@@ -8,7 +8,7 @@
 class InputThread : public Thread {
     public:
         InputThread(NetThread *thread);
-        ~InputThread(); 
+        virtual ~InputThread(); 
         virtual void Execute(void);
         
         NetThread *net_thread;
