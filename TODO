@@ -8,8 +8,8 @@ Decoders:
 Threads:
     multiple net threads
     console render thread
-    input thread
-    main() waiting for thread_join
+*   input thread
+*   main() waiting for thread_join
 *   file decoder thread 
     locking <- only needed in job control for the job list and 
                file decode to only mmap the file once (I think)

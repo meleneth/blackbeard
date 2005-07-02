@@ -1,6 +1,6 @@
 #include<sys/types.h>
 #include<sys/stat.h>
-#include"netthread.hpp"
+#include"net_thread.hpp"
 #include"console.hpp"
 #include"globals.hpp"
 #include"newsgrouppost.hpp"

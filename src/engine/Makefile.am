@@ -4,10 +4,11 @@ noinst_PROGRAMS = bt
 libengine_a_SOURCES = newsgroup.cpp newsgroup.hpp config.cpp config.hpp console.cpp console.hpp \
 					  newsgrouppost.cpp newsgrouppost.hpp tcpconnection.cpp tcpconnection.hpp \
 					  news_constants.hpp nntpserver.cpp nntpserver.hpp thread.cpp thread.hpp \
-					  netthread.cpp netthread.hpp decoder.cpp decoder.hpp decoder_thread.cpp \
+					  net_thread.cpp net_thread.hpp decoder.cpp decoder.hpp decoder_thread.cpp \
 					  decoder_thread.hpp yenc_decoder.cpp yenc_decoder.hpp uu_decoder.cpp \
 					  uu_decoder.hpp strutil.hpp strutil.cpp stringpattern.cpp stringpattern.hpp \
-					  post_set.cpp post_set.hpp post_file.cpp post_file.hpp jobqueue.hpp jobqueue.cpp
+					  post_set.cpp post_set.hpp post_file.cpp post_file.hpp jobqueue.hpp jobqueue.cpp \
+					  input_thread.cpp input_thread.hpp
 bt_SOURCES = blackbeardt.cpp libengine.a
 
 AM_CXXFLAGS = -Wall -D_REENTRANT

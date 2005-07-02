@@ -1,4 +1,3 @@
-#include<stdio.h>
 #include<signal.h>
 #include<ncurses.h>
 #include<pthread.h>
@@ -6,8 +5,9 @@
 #include<algorithm>
 
 #include"tcpconnection.hpp"
-#include"netthread.hpp"
+#include"net_thread.hpp"
 #include"decoder_thread.hpp"
+#include"input_thread.hpp"
 #include"post_set.hpp"
 #include"globals.hpp"
 
@@ -28,8 +28,6 @@ using std::string;
 using std::stringstream;
 using std::list;
 
-#define KEY_LEFTARROW 260
-#define KEY_RIGHTARROW 261
 
 int main(int argc, char *argv[])
 {
@@ -42,40 +40,16 @@ int main(int argc, char *argv[])
 
     DecoderThread *decoder_thread = new DecoderThread();
     decoder_thread->Start();
-    list<PostSet *>::iterator i;
 
-    while(1){
-//        usleep(10);
-        int key = getch();
-        if(key != ERR){
-            switch(key){
-                case 13:
-                    //enter
-                    if(current_postset){
-                        net_thread->set_retrieve();
-                    }
-                    break;
-                case KEY_LEFTARROW:
-                    i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), current_postset);
-                    if(newsgroup->postsets.begin() != i){
-                        i--;
-                        current_postset = *i;
-                    }
-                    break;
-                case KEY_RIGHTARROW:
-                    i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), current_postset);
-                    if(newsgroup->postsets.end() != i){
-                        i++;
-                        if(newsgroup->postsets.end() != i)
-                            current_postset = *i;
-                    }
-                    break;
-            }
-        }
-        console->render();
-        mvaddstr(LINES-1, 0, input.c_str());
-        refresh();
-    }
+    InputThread *input_thread = new InputThread(net_thread);
+    input_thread->Start();
+
+    pthread_join(net_thread->ThreadId, NULL);
+    pthread_join(decoder_thread->ThreadId, NULL);
+    pthread_join(input_thread->ThreadId, NULL);
+    
+    // will never get here, too many infinite loops in the threads
+    
     finish(0);
 
 }
