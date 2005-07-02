@@ -9,7 +9,7 @@ UUDecoder::~UUDecoder() // Destructor
 {
 }
 
-int UUDecoder::Foo(void)
+void UUDecoder::decode_line(string line)
 {
 }
 

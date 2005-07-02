@@ -15,6 +15,8 @@ class Decoder {
 
         virtual void decode();
         virtual void decode_line(string line);
+        virtual void open_file();
+        virtual void close_file();
 
         string filename;
         FILE *fileptr;

@@ -18,17 +18,27 @@ Decoder::~Decoder() // Destructor
 
 void Decoder::decode()
 {
-    struct stat my_stats;
     list<string>::iterator s;
     
+    open_file();
+    for (s=post->lines.begin(); s!=post->lines.end(); ++s){
+        decode_line(*s);
+    }
+    close_file();
+}
+
+void Decoder::open_file(void)
+{
+    struct stat my_stats;
     if(stat(filename.c_str(), &my_stats) == -1){
         fileptr = fopen(filename.c_str(), "w");
     } else {
         fileptr = fopen(filename.c_str(), "r+");
     }
-    for (s=post->lines.begin(); s!=post->lines.end(); ++s){
-        decode_line(*s);
-    }
+}
+
+void Decoder::close_file(void)
+{
     fclose(fileptr);
 }
 

@@ -7,9 +7,9 @@
 class UUDecoder : public Decoder {
     public:
         UUDecoder(); 
-        ~UUDecoder();
+        virtual ~UUDecoder();
 
-        int Foo(void);
+        virtual void decode_line(string line);
     private:
     protected:
 };
