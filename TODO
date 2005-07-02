@@ -51,4 +51,5 @@ General:
     Add net jobs
 *   Add decoder jobs
     Persistance, with SQLite
+    Save memory by stripping information for postsets we're not particularly interested into postset name, and min/max message_id for easy recreation with a targetted xover
 
