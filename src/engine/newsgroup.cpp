@@ -40,6 +40,10 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
     subject_patterns.push_front(pattern);
+
+//UUDecode patterns
+//SDL for those in need - File 1 of 1: SDL-1.2.7.tar.gz (1/8)
+//SDL for those in need - SDL-1.2.7.tar.gz (1/8)
 }
     
 NewsGroup::~NewsGroup() // Destructor
