@@ -45,7 +45,7 @@ Console::~Console() // Destructor
 void Console::render(void)
 {
     list<string>::iterator i;
-    Sint16 counter=yres-3;
+    Sint16 counter=yres-4;
     Uint32 num_postsets = 0;
     Uint32 num_postfiles = 0;
     Uint32 current_postset_no = 0;
@@ -69,14 +69,11 @@ void Console::render(void)
 
         render_current_postset(current_postset, current_postset_no, num_postsets);
 
-        if(current_postfile){
-            mvaddnstr(yres-2, 0, current_postfile->status().c_str(), -1);
-        }
         attroff(A_BOLD);
         
     }
 
-    for(i = loglines.begin() ; (i != loglines.end()) && counter > 4; ++i)
+    for(i = loglines.begin() ; (i != loglines.end()) && counter > 10; ++i)
     {
         mvaddnstr(counter, 0,  i->c_str(), -1);
         counter--;
@@ -88,14 +85,21 @@ void Console::render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num
 {
     if(!set)
         return;
-    mvaddnstr(1, 0, set->status().c_str(), -1);
+
+    Uint32 yindex = 1;
+    vector<PostFile *>::iterator i;
+
+    mvaddnstr(yindex, 0, set->status().c_str(), -1);
+
     stringstream buf;
-
     buf << "(" << postset_no << "/" << num_postsets << ") postsets";
+    mvaddnstr(yindex, xres - (buf.str().length() + 2), buf.str().c_str(), -1);
 
-    mvaddnstr(1, xres - (buf.str().length() + 2), buf.str().c_str(), -1);
-
-    mvaddnstr(yres-2, 0, current_postfile->status().c_str(), -1);
+    for(i = set->files.begin(); i!= set->files.end(); ++i){
+        if(*i){
+            mvaddnstr(++yindex, 0, (*i)->status().c_str(), -1);
+        }
+    }
 }
 
 void Console::check_input(char key)

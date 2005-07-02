@@ -50,9 +50,13 @@ string PostFile::status(void)
     status << filename << " - ";
     status << seen_pieces << "/" << num_pieces << " pieces seen   " 
            << downloaded_pieces << "/"  << num_pieces << " pieces downloaded  ";
-    if(num_pieces > 0)
-           status << setprecision(2) 
+    if(num_pieces == downloaded_pieces){
+        status << "100%";
+    }else{
+        if(num_pieces > 0)
+           status << setprecision(3) 
                   << ((double)downloaded_pieces / (double)num_pieces) * (double) 100
                   << "%";
+    }
     return status.str();
 }

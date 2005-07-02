@@ -25,12 +25,16 @@ string PostSet::completed_percent(void)
     vector<PostFile *>::iterator v;
 
     for (v = files.begin(); v != files.end(); ++v){
-        total_pieces += (*v)->num_pieces;
-        num_pieces += (*v)->downloaded_pieces;
+        if(*v){
+            total_pieces += (*v)->num_pieces;
+            num_pieces += (*v)->downloaded_pieces;
+        }
     }
 
+    if(total_pieces == downloaded_pieces)
+        return "100%";
     stringstream buf;
-    buf << setprecision(2) << downloaded_pieces / total_pieces << "%";
+    buf << setprecision(3) << downloaded_pieces / total_pieces << "%";
     return buf.str();
 }
 
@@ -39,6 +43,10 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
     if(!num_files){
         num_files = max_file_num;
         files.resize(num_files + 1);
+        Uint32 i;
+        for(i=0;i<num_files+1;i++){
+            files[i] = NULL;
+        }
     }
 
     if(files[file_num]){
