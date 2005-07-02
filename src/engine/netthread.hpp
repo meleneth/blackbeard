@@ -14,9 +14,11 @@ class NetThread : public Thread {
         ~NetThread(); // Destructor
         virtual void Execute(void);
         void retrieve(PostSet *postset);
+        void set_retrieve();
 
         Config *config;
         NNTPServer *connection;
+        Uint32 _fetch;
     private:
         // Private members go here.
     protected:

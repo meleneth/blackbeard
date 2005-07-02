@@ -26,9 +26,6 @@ void NetThread::Execute(void)
     connection->group(config->news_group);
     connection->xover(1);
 
-    if(current_postset){
-        retrieve(current_postset);
-    }
 /*
     connection->last();
     connection->help();
@@ -44,7 +41,10 @@ void NetThread::Execute(void)
 */
     console->log("---- End of pre-configured commands ----");
     while(1){
-        connection->read_packets();
+        if(_fetch && current_postset){
+            retrieve(current_postset);
+            _fetch = 0;
+        }
         while(connection->has_data_waiting()){
             console->log(connection->get_line());
         }
@@ -80,5 +80,7 @@ void NetThread::retrieve(PostSet *postset)
     }
 }
 
-// Private members go here.
-// Protected members go here.
+void NetThread::set_retrieve(void)
+{
+    _fetch = 1;
+}

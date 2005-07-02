@@ -48,32 +48,28 @@ int main(int argc, char *argv[])
 //        usleep(10);
         int key = getch();
         if(key != ERR){
-            if(key == 13){
-                string line;
-                line = "> " + input;
-                console->log(line);
-                net_thread->connection->TCPConnection::send_command(input);
-                input = "";
-            }else {
-                switch(key){
-                    case KEY_LEFTARROW:
-                        i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), current_postset);
-                        if(newsgroup->postsets.begin() != i){
-                            i--;
+            switch(key){
+                case 13:
+                    //enter
+                    if(current_postset){
+                        net_thread->set_retrieve();
+                    }
+                    break;
+                case KEY_LEFTARROW:
+                    i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), current_postset);
+                    if(newsgroup->postsets.begin() != i){
+                        i--;
+                        current_postset = *i;
+                    }
+                    break;
+                case KEY_RIGHTARROW:
+                    i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), current_postset);
+                    if(newsgroup->postsets.end() != i){
+                        i++;
+                        if(newsgroup->postsets.end() != i)
                             current_postset = *i;
-                        }
-                        break;
-                    case KEY_RIGHTARROW:
-                        i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), current_postset);
-                        if(newsgroup->postsets.end() != i){
-                            i++;
-                            if(newsgroup->postsets.end() != i)
-                                current_postset = *i;
-                        }
-                        break;
-                    default:
-                        input += (char)key;
-                }
+                    }
+                    break;
             }
         }
         console->render();
