@@ -2,8 +2,10 @@
 #include"globals.hpp"
 
 #include<sstream>
+#include<iomanip>
 
 using std::stringstream;
+using std::setprecision;
 
 PostFile::PostFile() 
 {
@@ -49,7 +51,8 @@ string PostFile::status(void)
     status << seen_pieces << "/" << num_pieces << " pieces seen   " 
            << downloaded_pieces << "/"  << num_pieces << " pieces downloaded  ";
     if(num_pieces > 0)
-           status << ((double)downloaded_pieces / (double)num_pieces) * (double) 100
+           status << setprecision(2) 
+                  << ((double)downloaded_pieces / (double)num_pieces) * (double) 100
                   << "%";
     return status.str();
 }

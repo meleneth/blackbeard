@@ -1,11 +1,13 @@
 #include "console.hpp"
 #include <ncurses.h>
+#include<iomanip>
 
 #include"globals.hpp"
 
 using std::string;
 using std::stringstream;
 using std::list;
+using std::setprecision;
 
 // Public data members go here.
 Console::Console() // Constructor
