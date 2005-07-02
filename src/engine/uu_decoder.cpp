@@ -1,9 +1,11 @@
 #include "uu_decoder.hpp"
 
 /* piece files are 7500 lines
- * lines hold 60 bytes each
- * which comes out to 450,000 bytes encoded per uuencoded piece file
+ * lines hold 45 bytes each (decoded)
+ * which comes out to 337,500 bytes encoded per uuencoded piece file
  */
+
+#define UUDECODER_OFFSET 337500
 
 // Public data members go here.
 UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, Uint32 piece_no) : Decoder()// Constructor
