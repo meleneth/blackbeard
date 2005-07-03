@@ -20,6 +20,9 @@ UUDecoder::~UUDecoder() // Destructor
 
 void UUDecoder::open_file(void)
 {
+    Decoder::open_file();
+
+    fseek(fileptr, UUDECODER_OFFSET * (piece_no - 1), SEEK_SET);
 }
 
 void UUDecoder::decode_line(string line)

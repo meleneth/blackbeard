@@ -7,11 +7,12 @@
 using std::stringstream;
 using std::setprecision;
 
-PostFile::PostFile() 
+PostFile::PostFile(PostSet *postset) 
 {
     num_pieces = 0;
     seen_pieces = 0;
     downloaded_pieces = 0;
+    post_set = postset;
 }
     
 PostFile::~PostFile() 

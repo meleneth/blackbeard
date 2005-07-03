@@ -10,6 +10,7 @@
 using std::string;
 using std::vector;
 
+class PostFile;
 class PostSet {
     public:
         PostSet(string subject);

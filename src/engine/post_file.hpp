@@ -4,13 +4,15 @@
 #include<string>
 #include<vector>
 #include"SDL_types.h"
+#include"post_set.hpp"
 
 using std::string;
 using std::vector;
 
+class PostSet;
 class PostFile {
     public:
-        PostFile();
+        PostFile(PostSet *set);
         ~PostFile(); 
 
         void part(Uint32 part, Uint32 total_parts, string message_id);
@@ -20,6 +22,8 @@ class PostFile {
         Uint32 seen_pieces;
         Uint32 downloaded_pieces;
         string filename;
+
+        PostSet *post_set;
 
         vector<string> pieces;
     private:
