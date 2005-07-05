@@ -34,14 +34,23 @@ void UUDecoder::decode_line(string line)
 
     Uint32 num_encoded_chars = line[0];
     size_t source = 1;
-    Uint32 manipulation;
-
-    manipulation  = line[source++] << 24;
-    manipulation |= line[source++] << 16;
-    manipulation |= line[source++] << 8;
-    manipulation |= line[source++];
-
     string output_line(' ', 45);
+
+    Uint32 output_no = 0;
+    while(output_no < num_encoded_chars) {
+        Uint32 manipulation = 0;
+
+        manipulation  = line[source++] << 18;
+        manipulation |= line[source++] << 12;
+        manipulation |= line[source++] << 6;
+        manipulation |= line[source++];
+
+        output_line[output_no++] = (manipulation && (255 << 16)) >> 16;
+        output_line[output_no++] = (manipulation && (255 << 8 )) >> 8;
+        output_line[output_no++] = (manipulation && 255);
+    }
+
+    fwrite(output_line.c_str(), 1, output_no, fileptr);
 }
 
 // Private members go here.
