@@ -22,5 +22,5 @@ AC_PROG_INSTALL
 AC_PROG_RANLIB
 
 # Finally create all the generated files
-AC_OUTPUT(Makefile  src/engine/Makefile src/Makefile)
+AC_OUTPUT(Makefile  src/Makefile)
 
