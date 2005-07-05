@@ -43,7 +43,32 @@ NewsGroup::NewsGroup(string group_name) // Constructor
 
 //UUDecode patterns
 //SDL for those in need - File 1 of 1: SDL-1.2.7.tar.gz (1/8)
+    pattern = new StringPattern(SP_LASTPART);
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker(" - File ");
+    pattern->add_breaker(SP_FILENO);
+    pattern->add_breaker(" of ");
+    pattern->add_breaker(SP_MAXFILENO);
+    pattern->add_breaker(": ");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker(" (");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker(")");
+    uu_subject_patterns.push_front(pattern);
+
 //SDL for those in need - SDL-1.2.7.tar.gz (1/8)
+    pattern = new StringPattern(SP_LASTPART);
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker(" - ");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker(" (");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker(")");
+    uu_subject_patterns.push_front(pattern);
 }
     
 NewsGroup::~NewsGroup() // Destructor
@@ -77,6 +102,22 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
             current_postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), message_id);
             console->log("matched yEnc subject pattern");
+            return;
+        }
+    }
+
+    for (sp = uu_subject_patterns.begin(); sp != uu_subject_patterns.end(); ++sp){
+        if((*sp)->does_match(subject)){
+            (*sp)->pieces(subject);
+            current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
+            current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
+                                                     (*sp)->get_piecen(SP_MAXFILENO), 
+                                                     (*sp)->get_piece(SP_FILENAME));
+            current_postfile->decoder_type = DT_UUDECODE;
+            current_postfile->part((*sp)->get_piecen(SP_PARTNO), 
+                                   (*sp)->get_piecen(SP_MAXPARTNO), message_id);
+            console->log("matched yEnc subject pattern");
+            return;
         }
     }
 }
