@@ -4,6 +4,8 @@
 typedef enum { SP_SUBJECT, SP_FILENO, SP_MAXFILENO,
                SP_FILENAME, SP_PARTNO, SP_MAXPARTNO, SP_LASTPART } SubjectPart;
 
+typedef enum { DT_YENC, DT_UUDECODE, DT_MIME, DT_UNKNOWN } DecoderType;
+
 /* Quick Code Checks (first char of NNTP code) */
 #define CMD_OK       2
 #define CMD_ERROR    4

@@ -24,7 +24,7 @@ class NewsGroup {
         
         int status_code();
 
-        list< StringPattern * > subject_patterns;
+        list< StringPattern * > yenc_subject_patterns;
         list< NewsGroupPost * > messages;
         list< PostSet * > postsets;
         StringPattern *pattern;

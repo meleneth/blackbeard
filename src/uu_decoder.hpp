@@ -3,15 +3,17 @@
 
 #include"SDL_types.h"
 #include"decoder.hpp"
+#include"post_file.hpp"
 
 class UUDecoder : public Decoder {
     public:
-        UUDecoder(NewsGroupPost *newsgrouppost, Uint32 piece_no); 
+        UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, Uint32 piece_no); 
         virtual ~UUDecoder();
 
         virtual void decode_line(string line);
         virtual void open_file();
 
+        PostFile *file;
         Uint32 piece_no;
     private:
     protected:

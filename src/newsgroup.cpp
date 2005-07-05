@@ -26,7 +26,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker("/");
     pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
-    subject_patterns.push_front(pattern);
+    yenc_subject_patterns.push_front(pattern);
     
 //new and improved blackbeard arrr - "blb" yEnc (1/6)
     
@@ -39,7 +39,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker("/");
     pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
-    subject_patterns.push_front(pattern);
+    yenc_subject_patterns.push_front(pattern);
 
 //UUDecode patterns
 //SDL for those in need - File 1 of 1: SDL-1.2.7.tar.gz (1/8)
@@ -66,16 +66,17 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
     console->log("(" + message_id + ") " + subject);
     list< StringPattern * >::iterator sp;
 
-    for (sp = subject_patterns.begin(); sp != subject_patterns.end(); ++sp){
+    for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->does_match(subject)){
             (*sp)->pieces(subject);
             current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
             current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
                                                      (*sp)->get_piecen(SP_MAXFILENO), 
                                                      (*sp)->get_piece(SP_FILENAME));
+            current_postfile->decoder_type = DT_YENC;
             current_postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), message_id);
-            console->log("matched subject pattern");
+            console->log("matched yEnc subject pattern");
         }
     }
 }

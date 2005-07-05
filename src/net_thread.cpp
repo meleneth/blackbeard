@@ -72,8 +72,7 @@ void NetThread::retrieve(PostSet *postset)
             for (s=(*v)->pieces.begin(); s!=(*v)->pieces.end(); ++s){
                 if((*s).compare("")){
                     NewsGroupPost *newsgrouppost = connection->body(*s);
-                    yEncDecoder *yencdecoder = new yEncDecoder(newsgrouppost, dest_dir + "/" + (*v)->filename);
-                    jobqueue->add_decoder_job(yencdecoder);
+                    jobqueue->add_decoder_job((*v)->get_decoder(newsgrouppost, dest_dir, atoi((*s).c_str())));
                     (*v)->downloaded_pieces++;
                 }
             }

@@ -1,5 +1,7 @@
 #include "post_file.hpp"
 #include"globals.hpp"
+#include"yenc_decoder.hpp"
+#include"uu_decoder.hpp"
 
 #include<sstream>
 #include<iomanip>
@@ -13,6 +15,7 @@ PostFile::PostFile(PostSet *postset)
     seen_pieces = 0;
     downloaded_pieces = 0;
     post_set = postset;
+    decoder_type = DT_UNKNOWN;
 }
     
 PostFile::~PostFile() 
@@ -43,6 +46,20 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, string message_id)
         pieces[part_no] = message_id;
         seen_pieces++;
     }
+}
+
+Decoder *PostFile::get_decoder(NewsGroupPost *newsgrouppost, string dest_dir, Uint32 piece_no)
+{
+    switch(decoder_type){
+        case DT_YENC:
+            return new yEncDecoder(newsgrouppost, dest_dir + "/" + filename);
+        case DT_UUDECODE:
+            return new UUDecoder(newsgrouppost, this, piece_no);
+        case DT_MIME:
+        case DT_UNKNOWN:
+            return NULL;
+    }
+    return NULL;
 }
 
 string PostFile::status(void)

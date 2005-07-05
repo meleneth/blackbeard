@@ -8,10 +8,11 @@
 #define UUDECODER_OFFSET 337500
 
 // Public data members go here.
-UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, Uint32 piece_no) : Decoder()// Constructor
+UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, Uint32 piece_no) : Decoder()// Constructor
 {
     this->piece_no = piece_no;
     this->post = newsgrouppost;
+    this->file = file;
 }
     
 UUDecoder::~UUDecoder() // Destructor
