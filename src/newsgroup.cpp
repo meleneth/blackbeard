@@ -117,7 +117,7 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
             current_postfile->decoder_type = DT_UUDECODE;
             current_postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), message_id);
-            console->log("matched yEnc subject pattern");
+            console->log("matched UU subject pattern");
             return;
         }
     }
