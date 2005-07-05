@@ -4,6 +4,8 @@
 #include"SDL_types.h"
 #include<string>
 #include"newsgrouppost.hpp"
+#include"news_constants.hpp"
+#include"stringpattern.hpp"
 
 using std::string;
 
@@ -22,6 +24,11 @@ class Decoder {
         FILE *fileptr;
 
         NewsGroupPost *post;
+        enum DECODER_STATUS status;
+
+        StringPattern *header_pattern;
+        StringPattern *part_pattern;
+        StringPattern *footer_pattern;
     private:
         // Private members go here.
     protected:

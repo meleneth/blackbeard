@@ -12,6 +12,7 @@ class UUDecoder : public Decoder {
 
         virtual void decode_line(string line);
         virtual void open_file();
+        string do_the_math(string line);
 
         PostFile *file;
         Uint32 piece_no;

@@ -6,6 +6,8 @@ typedef enum { SP_SUBJECT, SP_FILENO, SP_MAXFILENO,
 
 typedef enum { DT_YENC, DT_UUDECODE, DT_MIME, DT_UNKNOWN } DecoderType;
 
+typedef enum DECODER_STATUS { S_MESSAGE, S_BODY };
+
 /* Quick Code Checks (first char of NNTP code) */
 #define CMD_OK       2
 #define CMD_ERROR    4

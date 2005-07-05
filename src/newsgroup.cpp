@@ -42,6 +42,18 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     yenc_subject_patterns.push_front(pattern);
 
 //UUDecode patterns
+//SDL for those in need - SDL-1.2.7.tar.gz (1/8)
+    pattern = new StringPattern(SP_LASTPART);
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker(" - ");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker(" (");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker(")");
+    uu_subject_patterns.push_front(pattern);
+
 //SDL for those in need - File 1 of 1: SDL-1.2.7.tar.gz (1/8)
     pattern = new StringPattern(SP_LASTPART);
     pattern->add_breaker(SP_SUBJECT);
@@ -57,19 +69,8 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
     uu_subject_patterns.push_front(pattern);
-
-//SDL for those in need - SDL-1.2.7.tar.gz (1/8)
-    pattern = new StringPattern(SP_LASTPART);
-    pattern->add_breaker(SP_SUBJECT);
-    pattern->add_breaker(" - ");
-    pattern->add_breaker(SP_FILENAME);
-    pattern->add_breaker(" (");
-    pattern->add_breaker(SP_PARTNO);
-    pattern->add_breaker("/");
-    pattern->add_breaker(SP_MAXPARTNO);
-    pattern->add_breaker(")");
-    uu_subject_patterns.push_front(pattern);
 }
+
     
 NewsGroup::~NewsGroup() // Destructor
 {

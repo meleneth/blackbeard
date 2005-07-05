@@ -9,7 +9,6 @@
 
 using std::string;
 
-typedef enum yEnc_STATUS { S_MESSAGE, S_BODY };
 
 class yEncDecoder : public Decoder {
     public:
@@ -19,10 +18,6 @@ class yEncDecoder : public Decoder {
         virtual void decode_line(string line);
         string do_the_math(string line);
 
-        enum yEnc_STATUS status;
-        StringPattern *header_pattern;
-        StringPattern *part_pattern;
-        StringPattern *footer_pattern;
     private:
     protected:
 };
