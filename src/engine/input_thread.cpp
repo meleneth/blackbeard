@@ -3,8 +3,10 @@
 #include<stdio.h>
 #include<ncurses.h>
 
-#define KEY_LEFTARROW 260
-#define KEY_RIGHTARROW 261
+#define KEY_ESC         27
+#define KEY_Q           113
+#define KEY_LEFTARROW   260
+#define KEY_RIGHTARROW  261
 
 InputThread::InputThread(NetThread *thread) 
 {
@@ -23,9 +25,9 @@ void InputThread::Execute(void)
 //        usleep(10);
         int key = getch();
         if(key != ERR){
+//        printf("%i\n", key);
             switch(key){
                 case 13:
-                    //enter
                     if(current_postset){
                         net_thread->set_retrieve();
                     }
@@ -44,6 +46,12 @@ void InputThread::Execute(void)
                         if(newsgroup->postsets.end() != i)
                             current_postset = *i;
                     }
+                    break;
+                case KEY_Q:
+                case KEY_ESC:
+                    endwin();
+                    delete console;
+                    exit(0);
                     break;
             }
         }
