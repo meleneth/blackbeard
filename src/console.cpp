@@ -51,10 +51,13 @@ void Console::render(void)
     Uint32 current_postset_no = 0;
 
     erase();
+    
+    draw_box(0, 0, xres-1, yres-1);
+    draw_box(0, 0, xres-1, 12);
 
     if(newsgroup){
         string groupline = newsgroup->name + " ( " + newsgroup->status + " )";
-        mvaddnstr(0, 0, groupline.c_str(), -1);
+        mvaddnstr(1, 1, groupline.c_str(), -1);
         
         list<PostSet *>::iterator p;
         attron(A_BOLD);
@@ -75,7 +78,7 @@ void Console::render(void)
 
     for(i = loglines.begin() ; (i != loglines.end()) && counter > 10; ++i)
     {
-        mvaddnstr(counter, 0,  i->c_str(), -1);
+        mvaddnstr(counter, 2,  i->c_str(), -1);
         counter--;
     }
     refresh();
@@ -89,15 +92,15 @@ void Console::render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num
     Uint32 yindex = 1;
     vector<PostFile *>::iterator i;
 
-    mvaddnstr(yindex, 0, set->status().c_str(), -1);
+    mvaddnstr(yindex, 1, set->status().c_str(), -1);
 
     stringstream buf;
     buf << "(" << postset_no << "/" << num_postsets << ") postsets";
-    mvaddnstr(yindex, xres - (buf.str().length() + 2), buf.str().c_str(), -1);
+    mvaddnstr(yindex, xres - (buf.str().length() + 3), buf.str().c_str(), -1);
 
     for(i = set->files.begin(); i!= set->files.end(); ++i){
         if(*i){
-            mvaddnstr(++yindex, 0, (*i)->status().c_str(), -1);
+            mvaddnstr(++yindex, 1, (*i)->status().c_str(), -1);
         }
     }
 }
@@ -138,7 +141,20 @@ void Console::box_log(string line)
     log("+" + Border + "+");
 }
 
+void Console::draw_box(Uint32 x, Uint32 y, Uint32 width, Uint32 height)
+{
+    string w(width+1, '-');
+    w[0] = '+';
+    w[width] = '+';
 
+    mvaddnstr(y, x, w.c_str(), -1);
+    mvaddnstr(y+height, x, w.c_str(), -1);
+
+    for(Uint32 yo=1; yo < height; ++yo){
+        mvaddnstr(y+yo, x, "|", -1);
+        mvaddnstr(y+yo, x+width, "|", -1);
+    }
+}
 
 // Private members go here.
 // Protected members go here.

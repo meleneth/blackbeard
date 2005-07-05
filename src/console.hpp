@@ -27,6 +27,7 @@ class Console {
         void log(std::string line);
         void fatal(std::string line);
         void box_log(std::string line);
+        void draw_box(Uint32 x, Uint32 y, Uint32 width, Uint32 height);
 
         void render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num_postsets);
 
