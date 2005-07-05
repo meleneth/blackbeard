@@ -19,7 +19,6 @@ class Console {
     public:
         // Public data members go here.
         Console(); // Constructor
-        Console(Uint16 x, Uint16 y); // Constructor
         ~Console(); // Destructor
 
         void render(void);
@@ -33,7 +32,6 @@ class Console {
 
         list<std::string> loglines;
         string input;
-        Uint16 xres, yres;
         Uint32 print_logs;
         Uint32 print_on_delete;
     private:

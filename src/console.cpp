@@ -12,21 +12,12 @@ using std::setprecision;
 // Public data members go here.
 Console::Console() // Constructor
 {
-    xres=100;
-    yres=10;
     print_logs = 0;
     box_log("Console Initialized");
     input = "";
     print_on_delete = 0;
 }
 
-Console::Console(Uint16 x, Uint16 y) // Constructor
-{
-    xres=x;
-    yres=y;
-    box_log("Console Initialized");
-}
-    
 Console::~Console() // Destructor
 {
     if(print_on_delete){
@@ -45,15 +36,15 @@ Console::~Console() // Destructor
 void Console::render(void)
 {
     list<string>::iterator i;
-    Sint16 counter=yres-4;
+    Sint16 counter=LINES-4;
     Uint32 num_postsets = 0;
     Uint32 num_postfiles = 0;
     Uint32 current_postset_no = 0;
 
     erase();
     
-    draw_box(0, 0, xres-1, yres-1);
-    draw_box(0, 0, xres-1, 12);
+    draw_box(0, 0, COLS-1, LINES-1);
+    draw_box(0, 0, COLS-1, 12);
 
     if(newsgroup){
         string groupline = newsgroup->name + " ( " + newsgroup->status + " )";
@@ -76,7 +67,7 @@ void Console::render(void)
         
     }
 
-    for(i = loglines.begin() ; (i != loglines.end()) && counter > 10; ++i)
+    for(i = loglines.begin() ; (i != loglines.end()) && counter > 13; ++i)
     {
         mvaddnstr(counter, 2,  i->c_str(), -1);
         counter--;
@@ -96,7 +87,7 @@ void Console::render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num
 
     stringstream buf;
     buf << "(" << postset_no << "/" << num_postsets << ") postsets";
-    mvaddnstr(yindex, xres - (buf.str().length() + 3), buf.str().c_str(), -1);
+    mvaddnstr(yindex, COLS - (buf.str().length() + 3), buf.str().c_str(), -1);
 
     for(i = set->files.begin(); i!= set->files.end(); ++i){
         if(*i){

@@ -68,7 +68,7 @@ void do_init(void)
     // global objects
     current_postset = NULL;
     current_postfile = NULL;
-    console = new Console(COLS, LINES);
+    console = new Console();
     console->print_on_delete = 1;
     config = new Config();
     config->read_config_file();
