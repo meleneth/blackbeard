@@ -80,7 +80,7 @@ void Console::render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num
     if(!set)
         return;
 
-    Uint32 yindex = 1;
+    Uint32 yindex = 2;
     vector<PostFile *>::iterator i;
 
     mvaddnstr(yindex, 1, set->status().c_str(), -1);
