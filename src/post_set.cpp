@@ -18,7 +18,7 @@ PostSet::~PostSet()
 {
 }
 
-string PostSet::completed_percent(void)
+double PostSet::completed_percent(void)
 {
     Uint32 total_pieces = 0;
     Uint32 downloaded_pieces = 0;
@@ -32,11 +32,9 @@ string PostSet::completed_percent(void)
     }
 
     if(total_pieces == downloaded_pieces)
-        return "100%";
+        return 100;
 
-    stringstream buf;
-    buf << setprecision(3) << (double)downloaded_pieces / (double)total_pieces * (double) 100 << "%";
-    return buf.str();
+    return ((double)downloaded_pieces / (double)total_pieces * (double) 100);
 }
 
 PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
@@ -62,6 +60,6 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
 string PostSet::status(void)
 {
     stringstream buf;
-    buf << subject << ", " << num_files << " files. " << completed_percent();
+    buf << subject << ", " << num_files << " files. " << setprecision(3) << completed_percent() << "%";
     return buf.str();
 }

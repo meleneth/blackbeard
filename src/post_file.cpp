@@ -78,3 +78,25 @@ string PostFile::status(void)
     }
     return status.str();
 }
+
+string PostFile::get_bar(void)
+{
+    int spaces = 0;
+    stringstream bar;
+    if(num_pieces == downloaded_pieces){
+        spaces = 20;
+    }else{
+        if(num_pieces > 0)
+           spaces = floor(((double)downloaded_pieces / (double)num_pieces) * (double) 20);
+    }
+    bar << "[";
+    for (int i = 0; i < spaces; ++i){
+        bar << " ";
+    }
+    bar << ">";
+    for (int i = 0; i < (20 - spaces); ++i){
+        bar << " ";
+    }
+    bar << "]";
+    return bar.str();
+}

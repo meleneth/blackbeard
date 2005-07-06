@@ -90,8 +90,11 @@ void Console::render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num
     mvaddnstr(yindex, COLS - (buf.str().length() + 3), buf.str().c_str(), -1);
 
     for(i = set->files.begin(); i!= set->files.end(); ++i){
+        string completed_bar;
         if(*i){
-            mvaddnstr(++yindex, 1, (*i)->status().c_str(), -1);
+            completed_bar = (*i)->get_bar();
+            mvaddnstr(yindex, 1, (*i)->status().c_str(), -1);
+            mvaddnstr(yindex++, COLS - completed_bar.length() -3, completed_bar.c_str(), -1);
         }
     }
 }

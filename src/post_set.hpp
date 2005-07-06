@@ -16,7 +16,7 @@ class PostSet {
         PostSet(string subject);
         ~PostSet(); 
     
-        string completed_percent(void);
+        double completed_percent(void);
         PostFile *file(Uint32 file_num, Uint32 max_file_num, string file_name);
         string status(void);
 
