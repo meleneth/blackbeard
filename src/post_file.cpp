@@ -82,22 +82,17 @@ string PostFile::status(void)
 
 string PostFile::get_bar(void)
 {
-    int spaces = 0;
-    stringstream bar;
-    if(num_pieces == downloaded_pieces){
-        spaces = 20;
-    }else{
-        if(num_pieces > 0)
-           spaces = floor(((double)downloaded_pieces / (double)num_pieces) * (double) 20);
+    string bar(20, ' ');
+    static int frame=0;
+    char throbber[4] = {'.', 'o', 'O', 'o'};
+
+    if(num_pieces == downloaded_pieces) 
+        return "Completed";
+    if(num_pieces > 0) {
+        int spaces = (int)floor(((double)downloaded_pieces / (double)num_pieces) * (double) 20);
+        bar[spaces] = '>' ;
     }
-    bar << "[";
-    for (int i = 0; i < spaces; ++i){
-        bar << " ";
-    }
-    bar << ">";
-    for (int i = 0; i < (20 - spaces); ++i){
-        bar << " ";
-    }
-    bar << "]";
-    return bar.str();
+    if(++frame > 3) frame = 0;
+
+    return throbber[frame] + " [" + bar + "]";
 }
