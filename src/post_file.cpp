@@ -2,6 +2,7 @@
 #include"globals.hpp"
 #include"yenc_decoder.hpp"
 #include"uu_decoder.hpp"
+#include<math.h>
 
 #include<sstream>
 #include<iomanip>
