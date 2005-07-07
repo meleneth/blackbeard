@@ -49,13 +49,13 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, string message_id)
     }
 }
 
-Decoder *PostFile::get_decoder(NewsGroupPost *newsgrouppost, string dest_dir, Uint32 piece_no)
+Decoder *PostFile::get_decoder(NewsGroupPost *newsgrouppost, string dest_dir, string message_id)
 {
     switch(decoder_type){
         case DT_YENC:
             return new yEncDecoder(newsgrouppost, dest_dir + "/" + filename);
         case DT_UUDECODE:
-            return new UUDecoder(newsgrouppost, this, piece_no);
+            return new UUDecoder(newsgrouppost, this, message_id);
         case DT_MIME:
         case DT_UNKNOWN:
             return NULL;
@@ -92,7 +92,14 @@ string PostFile::get_bar(void)
         int spaces = (int)floor(((double)downloaded_pieces / (double)num_pieces) * (double) 20);
         bar[spaces] = '>' ;
     }
-    if(++frame > 3) frame = 0;
-
-    return throbber[frame] + " [" + bar + "]";
+    bar << "[";
+    for (int i = 0; i < spaces; ++i){
+        bar << " ";
+    }
+    bar << ">";
+    for (int i = 0; i < (20 - spaces); ++i){
+        bar << " ";
+    }
+    bar << "]";
+    return bar.str();
 }

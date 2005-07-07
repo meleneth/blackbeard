@@ -12,9 +12,9 @@ using std::stringstream;
 #define UUDECODER_OFFSET 337500
 
 // Public data members go here.
-UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, Uint32 piece_no) : Decoder()// Constructor
+UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, string message_id) : Decoder()// Constructor
 {
-    this->piece_no = piece_no;
+    this->piece_no = file->piece_no(message_id);
     this->post = newsgrouppost;
     this->file = file;
     status = S_MESSAGE;
@@ -34,7 +34,7 @@ void UUDecoder::open_file(void)
 
     size_t seek_offset =  UUDECODER_OFFSET * (piece_no - 1);
     stringstream buf;
-    buf << "Seek offset: " << seek_offset;
+    buf << "Seek offset: " << seek_offset << " Piece no: " << piece_no;
     console->log(buf.str());
 
 //    fseek(fileptr, seek_offset, SEEK_SET);
