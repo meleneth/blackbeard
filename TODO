@@ -35,7 +35,7 @@ Interface:
     only allow typing when you're on the log window
     typing is sending commands to system, not directly interupting TCP streams
     tab to switch panes
-    progress bar for postset downloads (brian)
+*   progress bar for postset downloads (brian)
     multiple newsgroups
     allow views of like panes - 
         newsgroups
@@ -47,7 +47,7 @@ Interface:
     
 General:
     Add ability to check cross-posted groups for missing pieces
-    Add resize support (ncurses)
+*   Add resize support (ncurses)
     Add net jobs
 *   Add decoder jobs
     Persistance, with SQLite
