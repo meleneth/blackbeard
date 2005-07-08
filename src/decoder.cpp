@@ -1,6 +1,7 @@
 #include "decoder.hpp"
 #include <sys/types.h>
 #include <sys/stat.h>
+#include"globals.hpp"
 
 
 
@@ -14,21 +15,21 @@ Decoder::~Decoder() // Destructor
     if(post){
         delete post;
     }
+    close_file();
 }
 
 void Decoder::decode()
 {
     list<string>::iterator s;
     
-    open_file();
     for (s=post->lines.begin(); s!=post->lines.end(); ++s){
         decode_line(*s);
     }
-    close_file();
 }
 
 void Decoder::open_file(void)
 {
+    console->log("Opening [" + filename + "] for writing");
     struct stat my_stats;
     if(stat(filename.c_str(), &my_stats) == -1){
         fileptr = fopen(filename.c_str(), "w");

@@ -17,3 +17,14 @@ void Tokenize(const string& str, vector<string>& tokens, const string& delimiter
         pos = str.find_first_of(delimiters, lastPos);
     }
 }
+
+string bitviz(Uint32 showme)
+{
+    Uint32 i;
+    string res('-', 32);
+
+    for(i = 0; i<32 ; i++){
+        res[i] = (showme & (1<<i)) ? '1' : '0';
+    }
+    return res;
+}

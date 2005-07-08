@@ -4,8 +4,10 @@
 #include"post_set.hpp"
 #include"assert.h"
 #include"jobqueue.hpp"
+#include"strutil.hpp"
 
 #include<string>
+#include<sstream>
 
 Console *console;
 NewsGroup *newsgroup;
@@ -18,8 +20,10 @@ void test_header_scoop(void);
 void test_string_pattern(void);
 void test_strings(void);
 void test_postset_objects(void);
+void test_bit_manipulations(void);
 
 using std::string;
+using std::stringstream;
 
 int main(int argc, char *argv[])
 {
@@ -33,7 +37,23 @@ int main(int argc, char *argv[])
     test_string_pattern();
     test_header_scoop();
     test_postset_objects();
+    test_bit_manipulations();
 	return 0;
+}
+
+void test_bit_manipulations(void)
+{
+    stringstream buf;
+
+    buf << "1 << 1 = " << (1<<1) << "; "
+        << "1 & 1 = "  << (1&1)  << "; "
+        << "1 && 1 = " << (1&&1) << "; "
+        << "1 & 2 ="   << (1&2)  << "; "
+        << "1 && 2 = " << (1&&2) <<"; ";
+    console->log(buf.str());
+
+    console->log(bitviz(1));
+    assert(! bitviz(1).compare("00000000000000000000000000000001"));
 }
 
 void test_strings(void)
@@ -51,6 +71,9 @@ void test_strings(void)
 
     console->log(buf);
     console->log(my_string);
+
+    string baz(20, 'x');
+    console->log(baz);
 }
 
 void test_string_pattern(void)

@@ -3,6 +3,7 @@
 #include<sstream>
 using std::stringstream;
 #include"globals.hpp"
+#include"strutil.hpp"
 
 /* piece files are 7500 lines
  * lines hold 45 bytes each (decoded)
@@ -37,7 +38,7 @@ void UUDecoder::open_file(void)
     buf << "Seek offset: " << seek_offset << " Piece no: " << piece_no;
     console->log(buf.str());
 
-//    fseek(fileptr, seek_offset, SEEK_SET);
+    fseek(fileptr, seek_offset, SEEK_SET);
 }
 
 void UUDecoder::decode_line(string line)
@@ -45,6 +46,9 @@ void UUDecoder::decode_line(string line)
     
     if(S_MESSAGE == status){
         if(header_pattern->does_match(line)){
+            header_pattern->pieces(line);
+            filename = header_pattern->results[1];
+            open_file();
             status = S_BODY;
         }
     }else if(S_BODY == status){
@@ -62,7 +66,7 @@ string UUDecoder::do_the_math(string line)
 
     Uint32 num_encoded_chars = line[0];
     size_t source = 1;
-    string output_line(' ', 45);
+    string output_line(num_encoded_chars, ' ');
 
     Uint32 output_no = 0;
     while(output_no < num_encoded_chars) {
@@ -72,10 +76,10 @@ string UUDecoder::do_the_math(string line)
         manipulation |= line[source++] << 12;
         manipulation |= line[source++] << 6;
         manipulation |= line[source++];
-
-        output_line[output_no++] = (manipulation && (255 << 16)) >> 16;
-        output_line[output_no++] = (manipulation && (255 << 8 )) >> 8;
-        output_line[output_no++] = (manipulation && 255);
+        console->log(bitviz(manipulation));
+        output_line[output_no++] = (manipulation & (255 << 16)) >> 16;
+        output_line[output_no++] = (manipulation & (255 << 8 )) >> 8;
+        output_line[output_no++] = (manipulation & 255);
     }
     return output_line;
 }
