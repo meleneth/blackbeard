@@ -4,30 +4,28 @@
 #include"globals.hpp"
 #include<stdio.h>
 
-#define ASCII_NULL  0x00 
+#define ASCII_NULL  0x00
 #define ASCII_LF    0x0A
 #define ASCII_CR    0x0D
-#define ASCII_EQ    0x3D     
+#define ASCII_EQ    0x3D
 //
 // Public data members go here.
-yEncDecoder::yEncDecoder(NewsGroupPost *newsgrouppost, string filename) :Decoder()// Constructor
+yEncDecoder::yEncDecoder(NewsGroupPost *newsgrouppost, PostFile *file) :Decoder(newsgrouppost, file)// Constructor
 {
     status = S_MESSAGE;
-    this->filename = filename;
-    this->post = newsgrouppost;
 
 //=ybegin line=128 size=123456 name=mybinary.dat
-    header_pattern = new StringPattern(3);
+    header_pattern = new StringPattern(4);
     header_pattern->add_breaker("=ybegin line=");
     header_pattern->add_breaker(" size=");
     header_pattern->add_breaker(" name=");
 
 //=ypart begin=1 end=100000
-    part_pattern = new StringPattern(2);
+    part_pattern = new StringPattern(3);
     part_pattern->add_breaker("=ypart begin=");
     part_pattern->add_breaker(" end=");
 
-    footer_pattern = new StringPattern(1);
+    footer_pattern = new StringPattern(2);
     footer_pattern->add_breaker("yend");
 }
     
@@ -55,6 +53,9 @@ void yEncDecoder::decode_line(string line)
     if(S_MESSAGE == status){
         if(header_pattern->does_match(line)){
             status = S_BODY;
+            header_pattern->pieces(line);
+            this->post_file->filename = header_pattern->results[3];
+            filename = this->post_file->filename;
             open_file();
         } else {
             if(part_pattern->does_match(line)){

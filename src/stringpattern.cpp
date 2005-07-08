@@ -57,6 +57,7 @@ void StringPattern::pieces(string target)
 
         ++i;
     }
+    results.push_back(target);
 }
 
 string StringPattern::get_piece(Uint32 index)

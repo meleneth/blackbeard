@@ -12,7 +12,7 @@ using std::string;
 
 class yEncDecoder : public Decoder {
     public:
-        yEncDecoder(NewsGroupPost *newsgrouppost, string filename); 
+        yEncDecoder(NewsGroupPost *newsgrouppost, PostFile *file); 
         virtual ~yEncDecoder(); 
 
         virtual void decode_line(string line);

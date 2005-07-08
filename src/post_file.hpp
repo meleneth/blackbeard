@@ -13,10 +13,11 @@ using std::string;
 using std::vector;
 
 class PostSet;
+class Decoder;
 class PostFile {
     public:
         PostFile(PostSet *set);
-        ~PostFile(); 
+        ~PostFile();
 
         void part(Uint32 part, Uint32 total_parts, string message_id);
         string status_string(void);
@@ -26,6 +27,7 @@ class PostFile {
 
         Uint32 num_pieces;
         Uint32 seen_pieces;
+        Uint32 piece_size;
         Uint32 downloaded_pieces;
         string filename;
         string status;

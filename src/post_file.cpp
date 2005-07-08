@@ -18,6 +18,7 @@ PostFile::PostFile(PostSet *postset)
     post_set = postset;
     decoder_type = DT_UNKNOWN;
     status = "-ignored-";
+    piece_size = 0;
 }
     
 PostFile::~PostFile() 
@@ -54,7 +55,7 @@ Decoder *PostFile::get_decoder(NewsGroupPost *newsgrouppost, string dest_dir, st
 {
     switch(decoder_type){
         case DT_YENC:
-            return new yEncDecoder(newsgrouppost, dest_dir + "/" + filename);
+            return new yEncDecoder(newsgrouppost, this);
         case DT_UUDECODE:
             return new UUDecoder(newsgrouppost, this, message_id);
         case DT_MIME:
@@ -84,7 +85,6 @@ string PostFile::status_string(void)
 string PostFile::get_bar(void)
 {
     string bar(24, ' ');
-    static int frame=0;
     const char throbber[4] = {'.', 'o', 'O', 'o'};
 
     if(num_pieces == downloaded_pieces) 

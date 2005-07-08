@@ -19,11 +19,10 @@ print EP <<"HERE";
 class ${classname} {
     public:
         ${classname}(int bar);
-        ~${classname}(); 
+        ~${classname}();
 
         int Foo(void);
 
-        
     private:
     protected:
 };
@@ -38,11 +37,11 @@ print EP <<"HERE";
 #include "${infile}.hpp"
 #include"globals.hpp"
 
-${classname}::${classname}(int bar) 
+${classname}::${classname}(int bar)
 {
 }
-    
-${classname}::~${classname}() 
+
+${classname}::~${classname}()
 {
 }
 

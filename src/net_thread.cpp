@@ -53,17 +53,12 @@ void NetThread::Execute(void)
 
 void NetThread::retrieve(PostSet *postset)
 {
-    struct stat my_stats;
     vector< PostFile * >::iterator v;
     vector< string >::iterator s;
+    string dest_dir = config->blackbeard_dir + "/" + postset->subject;
 
     console->log("Retrieving PostSet");
 
-    string dest_dir = config->blackbeard_dir + "/" + postset->subject;
-    console->log(dest_dir);
-    if(stat(dest_dir.c_str(), &my_stats) == -1){
-        mkdir(dest_dir.c_str(), 01777);
-    }
     for (v=postset->files.begin(); v!=postset->files.end(); ++v){
         if(*v)
             (*v)->status = "Marked for retrieval";

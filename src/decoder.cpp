@@ -6,8 +6,14 @@
 
 
 // Public data members go here.
-Decoder::Decoder() // Constructor
+Decoder::Decoder(NewsGroupPost *newsgrouppost, PostFile *file) // Constructor
 {
+    post_file = file;
+    post = newsgrouppost;
+    piece_no = 0;
+    filename = post_file->filename;
+    status = S_MESSAGE;
+    num_bytes_written = 0;
 }
     
 Decoder::~Decoder() // Destructor
@@ -29,12 +35,17 @@ void Decoder::decode()
 
 void Decoder::open_file(void)
 {
-    console->log("Opening [" + filename + "] for writing");
     struct stat my_stats;
-    if(stat(filename.c_str(), &my_stats) == -1){
-        fileptr = fopen(filename.c_str(), "w");
+    string dest_dir = config->blackbeard_dir + "/" + post_file->post_set->subject;
+    if(stat(dest_dir.c_str(), &my_stats) == -1){
+        mkdir(dest_dir.c_str(), 01777);
+    }
+    string real_filename = dest_dir + "/" + filename;
+    console->log("Opening [" + real_filename + "] for writing");
+    if(stat(real_filename.c_str(), &my_stats) == -1){
+        fileptr = fopen(real_filename.c_str(), "w");
     } else {
-        fileptr = fopen(filename.c_str(), "r+");
+        fileptr = fopen(real_filename.c_str(), "r+");
     }
 }
 

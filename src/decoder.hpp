@@ -6,13 +6,15 @@
 #include"newsgrouppost.hpp"
 #include"news_constants.hpp"
 #include"stringpattern.hpp"
+#include"post_file.hpp"
 
 using std::string;
 
+class PostFile;
 class Decoder {
     public:
         // Public data members go here.
-        Decoder(); // Constructor
+        Decoder(NewsGroupPost *newsgrouppost, PostFile *file); // Constructor
         virtual ~Decoder(); // Destructor
 
         virtual void decode();
@@ -23,7 +25,11 @@ class Decoder {
         string filename;
         FILE *fileptr;
 
+        PostFile *post_file;
         NewsGroupPost *post;
+        Uint32 piece_no;
+        Uint32 num_bytes_written;
+
         enum DECODER_STATUS status;
 
         StringPattern *header_pattern;

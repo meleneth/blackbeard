@@ -13,47 +13,55 @@ using std::stringstream;
 #define UUDECODER_OFFSET 337500
 
 // Public data members go here.
-UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, string message_id) : Decoder()// Constructor
+UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, string message_id) : Decoder(newsgrouppost, file)// Constructor
 {
-    this->piece_no = file->piece_no(message_id);
-    this->post = newsgrouppost;
-    this->file = file;
     status = S_MESSAGE;
+    piece_no = file->piece_no(message_id);
 
-    header_pattern = new StringPattern(3);
+    if(piece_no != 1){
+        status = S_BODY;
+        open_file();
+    }
+
+    filename = post_file->filename;
+    header_pattern = new StringPattern(4);
     header_pattern->add_breaker("begin ");
     header_pattern->add_breaker(" ");
+    num_encoded_chars = 0;
 }
-    
-UUDecoder::~UUDecoder() // Destructor
+
+UUDecoder::~UUDecoder()
 {
+    post_file->piece_size = num_encoded_chars;
 }
 
 void UUDecoder::open_file(void)
 {
     Decoder::open_file();
 
-    size_t seek_offset =  UUDECODER_OFFSET * (piece_no - 1);
-    stringstream buf;
-    buf << "Seek offset: " << seek_offset << " Piece no: " << piece_no;
-    console->log(buf.str());
+    size_t seek_offset =  post_file->piece_size * (piece_no - 1);
 
     fseek(fileptr, seek_offset, SEEK_SET);
 }
 
 void UUDecoder::decode_line(string line)
 {
-    
     if(S_MESSAGE == status){
         if(header_pattern->does_match(line)){
             header_pattern->pieces(line);
-            filename = header_pattern->results[1];
+            filename = header_pattern->results[2];
+            post_file->filename = filename;
             open_file();
             status = S_BODY;
         }
     }else if(S_BODY == status){
+        if(line.compare("'") == 0)
+            return;
+        if(line.compare("end") == 0)
+            return;
         string decoded_line = do_the_math(line);
         fwrite(decoded_line.c_str(), 1, decoded_line.length(), fileptr);
+        num_encoded_chars += decoded_line.length();
     }
 }
 
@@ -65,6 +73,7 @@ string UUDecoder::do_the_math(string line)
     }
 
     Uint32 num_encoded_chars = line[0];
+
     size_t source = 1;
     string output_line(num_encoded_chars, ' ');
 
@@ -76,13 +85,10 @@ string UUDecoder::do_the_math(string line)
         manipulation |= line[source++] << 12;
         manipulation |= line[source++] << 6;
         manipulation |= line[source++];
-        console->log(bitviz(manipulation));
         output_line[output_no++] = (manipulation & (255 << 16)) >> 16;
         output_line[output_no++] = (manipulation & (255 << 8 )) >> 8;
         output_line[output_no++] = (manipulation & 255);
     }
-    return output_line;
+    return output_line.substr(0, num_encoded_chars);
 }
 
-// Private members go here.
-// Protected members go here.
