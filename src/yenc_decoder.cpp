@@ -55,11 +55,12 @@ void yEncDecoder::decode_line(string line)
     if(S_MESSAGE == status){
         if(header_pattern->does_match(line)){
             status = S_BODY;
-            
+            open_file();
         } else {
             if(part_pattern->does_match(line)){
                 status = S_BODY;
                 part_pattern->pieces(line);
+                open_file();
                 fseek(fileptr, atoi(part_pattern->results[1].c_str()) -1, SEEK_SET);
             }
         }

@@ -17,6 +17,7 @@ PostFile::PostFile(PostSet *postset)
     downloaded_pieces = 0;
     post_set = postset;
     decoder_type = DT_UNKNOWN;
+    status = "-ignored-";
 }
     
 PostFile::~PostFile() 
@@ -63,38 +64,41 @@ Decoder *PostFile::get_decoder(NewsGroupPost *newsgrouppost, string dest_dir, st
     return NULL;
 }
 
-string PostFile::status(void)
+string PostFile::status_string(void)
 {
-    stringstream status;
-    status << filename << " - ";
-    status << seen_pieces << "/" << num_pieces << " pieces seen   " 
-           << downloaded_pieces << "/"  << num_pieces << " pieces downloaded  ";
+    stringstream mystatus;
+    mystatus << filename << " - " << status << " - ";
+    mystatus << seen_pieces << "/" << num_pieces << " pieces seen   " 
+             << downloaded_pieces << "/"  << num_pieces << " pieces downloaded  ";
     if(num_pieces == downloaded_pieces){
-        status << "100%";
+        mystatus << "100%";
     }else{
         if(num_pieces > 0)
-           status << setprecision(3) 
+           mystatus << setprecision(3) 
                   << ((double)downloaded_pieces / (double)num_pieces) * (double) 100
                   << "%";
     }
-    return status.str();
+    return mystatus.str();
 }
 
 string PostFile::get_bar(void)
 {
-    string bar(20, ' ');
+    string bar(24, ' ');
     static int frame=0;
     const char throbber[4] = {'.', 'o', 'O', 'o'};
 
     if(num_pieces == downloaded_pieces) 
         return "Completed";
     if(num_pieces > 0) {
-        int spaces = downloaded_pieces / num_pieces;
-        bar[spaces] = '>' ;
+        int spaces = (int)floor(((double)downloaded_pieces / (double)num_pieces) * (double)20);
+        bar[spaces+3] = '>' ;
     }
-    if(++frame > 3) frame = 0;
-
-    return throbber[frame] + " [" + bar + "]";
+    if(status.compare("Downloading") == 0){
+        bar[0] = throbber[downloaded_pieces % 4];
+    }
+    bar[2] = '[';
+    bar[23] = ']';
+    return bar;
 }
 
 Uint32 PostFile::piece_no(string message_id)

@@ -93,7 +93,7 @@ void Console::render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num
         string completed_bar;
         if(*i){
             completed_bar = (*i)->get_bar();
-            mvaddnstr(yindex, 1, (*i)->status().c_str(), -1);
+            mvaddnstr(yindex, 1, (*i)->status_string().c_str(), -1);
             mvaddnstr(yindex++, COLS - completed_bar.length() -3, completed_bar.c_str(), -1);
         }
     }

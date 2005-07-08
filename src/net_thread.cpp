@@ -65,10 +65,15 @@ void NetThread::retrieve(PostSet *postset)
         mkdir(dest_dir.c_str(), 01777);
     }
     for (v=postset->files.begin(); v!=postset->files.end(); ++v){
+        if(*v)
+            (*v)->status = "Marked for retrieval";
+    }
+    for (v=postset->files.begin(); v!=postset->files.end(); ++v){
         if(*v){
             current_postfile = *v;
             console->log("Retrieveing " + (*v)->filename);
             (*v)->downloaded_pieces = 0;
+            (*v)->status = "Downloading";
             for (s=(*v)->pieces.begin(); s!=(*v)->pieces.end(); ++s){
                 if((*s).compare("")){
                     NewsGroupPost *newsgrouppost = connection->body(*s);
@@ -76,6 +81,7 @@ void NetThread::retrieve(PostSet *postset)
                     (*v)->downloaded_pieces++;
                 }
             }
+            (*v)->status = "Finished";
         }
     }
 }
