@@ -84,12 +84,12 @@ string PostFile::get_bar(void)
 {
     string bar(20, ' ');
     static int frame=0;
-    char throbber[4] = {'.', 'o', 'O', 'o'};
+    const char throbber[4] = {'.', 'o', 'O', 'o'};
 
     if(num_pieces == downloaded_pieces) 
         return "Completed";
     if(num_pieces > 0) {
-        int spaces = (int)floor(((double)downloaded_pieces / (double)num_pieces) * (double) 20);
+        int spaces = downloaded_pieces / num_pieces;
         bar[spaces] = '>' ;
     }
     if(++frame > 3) frame = 0;
