@@ -92,14 +92,20 @@ string PostFile::get_bar(void)
         int spaces = (int)floor(((double)downloaded_pieces / (double)num_pieces) * (double) 20);
         bar[spaces] = '>' ;
     }
-    bar << "[";
-    for (int i = 0; i < spaces; ++i){
-        bar << " ";
+    if(++frame > 3) frame = 0;
+
+    return throbber[frame] + " [" + bar + "]";
+}
+
+Uint32 PostFile::piece_no(string message_id)
+{
+    Uint32 i=0;
+    vector<string>::iterator p;
+    for(p = pieces.begin() ; p != pieces.end() ; ++p){
+        if(!(*p).compare(message_id)){
+            return i;
+        }
+        i++;
     }
-    bar << ">";
-    for (int i = 0; i < (20 - spaces); ++i){
-        bar << " ";
-    }
-    bar << "]";
-    return bar.str();
+    return 0;
 }
