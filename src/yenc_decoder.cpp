@@ -51,16 +51,14 @@ string yEncDecoder::do_the_math(string line)
 void yEncDecoder::decode_line(string line)
 {
     if(S_MESSAGE == status){
-        if(header_pattern->does_match(line)){
+        if(header_pattern->pieces(line)){
             status = S_BODY;
-            header_pattern->pieces(line);
             this->post_file->filename = header_pattern->results[3];
             filename = this->post_file->filename;
             open_file();
         } else {
-            if(part_pattern->does_match(line)){
+            if(part_pattern->pieces(line)){
                 status = S_BODY;
-                part_pattern->pieces(line);
                 open_file();
                 fseek(fileptr, atoi(part_pattern->results[1].c_str()) -1, SEEK_SET);
             }

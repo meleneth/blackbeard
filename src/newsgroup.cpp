@@ -11,8 +11,20 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     name = group_name;
     console->log("Creation of object for " + group_name);
   
+    StringPattern *pattern;
+//1997-11-19 Atripolis_2097-MIRAGE "ATRIPOLI.R10" (4/4) yEnc
+    pattern = new StringPattern(SP_LASTPART);
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker(" \"");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker("\" (");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker(") yEnc");
+    yenc_subject_patterns.push_front(pattern);
+
 // another fine blb post - File 1 of 1: "blb" yEnc (1/4)
-    
     pattern = new StringPattern(SP_LASTPART);
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker(" - File ");
@@ -29,7 +41,6 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     yenc_subject_patterns.push_front(pattern);
     
 //new and improved blackbeard arrr - "blb" yEnc (1/6)
-    
     pattern = new StringPattern(SP_LASTPART);
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker("- \"");
@@ -40,6 +51,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
     yenc_subject_patterns.push_front(pattern);
+
 
 //UUDecode patterns
 //SDL for those in need - SDL-1.2.7.tar.gz (1/8)
@@ -93,8 +105,7 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
     list< StringPattern * >::iterator sp;
 
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
-        if((*sp)->does_match(subject)){
-            (*sp)->pieces(subject);
+        if((*sp)->pieces(subject)){
             current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
             current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
                                                      (*sp)->get_piecen(SP_MAXFILENO), 
@@ -108,8 +119,7 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
     }
 
     for (sp = uu_subject_patterns.begin(); sp != uu_subject_patterns.end(); ++sp){
-        if((*sp)->does_match(subject)){
-            (*sp)->pieces(subject);
+        if((*sp)->pieces(subject)){
             current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
             current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
                                                      (*sp)->get_piecen(SP_MAXFILENO), 

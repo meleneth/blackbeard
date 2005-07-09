@@ -39,22 +39,35 @@ double PostSet::completed_percent(void)
 
 PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
 {
-    if(!num_files){
-        num_files = max_file_num;
-        files.resize(num_files + 1);
-        Uint32 i;
-        for(i=0;i<num_files+1;i++){
-            files[i] = NULL;
+    if(max_file_num != 0) {
+        if(!num_files){
+            num_files = max_file_num;
+            files.resize(num_files + 1);
+            Uint32 i;
+            for(i=0;i<num_files;i++){
+                files[i] = NULL;
+            }
         }
-    }
 
-    if(files[file_num]){
+        if(files[file_num]){
+            return files[file_num];
+        }
+        
+        files[file_num] = new PostFile(this);
+        files[file_num]->filename = file_name;
         return files[file_num];
     }
-    
-    files[file_num] = new PostFile(this);
-    files[file_num]->filename = file_name;
-    return files[file_num];
+
+    vector<PostFile *>::iterator f;
+    for(f = files.begin(); f!= files.end() ; ++f){
+        if((*f)->filename.compare(file_name) == 0)
+            return *f;
+    }
+
+    PostFile *postfile = new PostFile(this);
+    postfile->filename = file_name;
+    files.push_back(postfile);
+    return postfile;
 }
 
 string PostSet::status(void)

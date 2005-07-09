@@ -49,8 +49,7 @@ void UUDecoder::open_file(void)
 void UUDecoder::decode_line(string line)
 {
     if(S_MESSAGE == status){
-        if(header_pattern->does_match(line)){
-            header_pattern->pieces(line);
+        if(header_pattern->pieces(line)){
             filename = header_pattern->results[2];
             post_file->filename = filename;
             open_file();

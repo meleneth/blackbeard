@@ -21,12 +21,14 @@ class StringPattern {
         void add_breaker(Uint32 part_no);
 
         int does_match(string target);
-        void pieces(string target);
+        int pieces(string target);
+
         string get_piece(Uint32 index);
         Uint32 get_piecen(Uint32 index);
 
         list<string> breakers;
         vector<Uint32> part_order;
+        Uint32 max_part_no;
 
         vector<string> results;
     private:

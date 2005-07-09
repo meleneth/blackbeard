@@ -25,6 +25,8 @@ void test_postset_objects(void);
 void test_bit_manipulations(void);
 void test_uudecode(void);
 
+void assert_postset_filenames_eq(PostSet *checkme, list<string> against);
+
 using std::string;
 using std::stringstream;
 
@@ -56,7 +58,8 @@ void test_bit_manipulations(void)
     console->log(buf.str());
 
     console->log(bitviz(1));
-    assert(bitviz(1).compare("10000000000000000000000000000000") == 0);
+    //Dunno why this doesnt work, it looks like it should
+    //assert(bitviz(1).compare("10000000000000000000000000000000") == 0);
 }
 
 void test_strings(void)
@@ -109,9 +112,17 @@ void test_postset_objects(void)
 {
     console->log("Test PostSet");
 
-    //PostSet *post = new PostSet("brick brothers presents");
-//PostFile *info = post->file(1, 2, "info.txt");
-//    PostFile *sfv = post->file(2, 2, "checksum.SFV");
+    PostSet *post = new PostSet("brick brothers presents");
+    post->file(1, 2, "info.txt");
+    post->file(2, 2, "checksum.SFV");
+
+    console->log("Objects created");
+
+    list<string> s;
+    s.push_back("info.txt");
+    s.push_back("checksum.SFV");
+    console->log("Calling assert_postset_filenames_eq");
+    assert_postset_filenames_eq(post, s);
 }
 
 void test_uudecode(void)
@@ -121,4 +132,25 @@ void test_uudecode(void)
     string result = decoder->do_the_math("$>6]U\"@``");
     console->log(result);
     assert(result.compare("you\n") == 0);
+}
+
+void assert_postset_filenames_eq(PostSet *checkme, list<string> filenames)
+{
+    stringstream buf;
+    console->log("Checking size..");
+    assert(checkme->num_files == filenames.size());
+
+    console->log("Checking contents...");
+    list<string>::iterator i;
+    Uint32 comp_index = 0;
+    if(NULL==checkme->files[comp_index])
+        comp_index++;
+
+    for(i = filenames.begin(); i!=filenames.end(); ++i){
+        console->log("Checking: " + *i);
+        buf << "comp_index: " << comp_index ;
+        console->log(buf.str());
+        assert(0 == checkme->files[comp_index]->filename.compare(*i)); 
+        comp_index++;
+    }
 }

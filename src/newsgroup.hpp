@@ -28,7 +28,6 @@ class NewsGroup {
         list< StringPattern * > uu_subject_patterns;
         list< NewsGroupPost * > messages;
         list< PostSet * > postsets;
-        StringPattern *pattern;
         string status;
         string name;
     private:
