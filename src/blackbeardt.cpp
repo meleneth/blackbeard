@@ -123,6 +123,13 @@ void test_postset_objects(void)
     s.push_back("checksum.SFV");
     console->log("Calling assert_postset_filenames_eq");
     assert_postset_filenames_eq(post, s);
+
+    post = new PostSet("brick brothers presents");
+    post->file(0, 0, "info.txt");
+    post->file(0, 0, "checksum.SFV");
+
+    console->log("Calling assert_postset_filenames_eq");
+    assert_postset_filenames_eq(post, s);
 }
 
 void test_uudecode(void)
