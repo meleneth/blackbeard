@@ -6,6 +6,11 @@
 
 
 // Public data members go here.
+//
+Decoder::Decoder()
+{
+}
+
 Decoder::Decoder(NewsGroupPost *newsgrouppost, PostFile *file) // Constructor
 {
     post_file = file;

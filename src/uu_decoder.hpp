@@ -8,6 +8,7 @@
 class UUDecoder : public Decoder {
     public:
         UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, string message_id); 
+        UUDecoder();
         virtual ~UUDecoder();
 
         virtual void decode_line(string line);

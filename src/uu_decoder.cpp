@@ -12,7 +12,10 @@ using std::stringstream;
 
 #define UUDECODER_OFFSET 337500
 
-// Public data members go here.
+UUDecoder::UUDecoder()
+{
+}
+
 UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, string message_id) : Decoder(newsgrouppost, file)// Constructor
 {
     status = S_MESSAGE;

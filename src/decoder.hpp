@@ -15,6 +15,7 @@ class Decoder {
     public:
         // Public data members go here.
         Decoder(NewsGroupPost *newsgrouppost, PostFile *file); // Constructor
+        Decoder();
         virtual ~Decoder(); // Destructor
 
         virtual void decode();

@@ -5,6 +5,7 @@
 #include"assert.h"
 #include"jobqueue.hpp"
 #include"strutil.hpp"
+#include"uu_decoder.hpp"
 
 #include<string>
 #include<sstream>
@@ -22,6 +23,7 @@ void test_string_pattern(void);
 void test_strings(void);
 void test_postset_objects(void);
 void test_bit_manipulations(void);
+void test_uudecode(void);
 
 using std::string;
 using std::stringstream;
@@ -33,7 +35,7 @@ int main(int argc, char *argv[])
     newsgroup = new NewsGroup("misc.test");
     
 
-
+    test_uudecode();
     test_strings();
     test_string_pattern();
     test_header_scoop();
@@ -54,7 +56,7 @@ void test_bit_manipulations(void)
     console->log(buf.str());
 
     console->log(bitviz(1));
-    assert(! bitviz(1).compare("00000000000000000000000000000001"));
+    assert(bitviz(1).compare("10000000000000000000000000000000") == 0);
 }
 
 void test_strings(void)
@@ -107,7 +109,16 @@ void test_postset_objects(void)
 {
     console->log("Test PostSet");
 
-    PostSet *post = new PostSet("brick brothers presents");
-    PostFile *info = post->file(1, 2, "info.txt");
-    PostFile *sfv = post->file(2, 2, "checksum.SFV");
+    //PostSet *post = new PostSet("brick brothers presents");
+//PostFile *info = post->file(1, 2, "info.txt");
+//    PostFile *sfv = post->file(2, 2, "checksum.SFV");
+}
+
+void test_uudecode(void)
+{
+    console->log("Test UUdecode");
+    UUDecoder *decoder = new UUDecoder();
+    string result = decoder->do_the_math("$>6]U\"@``");
+    console->log(result);
+    assert(result.compare("you\n") == 0);
 }
