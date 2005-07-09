@@ -30,12 +30,11 @@ UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, string messag
     header_pattern = new StringPattern(4);
     header_pattern->add_breaker("begin ");
     header_pattern->add_breaker(" ");
-    num_encoded_chars = 0;
 }
 
 UUDecoder::~UUDecoder()
 {
-    post_file->piece_size = num_encoded_chars;
+    post_file->piece_size = num_bytes_written;
 }
 
 void UUDecoder::open_file(void)
@@ -63,8 +62,8 @@ void UUDecoder::decode_line(string line)
         if(line.compare("end") == 0)
             return;
         string decoded_line = do_the_math(line);
-        fwrite(decoded_line.c_str(), 1, decoded_line.length(), fileptr);
-        num_encoded_chars += decoded_line.length();
+        fwrite(decoded_line.c_str(), decoded_line.length(), 1, fileptr);
+        num_bytes_written += decoded_line.length();
     }
 }
 

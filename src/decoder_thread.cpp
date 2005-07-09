@@ -1,6 +1,8 @@
 #include "decoder_thread.hpp"
 #include"globals.hpp"
 
+using std::stringstream;
+
 // Public data members go here.
 DecoderThread::DecoderThread() // Constructor
 {
@@ -18,6 +20,10 @@ void DecoderThread::Execute(void)
         if(NULL != decoder){
             console->log("I gotta job!");
             decoder->decode();
+            stringstream buf;
+            buf << "Decoder decoded " << decoder->num_bytes_written << " bytes";
+            console->log(buf.str());
+            delete decoder;
         }
     }
 }
