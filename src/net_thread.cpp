@@ -41,8 +41,8 @@ void NetThread::Execute(void)
 */
     console->log("---- End of pre-configured commands ----");
     while(1){
-        if(_fetch && current_postset){
-            retrieve(current_postset);
+        if(_fetch && console->current_postset){
+            retrieve(console->current_postset);
             _fetch = 0;
         }
         while(connection->has_data_waiting()){

@@ -7,7 +7,7 @@
 
 extern Config *config;
 extern NewsGroup *newsgroup;
-extern PostSet *current_postset;
+//extern PostSet *current_postset;
 extern PostFile *current_postfile;
 extern JobQueue *jobqueue;
 extern void shut_down(void);

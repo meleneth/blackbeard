@@ -22,6 +22,9 @@ double PostSet::completed_percent(void)
 {
     Uint32 total_pieces = 0;
     Uint32 downloaded_pieces = 0;
+    if(files.begin() == files.end())
+        return 0;
+
     vector<PostFile *>::iterator v;
 
     for (v = files.begin(); v != files.end(); ++v){
@@ -39,7 +42,7 @@ double PostSet::completed_percent(void)
 
 PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
 {
-    console->log("Filename: " + file_name);
+    stringstream buf;
 
     if(max_file_num != 0) {
         if(!num_files){
@@ -62,8 +65,9 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
 
     vector<PostFile *>::iterator f;
     for(f = files.begin(); f!= files.end() ; ++f){
-        if((*f)->filename.compare(file_name) == 0)
+        if((*f)->filename.compare(file_name) == 0){
             return *f;
+        }
     }
 
     PostFile *postfile = new PostFile(this);

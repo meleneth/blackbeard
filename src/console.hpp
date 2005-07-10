@@ -34,6 +34,8 @@ class Console {
         string input;
         Uint32 print_logs;
         Uint32 print_on_delete;
+
+        PostSet *current_postset;
     private:
         // Private members go here.
     protected:

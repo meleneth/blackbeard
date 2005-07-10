@@ -121,6 +121,8 @@ void test_more_string_pattern()
     assert(pattern->match(subject));
     assert_strings_eq(pattern->get_piece(SP_SUBJECT), 
                       "1997-02-23 The_Fourth_Generation_FULL_CD-FURY");
+
+    assert(0 == pattern->get_piecen(SP_MAXFILENO));
 }
 
 void test_header_scoop(void)

@@ -87,7 +87,7 @@ void Console::render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num
 
     stringstream buf;
     buf << "(" << postset_no << "/" << num_postsets << ") postsets";
-    mvaddnstr(yindex, COLS - (buf.str().length() + 3), buf.str().c_str(), -1);
+    mvaddnstr(yindex++, COLS - (buf.str().length() + 3), buf.str().c_str(), -1);
 
     for(i = set->files.begin(); i!= set->files.end(); ++i){
         string completed_bar;

@@ -28,23 +28,21 @@ void InputThread::Execute(void)
 //        printf("%i\n", key);
             switch(key){
                 case 13:
-                    if(current_postset){
-                        net_thread->set_retrieve();
-                    }
+                    net_thread->set_retrieve();
                     break;
                 case KEY_LEFTARROW:
-                    i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), current_postset);
+                    i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), console->current_postset);
                     if(newsgroup->postsets.begin() != i){
                         i--;
-                        current_postset = *i;
+                        console->current_postset = *i;
                     }
                     break;
                 case KEY_RIGHTARROW:
-                    i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), current_postset);
+                    i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), console->current_postset);
                     if(newsgroup->postsets.end() != i){
                         i++;
                         if(newsgroup->postsets.end() != i)
-                            current_postset = *i;
+                            console->current_postset = *i;
                     }
                     break;
                 case KEY_Q:

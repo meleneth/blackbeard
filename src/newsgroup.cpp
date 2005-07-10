@@ -102,14 +102,20 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
 {
     console->log("(" + message_id + ") " + subject);
     list< StringPattern * >::iterator sp;
+    PostSet *current_postset;
 
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
             console->log("Subject: " + (*sp)->get_piece(SP_SUBJECT));
             current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
+            if(console->current_postset == NULL)
+                console->current_postset = current_postset;
+            console->log("FileName: " + (*sp)->get_piece(SP_FILENAME));
+
             current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
                                                      (*sp)->get_piecen(SP_MAXFILENO), 
                                                      (*sp)->get_piece(SP_FILENAME));
+
             current_postfile->decoder_type = DT_YENC;
             current_postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), message_id);
@@ -121,6 +127,8 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
     for (sp = uu_subject_patterns.begin(); sp != uu_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
             current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
+            if(console->current_postset == NULL)
+                console->current_postset = current_postset;
             current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
                                                      (*sp)->get_piecen(SP_MAXFILENO), 
                                                      (*sp)->get_piece(SP_FILENAME));
@@ -138,12 +146,13 @@ PostSet *NewsGroup::postset_for_subject(string subject)
     list<PostSet *>::iterator i;
     for(i = postsets.begin() ; i != postsets.end() ; ++i){
         if(0 == subject.compare((*i)->subject)){
+            console->log("Found postset for " + subject);
             return *i;
         }
     }
 
     PostSet *new_post = new PostSet(subject);
-    postsets.push_front(new_post);
+    postsets.push_back(new_post);
     return new_post;
 }
 

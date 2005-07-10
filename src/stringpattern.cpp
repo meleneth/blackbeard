@@ -7,7 +7,7 @@ StringPattern::StringPattern(Uint32 max_part_no)
     part_order.resize(max_part_no);
     results.resize(max_part_no);
     for(Uint32 i=0; i<max_part_no; i++){
-        part_order[i] = 0;
+        part_order[i] = 31337;
         results[i] = "";
     }
     this->max_part_no = max_part_no;
@@ -54,6 +54,8 @@ int StringPattern::match(string target)
 
 string StringPattern::get_piece(Uint32 index)
 {
+    if(part_order[index] == 31337)
+        return "";
     return results[part_order[index]];
 }
 
