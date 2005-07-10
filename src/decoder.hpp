@@ -11,7 +11,7 @@
 using std::string;
 
 class PostFile;
-class Decoder {
+class Decoder : public Job {
     public:
         // Public data members go here.
         Decoder(NewsGroupPost *newsgrouppost, PostFile *file); // Constructor

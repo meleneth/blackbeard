@@ -7,7 +7,7 @@
 #include "newsgrouppost.hpp"
 #include "yenc_decoder.hpp"
 
-#include"globals.hpp"
+#include "globals.hpp"
 
 using std::string;
 using std::stringstream;

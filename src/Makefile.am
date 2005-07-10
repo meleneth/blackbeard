@@ -9,8 +9,8 @@ libengine_a_SOURCES = newsgroup.cpp newsgroup.hpp config.cpp config.hpp console.
 					  net_thread.cpp net_thread.hpp decoder.cpp decoder.hpp decoder_thread.cpp \
 					  decoder_thread.hpp yenc_decoder.cpp yenc_decoder.hpp uu_decoder.cpp \
 					  uu_decoder.hpp strutil.hpp strutil.cpp stringpattern.cpp stringpattern.hpp \
-					  post_set.cpp post_set.hpp post_file.cpp post_file.hpp jobqueue.hpp jobqueue.cpp \
-					  input_thread.cpp input_thread.hpp
+					  post_set.cpp post_set.hpp post_file.cpp post_file.hpp job.hpp job.cpp \
+					  jobqueue.hpp jobqueue.cpp input_thread.cpp input_thread.hpp
 
 bt_SOURCES = blackbeardt.cpp libengine.a
 blb_SOURCES = blackbeard.cpp libengine.a

@@ -1,7 +1,7 @@
 #include "newsgroup.hpp"
-#include"news_constants.hpp"
-#include"globals.hpp"
-#include"strutil.hpp"
+#include "news_constants.hpp"
+#include "globals.hpp"
+#include "strutil.hpp"
 
 using std::string;
 

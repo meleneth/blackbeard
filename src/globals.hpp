@@ -1,9 +1,9 @@
-#include"console.hpp"
-#include"config.hpp"
-#include"newsgroup.hpp"
-#include"post_set.hpp"
-#include"post_file.hpp"
-#include"jobqueue.hpp"
+#include "console.hpp"
+#include "config.hpp"
+#include "newsgroup.hpp"
+#include "post_set.hpp"
+#include "post_file.hpp"
+#include "jobqueue.hpp"
 
 extern Config *config;
 extern NewsGroup *newsgroup;

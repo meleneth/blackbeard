@@ -9,18 +9,17 @@ JobQueue::~JobQueue()
 {
 }
 
-Decoder *JobQueue::get_next_decoder_job(void)
+Job *JobQueue::get_next_decoder_job(void)
 {
-    if(decoder_jobs.size()){
-        Decoder *job = *decoder_jobs.begin();
-        decoder_jobs.pop_front();
+    if(jobs.size()){
+        Job *job = *jobs.begin();
+        jobs.pop_front();
         return job;
     }
     return NULL;
 }
 
-void JobQueue::add_decoder_job(Decoder *job)
+void JobQueue::add_decoder_job(Job *job)
 {
-    decoder_jobs.push_back(job);
+    jobs.push_back(job);
 }
-
