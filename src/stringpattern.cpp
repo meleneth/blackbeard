@@ -48,7 +48,8 @@ int StringPattern::match(string target)
         count++;
         s++;
     }
-    results[count] = target;
+    if(target.compare(""))
+        results[count] = target;
     return 1;
 }
 
