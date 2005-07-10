@@ -35,20 +35,20 @@ int StringPattern::match(string target)
         results[i] = "";
     }
 
+    Uint32 count = 0;
     s = breakers.begin();
     while(s != breakers.end()){
         size_t index = target.find(*s);
 
-        if(index == string::npos){
+        if(index == string::npos)
             return 0;
-        }else{
-            string flesh = target.substr(0, index);
-            results.push_back(flesh);
-            target.erase(0, (*s).length() + index);
-        }
-        ++s;
+    
+        results[count] = target.substr(0, index);
+        target.erase(0, (*s).length() + index);
+        count++;
+        s++;
     }
-    results.push_back(target);
+    results[count] = target;
     return 1;
 }
 

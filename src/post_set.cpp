@@ -39,6 +39,8 @@ double PostSet::completed_percent(void)
 
 PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
 {
+    console->log("Filename: " + file_name);
+
     if(max_file_num != 0) {
         if(!num_files){
             num_files = max_file_num;

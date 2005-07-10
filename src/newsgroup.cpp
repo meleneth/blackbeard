@@ -52,7 +52,6 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(")");
     yenc_subject_patterns.push_front(pattern);
 
-
 //UUDecode patterns
 //SDL for those in need - SDL-1.2.7.tar.gz (1/8)
     pattern = new StringPattern(SP_LASTPART);
@@ -106,6 +105,7 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
 
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
+            console->log("Subject: " + (*sp)->get_piece(SP_SUBJECT));
             current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
             current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
                                                      (*sp)->get_piecen(SP_MAXFILENO), 

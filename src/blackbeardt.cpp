@@ -24,8 +24,10 @@ void test_strings(void);
 void test_postset_objects(void);
 void test_bit_manipulations(void);
 void test_uudecode(void);
+void test_more_string_pattern(void);
 
 void assert_postset_filenames_eq(PostSet *checkme, list<string> against);
+void assert_strings_eq(string s1, string s2);
 
 using std::string;
 using std::stringstream;
@@ -43,6 +45,7 @@ int main(int argc, char *argv[])
     test_header_scoop();
     test_postset_objects();
     test_bit_manipulations();
+    test_more_string_pattern();
 	return 0;
 }
 
@@ -85,7 +88,7 @@ void test_strings(void)
 void test_string_pattern(void)
 {
     console->log("Test StringPattern");
-    StringPattern *s = new StringPattern(6);
+    StringPattern *s = new StringPattern(7);
 
     s->add_breaker(" - File ");
     s->add_breaker(" of ");
@@ -98,6 +101,26 @@ void test_string_pattern(void)
     assert(!s->match("Star Wars Clone Wars \"Clone Wars Chapter 20.mpg\" yEnc (248/258)"));
 
     s->match("Star Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (248/258)");
+}
+
+void test_more_string_pattern()
+{
+    console->log("Test More String Pattern");
+
+    string subject = "1997-02-23 The_Fourth_Generation_FULL_CD-FURY \"fry-4g06.zip\" (4/4) yEnc";
+    StringPattern *pattern = new StringPattern(SP_LASTPART);
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker(" \"");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker("\" (");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker(") yEnc");
+
+    assert(pattern->match(subject));
+    assert_strings_eq(pattern->get_piece(SP_SUBJECT), 
+                      "1997-02-23 The_Fourth_Generation_FULL_CD-FURY");
 }
 
 void test_header_scoop(void)
@@ -157,7 +180,15 @@ void assert_postset_filenames_eq(PostSet *checkme, list<string> filenames)
         console->log("Checking: " + *i);
         buf << "comp_index: " << comp_index ;
         console->log(buf.str());
-        assert(0 == checkme->files[comp_index]->filename.compare(*i)); 
+        buf.str("");
+        assert_strings_eq(checkme->files[comp_index]->filename, *i);
         comp_index++;
     }
+}
+
+void assert_strings_eq(string s1, string s2)
+{
+    if(s1.compare(s2) == 0)
+        return;
+    console->log("(" + s1 + ") is not equal to (" + s2 + ")");
 }
