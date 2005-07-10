@@ -100,17 +100,14 @@ void NewsGroup::header_scoop(string xover_line)
 
 void NewsGroup::digest_subject_line(string message_id, string subject)
 {
-    console->log("(" + message_id + ") " + subject);
     list< StringPattern * >::iterator sp;
     PostSet *current_postset;
 
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
-            console->log("Subject: " + (*sp)->get_piece(SP_SUBJECT));
             current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
             if(console->current_postset == NULL)
                 console->current_postset = current_postset;
-            console->log("FileName: " + (*sp)->get_piece(SP_FILENAME));
 
             current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
                                                      (*sp)->get_piecen(SP_MAXFILENO), 
@@ -119,7 +116,6 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
             current_postfile->decoder_type = DT_YENC;
             current_postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), message_id);
-            console->log("matched yEnc subject pattern");
             return;
         }
     }
@@ -135,7 +131,6 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
             current_postfile->decoder_type = DT_UUDECODE;
             current_postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), message_id);
-            console->log("matched UU subject pattern");
             return;
         }
     }
@@ -146,7 +141,6 @@ PostSet *NewsGroup::postset_for_subject(string subject)
     list<PostSet *>::iterator i;
     for(i = postsets.begin() ; i != postsets.end() ; ++i){
         if(0 == subject.compare((*i)->subject)){
-            console->log("Found postset for " + subject);
             return *i;
         }
     }
