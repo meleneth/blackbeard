@@ -13,7 +13,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
   
     StringPattern *pattern;
 //1997-11-19 Atripolis_2097-MIRAGE "ATRIPOLI.R10" (4/4) yEnc
-    pattern = new StringPattern(SP_LASTPART);
+    pattern = new StringPattern(SP_LASTPART +1);
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker(" \"");
     pattern->add_breaker(SP_FILENAME);
@@ -25,7 +25,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     yenc_subject_patterns.push_front(pattern);
 
 // another fine blb post - File 1 of 1: "blb" yEnc (1/4)
-    pattern = new StringPattern(SP_LASTPART);
+    pattern = new StringPattern(SP_LASTPART +1);
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker(" - File ");
     pattern->add_breaker(SP_FILENO);
@@ -41,7 +41,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     yenc_subject_patterns.push_front(pattern);
     
 //new and improved blackbeard arrr - "blb" yEnc (1/6)
-    pattern = new StringPattern(SP_LASTPART);
+    pattern = new StringPattern(SP_LASTPART +1);
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker("- \"");
     pattern->add_breaker(SP_FILENAME);
@@ -54,7 +54,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
 
 //UUDecode patterns
 //SDL for those in need - SDL-1.2.7.tar.gz (1/8)
-    pattern = new StringPattern(SP_LASTPART);
+    pattern = new StringPattern(SP_LASTPART +1);
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker(" - ");
     pattern->add_breaker(SP_FILENAME);
@@ -66,7 +66,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     uu_subject_patterns.push_front(pattern);
 
 //SDL for those in need - File 1 of 1: SDL-1.2.7.tar.gz (1/8)
-    pattern = new StringPattern(SP_LASTPART);
+    pattern = new StringPattern(SP_LASTPART +1);
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker(" - File ");
     pattern->add_breaker(SP_FILENO);
