@@ -44,7 +44,7 @@ void Console::render(void)
     erase();
     
     draw_box(0, 0, COLS-1, LINES-1);
-    draw_box(0, 0, COLS-1, 12);
+    draw_box(0, 0, COLS-1, 20);
 
     if(newsgroup){
         string groupline = newsgroup->name + " ( " + newsgroup->status + " )";
@@ -67,7 +67,7 @@ void Console::render(void)
         
     }
 
-    for(i = loglines.begin() ; (i != loglines.end()) && counter > 13; ++i)
+    for(i = loglines.begin() ; (i != loglines.end()) && counter > 20; ++i)
     {
         mvaddnstr(counter, 2,  i->c_str(), -1);
         counter--;
@@ -89,7 +89,7 @@ void Console::render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num
     buf << "(" << postset_no << "/" << num_postsets << ") postsets";
     mvaddnstr(yindex++, COLS - (buf.str().length() + 3), buf.str().c_str(), -1);
 
-    for(i = set->files.begin(); i!= set->files.end(); ++i){
+    for(i = set->files.begin(); (i!= set->files.end()) && yindex < 20 ; ++i){
         string completed_bar;
         if(*i){
             completed_bar = (*i)->get_bar();
