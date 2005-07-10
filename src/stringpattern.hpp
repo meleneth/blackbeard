@@ -20,8 +20,7 @@ class StringPattern {
         void add_breaker(string pattern);
         void add_breaker(Uint32 part_no);
 
-        int does_match(string target);
-        int pieces(string target);
+        int match(string target);
 
         string get_piece(Uint32 index);
         Uint32 get_piecen(Uint32 index);

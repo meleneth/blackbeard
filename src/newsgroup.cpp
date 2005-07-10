@@ -105,7 +105,7 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
     list< StringPattern * >::iterator sp;
 
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
-        if((*sp)->pieces(subject)){
+        if((*sp)->match(subject)){
             current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
             current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
                                                      (*sp)->get_piecen(SP_MAXFILENO), 
@@ -119,7 +119,7 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
     }
 
     for (sp = uu_subject_patterns.begin(); sp != uu_subject_patterns.end(); ++sp){
-        if((*sp)->pieces(subject)){
+        if((*sp)->match(subject)){
             current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
             current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
                                                      (*sp)->get_piecen(SP_MAXFILENO), 

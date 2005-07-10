@@ -6,7 +6,7 @@ StringPattern::StringPattern(Uint32 max_part_no)
 {
     part_order.resize(max_part_no);
     results.resize(max_part_no);
-    for(unsigned int i=0; i<max_part_no; i++){
+    for(Uint32 i=0; i<max_part_no; i++){
         part_order[i] = 0;
         results[i] = "";
     }
@@ -15,24 +15,6 @@ StringPattern::StringPattern(Uint32 max_part_no)
     
 StringPattern::~StringPattern() 
 {
-}
-
-int StringPattern::does_match(string target)
-{
-    list<string>::iterator i;
-    i = breakers.begin();
-    while(i != breakers.end()){
-        size_t index = target.find(*i);
-
-        if(index != string::npos){
-            target.erase(0, (*i).length() + index);
-        }else{
-            return 0;
-        }
-
-        ++i;
-    }
-    return 1;
 }
 
 void StringPattern::add_breaker(string target)
@@ -45,10 +27,9 @@ void StringPattern::add_breaker(Uint32 target)
     part_order[target] = breakers.size();
 }
 
-int StringPattern::pieces(string target)
+int StringPattern::match(string target)
 {
     list<string>::iterator s;
-    results.clear();
 
     for(Uint32 i=0; i<max_part_no; i++){
         results[i] = "";
