@@ -7,6 +7,7 @@
 #include"news_constants.hpp"
 #include"stringpattern.hpp"
 #include"post_file.hpp"
+#include"job.hpp"
 
 using std::string;
 
