@@ -82,14 +82,16 @@ void Console::render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num
 
     Uint32 yindex = 2;
     vector<PostFile *>::iterator i;
-
+    vector<PostFile *> files;
+    files = set->files;
     mvaddnstr(yindex, 1, set->status().c_str(), -1);
 
     stringstream buf;
     buf << "(" << postset_no << "/" << num_postsets << ") postsets";
-    mvaddnstr(yindex++, COLS - (buf.str().length() + 3), buf.str().c_str(), -1);
+    string str = buf.str();
+    mvaddnstr(yindex++, COLS - (str.length() + 3), str.c_str(), -1);
 
-    for(i = set->files.begin(); (i!= set->files.end()) && yindex < lowest_line ; ++i){
+    for(i = files.begin(); (i!= files.end()) && yindex < lowest_line ; ++i){
         string completed_bar;
         if(*i){
             completed_bar = (*i)->get_bar();
