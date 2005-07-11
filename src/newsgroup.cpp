@@ -24,6 +24,24 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(") yEnc");
     yenc_subject_patterns.push_front(pattern);
 
+
+// Beekmans post "fUf.v4.pal.dvdr.part024.rar" [027/144] - yEnc (140/201)
+    pattern = new StringPattern(SP_LASTPART +1);
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker(" \"");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker("\" [");
+    pattern->add_breaker(SP_FILENO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXFILENO);
+    pattern->add_breaker("] - yEnc (");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker(")");
+    yenc_subject_patterns.push_front(pattern);
+
+
 // another fine blb post - File 1 of 1: "blb" yEnc (1/4)
     pattern = new StringPattern(SP_LASTPART +1);
     pattern->add_breaker(SP_SUBJECT);
@@ -44,6 +62,23 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern = new StringPattern(SP_LASTPART +1);
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker("- \"");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker("\" yEnc (");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker(")");
+    yenc_subject_patterns.push_front(pattern);
+
+//(OMNI) E's Otherwise vol.3 [107/114] - "jspec-es.otherwise.vol3.vol0189+131.PAR2" yEnc (054/137)
+//(OMNI) Case.Closed.Case.04.vol.05.r1.dvdr-kif[30/97] - "case.closed.case.04.vol.05.r1.dvdr-kif.r27" yEnc (072/201)
+    pattern = new StringPattern(SP_LASTPART +1);
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker("[");
+    pattern->add_breaker(SP_FILENO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXFILENO);
+    pattern->add_breaker("] - \"");
     pattern->add_breaker(SP_FILENAME);
     pattern->add_breaker("\" yEnc (");
     pattern->add_breaker(SP_PARTNO);
@@ -102,6 +137,7 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
 {
     list< StringPattern * >::iterator sp;
     PostSet *current_postset;
+    console->log("Subject: " + subject);
 
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
