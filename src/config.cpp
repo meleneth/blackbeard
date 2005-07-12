@@ -16,7 +16,7 @@ using std::endl;
 using std::string;
 
 // Public data members go here.
-Config::Config() // Constructor
+Config::Config(int argc, char *argv[]) // Constructor
 {
     news_server = "localhost";
     news_group  = "alt.text";
@@ -26,7 +26,12 @@ Config::Config() // Constructor
     blackbeard_dir = home_dir + "/blackbeard";
     config_filename = home_dir + CONFIGFILENAME;
     news_port = 119;
+    debug_mode = 0;
 
+    string debug = "-d";
+    if(argc == 2)
+        if(0 == debug.compare(argv[1]))
+            debug_mode = 1;
 }
     
 Config::~Config() // Destructor

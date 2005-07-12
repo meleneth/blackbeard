@@ -31,6 +31,10 @@ using std::list;
 
 int main(int argc, char *argv[])
 {
+    console = new Console();
+    config = new Config(argc, argv);
+    config->read_config_file();
+
     do_init();
 
     string input("");
@@ -41,12 +45,14 @@ int main(int argc, char *argv[])
     DecoderThread *decoder_thread = new DecoderThread();
     decoder_thread->Start();
 
-    InputThread *input_thread = new InputThread(net_thread);
-    input_thread->Start();
+    if(0 == config->debug_mode){
+        InputThread *input_thread = new InputThread(net_thread);
+        input_thread->Start();
+        pthread_join(input_thread->ThreadId, NULL);
+    }
 
     pthread_join(net_thread->ThreadId, NULL);
     pthread_join(decoder_thread->ThreadId, NULL);
-    pthread_join(input_thread->ThreadId, NULL);
     
     // will never get here, too many infinite loops in the threads
     
@@ -56,25 +62,28 @@ int main(int argc, char *argv[])
 
 void do_init(void)
 {
-    // ncurses
-    signal(SIGINT, finish);
-    initscr();
-    keypad(stdscr, TRUE);
-    nonl();
-    cbreak();
-    noecho();
-    nodelay(stdscr, 1);
+    if(0 == config->debug_mode){
+        // ncurses
+        signal(SIGINT, finish);
+        initscr();
+        keypad(stdscr, TRUE);
+        nonl();
+        cbreak();
+        noecho();
+        nodelay(stdscr, 1);
+    }
     
     // global objects
     current_postset = NULL;
     current_postfile = NULL;
-    console = new Console();
-    console->print_on_delete = 1;
-    config = new Config();
-    config->read_config_file();
     jobqueue = new JobQueue();
-
     newsgroup = new NewsGroup(config->news_group);
+
+    if(0 == config->debug_mode) { 
+        console->print_on_delete = 1;
+    }else{
+        console->print_logs = 1;
+    }
 }
 
 static void finish(int sig)

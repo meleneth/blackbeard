@@ -9,7 +9,7 @@ using std::string;
 class Config {
     public:
         // Public data members go here.
-        Config(); // Constructor
+        Config(int argc, char *argv[]); // Constructor
         ~Config(); // Destructor
 
         void read_config_file(void);
@@ -22,6 +22,7 @@ class Config {
         string config_filename;
         string username;
         string password;
+        Uint32 debug_mode;
 
         Uint32 news_port;
     private:
