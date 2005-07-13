@@ -2,8 +2,14 @@
 #include "news_constants.hpp"
 #include "globals.hpp"
 #include "strutil.hpp"
+#include <iostream>  // I/O 
+#include <fstream>   // file I/O
 
 using std::string;
+using std::ofstream;
+using std::ifstream;
+using std::ios;
+using std::endl;
 
 // Public data members go here.
 NewsGroup::NewsGroup(string group_name) // Constructor
@@ -217,5 +223,17 @@ int NewsGroup::status_code()
 	return return_code;
 }
 
-// Private members go here.
-// Protected members go here.
+void NewsGroup::load_from_file(string filename)
+{
+    char linebuffer[1024];
+    ifstream in;
+
+    in.open(filename.c_str(), ios::in);
+    in.getline(linebuffer, 1024);
+
+    while(!in.eof()){
+        digest_subject_line("stored", linebuffer);
+        in.getline(linebuffer, 1024);
+    }
+}
+

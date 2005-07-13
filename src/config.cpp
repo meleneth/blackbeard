@@ -27,11 +27,24 @@ Config::Config(int argc, char *argv[]) // Constructor
     config_filename = home_dir + CONFIGFILENAME;
     news_port = 119;
     debug_mode = 0;
+    load_file = "";
+    console->print_on_delete = 1;
 
+    int ac=1;
     string debug = "-d";
-    if(argc == 2)
-        if(0 == debug.compare(argv[1]))
+    string load = "-l";
+    while(ac < argc){
+        if(0 == debug.compare(argv[ac])){
+            console->print_logs = 1;
+            console->keep_logs = 0;
             debug_mode = 1;
+        }else if(0 == load.compare(argv[ac])){
+            ac++;
+            load_file = argv[ac];
+            console->log("Loading postsets from file: " + load_file);
+        }
+        ac++;
+    }
 }
     
 Config::~Config() // Destructor

@@ -20,6 +20,7 @@ class Config {
         string home_dir;
         string blackbeard_dir;
         string config_filename;
+        string load_file;
         string username;
         string password;
         Uint32 debug_mode;

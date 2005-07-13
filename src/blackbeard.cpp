@@ -79,11 +79,8 @@ void do_init(void)
     jobqueue = new JobQueue();
     newsgroup = new NewsGroup(config->news_group);
 
-    if(0 == config->debug_mode) { 
-        console->print_on_delete = 1;
-    }else{
-        console->print_logs = 1;
-        console->keep_logs = 0;
+    if(config->load_file.compare("") != 0){
+        newsgroup->load_from_file(config->load_file);
     }
 }
 
