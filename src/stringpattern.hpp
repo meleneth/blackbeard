@@ -30,6 +30,7 @@ class StringPattern {
         Uint32 max_part_no;
 
         vector<string> results;
+        string name;
     private:
         // Private members go here.
     protected:

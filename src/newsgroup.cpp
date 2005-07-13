@@ -23,7 +23,20 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(") yEnc");
     yenc_subject_patterns.push_front(pattern);
+    pattern->name = "Harold";
 
+//001 - Initial D S4D1 (2-9) - yEnc "HD1_5.part001.rar" (01/79)
+    pattern = new StringPattern(SP_LASTPART +1);
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker(" - yEnc \"");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker("\" (");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker(")");
+    yenc_subject_patterns.push_front(pattern);
+    pattern->name = "zPimplez";
 
 // Beekmans post "fUf.v4.pal.dvdr.part024.rar" [027/144] - yEnc (140/201)
     pattern = new StringPattern(SP_LASTPART +1);
@@ -40,6 +53,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
     yenc_subject_patterns.push_front(pattern);
+    pattern->name = "Maude";
 
 
 // another fine blb post - File 1 of 1: "blb" yEnc (1/4)
@@ -57,6 +71,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
     yenc_subject_patterns.push_front(pattern);
+    pattern->name = "Harriet";
     
 //new and improved blackbeard arrr - "blb" yEnc (1/6)
     pattern = new StringPattern(SP_LASTPART +1);
@@ -69,6 +84,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
     yenc_subject_patterns.push_front(pattern);
+    pattern->name = "Matilda";
 
 //(OMNI) E's Otherwise vol.3 [107/114] - "jspec-es.otherwise.vol3.vol0189+131.PAR2" yEnc (054/137)
 //(OMNI) Case.Closed.Case.04.vol.05.r1.dvdr-kif[30/97] - "case.closed.case.04.vol.05.r1.dvdr-kif.r27" yEnc (072/201)
@@ -86,6 +102,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
     yenc_subject_patterns.push_front(pattern);
+    pattern->name = "switch";
 
 //UUDecode patterns
 //SDL for those in need - SDL-1.2.7.tar.gz (1/8)
@@ -99,6 +116,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
     uu_subject_patterns.push_front(pattern);
+    pattern->name = "Stumpy";
 
 //SDL for those in need - File 1 of 1: SDL-1.2.7.tar.gz (1/8)
     pattern = new StringPattern(SP_LASTPART +1);
@@ -115,6 +133,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(SP_MAXPARTNO);
     pattern->add_breaker(")");
     uu_subject_patterns.push_front(pattern);
+    pattern->name = "Pally";
 }
 
     
@@ -138,6 +157,13 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
     list< StringPattern * >::iterator sp;
     PostSet *current_postset;
     console->log("Subject: " + subject);
+
+    //"[DVD9]" evil delete it >.<
+    size_t s = subject.find("[DVD9]");
+    while(s < string::npos){
+        subject.replace(s, 6, "_DVD9_");
+        s=subject.find("[DVD9]");
+    }
 
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){

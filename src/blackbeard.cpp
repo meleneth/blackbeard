@@ -83,6 +83,7 @@ void do_init(void)
         console->print_on_delete = 1;
     }else{
         console->print_logs = 1;
+        console->keep_logs = 0;
     }
 }
 

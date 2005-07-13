@@ -34,6 +34,7 @@ class Console {
         string input;
         Uint32 print_logs;
         Uint32 print_on_delete;
+        Uint32 keep_logs;
 
         PostSet *current_postset;
     private:

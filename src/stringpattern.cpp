@@ -11,6 +11,7 @@ StringPattern::StringPattern(Uint32 max_part_no)
         results[i] = "";
     }
     this->max_part_no = max_part_no;
+    name="";
 }
     
 StringPattern::~StringPattern() 
@@ -49,6 +50,7 @@ int StringPattern::match(string target)
         s++;
     }
     results[count] = target;
+    console->log("Pattern " + name + " matched");
     return 1;
 }
 

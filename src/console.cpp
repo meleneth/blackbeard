@@ -16,6 +16,7 @@ Console::Console() // Constructor
     box_log("Console Initialized");
     input = "";
     print_on_delete = 0;
+    keep_logs = 1;
 }
 
 Console::~Console() // Destructor
@@ -117,10 +118,10 @@ void Console::check_input(char key)
 
 void Console::log(string line)
 {
-    loglines.push_front(line);
-    if(print_logs){
+    if(keep_logs)
+        loglines.push_front(line);
+    if(print_logs)
         printf("%s\n", line.c_str());
-    }
 }
 
 void Console::fatal(string line)

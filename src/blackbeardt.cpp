@@ -133,16 +133,22 @@ void test_header_scoop(void)
     group->header_scoop("2321\tStar Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (248/258)\tHomer P Wylde <brick@house.com>\t18 Jun 2005 05:50:02 GMT\t<d90cma$9hk$2320@answer.sectorfour>\t\t344451\t2669\tXref: answer.sectorfour misc.test:2321");
     group->digest_subject_line("31337", "NVIDIA linux drivers - File 1 of 1: \"NVIDIA-Linux-x86-1.0-4496-pkg2.run\" yEnc (16/25)");
 
+            group->digest_subject_line("3533", "Beekmans post \"fUf.v6.pal.dvdr.nzb\" [000/104] - yEnc (1/9)");
+            group->digest_subject_line("3534", "Beekmans post \"fUf.v6.pal.dvdr.jpg\" [001/104] - yEnc (01/11)");
             group->digest_subject_line("3521", "001 - Initial D S4D1 (1-9) - yEnc \"HD1_5.par2\" (1/1)");
-            group->digest_subject_line("3521", " (OMNI)(Vampire Huter D Bloodlust) [074/160] - \"VHDBlood.part072.rar\" yEnc (115/137)");
-            group->digest_subject_line("3521", " (Iczer) Those Who - Hunt - \"Elves2_1.vol0058+53.PAR2\" yEnc (075/111)");
-            group->digest_subject_line("3521", " (JW) [OMNI][Dnangel Vol 5] - \"lh-dna5.r71\" yEnc (073/201)");
-            group->digest_subject_line("3521", " (Iczer) Those Who - Hunt - \"Elves2_1.part077.rar\" yEnc (087/118)");
-            group->digest_subject_line("3521", " (OMNI)(Vampire Huter D Bloodlust) [074/160] - \"VHDBlood.part072.rar\" yEnc (116/137)");
-            group->digest_subject_line("3521", " (Iczer) Those Who - Hunt - \"Elves2_1.vol0058+53.PAR2\" yEnc (076/111)");
-            group->digest_subject_line("3521", " (JW) [OMNI][Dnangel Vol 5] - \"lh-dna5.r71\" yEnc (074/201)");
-            group->digest_subject_line("3521", " (Iczer) Those Who - Hunt - \"Elves2_1.part077.rar\" yEnc (088/118)");
-            group->digest_subject_line("3521", " 001 - Initial D S4D1 (2-9) - yEnc \"HD1_5.part001.rar\" (01/79)");
+            group->digest_subject_line("3522", " (OMNI)(Vampire Huter D Bloodlust) [074/160] - \"VHDBlood.part072.rar\" yEnc (115/137)");
+            group->digest_subject_line("3523", " (Iczer) Those Who - Hunt - \"Elves2_1.vol0058+53.PAR2\" yEnc (075/111)");
+            group->digest_subject_line("3524", " (JW) [OMNI][Dnangel Vol 5] - \"lh-dna5.r71\" yEnc (073/201)");
+            group->digest_subject_line("3525", " (Iczer) Those Who - Hunt - \"Elves2_1.part077.rar\" yEnc (087/118)");
+            group->digest_subject_line("3526", " (OMNI)(Vampire Huter D Bloodlust) [074/160] - \"VHDBlood.part072.rar\" yEnc (116/137)");
+            group->digest_subject_line("3527", " (Iczer) Those Who - Hunt - \"Elves2_1.vol0058+53.PAR2\" yEnc (076/111)");
+            group->digest_subject_line("3528", " (JW) [OMNI][Dnangel Vol 5] - \"lh-dna5.r71\" yEnc (074/201)");
+            group->digest_subject_line("3529", " (Iczer) Those Who - Hunt - \"Elves2_1.part077.rar\" yEnc (088/118)");
+            group->digest_subject_line("3530", " 001 - Initial D S4D1 (2-9) - yEnc \"HD1_5.part001.rar\" (01/79)");
+            group->digest_subject_line("3531", "Beekmans post \"fUf.v6.pal.dvdr.jpg\" [001/104] - yEnc (10/11)");
+            group->digest_subject_line("3532", "Beekmans post \"fUf.v6.pal.dvdr.jpg\" [001/104] - yEnc (11/11)");
+
+
 
 }
 

@@ -40,9 +40,11 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, string message_id)
     }
 
     if(max_part_no != num_pieces){
-        console->log("Unhandled error: num pieces changed on message");
-        console->log(filename);
-        sleep(5);
+        stringstream buf;
+        buf << "Unhandled error: num pieces changed on message.  Was "
+            << max_part_no << " and is now " << num_pieces << " <" << filename << ">";
+        console->log(buf.str());
+        return;
     }
 
     if(part_no > max_part_no){
