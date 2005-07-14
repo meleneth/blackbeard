@@ -148,6 +148,7 @@ void test_header_scoop(void)
     group->digest_subject_line("3531", "Beekmans post \"fUf.v6.pal.dvdr.jpg\" [001/104] - yEnc (10/11)");
     group->digest_subject_line("3532", "Beekmans post \"fUf.v6.pal.dvdr.jpg\" [001/104] - yEnc (11/11)");
     group->digest_subject_line("3532", "Fooly Cooly Volume 1 ~ \"FLCL 1.part18.rar\" ~[21/90] - REQ Kaleido Star Volumes 1,2 and 3 (085/127)");
+    group->digest_subject_line("3532", "006 - Initial D S4D1 (4-7) - yEnc \"HD1_5.part039.rar\" (15/79)");
 
 
 
