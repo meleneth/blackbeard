@@ -142,7 +142,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->name = "Pally";
 
 //Fooly Cooly Volume 1 ~ "FLCL 1.part18.rar" ~[21/90] - REQ Kaleido Star Volumes 1,2 and 3 (085/127)
-    pattern = new StringPattern(SP_LASTPART +1);
+    pattern = new StringPattern(SP_LASTPART +2);
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker(" ~ \"");
     pattern->add_breaker(SP_FILENAME);
