@@ -91,6 +91,24 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     yenc_subject_patterns.push_front(pattern);
     pattern->name = "Matilda";
 
+//(Gundam Seed V4+V6 Kimagure V2-V5) [293/556] -  yEnc "Kimagure_Vol3.part11.rar" (66/69)
+    pattern = new StringPattern(SP_LASTPART +1);
+    pattern->add_breaker("(");
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker(") [");
+    pattern->add_breaker(SP_FILENO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXFILENO);
+    pattern->add_breaker("] -  yEnc \"");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker("\" (");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker(")");
+    yenc_subject_patterns.push_front(pattern);
+    pattern->name = "RzrBladeZombie";
+
 //(OMNI) E's Otherwise vol.3 [107/114] - "jspec-es.otherwise.vol3.vol0189+131.PAR2" yEnc (054/137)
 //(OMNI) Case.Closed.Case.04.vol.05.r1.dvdr-kif[30/97] - "case.closed.case.04.vol.05.r1.dvdr-kif.r27" yEnc (072/201)
     pattern = new StringPattern(SP_LASTPART +1);

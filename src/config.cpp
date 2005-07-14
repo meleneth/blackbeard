@@ -42,6 +42,7 @@ Config::Config(int argc, char *argv[]) // Constructor
             ac++;
             load_file = argv[ac];
             console->log("will load postsets from file: " + load_file);
+            console->keep_logs = 0;
         }
         ac++;
     }
