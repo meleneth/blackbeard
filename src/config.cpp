@@ -41,7 +41,7 @@ Config::Config(int argc, char *argv[]) // Constructor
         }else if(0 == load.compare(argv[ac])){
             ac++;
             load_file = argv[ac];
-            console->log("Loading postsets from file: " + load_file);
+            console->log("will load postsets from file: " + load_file);
         }
         ac++;
     }

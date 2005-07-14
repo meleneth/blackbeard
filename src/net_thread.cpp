@@ -20,33 +20,39 @@ NetThread::~NetThread() // Destructor
 void NetThread::Execute(void)
 {
     console->log("Initialized.");
-    console->log("Connecting to " + config->news_server + " to grab article list for group " + config->news_group);
+    if(0 != config->load_file.compare("")){
+        console->log("Loading subjects from " + config->load_file);
+        newsgroup->load_from_file(config->load_file);
+    }else{
 
-    console->log("Selecting group " + config->news_group);
-    connection->group(config->news_group);
-    connection->xover(1);
+        console->log("Connecting to " + config->news_server + " to grab article list for group " + config->news_group);
 
-/*
-    connection->last();
-    connection->help();
-    connection->date();
-    connection->next();
-    connection->stat();
+        console->log("Selecting group " + config->news_group);
+        connection->group(config->news_group);
+        connection->xover(1);
 
-    long art_id = 1;
-    connection->xover(1);
-    connection->article(art_id);
-    connection->head(art_id);
-    connection->body(art_id);
-*/
-    console->log("---- End of pre-configured commands ----");
-    while(1){
-        if(_fetch && console->current_postset){
-            retrieve(console->current_postset);
-            _fetch = 0;
-        }
-        while(connection->has_data_waiting()){
-            console->log(connection->get_line());
+    /*
+        connection->last();
+        connection->help();
+        connection->date();
+        connection->next();
+        connection->stat();
+
+        long art_id = 1;
+        connection->xover(1);
+        connection->article(art_id);
+        connection->head(art_id);
+        connection->body(art_id);
+    */
+        console->log("---- End of pre-configured commands ----");
+        while(1){
+            if(_fetch && console->current_postset){
+                retrieve(console->current_postset);
+                _fetch = 0;
+            }
+            while(connection->has_data_waiting()){
+                console->log(connection->get_line());
+            }
         }
     }
 }

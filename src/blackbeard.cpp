@@ -79,9 +79,6 @@ void do_init(void)
     jobqueue = new JobQueue();
     newsgroup = new NewsGroup(config->news_group);
 
-    if(config->load_file.compare("") != 0){
-        newsgroup->load_from_file(config->load_file);
-    }
 }
 
 static void finish(int sig)

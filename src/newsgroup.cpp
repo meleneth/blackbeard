@@ -30,7 +30,6 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(") yEnc");
     yenc_subject_patterns.push_front(pattern);
     pattern->name = "Harold";
-
 //001 - Initial D S4D1 (2-9) - yEnc "HD1_5.part001.rar" (01/79)
     pattern = new StringPattern(SP_LASTPART +1);
     pattern->add_breaker(SP_SUBJECT);
@@ -111,6 +110,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->name = "switch";
 
 //UUDecode patterns
+
 //SDL for those in need - SDL-1.2.7.tar.gz (1/8)
     pattern = new StringPattern(SP_LASTPART +1);
     pattern->add_breaker(SP_SUBJECT);
@@ -140,6 +140,24 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(")");
     uu_subject_patterns.push_front(pattern);
     pattern->name = "Pally";
+
+//Fooly Cooly Volume 1 ~ "FLCL 1.part18.rar" ~[21/90] - REQ Kaleido Star Volumes 1,2 and 3 (085/127)
+    pattern = new StringPattern(SP_LASTPART +1);
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker(" ~ \"");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker("\" ~[");
+    pattern->add_breaker(SP_FILENO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXFILENO);
+    pattern->add_breaker("] - ");
+    pattern->add_breaker(" (");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker(")");
+    uu_subject_patterns.push_front(pattern);
+    pattern->name = "Schnell";
 }
 
     
