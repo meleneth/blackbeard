@@ -32,7 +32,8 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->name = "Harold";
 
 //001 - Initial D S4D1 (2-9) - yEnc "HD1_5.part001.rar" (01/79)
-    pattern = new StringPattern(SP_LASTPART +3);
+    pattern = new StringPattern(SP_LASTPART +4);
+    pattern->add_breaker(" - ");
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker(" (");
     pattern->add_breaker("-");
