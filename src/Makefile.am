@@ -10,7 +10,10 @@ libengine_a_SOURCES = newsgroup.cpp newsgroup.hpp config.cpp config.hpp console.
 					  decoder_thread.hpp yenc_decoder.cpp yenc_decoder.hpp uu_decoder.cpp \
 					  uu_decoder.hpp strutil.hpp strutil.cpp stringpattern.cpp stringpattern.hpp \
 					  post_set.cpp post_set.hpp post_file.cpp post_file.hpp job.hpp job.cpp \
-					  jobqueue.hpp jobqueue.cpp input_thread.cpp input_thread.hpp
+					  jobqueue.hpp jobqueue.cpp input_thread.cpp input_thread.hpp widget.cpp \
+					  widget.hpp screen.cpp screen.hpp postsetlistscreen.cpp postsetlistscreen.hpp \
+					  postsetdetailscreen.hpp postsetdetailscreen.cpp SDL_types.h globals.hpp \
+					  keydefs.hpp
 
 bt_SOURCES = blackbeardt.cpp libengine.a
 blb_SOURCES = blackbeard.cpp libengine.a

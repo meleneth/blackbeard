@@ -51,13 +51,12 @@ void Console::render(void)
         string groupline = newsgroup->name + " ( " + newsgroup->status + " )";
         mvaddnstr(1, 1, groupline.c_str(), -1);
         
-        list<PostSet *>::iterator p;
         attron(A_BOLD);
-        
-        for(p = newsgroup->postsets.begin() ; p != newsgroup->postsets.end() ; ++p){
+        int max_p = newsgroup->postsets.size();
+        for(int p = 0; p < max_p; ++p){
             num_postsets++;
-            num_postfiles += (*p)->num_files;
-            if(current_postset == *p){
+            num_postfiles += newsgroup->postsets[p]->num_files;
+            if(current_postset == newsgroup->postsets[p]){
                 current_postset_no = num_postsets;
             }
         }

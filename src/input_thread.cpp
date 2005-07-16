@@ -1,12 +1,10 @@
 #include "input_thread.hpp"
 #include"globals.hpp"
+#include"screen.hpp"
+#include"postsetdetailscreen.hpp"
 #include<stdio.h>
 #include<ncurses.h>
 
-#define KEY_ESC         27
-#define KEY_Q           113
-#define KEY_LEFTARROW   260
-#define KEY_RIGHTARROW  261
 
 InputThread::InputThread(NetThread *thread) 
 {
@@ -19,41 +17,15 @@ InputThread::~InputThread()
 
 void InputThread::Execute(void)
 {
-    list<PostSet *>::iterator i;
+    Screen *current_screen = new PostSetDetailScreen();
 
     while(1){
 //        usleep(10);
         int key = getch();
         if(key != ERR){
-//        printf("%i\n", key);
-            switch(key){
-                case 13:
-                    net_thread->set_retrieve();
-                    break;
-                case KEY_LEFTARROW:
-                    i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), console->current_postset);
-                    if(newsgroup->postsets.begin() != i){
-                        i--;
-                        console->current_postset = *i;
-                    }
-                    break;
-                case KEY_RIGHTARROW:
-                    i = find(newsgroup->postsets.begin(), newsgroup->postsets.end(), console->current_postset);
-                    if(newsgroup->postsets.end() != i){
-                        i++;
-                        if(newsgroup->postsets.end() != i)
-                            console->current_postset = *i;
-                    }
-                    break;
-                case KEY_Q:
-                case KEY_ESC:
-                    endwin();
-                    delete console;
-                    exit(0);
-                    break;
-            }
+            current_screen->handle_input(key);
         }
-        console->render();
+        current_screen->render();
         refresh();
     }
 }

@@ -8,8 +8,10 @@
 #include"SDL_types.h"
 #include<string>
 #include<list>
+#include<vector>
 
 using std::list;
+using std::vector;
 using std::string;
 
 class NewsGroup {
@@ -28,7 +30,7 @@ class NewsGroup {
         list< StringPattern * > yenc_subject_patterns;
         list< StringPattern * > uu_subject_patterns;
         list< NewsGroupPost * > messages;
-        list< PostSet * > postsets;
+        vector< PostSet * > postsets;
         string status;
         string name;
     private:

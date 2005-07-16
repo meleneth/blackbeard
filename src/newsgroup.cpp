@@ -300,10 +300,10 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
 
 PostSet *NewsGroup::postset_for_subject(string subject)
 {
-    list<PostSet *>::iterator i;
-    for(i = postsets.begin() ; i != postsets.end() ; ++i){
-        if(0 == subject.compare((*i)->subject)){
-            return *i;
+    int max_length = postsets.size();
+    for(int i = 0; i < max_length; ++i){
+        if(0 == subject.compare((postsets[i])->subject)){
+            return postsets[i];
         }
     }
 
