@@ -25,6 +25,7 @@ void InputThread::Execute(void)
         if(key != ERR){
             current_screen->handle_input(key);
         }
+        erase();
         current_screen->render();
         refresh();
     }

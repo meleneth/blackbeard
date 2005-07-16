@@ -34,72 +34,18 @@ Console::~Console() // Destructor
     }
 }
 
-void Console::render(void)
+void Console::render(Uint32 top, Uint32 bottom)
 {
     list<string>::iterator i;
-    Uint32 counter=LINES-4;
-    Uint32 num_postsets = 0;
-    Uint32 num_postfiles = 0;
-    Uint32 current_postset_no = 0;
+    Uint32 counter=bottom;
 
-    erase();
-    Uint32 three_quarters = (LINES * 3) / 4;
-    draw_box(0, 0, COLS-1, LINES-1);
-    draw_box(0, 0, COLS-1, three_quarters);
-
-    if(newsgroup){
-        string groupline = newsgroup->name + " ( " + newsgroup->status + " )";
-        mvaddnstr(1, 1, groupline.c_str(), -1);
-        
-        attron(A_BOLD);
-        int max_p = newsgroup->postsets.size();
-        for(int p = 0; p < max_p; ++p){
-            num_postsets++;
-            num_postfiles += newsgroup->postsets[p]->num_files;
-            if(current_postset == newsgroup->postsets[p]){
-                current_postset_no = num_postsets;
-            }
-        }
-
-        render_current_postset(current_postset, current_postset_no, num_postsets, three_quarters);
-
-        attroff(A_BOLD);
-        
-    }
-
-    for(i = loglines.begin() ; (i != loglines.end()) && counter > three_quarters; ++i)
+    for(i = loglines.begin() ; (i != loglines.end()) && counter > top; ++i)
     {
         mvaddnstr(counter, 2,  i->c_str(), -1);
         counter--;
     }
-    refresh();
 }
 
-void Console::render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num_postsets, Uint32 lowest_line)
-{
-    if(!set)
-        return;
-
-    Uint32 yindex = 2;
-    vector<PostFile *>::iterator i;
-    vector<PostFile *> files;
-    files = set->files;
-    mvaddnstr(yindex, 1, set->status().c_str(), -1);
-
-    stringstream buf;
-    buf << "(" << postset_no << "/" << num_postsets << ") postsets";
-    string str = buf.str();
-    mvaddnstr(yindex++, COLS - (str.length() + 3), str.c_str(), -1);
-
-    for(i = files.begin(); (i!= files.end()) && yindex < lowest_line ; ++i){
-        string completed_bar;
-        if(*i){
-            completed_bar = (*i)->get_bar();
-            mvaddnstr(yindex, 1, (*i)->status_string().c_str(), -1);
-            mvaddnstr(yindex++, COLS - completed_bar.length() -3, completed_bar.c_str(), -1);
-        }
-    }
-}
 
 void Console::check_input(char key)
 {

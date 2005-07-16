@@ -21,14 +21,13 @@ class Console {
         Console(); // Constructor
         ~Console(); // Destructor
 
-        void render(void);
+        void render(Uint32 top, Uint32 bottom);
         void check_input(char key);
         void log(std::string line);
         void fatal(std::string line);
         void box_log(std::string line);
         void draw_box(Uint32 x, Uint32 y, Uint32 width, Uint32 height);
 
-        void render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num_postsets, Uint32 lowest_line);
 
         list<std::string> loglines;
         string input;
@@ -36,7 +35,6 @@ class Console {
         Uint32 print_on_delete;
         Uint32 keep_logs;
 
-        PostSet *current_postset;
     private:
         // Private members go here.
     protected:

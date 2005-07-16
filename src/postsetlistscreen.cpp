@@ -30,7 +30,7 @@ int PostSetListScreen::handle_input(int key)
                     --postset_index;
                 }
                 if(max_size){
-                    console->current_postset = newsgroup->postsets[postset_index];
+                    //console->current_postset = newsgroup->postsets[postset_index];
                 }
                 return 0;
                 break;
@@ -39,7 +39,7 @@ int PostSetListScreen::handle_input(int key)
                     ++postset_index;
                 }
                 if(max_size){
-                    console->current_postset = newsgroup->postsets[postset_index];
+                    //console->current_postset = newsgroup->postsets[postset_index];
                 }
                 return 0;
                 break;

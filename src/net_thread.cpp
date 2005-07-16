@@ -46,10 +46,11 @@ void NetThread::Execute(void)
     */
         console->log("---- End of pre-configured commands ----");
         while(1){
-            if(_fetch && console->current_postset){
+            /* Downloading broken for now due to refactoring.  Need job queue FIXME
+             * if(_fetch && console->current_postset){
                 retrieve(console->current_postset);
                 _fetch = 0;
-            }
+            }*/
             while(connection->has_data_waiting()){
                 console->log(connection->get_line());
             }
