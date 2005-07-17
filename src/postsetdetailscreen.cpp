@@ -9,6 +9,7 @@ using std::stringstream;
 
 PostSetDetailScreen::PostSetDetailScreen()
 {
+    newsgroup = NULL;
 }
 
 PostSetDetailScreen::~PostSetDetailScreen()

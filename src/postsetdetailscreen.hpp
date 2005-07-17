@@ -4,6 +4,7 @@
 #include"SDL_types.h"
 #include"screen.hpp"
 #include"post_set.hpp"
+#include"newsgroup.hpp"
 
 class PostSetDetailScreen : public Screen {
     public:
@@ -15,6 +16,7 @@ class PostSetDetailScreen : public Screen {
         void render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num_postsets, Uint32 lowest_line);
 
         PostSet *current_postset;
+        NewsGroup *newsgroup;
         Uint32 postset_index;
     private:
     protected:

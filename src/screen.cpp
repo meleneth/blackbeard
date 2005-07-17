@@ -27,3 +27,7 @@ void Screen::render(void)
 
 }
 
+int Screen::handle_input(int key)
+{
+    return Widget::handle_input(key);
+}

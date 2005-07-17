@@ -15,6 +15,7 @@ class Screen : public Widget {
         virtual ~Screen();
 
         virtual void render(void);
+        virtual int handle_input(int key);
 
         vector<Widget *> widgets;
     private:

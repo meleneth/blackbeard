@@ -7,8 +7,9 @@
 Session::Session()
 {
     current_screen_id = 0;
-    widgets.push_back(new PostSetDetailScreen());
-    widgets.push_back(new PostSetListScreen());
+    widgets.resize(2);
+    widgets[1] = new PostSetDetailScreen();
+    widgets[0] = new PostSetListScreen();
 //    widgets->push_back(new NewsGroupListScreen());
 }
 
@@ -31,4 +32,12 @@ void Session::switch_screen(void)
     ++current_screen_id;
     current_screen_id %= widgets.size();
     return;
+}
+
+void Session::switch_postset_detail(NewsGroup *newsgroup, int postset_no)
+{
+    PostSetDetailScreen *scr = (PostSetDetailScreen *) widgets[1];
+    scr->newsgroup = newsgroup;
+    scr->postset_index = postset_no;
+    current_screen_id = 1;
 }

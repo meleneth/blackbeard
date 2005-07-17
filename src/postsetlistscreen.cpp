@@ -31,10 +31,11 @@ void PostSetListScreen::render(void)
         buf << psets[scroll_index + i]->subject;
         str = buf.str();
         mvaddnstr(yindex, xpos + 3, str.c_str(), -1);
-        if(postset_index == (yindex - (ypos +2) + scroll_index)) 
+        if(postset_index == (yindex - (ypos +2) + scroll_index)) {
             color_set(2, NULL);
             mvaddnstr(yindex, xpos + 1, "**", -1);
             color_set(1, NULL);
+        }
         buf.str("");
         ++yindex;
     }
@@ -48,6 +49,10 @@ int PostSetListScreen::handle_input(int key)
 
         switch(key){
             case KEY_ENTER:
+                exit(0);
+                console->log("Switching");
+                flash();
+                session->switch_postset_detail(newsgroup, postset_index);
                 return 0;
                 break;
             case KEY_UPARROW:
