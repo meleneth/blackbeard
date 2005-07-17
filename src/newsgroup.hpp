@@ -20,7 +20,7 @@ class NewsGroup {
         NewsGroup(string group_name); // Constructor
         ~NewsGroup(); // Destructor
         void header_scoop(string xover_line);
-        void digest_subject_line(string message_id, string subject);
+        PostFile *digest_subject_line(string message_id, string subject);
         void load_from_file(string filename);
 
         PostSet *postset_for_subject(string subject);
@@ -44,5 +44,7 @@ class NewsGroup {
 
     protected:
 };
+
+void load_groups_from(string filename);
 
 #endif

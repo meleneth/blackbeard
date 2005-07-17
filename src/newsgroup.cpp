@@ -252,7 +252,7 @@ void NewsGroup::header_scoop(string xover_line)
 
 }
 
-void NewsGroup::digest_subject_line(string message_id, string subject)
+PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
 {
     list< StringPattern * >::iterator sp;
     PostSet *current_postset;
@@ -278,7 +278,7 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
             current_postfile->decoder_type = DT_YENC;
             current_postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), message_id);
-            return;
+            return current_postfile;
         }
     }
 
@@ -293,9 +293,10 @@ void NewsGroup::digest_subject_line(string message_id, string subject)
             current_postfile->decoder_type = DT_UUDECODE;
             current_postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), message_id);
-            return;
+            return current_postfile;
         }
     }
+    return NULL;
 }
 
 PostSet *NewsGroup::postset_for_subject(string subject)
@@ -318,6 +319,20 @@ int NewsGroup::status_code()
 }
 
 void NewsGroup::load_from_file(string filename)
+{
+    char linebuffer[1024];
+    ifstream in;
+
+    in.open(filename.c_str(), ios::in);
+    in.getline(linebuffer, 1024);
+
+    while(!in.eof()){
+        digest_subject_line("stored", linebuffer);
+        in.getline(linebuffer, 1024);
+    }
+}
+
+void load_groups_from(string filename)
 {
     char linebuffer[1024];
     ifstream in;
