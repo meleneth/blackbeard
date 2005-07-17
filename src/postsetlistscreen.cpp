@@ -32,7 +32,9 @@ void PostSetListScreen::render(void)
         str = buf.str();
         mvaddnstr(yindex, xpos + 3, str.c_str(), -1);
         if(postset_index == (yindex - (ypos +2) + scroll_index)) 
+            color_set(2, NULL);
             mvaddnstr(yindex, xpos + 1, "**", -1);
+            color_set(1, NULL);
         buf.str("");
         ++yindex;
     }

@@ -67,6 +67,9 @@ void do_init(void)
         // ncurses
         signal(SIGINT, finish);
         initscr();
+        start_color();
+        init_pair(1,COLOR_WHITE,0);
+        init_pair(2,COLOR_GREEN,0);
         keypad(stdscr, TRUE);
         nonl();
         cbreak();
