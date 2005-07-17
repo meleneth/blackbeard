@@ -28,22 +28,46 @@ Config::Config(int argc, char *argv[]) // Constructor
     news_port = 119;
     debug_mode = 0;
     load_file = "";
+    show_groups_screen = 0;
     console->print_on_delete = 1;
 
     int ac=1;
     string debug = "-d";
-    string load = "-l";
+    string load_headers = "-l";
+    string load_groups = "-g";
+    string show_groups_flag = "-G";
+    string need_help_flag = "-h";
+
     while(ac < argc){
         if(0 == debug.compare(argv[ac])){
             console->print_logs = 1;
             console->keep_logs = 0;
             debug_mode = 1;
-        }else if(0 == load.compare(argv[ac])){
+        }else if(0 == load_headers.compare(argv[ac])){
             ac++;
             load_file = argv[ac];
             console->log("will load postsets from file: " + load_file);
             console->keep_logs = 0;
+        }else if(0 == load_groups.compare(argv[ac])){
+            ac++;
+            load_group = argv[ac];
+            console->log("Will load groups from file: " + load_groups);
+            console->keep_logs = 0;
+        }else if(0 == show_groups_flag.compare(argv[ac])){
+            show_groups_screen = 1;
+        }else if(0 == need_help_flag.compare(argv[ac])){
+            console->print_logs = 1;
+            console->keep_logs = 0;
+            console->log("blb [-d] [-l filename] [-g filename] [-G] [-h]");
+            console->log(" -d debug mode.  No ncurses, dumps log to STDOUT");
+            console->log(" -l load subjects from filename, one per line");
+            console->log(" -g load newsgroups from filename, one per line");
+            console->log(" -G activate newsgroup browser mode");
+            console->log(" -h This help");
+            console->log("");
+            exit(0);
         }
+
         ac++;
     }
 }

@@ -21,9 +21,11 @@ class Config {
         string blackbeard_dir;
         string config_filename;
         string load_file;
+        string load_group;
         string username;
         string password;
         Uint32 debug_mode;
+        Uint32 show_groups_screen;
 
         Uint32 news_port;
     private:

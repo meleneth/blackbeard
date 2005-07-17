@@ -13,7 +13,7 @@ libengine_a_SOURCES = newsgroup.cpp newsgroup.hpp config.cpp config.hpp console.
 					  jobqueue.hpp jobqueue.cpp input_thread.cpp input_thread.hpp widget.cpp \
 					  widget.hpp screen.cpp screen.hpp postsetlistscreen.cpp postsetlistscreen.hpp \
 					  postsetdetailscreen.hpp postsetdetailscreen.cpp SDL_types.h globals.hpp \
-					  keydefs.hpp
+					  keydefs.hpp newsgrouplistscreen.cpp newsgrouplistscreen.hpp
 
 bt_SOURCES = blackbeardt.cpp libengine.a
 blb_SOURCES = blackbeard.cpp libengine.a
