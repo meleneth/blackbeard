@@ -18,6 +18,7 @@ NewsGroup *newsgroup;
 PostSet *current_postset;
 PostFile *current_postfile;
 JobQueue *jobqueue;
+Session *session;
 
 void do_init(void);
 static void finish(int sig);
@@ -78,6 +79,7 @@ void do_init(void)
     current_postfile = NULL;
     jobqueue = new JobQueue();
     newsgroup = new NewsGroup(config->news_group);
+    session = new Session();
 
 }
 

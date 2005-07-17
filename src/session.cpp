@@ -18,8 +18,12 @@ Session::~Session()
 
 void Session::render(void)
 {
-    if (current_screen){
+    if (current_screen)
         current_screen->render();
-    }
 }
 
+int Session::handle_input(int key)
+{
+    if(current_screen)
+        current_screen->handle_input(key);
+}

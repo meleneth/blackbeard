@@ -10,6 +10,7 @@ class Session : public Screen{
         ~Session();
 
         virtual void render(void);
+        virtual int handle_input(int key);
 
         Widget *current_screen;
         

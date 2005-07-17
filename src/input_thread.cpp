@@ -17,16 +17,14 @@ InputThread::~InputThread()
 
 void InputThread::Execute(void)
 {
-    Screen *current_screen = new PostSetDetailScreen();
-
     while(1){
 //        usleep(10);
         int key = getch();
         if(key != ERR){
-            current_screen->handle_input(key);
+            session->handle_input(key);
         }
         erase();
-        current_screen->render();
+        session->render();
         refresh();
     }
 }

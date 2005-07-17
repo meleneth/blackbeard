@@ -16,6 +16,7 @@ PostSet *current_postset;
 PostFile *current_postfile;
 JobQueue *jobqueue;
 Config *config;
+Session *session;
 
 
 void test_header_scoop(void);
