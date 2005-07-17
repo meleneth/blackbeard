@@ -6,6 +6,7 @@
 #include"jobqueue.hpp"
 #include"strutil.hpp"
 #include"uu_decoder.hpp"
+#include"newsgroup.hpp"
 
 #include<string>
 #include<sstream>
@@ -135,6 +136,8 @@ void test_header_scoop(void)
 
     group->header_scoop("2321\tStar Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (248/258)\tHomer P Wylde <brick@house.com>\t18 Jun 2005 05:50:02 GMT\t<d90cma$9hk$2320@answer.sectorfour>\t\t344451\t2669\tXref: answer.sectorfour misc.test:2321");
     group->digest_subject_line("31337", "NVIDIA linux drivers - File 1 of 1: \"NVIDIA-Linux-x86-1.0-4496-pkg2.run\" yEnc (16/25)");
+
+}
 
 void generate_subject_line_test(NewsGroup *group, string message_id, string subject)
 {
