@@ -341,7 +341,7 @@ void load_groups_from(string filename)
     in.getline(linebuffer, 1024);
 
     while(!in.eof()){
-        digest_subject_line("stored", linebuffer);
+        //digest_subject_line("stored", linebuffer);
         in.getline(linebuffer, 1024);
     }
 }
