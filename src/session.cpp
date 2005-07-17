@@ -6,10 +6,10 @@
 
 Session::Session()
 {
-    widgets.push_front(new PostSetDetailScreen());
-//    widgets->push_front(new NewsGroupListScreen());
-    current_screen = new PostSetListScreen();
-    widgets.push_front(current_screen);
+    current_screen_id = 0;
+    widgets.push_back(new PostSetDetailScreen());
+    widgets.push_back(new PostSetListScreen());
+//    widgets->push_back(new NewsGroupListScreen());
 }
 
 Session::~Session()
@@ -18,12 +18,17 @@ Session::~Session()
 
 void Session::render(void)
 {
-    if (current_screen)
-        current_screen->render();
+    widgets[current_screen_id]->render();
 }
 
 int Session::handle_input(int key)
 {
-    if(current_screen)
-        current_screen->handle_input(key);
+    return widgets[current_screen_id]->handle_input(key);
+}
+
+void Session::switch_screen(void)
+{
+    ++current_screen_id;
+    current_screen_id %= widgets.size();
+    return;
 }

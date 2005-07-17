@@ -22,8 +22,10 @@ void Widget::render()
 
 int Widget::handle_input(int key)
 {
+    console->log("Key");
     switch(key){
         case KEY_TAB:
+            session->switch_screen();
             return 0;
 
         case KEY_Q:

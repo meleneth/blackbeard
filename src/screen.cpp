@@ -18,12 +18,11 @@ void Screen::render(void)
     width = COLS;
     height = LINES;
 
-    list<Widget *>::iterator w;
-
     console->draw_box(0, 0, width-1, height-1);
 
-    for(w = widgets.begin(); w!=widgets.end(); ++w){
-        (*w)->render();
+    Uint32 max_size = widgets.size();
+    for(Uint32 w = 0; w < max_size; ++w){
+        widgets[w]->render();
     }
 
 }

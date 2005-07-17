@@ -17,6 +17,7 @@ PostSetListScreen::~PostSetListScreen()
 
 void PostSetListScreen::render(void)
 {
+    Screen::render();
     string str;
     stringstream buf;
     Uint32 yindex = 2;
@@ -33,6 +34,7 @@ int PostSetListScreen::handle_input(int key)
 {
     if(Screen::handle_input(key)){
         Uint32 max_size = newsgroup->postsets.size();
+        console->log("Got switch cmd");
 
         switch(key){
             case KEY_ENTER:

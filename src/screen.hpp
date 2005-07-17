@@ -5,8 +5,9 @@
 
 #include"widget.hpp"
 
-#include<list>
-using std::list;
+#include<vector>
+
+using std::vector;
 
 class Screen : public Widget {
     public:
@@ -15,7 +16,7 @@ class Screen : public Widget {
 
         virtual void render(void);
 
-        list<Widget *> widgets;
+        vector<Widget *> widgets;
     private:
     protected:
 };

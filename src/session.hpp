@@ -12,7 +12,9 @@ class Session : public Screen{
         virtual void render(void);
         virtual int handle_input(int key);
 
-        Widget *current_screen;
+        void switch_screen(void);
+
+        Uint32 current_screen_id;
         
     private:
     protected:

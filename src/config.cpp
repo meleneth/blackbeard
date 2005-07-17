@@ -29,7 +29,7 @@ Config::Config(int argc, char *argv[]) // Constructor
     debug_mode = 0;
     load_file = "";
     show_groups_screen = 0;
-    console->print_on_delete = 1;
+    console->print_on_delete = 0;
 
     int ac=1;
     string debug = "-d";
@@ -47,12 +47,12 @@ Config::Config(int argc, char *argv[]) // Constructor
             ac++;
             load_file = argv[ac];
             console->log("will load postsets from file: " + load_file);
-            console->keep_logs = 0;
+           // console->keep_logs = 0;
         }else if(0 == load_groups.compare(argv[ac])){
             ac++;
             load_group = argv[ac];
             console->log("Will load groups from file: " + load_groups);
-            console->keep_logs = 0;
+      //      console->keep_logs = 0;
         }else if(0 == show_groups_flag.compare(argv[ac])){
             show_groups_screen = 1;
         }else if(0 == need_help_flag.compare(argv[ac])){
