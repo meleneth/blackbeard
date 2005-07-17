@@ -9,6 +9,7 @@ using std::stringstream;
 PostSetListScreen::PostSetListScreen()
 {
     postset_index = 0;
+    scroll_index = 0;
 }
 
 PostSetListScreen::~PostSetListScreen()
@@ -20,12 +21,20 @@ void PostSetListScreen::render(void)
     Screen::render();
     string str;
     stringstream buf;
-    Uint32 yindex = 2;
-    Uint32 max_size = newsgroup->postsets.size();
-    for (Uint32 i = postset_index; i < max_size; ++i){
-        buf << newsgroup->postsets[i]->subject;
+    Uint32 yindex = ypos + 2;
+    vector <PostSet *> psets = newsgroup->postsets;
+    Uint32 max_size = psets.size() > (height -3) 
+                    ? height-3
+                    : psets.size();
+    
+    for (Uint32 i = scroll_index; i < max_size; ++i){
+        buf << psets[i]->subject;
         str = buf.str();
-        mvaddnstr(yindex++, 1, str.c_str(), -1);
+        mvaddnstr(yindex, xpos + 3, str.c_str(), -1);
+        if(postset_index == (yindex - (ypos +2) + scroll_index)) 
+            mvaddnstr(yindex, xpos + 1, "**", -1);
+
+        ++yindex;
         buf.str("");
     }
 }

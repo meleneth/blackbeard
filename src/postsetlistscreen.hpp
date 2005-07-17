@@ -13,6 +13,7 @@ class PostSetListScreen : public Screen{
         virtual int handle_input(int key);
         
         Uint32 postset_index;
+        Uint32 scroll_index;
 
     private:
     protected:
