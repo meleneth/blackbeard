@@ -4,13 +4,15 @@
 #include"postsetdetailscreen.hpp"
 #include"newsgrouplistscreen.hpp"
 
+typedef enum { ST_NEWSGROUPLIST, ST_POSTSETLIST, ST_POSTSETDETAIL } screen_types;
+
 Session::Session()
 {
     current_screen_id = 0;
     widgets.resize(2);
-    widgets[1] = new PostSetDetailScreen();
-    widgets[0] = new PostSetListScreen();
-//    widgets->push_back(new NewsGroupListScreen());
+    widgets[ST_NEWSGROUPLIST] = new NewsGroupListScreen();
+    widgets[ST_POSTSETLIST] = new PostSetListScreen();
+    widgets[ST_POSTSETDETAIL] = new PostSetDetailScreen();
 }
 
 Session::~Session()
@@ -36,8 +38,16 @@ void Session::switch_screen(void)
 
 void Session::switch_postset_detail(NewsGroup *newsgroup, int postset_no)
 {
-    PostSetDetailScreen *scr = (PostSetDetailScreen *) widgets[1];
+    PostSetDetailScreen *scr = (PostSetDetailScreen *) widgets[2];
     scr->newsgroup = newsgroup;
     scr->postset_index = postset_no;
-    current_screen_id = 1;
+    current_screen_id = ST_POSTSETDETAIL;
+}
+        
+void Session::switch_postset_list(NewsGroup *newsgroup)
+{
+    PostSetListScreen *scr = (PostSetListScreen *) widgets[1];
+    scr->newsgroup = newsgroup;
+    current_screen_id = ST_POSTSETLIST;
+
 }

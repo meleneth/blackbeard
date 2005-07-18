@@ -3,6 +3,7 @@
 
 #include"SDL_types.h"
 #include"screen.hpp"
+#include"newsgroup.hpp"
 
 class PostSetListScreen : public Screen{
     public:
@@ -15,6 +16,7 @@ class PostSetListScreen : public Screen{
         Uint32 postset_index;
         Uint32 scroll_index;
 
+        NewsGroup *newsgroup;
     private:
     protected:
 };

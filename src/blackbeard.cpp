@@ -15,6 +15,7 @@
 Console *console;
 Config *config;
 NewsGroup *newsgroup;
+vector< NewsGroup * >newsgroups;
 PostSet *current_postset;
 PostFile *current_postfile;
 JobQueue *jobqueue;

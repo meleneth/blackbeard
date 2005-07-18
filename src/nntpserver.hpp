@@ -5,6 +5,7 @@
 
 #include "tcpconnection.hpp"
 #include "newsgrouppost.hpp"
+#include"newsgroup.hpp"
 #include<string>
 #include<list>
 
@@ -19,7 +20,7 @@ class NNTPServer : public TCPConnection {
         virtual void send_command(string cmd);
 
         void read_multiline_response(void);
-        void read_xover_response(void);
+        void read_xover_response();
         NewsGroupPost *read_body_response(void);
 
        int status();
@@ -41,7 +42,9 @@ class NNTPServer : public TCPConnection {
        void post();
        void stat();
 
+
 	int server_status;
+    NewsGroup *newsgroup;
     private:
         // Private members go here.
     protected:

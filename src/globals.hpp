@@ -10,12 +10,14 @@
 #include"session.hpp"
 
 #include<list>
+#include<vector>
 
 using std::list;
+using std::vector;
 
 extern Config *config;
-extern NewsGroup *newsgroup;
-extern list<NewsGroup *> newsgroups;
+//extern NewsGroup *newsgroup;
+extern vector<NewsGroup *> newsgroups;
 //extern PostSet *current_postset;
 extern PostFile *current_postfile;
 extern JobQueue *jobqueue;

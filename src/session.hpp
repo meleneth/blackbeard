@@ -15,6 +15,7 @@ class Session : public Screen{
 
         void switch_screen(void);
         void switch_postset_detail(NewsGroup *newsgroup, int postset_no);
+        void switch_postset_list(NewsGroup *newsgroup);
 
         Uint32 current_screen_id;
         

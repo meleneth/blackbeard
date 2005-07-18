@@ -4,6 +4,7 @@
 #include"SDL_types.h"
 
 #include"screen.hpp"
+#include"newsgroup.hpp"
 
 class NewsGroupListScreen : public Screen {
     public:
@@ -13,6 +14,9 @@ class NewsGroupListScreen : public Screen {
         virtual void render(void);
         virtual int handle_input(int key);
 
+        Uint32 ng_index;
+        Uint32 scroll_index;
+        NewsGroup *newsgroup;
     private:
     protected:
 };

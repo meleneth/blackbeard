@@ -10,10 +10,15 @@
 
 #include<string>
 #include<sstream>
+#include<vector>
+
+using std::string;
+using std::vector;
 
 Console *console;
 NewsGroup *newsgroup;
 PostSet *current_postset;
+vector< NewsGroup * >newsgroups;
 PostFile *current_postfile;
 JobQueue *jobqueue;
 Config *config;

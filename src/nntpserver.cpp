@@ -17,8 +17,8 @@ NNTPServer::NNTPServer(string hostname, int port) : TCPConnection(hostname, port
 {
     server_status = 0;
     read_packets();
-    newsgroup->status = get_line();
-    console->log(newsgroup->status);
+    get_line();
+    newsgroup = NULL;
 }
     
 NNTPServer::~NNTPServer() // Destructor
@@ -58,16 +58,16 @@ void NNTPServer::listgroup()
 
 void NNTPServer::xover()
 {
-    newsgroup->status = "Updating articles..";
+//    newsgroup->status = "Updating articles..";
     send_command(XOVER);
 
     read_xover_response();
-    newsgroup->status = "Idle";
+//    newsgroup->status = "Idle";
 }
 
 void NNTPServer::xover(long article_id)
 {
-    newsgroup->status = "Updating articles..";
+ //   newsgroup->status = "Updating articles..";
     stringstream buf;
     buf << XOVER << article_id << "-";
     send_command(buf.str());
@@ -96,7 +96,7 @@ void NNTPServer::head(long article_id)
 
 NewsGroupPost * NNTPServer::body(string article_id)
 {
-    newsgroup->status = "Fetching body " + article_id;
+   // newsgroup->status = "Fetching body " + article_id;
     stringstream buf;
     buf << BODY << article_id;
     send_command(buf.str());

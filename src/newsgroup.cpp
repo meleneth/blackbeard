@@ -267,7 +267,7 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
 
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
-            current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
+            current_postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
             if(current_postset == NULL)
                 current_postset = current_postset;
 
@@ -284,7 +284,7 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
 
     for (sp = uu_subject_patterns.begin(); sp != uu_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
-            current_postset = newsgroup->postset_for_subject((*sp)->get_piece(SP_SUBJECT));
+            current_postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
             if(current_postset == NULL)
                 current_postset = current_postset;
             current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
@@ -334,6 +334,9 @@ void NewsGroup::load_from_file(string filename)
 
 void load_groups_from(string filename)
 {
+    StringPattern *pattern = new StringPattern(2);
+    pattern->add_breaker(" ");
+    
     char linebuffer[1024];
     ifstream in;
 
@@ -341,7 +344,8 @@ void load_groups_from(string filename)
     in.getline(linebuffer, 1024);
 
     while(!in.eof()){
-        //digest_subject_line("stored", linebuffer);
+        pattern->match(linebuffer);
+        newsgroups.push_back(new NewsGroup(pattern->results[0]));
         in.getline(linebuffer, 1024);
     }
 }
