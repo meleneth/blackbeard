@@ -41,10 +41,19 @@ void PostSetListScreen::render(void)
     if(!newsgroup)
         return;
 
-    if(known_size != newsgroup->postsets.size()){
-        my_postsets = newsgroup->postsets;
-        known_size = my_postsets.size();
+    my_postsets = newsgroup->postsets;
+    if(is_searching){
+        buf << "/" << search_string;
+        str = buf.str();
+        mvaddnstr(height-1, xpos + 1, str.c_str(), -1);
+        buf.str("");
+        refine_search();
     }
+        
+//    if(known_size != newsgroup->postsets.size()){
+//        my_postsets = newsgroup->postsets;
+//        known_size = my_postsets.size();
+//    }
 
     Uint32 max_size = my_postsets.size() > (height -3) 
                     ? height-3
@@ -77,18 +86,35 @@ int PostSetListScreen::handle_input(int key)
             switch(key){
                 case IKEY_ENTER:
                     is_searching = 0;
-                    search_string = "";
                     break;
+                    
+                case IKEY_UPARROW:
+                    if (postset_index){
+                        --postset_index;
+                    }
+                    if (postset_index < scroll_index)
+                        scroll_index = postset_index; 
+                    return 0; break;
+                    
+                case IKEY_DOWNARROW:
+                    if (postset_index < max_size){
+                        ++postset_index;
+                    }
+                    while (postset_index > (scroll_index + render_size -2))
+                        ++scroll_index; 
+                    return 0; break;
+
+                case IKEY_RIGHTARROW:
+                    session->switch_postset_detail(newsgroup, postset_index);
+                    return 0; break;
+
                 default:
                     search_string += key;
-                    refine_search();
                     break;
              }
         }else{
             switch(key){
-                case IKEY_ENTER:
-                    console->log("Switching");
-                    flash();
+                case IKEY_RIGHTARROW:
                     session->switch_postset_detail(newsgroup, postset_index);
                     return 0; break;
                     
