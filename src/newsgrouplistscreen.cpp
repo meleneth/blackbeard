@@ -40,6 +40,15 @@ void NewsGroupListScreen::render(void)
     stringstream buf;
     Uint32 yindex = ypos + 2;
     
+    my_groups = newsgroups;
+    if(is_searching){
+        buf << "/" << search_string;
+        str = buf.str();
+        mvaddnstr(height-1, xpos + 1, str.c_str(), -1);
+        buf.str("");
+        refine_search();
+    }
+    
     if(known_size != newsgroups.size()){
         my_groups = newsgroups;
         known_size = my_groups.size();
@@ -58,6 +67,7 @@ void NewsGroupListScreen::render(void)
         if(ng_index == (yindex - (ypos +2) + scroll_index)) {
             color_set(2, NULL);
             mvaddnstr(yindex, xpos + 1, "**", -1);
+            mvaddnstr(yindex, xpos + 3, str.c_str(), -1);
             color_set(1, NULL);
         }
         buf.str("");
@@ -70,22 +80,41 @@ int NewsGroupListScreen::handle_input(int key)
     if(Screen::handle_input(key)){
         Uint32 max_size = newsgroups.size();
         Uint32 render_size = height-2;
+        
         if (is_searching){
             switch(key){
                 case IKEY_ENTER:
                     is_searching = 0;
                     break;
+                    
+                case IKEY_UPARROW:
+                    if (ng_index){
+                        --ng_index;
+                    }
+                    if (ng_index < scroll_index)
+                        scroll_index = ng_index; 
+                    return 0; break;
+                    
+                case IKEY_DOWNARROW:
+                    if (ng_index < (max_size-1)){
+                        ++ng_index;
+                    }
+                    while (ng_index > (scroll_index + render_size -2))
+                        ++scroll_index; 
+                    return 0; break;
+                    
+                case IKEY_RIGHTARROW:
+                    session->switch_postset_list(newsgroups[ng_index]);
+                    return 0; break;
+                    
                 default:
                     search_string += key;
-                    refine_search();
                     break;
              }
         }else{
-            my_groups = newsgroups;
             switch(key){
                 case IKEY_ENTER:
-                    console->log("Switching");
-                    flash();
+                case IKEY_RIGHTARROW:
                     session->switch_postset_list(newsgroups[ng_index]);
                     return 0; break;
                     
@@ -106,6 +135,7 @@ int NewsGroupListScreen::handle_input(int key)
                     return 0; break;
                     
                 case IKEY_SLASH:
+                    my_groups = newsgroups;
                     is_searching = 1;
                     search_string = "";
                     return 0; break;

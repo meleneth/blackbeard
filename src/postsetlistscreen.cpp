@@ -66,6 +66,7 @@ void PostSetListScreen::render(void)
         if(postset_index == (yindex - (ypos +2) + scroll_index)) {
             color_set(2, NULL);
             mvaddnstr(yindex, xpos + 1, "**", -1);
+            mvaddnstr(yindex, xpos + 3, str.c_str(), -1);
             color_set(1, NULL);
         }
         buf.str("");
