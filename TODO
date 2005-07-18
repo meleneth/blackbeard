@@ -34,16 +34,16 @@ Interface:
     have small log window, with scrollback
     only allow typing when you're on the log window
     typing is sending commands to system, not directly interupting TCP streams
-    tab to switch panes
+*   tab to switch panes
 *   progress bar for postset downloads (brian)
     multiple newsgroups
     allow views of like panes - 
         newsgroups
         postsets
     allow search - 
-        newsgroups
+*       newsgroups
         postsets
-    browse all newsgroups
+*   browse all newsgroups
     
 General:
     Add ability to check cross-posted groups for missing pieces
