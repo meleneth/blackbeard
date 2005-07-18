@@ -22,6 +22,11 @@ void PostSetListScreen::render(void)
     string str;
     stringstream buf;
     Uint32 yindex = ypos + 2;
+
+    mvaddnstr(ypos, xpos + 1, "PostSetListScreen::render", -1);
+    if(!newsgroup)
+        return;
+
     vector <PostSet *> psets = newsgroup->postsets;
     Uint32 max_size = psets.size() > (height -3) 
                     ? height-3
@@ -44,18 +49,21 @@ void PostSetListScreen::render(void)
 int PostSetListScreen::handle_input(int key)
 {
     if(Screen::handle_input(key)){
+        if(!newsgroup)
+            return key;
+
         Uint32 max_size = newsgroup->postsets.size();
         Uint32 render_size = height-2;
 
         switch(key){
-            case KEY_ENTER:
+            case IKEY_ENTER:
                 exit(0);
                 console->log("Switching");
                 flash();
                 session->switch_postset_detail(newsgroup, postset_index);
                 return 0;
                 break;
-            case KEY_UPARROW:
+            case IKEY_UPARROW:
                 if (postset_index){
                     --postset_index;
                 }
@@ -63,7 +71,7 @@ int PostSetListScreen::handle_input(int key)
                     scroll_index = postset_index; 
                 return 0;
                 break;
-            case KEY_DOWNARROW:
+            case IKEY_DOWNARROW:
                 if (postset_index < max_size){
                     ++postset_index;
                 }

@@ -6,6 +6,7 @@
 #include<vector>
 
 using std::stringstream;
+using std::string;
 using std::vector;
 
 NewsGroupListScreen::NewsGroupListScreen()
@@ -18,19 +19,29 @@ NewsGroupListScreen::~NewsGroupListScreen()
 {
 }
 
+void NewsGroupListScreen::refine_search(void)
+{
+    my_groups.clear();
+    Uint32 max = newsgroups.size();
+    for (Uint32 i = 0; i < max; ++i){
+        if (newsgroups[i]->name.find(search_string) != string::npos){
+            my_groups.push_back(newsgroups[i]);
+        }
+    }
+}
+
 void NewsGroupListScreen::render(void)
 {
     Screen::render();
     string str;
     stringstream buf;
     Uint32 yindex = ypos + 2;
-    vector <NewsGroup *> ngs = newsgroups;
-    Uint32 max_size = ngs.size() > (height -3) 
+    Uint32 max_size = my_groups.size() > (height -3) 
                     ? height-3
-                    : ngs.size() - scroll_index;
+                    : my_groups.size() - scroll_index;
     
     for (Uint32 i = 0; i < max_size; ++i){
-        buf << ngs[scroll_index + i]->name;
+        buf << my_groups[scroll_index + i]->name;
         str = buf.str();
         mvaddnstr(yindex, xpos + 3, str.c_str(), -1);
         if(ng_index == (yindex - (ypos +2) + scroll_index)) {
@@ -48,34 +59,48 @@ int NewsGroupListScreen::handle_input(int key)
     if(Screen::handle_input(key)){
         Uint32 max_size = newsgroups.size();
         Uint32 render_size = height-2;
-
-        switch(key){
-            case KEY_ENTER:
-                exit(0);
-                console->log("Switching");
-                flash();
-                session->switch_postset_list(newsgroups[ng_index]);
-                return 0;
-                break;
-            case KEY_UPARROW:
-                if (ng_index){
-                    --ng_index;
-                }
-                if (ng_index < scroll_index)
-                    scroll_index = ng_index; 
-                return 0;
-                break;
-            case KEY_DOWNARROW:
-                if (ng_index < max_size){
-                    ++ng_index;
-                }
-                while (ng_index > (scroll_index + render_size -2))
-                    ++scroll_index; 
-                return 0;
-                break;
-                
-            default:
-                return 1;
+        if (is_searching){
+            switch(key){
+                case IKEY_ENTER:
+                    is_searching = 0;
+                    break;
+                default:
+                    search_string += key;
+                    refine_search();
+                    break;
+             }
+        }else{
+            my_groups = newsgroups;
+            switch(key){
+                case IKEY_ENTER:
+                    console->log("Switching");
+                    flash();
+                    session->switch_postset_list(newsgroups[ng_index]);
+                    return 0; break;
+                    
+                case IKEY_UPARROW:
+                    if (ng_index){
+                        --ng_index;
+                    }
+                    if (ng_index < scroll_index)
+                        scroll_index = ng_index; 
+                    return 0; break;
+                    
+                case IKEY_DOWNARROW:
+                    if (ng_index < max_size){
+                        ++ng_index;
+                    }
+                    while (ng_index > (scroll_index + render_size -2))
+                        ++scroll_index; 
+                    return 0; break;
+                    
+                case IKEY_SLASH:
+                    is_searching = 1;
+                    return 0; break;
+                    
+                default:
+                    return 1;
+            }
         }
     }
     return 0;

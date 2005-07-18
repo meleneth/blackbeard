@@ -9,7 +9,7 @@ typedef enum { ST_NEWSGROUPLIST, ST_POSTSETLIST, ST_POSTSETDETAIL } screen_types
 Session::Session()
 {
     current_screen_id = 0;
-    widgets.resize(2);
+    widgets.resize(3);
     widgets[ST_NEWSGROUPLIST] = new NewsGroupListScreen();
     widgets[ST_POSTSETLIST] = new PostSetListScreen();
     widgets[ST_POSTSETDETAIL] = new PostSetDetailScreen();

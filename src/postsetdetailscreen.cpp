@@ -26,6 +26,7 @@ void PostSetDetailScreen::render(void)
     Uint32 current_postset_no = 0;
 
     console->draw_box(0, 0, width-1, three_quarters);
+    mvaddnstr(ypos, xpos + 1, "PostSetDetailScreen::render", -1);
 
     if(newsgroup){
         string groupline = newsgroup->name + " ( " + newsgroup->status + " )";
@@ -79,13 +80,15 @@ void PostSetDetailScreen::render_current_postset(PostSet *set, Uint32 postset_no
 int PostSetDetailScreen::handle_input(int key)
 {
     if(Screen::handle_input(key)){
+        if(!newsgroup)
+            return key;
         Uint32 max_size = newsgroup->postsets.size();
         switch(key){
             case 13:
                 //console->net_thread->set_retrieve();
                 return 0;
                 break;
-            case KEY_LEFTARROW:
+            case IKEY_LEFTARROW:
                 if (postset_index){
                     --postset_index;
                 }
@@ -94,7 +97,7 @@ int PostSetDetailScreen::handle_input(int key)
                 }
                 return 0;
                 break;
-            case KEY_RIGHTARROW:
+            case IKEY_RIGHTARROW:
                 if (postset_index < max_size){
                     ++postset_index;
                 }

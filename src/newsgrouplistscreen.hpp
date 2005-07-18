@@ -5,6 +5,7 @@
 
 #include"screen.hpp"
 #include"newsgroup.hpp"
+#include<string>
 
 class NewsGroupListScreen : public Screen {
     public:
@@ -13,7 +14,11 @@ class NewsGroupListScreen : public Screen {
 
         virtual void render(void);
         virtual int handle_input(int key);
+        void refine_search(void);
 
+        vector< NewsGroup * >my_groups;
+        string search_string;
+        Uint32 is_searching;
         Uint32 ng_index;
         Uint32 scroll_index;
         NewsGroup *newsgroup;

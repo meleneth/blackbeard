@@ -23,11 +23,11 @@ void Widget::render()
 int Widget::handle_input(int key)
 {
     switch(key){
-        case KEY_TAB:
+        case IKEY_TAB:
             session->switch_screen();
             return 0;
-        case KEY_Q:
-        case KEY_ESC:
+        case IKEY_Q:
+        case IKEY_ESC:
             endwin();
             delete console;
             exit(0);
