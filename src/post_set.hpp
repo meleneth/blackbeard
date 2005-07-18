@@ -19,6 +19,7 @@ class PostSet {
         double completed_percent(void);
         PostFile *file(Uint32 file_num, Uint32 max_file_num, string file_name);
         string status(void);
+        void recalculate_piece_info();
 
         string subject;
         vector<PostFile *> files;

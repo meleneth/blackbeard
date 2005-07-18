@@ -77,6 +77,20 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
     return postfile;
 }
 
+void PostSet::recalculate_piece_info()
+{
+    Uint32 tnum_pieces;
+    Uint32 tnum_finished_pieces;
+    
+    Uint32 max_size = files.size();
+    for(Uint32 i = 0; i < max_size; ++i){
+        tnum_pieces += files[i]->num_pieces;
+        tnum_finished_pieces += files[i]->downloaded_pieces;
+    }
+    num_pieces = tnum_pieces;
+    num_finished_pieces = tnum_finished_pieces;
+}
+
 string PostSet::status(void)
 {
     stringstream buf;
