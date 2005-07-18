@@ -14,6 +14,8 @@ NewsGroupListScreen::NewsGroupListScreen()
     ng_index = 0;
     scroll_index = 0;
     is_searching = 0;
+    search_string="";
+    known_size = 0;
 }
 
 NewsGroupListScreen::~NewsGroupListScreen()
@@ -37,7 +39,12 @@ void NewsGroupListScreen::render(void)
     string str;
     stringstream buf;
     Uint32 yindex = ypos + 2;
-
+    
+    if(known_size != newsgroups.size()){
+        my_groups = newsgroups;
+        known_size = my_groups.size();
+    }
+    
     mvaddnstr(ypos, xpos + 1, "NewsGroupListScreen::render", -1);
     
     Uint32 max_size = my_groups.size() > (height -3) 
@@ -100,6 +107,7 @@ int NewsGroupListScreen::handle_input(int key)
                     
                 case IKEY_SLASH:
                     is_searching = 1;
+                    search_string = "";
                     return 0; break;
                     
                 default:

@@ -11,6 +11,8 @@ PostSetListScreen::PostSetListScreen()
     postset_index = 0;
     scroll_index = 0;
     is_searching = 0;
+    search_string = "";
+    known_size = 0;
 }
 
 PostSetListScreen::~PostSetListScreen()
@@ -38,6 +40,11 @@ void PostSetListScreen::render(void)
     mvaddnstr(ypos, xpos + 1, "PostSetListScreen::render", -1);
     if(!newsgroup)
         return;
+
+    if(known_size != newsgroup->postsets.size()){
+        my_postsets = newsgroup->postsets;
+        known_size = my_postsets.size();
+    }
 
     Uint32 max_size = my_postsets.size() > (height -3) 
                     ? height-3
@@ -70,6 +77,7 @@ int PostSetListScreen::handle_input(int key)
             switch(key){
                 case IKEY_ENTER:
                     is_searching = 0;
+                    search_string = "";
                     break;
                 default:
                     search_string += key;
@@ -77,7 +85,6 @@ int PostSetListScreen::handle_input(int key)
                     break;
              }
         }else{
-            my_postsets = newsgroup->postsets;
             switch(key){
                 case IKEY_ENTER:
                     console->log("Switching");
@@ -102,7 +109,9 @@ int PostSetListScreen::handle_input(int key)
                     return 0; break;
                     
                 case IKEY_SLASH:
+                    my_postsets = newsgroup->postsets;
                     is_searching = 1;
+                    search_string = "";
                     return 0; break;
                     
                 default:

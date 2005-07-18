@@ -21,6 +21,7 @@ class PostSetListScreen : public Screen{
         Uint32 is_searching;
         Uint32 postset_index;
         Uint32 scroll_index;
+        Uint32 known_size;
 
         NewsGroup *newsgroup;
     private:
