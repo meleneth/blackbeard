@@ -98,7 +98,7 @@ int PostSetDetailScreen::handle_input(int key)
                 return 0;
                 break;
             case IKEY_RIGHTARROW:
-                if (postset_index < max_size){
+                if (postset_index < (max_size-1)){
                     ++postset_index;
                 }
                 if(max_size){
@@ -107,7 +107,7 @@ int PostSetDetailScreen::handle_input(int key)
                 return 0;
                 break;
             default:
-                return 1;
+                return key;
         }
     }
     return 0;

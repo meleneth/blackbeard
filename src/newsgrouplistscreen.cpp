@@ -98,7 +98,7 @@ int NewsGroupListScreen::handle_input(int key)
                     return 0; break;
                     
                 case IKEY_DOWNARROW:
-                    if (ng_index < max_size){
+                    if (ng_index < (max_size-1)){
                         ++ng_index;
                     }
                     while (ng_index > (scroll_index + render_size -2))

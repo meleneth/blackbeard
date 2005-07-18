@@ -50,10 +50,10 @@ void PostSetListScreen::render(void)
         refine_search();
     }
         
-//    if(known_size != newsgroup->postsets.size()){
-//        my_postsets = newsgroup->postsets;
-//        known_size = my_postsets.size();
-//    }
+    if(known_size != newsgroup->postsets.size()){
+        my_postsets = newsgroup->postsets;
+        known_size = my_postsets.size();
+    }
 
     Uint32 max_size = my_postsets.size() > (height -3) 
                     ? height-3
@@ -97,7 +97,7 @@ int PostSetListScreen::handle_input(int key)
                     return 0; break;
                     
                 case IKEY_DOWNARROW:
-                    if (postset_index < max_size){
+                    if (postset_index < (max_size-1)){
                         ++postset_index;
                     }
                     while (postset_index > (scroll_index + render_size -2))
@@ -114,6 +114,7 @@ int PostSetListScreen::handle_input(int key)
              }
         }else{
             switch(key){
+                case IKEY_ENTER:
                 case IKEY_RIGHTARROW:
                     session->switch_postset_detail(newsgroup, postset_index);
                     return 0; break;
@@ -127,7 +128,7 @@ int PostSetListScreen::handle_input(int key)
                     return 0; break;
                     
                 case IKEY_DOWNARROW:
-                    if (postset_index < max_size){
+                    if (postset_index < (max_size-1)){
                         ++postset_index;
                     }
                     while (postset_index > (scroll_index + render_size -2))

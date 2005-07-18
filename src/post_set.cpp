@@ -79,8 +79,8 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
 
 void PostSet::recalculate_piece_info()
 {
-    Uint32 tnum_pieces;
-    Uint32 tnum_finished_pieces;
+    Uint32 tnum_pieces = 0;
+    Uint32 tnum_finished_pieces = 0;
     
     Uint32 max_size = files.size();
     for(Uint32 i = 0; i < max_size; ++i){

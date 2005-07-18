@@ -159,7 +159,10 @@ void test_header_scoop(void)
     generate_subject_line_test(group, "3533", "Fooly Cooly Volume 1 ~ \"FLCL 1.part18.rar\" ~[21/90] - REQ Kaleido Star Volumes 1,2 and 3 (085/127)");
     generate_subject_line_test(group, "3534", "006 - Initial D S4D1 (4-7) - yEnc \"HD1_5.part039.rar\" (15/79)");
     generate_subject_line_test(group, "3535", "(goku  27  post urotsukidoji_2) File 001 of 163 - VIDEO_TS.PAR2 (1/1)");
-    generate_subject_line_test(group, "3535", "(Sailormoon Sailor Stars Disk 4 par to follow) [012/213] - \"yEnc \"ss4_scn.part011.rar\" (077/209)");
+    generate_subject_line_test(group, "3536", "(Sailormoon Sailor Stars Disk 4 par to follow) [012/213] - \"yEnc \"ss4_scn.part011.rar\" (077/209)");
+    generate_subject_line_test(group, "3537", "(aR) [087/104] - \"ar-bgv4.part84.rar\" yEnc (201/201)");
+    generate_subject_line_test(group, "3538", "(aR) [091/104] - \"ar-bgv4.sfv\" yEnc (1/1)");
+
     generate_subject_line_test(group, "31337", "NVIDIA linux drivers - File 1 of 1: \"NVIDIA-Linux-x86-1.0-4496-pkg2.run\" yEnc (16/25)");
 
 }
