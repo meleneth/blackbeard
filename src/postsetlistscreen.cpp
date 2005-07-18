@@ -10,10 +10,22 @@ PostSetListScreen::PostSetListScreen()
 {
     postset_index = 0;
     scroll_index = 0;
+    is_searching = 0;
 }
 
 PostSetListScreen::~PostSetListScreen()
 {
+}
+
+void PostSetListScreen::refine_search(void)
+{
+    my_postsets.clear();
+    Uint32 max = newsgroup->postsets.size();
+    for (Uint32 i = 0; i < max; ++i){
+        if (newsgroup->postsets[i]->subject.find(search_string) != string::npos){
+            my_postsets.push_back(newsgroup->postsets[i]);
+        }
+    }
 }
 
 void PostSetListScreen::render(void)
@@ -27,13 +39,12 @@ void PostSetListScreen::render(void)
     if(!newsgroup)
         return;
 
-    vector <PostSet *> psets = newsgroup->postsets;
-    Uint32 max_size = psets.size() > (height -3) 
+    Uint32 max_size = my_postsets.size() > (height -3) 
                     ? height-3
-                    : psets.size() - scroll_index;
+                    : my_postsets.size() - scroll_index;
     
     for (Uint32 i = 0; i < max_size; ++i){
-        buf << psets[scroll_index + i]->subject;
+        buf << my_postsets[scroll_index + i]->subject;
         str = buf.str();
         mvaddnstr(yindex, xpos + 3, str.c_str(), -1);
         if(postset_index == (yindex - (ypos +2) + scroll_index)) {
@@ -55,33 +66,48 @@ int PostSetListScreen::handle_input(int key)
         Uint32 max_size = newsgroup->postsets.size();
         Uint32 render_size = height-2;
 
-        switch(key){
-            case IKEY_ENTER:
-                exit(0);
-                console->log("Switching");
-                flash();
-                session->switch_postset_detail(newsgroup, postset_index);
-                return 0;
-                break;
-            case IKEY_UPARROW:
-                if (postset_index){
-                    --postset_index;
-                }
-                if (postset_index < scroll_index)
-                    scroll_index = postset_index; 
-                return 0;
-                break;
-            case IKEY_DOWNARROW:
-                if (postset_index < max_size){
-                    ++postset_index;
-                }
-                while (postset_index > (scroll_index + render_size -2))
-                    ++scroll_index; 
-                return 0;
-                break;
-                
-            default:
-                return 1;
+        if (is_searching){
+            switch(key){
+                case IKEY_ENTER:
+                    is_searching = 0;
+                    break;
+                default:
+                    search_string += key;
+                    refine_search();
+                    break;
+             }
+        }else{
+            my_postsets = newsgroup->postsets;
+            switch(key){
+                case IKEY_ENTER:
+                    console->log("Switching");
+                    flash();
+                    session->switch_postset_detail(newsgroup, postset_index);
+                    return 0; break;
+                    
+                case IKEY_UPARROW:
+                    if (postset_index){
+                        --postset_index;
+                    }
+                    if (postset_index < scroll_index)
+                        scroll_index = postset_index; 
+                    return 0; break;
+                    
+                case IKEY_DOWNARROW:
+                    if (postset_index < max_size){
+                        ++postset_index;
+                    }
+                    while (postset_index > (scroll_index + render_size -2))
+                        ++scroll_index; 
+                    return 0; break;
+                    
+                case IKEY_SLASH:
+                    is_searching = 1;
+                    return 0; break;
+                    
+                default:
+                    return 1;
+            }
         }
     }
     return 0;

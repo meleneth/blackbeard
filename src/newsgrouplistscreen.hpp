@@ -7,6 +7,9 @@
 #include"newsgroup.hpp"
 #include<string>
 
+using std::string;
+using std::vector;
+
 class NewsGroupListScreen : public Screen {
     public:
         NewsGroupListScreen();

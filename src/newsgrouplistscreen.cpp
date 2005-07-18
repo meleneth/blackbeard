@@ -13,6 +13,7 @@ NewsGroupListScreen::NewsGroupListScreen()
 {
     ng_index = 0;
     scroll_index = 0;
+    is_searching = 0;
 }
 
 NewsGroupListScreen::~NewsGroupListScreen()
@@ -36,6 +37,9 @@ void NewsGroupListScreen::render(void)
     string str;
     stringstream buf;
     Uint32 yindex = ypos + 2;
+
+    mvaddnstr(ypos, xpos + 1, "NewsGroupListScreen::render", -1);
+    
     Uint32 max_size = my_groups.size() > (height -3) 
                     ? height-3
                     : my_groups.size() - scroll_index;

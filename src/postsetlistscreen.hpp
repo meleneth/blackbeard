@@ -4,6 +4,8 @@
 #include"SDL_types.h"
 #include"screen.hpp"
 #include"newsgroup.hpp"
+#include<string>
+#include<vector>
 
 class PostSetListScreen : public Screen{
     public:
@@ -12,7 +14,11 @@ class PostSetListScreen : public Screen{
 
         virtual void render(void);
         virtual int handle_input(int key);
+        void refine_search(void);
         
+        vector< PostSet * >my_postsets;
+        string search_string;
+        Uint32 is_searching;
         Uint32 postset_index;
         Uint32 scroll_index;
 
