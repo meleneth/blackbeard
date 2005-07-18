@@ -350,3 +350,19 @@ void load_groups_from(string filename)
     }
 }
 
+NewsGroup *group_for_name(string groupname)
+{
+    Uint32 max_no = newsgroups.size();
+
+    for(Uint32 i=0; i<max_no; ++i){
+        if(0 == groupname.compare(newsgroups[i]->name)){
+            return newsgroups[i];
+        }
+    }
+
+    NewsGroup *news = new NewsGroup(groupname);
+    newsgroups.push_back(news);
+    return news;
+}
+
+

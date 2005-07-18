@@ -46,5 +46,6 @@ class NewsGroup {
 };
 
 void load_groups_from(string filename);
+NewsGroup *group_for_name(string groupname);
 
 #endif

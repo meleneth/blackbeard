@@ -44,6 +44,7 @@ void NNTPServer::quit()
 void NNTPServer::group(string groupname)
 {
     send_command(GROUP + groupname);
+    newsgroup = group_for_name(groupname);
 }
 
 void NNTPServer::list()
