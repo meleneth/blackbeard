@@ -274,6 +274,14 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
     if(s!=string::npos)
         return NULL;
 
+    s = subject.find("aR");
+    if(s!=string::npos)
+        return NULL;
+
+    s = subject.find("ailor");
+    if(s!=string::npos)
+        return NULL;
+
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
             PostSet *postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
