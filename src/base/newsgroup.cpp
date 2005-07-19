@@ -255,7 +255,6 @@ void NewsGroup::header_scoop(string xover_line)
 PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
 {
     list< StringPattern * >::iterator sp;
-    PostSet *current_postset;
     console->log("Subject: " + subject);
 
     //"[DVD9]" evil delete it >.<
@@ -267,33 +266,29 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
 
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
-            current_postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
-            if(current_postset == NULL)
-                current_postset = current_postset;
+            PostSet *postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
 
-            current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
+            PostFile *postfile = postset->file((*sp)->get_piecen(SP_FILENO), 
                                                      (*sp)->get_piecen(SP_MAXFILENO), 
                                                      (*sp)->get_piece(SP_FILENAME));
 
-            current_postfile->decoder_type = DT_YENC;
-            current_postfile->part((*sp)->get_piecen(SP_PARTNO), 
+            postfile->decoder_type = DT_YENC;
+            postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), message_id);
-            return current_postfile;
+            return postfile;
         }
     }
 
     for (sp = uu_subject_patterns.begin(); sp != uu_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
-            current_postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
-            if(current_postset == NULL)
-                current_postset = current_postset;
-            current_postfile = current_postset->file((*sp)->get_piecen(SP_FILENO), 
-                                                     (*sp)->get_piecen(SP_MAXFILENO), 
-                                                     (*sp)->get_piece(SP_FILENAME));
-            current_postfile->decoder_type = DT_UUDECODE;
-            current_postfile->part((*sp)->get_piecen(SP_PARTNO), 
+            PostSet *postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
+            PostFile *postfile = postset->file((*sp)->get_piecen(SP_FILENO), 
+                                             (*sp)->get_piecen(SP_MAXFILENO), 
+                                             (*sp)->get_piece(SP_FILENAME));
+            postfile->decoder_type = DT_UUDECODE;
+            postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), message_id);
-            return current_postfile;
+            return postfile;
         }
     }
     return NULL;

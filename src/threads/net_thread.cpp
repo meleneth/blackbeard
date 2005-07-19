@@ -70,7 +70,8 @@ void NetThread::retrieve(PostSet *postset)
     string dest_dir = config->blackbeard_dir + "/" + postset->subject;
 
     console->log("Retrieving PostSet");
-
+    console->log("Commented out till we have job stuff");
+    /* see log
     for (v=postset->files.begin(); v!=postset->files.end(); ++v){
         if(*v)
             (*v)->status = "Marked for retrieval";
@@ -91,6 +92,7 @@ void NetThread::retrieve(PostSet *postset)
             (*v)->status = "Finished";
         }
     }
+    */
 }
 
 void NetThread::set_retrieve(void)
