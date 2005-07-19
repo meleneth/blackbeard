@@ -19,6 +19,8 @@ PostSetDetailScreen::~PostSetDetailScreen()
 void PostSetDetailScreen::render(void)
 {
     Screen::render();
+    if(help_visible)
+        return;
 
     Uint32 num_postsets = 0;
     Uint32 num_postfiles = 0;

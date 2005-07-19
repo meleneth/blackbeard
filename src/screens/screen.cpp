@@ -7,6 +7,7 @@ Screen::Screen()
 {
     xpos=0;
     ypos=0;
+    help_visible = 0;
 }
 
 Screen::~Screen()
@@ -20,14 +21,35 @@ void Screen::render(void)
 
     console->draw_box(0, 0, width-1, height-1);
 
-    Uint32 max_size = widgets.size();
-    for(Uint32 w = 0; w < max_size; ++w){
-        widgets[w]->render();
+    if(help_visible){
+        render_help();
+    }else{
+        Uint32 max_size = widgets.size();
+        for(Uint32 w = 0; w < max_size; ++w){
+            widgets[w]->render();
+        }
     }
 
 }
 
+void Screen::render_help(void)
+{
+    mvaddnstr(ypos+2, xpos + 2, "No help is available for this screen.", -1);
+}
+
 int Screen::handle_input(int key)
 {
-    return Widget::handle_input(key);
+    key = Widget::handle_input(key);
+    switch(key){
+        case 0:
+            return 0;
+        case 'h':
+        case '?':
+        case 'H':
+            help_visible = !help_visible;
+            break;
+        default:
+            return key;
+    }
+    return 0;
 }

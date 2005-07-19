@@ -33,12 +33,17 @@ void PostSetListScreen::refine_search(void)
 void PostSetListScreen::render(void)
 {
     Screen::render();
+
     string str;
     string str1;
     stringstream buf;
     Uint32 yindex = ypos + 2;
 
     mvaddnstr(ypos, xpos + 1, "PostSetListScreen::render", -1);
+
+    if (help_visible)
+        return;
+
     if(!newsgroup)
         return;
 
@@ -85,46 +90,54 @@ void PostSetListScreen::render(void)
     }
 }
 
+void PostSetListScreen::render_help(void)
+{
+    Uint32 yindex = ypos +1;
+    
+    mvaddnstr(yindex++, xpos + 2, "This screen shows you a list of post sets. hit enter to see a list of files.", -1);
+
+}
+
 int PostSetListScreen::handle_input(int key)
 {
-    if(Screen::handle_input(key)){
-        if(!newsgroup)
-            return key;
+    if(!newsgroup)
+        return key;
 
-        Uint32 max_size = newsgroup->postsets.size();
-        Uint32 render_size = height-2;
+    Uint32 max_size = newsgroup->postsets.size();
+    Uint32 render_size = height-2;
 
-        if (is_searching){
-            switch(key){
-                case IKEY_ENTER:
-                    is_searching = 0;
-                    break;
-                    
-                case IKEY_UPARROW:
-                    if (postset_index){
-                        --postset_index;
-                    }
-                    if (postset_index < scroll_index)
-                        scroll_index = postset_index; 
-                    return 0; break;
-                    
-                case IKEY_DOWNARROW:
-                    if (postset_index < (max_size-1)){
-                        ++postset_index;
-                    }
-                    while (postset_index > (scroll_index + render_size -2))
-                        ++scroll_index; 
-                    return 0; break;
+    if (is_searching){
+        switch(key){
+            case IKEY_ENTER:
+                is_searching = 0;
+                break;
+                
+            case IKEY_UPARROW:
+                if (postset_index){
+                    --postset_index;
+                }
+                if (postset_index < scroll_index)
+                    scroll_index = postset_index; 
+                return 0; break;
+                
+            case IKEY_DOWNARROW:
+                if (postset_index < (max_size-1)){
+                    ++postset_index;
+                }
+                while (postset_index > (scroll_index + render_size -2))
+                    ++scroll_index; 
+                return 0; break;
 
-                case IKEY_RIGHTARROW:
-                    session->switch_postset_detail(newsgroup, postset_index);
-                    return 0; break;
+            case IKEY_RIGHTARROW:
+                session->switch_postset_detail(newsgroup, postset_index);
+                return 0; break;
 
-                default:
-                    search_string += key;
-                    break;
-             }
-        }else{
+            default:
+                search_string += key;
+                break;
+         }
+    }else{
+        if(Screen::handle_input(key)){
             switch(key){
                 case IKEY_ENTER:
                 case IKEY_RIGHTARROW:

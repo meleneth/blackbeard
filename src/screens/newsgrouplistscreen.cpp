@@ -36,6 +36,9 @@ void NewsGroupListScreen::refine_search(void)
 void NewsGroupListScreen::render(void)
 {
     Screen::render();
+
+    if(help_visible)
+        return;
     string str;
     stringstream buf;
     Uint32 yindex = ypos + 2;

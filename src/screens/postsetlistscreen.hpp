@@ -13,8 +13,10 @@ class PostSetListScreen : public Screen{
         virtual ~PostSetListScreen();
 
         virtual void render(void);
+        virtual void render_help(void);
         virtual int handle_input(int key);
         void refine_search(void);
+        
         
         vector< PostSet * >my_postsets;
         string search_string;
