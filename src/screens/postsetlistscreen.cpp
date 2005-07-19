@@ -28,6 +28,9 @@ void PostSetListScreen::refine_search(void)
             my_postsets.push_back(newsgroup->postsets[i]);
         }
     }
+    if (postset_index > my_postsets.size()){
+        postset_index = my_postsets.size() -1;
+    }
 }
 
 void PostSetListScreen::render(void)
