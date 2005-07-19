@@ -97,6 +97,7 @@ void PostSet::recalculate_piece_info()
     num_pieces = tnum_pieces;
     num_finished_pieces = tnum_finished_pieces;
     num_files = tnum_files;
+    max_num_files = files.size();
 }
 
 string PostSet::status(void)
