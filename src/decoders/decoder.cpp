@@ -23,9 +23,6 @@ Decoder::Decoder(NewsGroupPost *newsgrouppost, PostFile *file) // Constructor
     
 Decoder::~Decoder() // Destructor
 {
-    if(post){
-        delete post;
-    }
     close_file();
 }
 

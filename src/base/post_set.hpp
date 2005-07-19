@@ -23,6 +23,7 @@ class PostSet {
 
         string subject;
         vector<PostFile *> files;
+        string pattern_name;
 
         Uint32 num_files;
         Uint32 num_pieces;

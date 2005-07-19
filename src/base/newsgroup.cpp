@@ -345,7 +345,7 @@ void load_groups_from(string filename)
 
     while(!in.eof()){
         pattern->match(linebuffer);
-        newsgroups.push_back(new NewsGroup(pattern->results[0]));
+        group_for_name(pattern->results[0]);
         in.getline(linebuffer, 1024);
     }
 }

@@ -19,11 +19,13 @@ void DecoderThread::Execute(void)
         decoder = (Decoder *)jobqueue->get_next_decoder_job();
         if(NULL != decoder){
             console->log("I gotta job!");
+            NewsGroupPost *post = decoder->post;
             decoder->decode();
             stringstream buf;
             buf << "Decoder decoded " << decoder->num_bytes_written << " bytes";
             console->log(buf.str());
             delete decoder;
+            delete post;
         }
     }
 }

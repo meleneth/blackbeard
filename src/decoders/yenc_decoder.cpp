@@ -20,6 +20,7 @@ yEncDecoder::yEncDecoder(NewsGroupPost *newsgrouppost, PostFile *file) :Decoder(
     header_pattern->add_breaker(" size=");
     header_pattern->add_breaker(" name=");
 
+
 //=ypart begin=1 end=100000
     part_pattern = new StringPattern(3);
     part_pattern->add_breaker("=ypart begin=");

@@ -12,6 +12,7 @@ PostSet::PostSet(string subject)
     num_files = 0;
     num_pieces = 0;
     num_finished_pieces = 0;
+    pattern_name="";
 }
     
 PostSet::~PostSet() 
