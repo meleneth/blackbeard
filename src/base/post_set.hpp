@@ -26,6 +26,7 @@ class PostSet {
         string pattern_name;
 
         Uint32 num_files;
+        Uint32 max_num_files;
         Uint32 num_pieces;
         Uint32 num_finished_pieces;
     private:

@@ -34,6 +34,7 @@ void PostSetListScreen::render(void)
 {
     Screen::render();
     string str;
+    string str1;
     stringstream buf;
     Uint32 yindex = ypos + 2;
 
@@ -60,16 +61,26 @@ void PostSetListScreen::render(void)
                     : my_postsets.size() - scroll_index;
     
     for (Uint32 i = 0; i < max_size; ++i){
-        buf << my_postsets[scroll_index + i]->subject;
+        PostSet *set = my_postsets[scroll_index + i];
+        set->recalculate_piece_info();
+        
+        buf << set->subject;
         str = buf.str();
         mvaddnstr(yindex, xpos + 3, str.c_str(), -1);
+        buf.str("");
+        
+        buf << "[" << set->num_files << "/" << set->max_num_files << "]";
+        str1 = buf.str();
+        mvaddnstr(yindex, width - str1.length() - 3, str1.c_str(), -1);
+        buf.str("");
+        
         if(postset_index == (yindex - (ypos +2) + scroll_index)) {
             color_set(2, NULL);
             mvaddnstr(yindex, xpos + 1, "**", -1);
             mvaddnstr(yindex, xpos + 3, str.c_str(), -1);
+            mvaddnstr(yindex, width - str1.length() - 3, str1.c_str(), -1);
             color_set(1, NULL);
         }
-        buf.str("");
         ++yindex;
     }
 }

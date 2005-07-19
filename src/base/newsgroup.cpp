@@ -200,7 +200,8 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->name = "Pally";
 
 //Fooly Cooly Volume 1 ~ "FLCL 1.part18.rar" ~[21/90] - REQ Kaleido Star Volumes 1,2 and 3 (085/127)
-    pattern = new StringPattern(SP_LASTPART +2);
+
+    pattern = new StringPattern(SP_LASTPART +3);
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker(" ~ \"");
     pattern->add_breaker(SP_FILENAME);
@@ -263,6 +264,15 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
         subject.replace(s, 6, "_DVD9_");
         s=subject.find("[DVD9]");
     }
+    // FIXME omg EVIL
+
+    s = subject.find("Fooly");
+    if(s!=string::npos)
+        return NULL;
+
+    s = subject.find("Blood");
+    if(s!=string::npos)
+        return NULL;
 
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){

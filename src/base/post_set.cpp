@@ -13,6 +13,7 @@ PostSet::PostSet(string subject)
     num_pieces = 0;
     num_finished_pieces = 0;
     pattern_name="";
+    max_num_files = 0;
 }
     
 PostSet::~PostSet() 
@@ -46,11 +47,11 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
     stringstream buf;
 
     if(max_file_num != 0) {
-        if(!num_files){
-            num_files = max_file_num;
-            files.resize(num_files + 1);
+        if(!this->max_num_files){
+            this->max_num_files = max_file_num;
+            files.resize(max_num_files + 1);
             Uint32 i;
-            for(i=0;i<num_files;i++){
+            for(i=0;i<max_num_files;i++){
                 files[i] = NULL;
             }
         }
@@ -82,14 +83,20 @@ void PostSet::recalculate_piece_info()
 {
     Uint32 tnum_pieces = 0;
     Uint32 tnum_finished_pieces = 0;
+    Uint32 tnum_files = 0;
     
     Uint32 max_size = files.size();
     for(Uint32 i = 0; i < max_size; ++i){
-        tnum_pieces += files[i]->num_pieces;
-        tnum_finished_pieces += files[i]->downloaded_pieces;
+        PostFile *file = files[i];
+        if(file){
+            tnum_files++;
+            tnum_pieces += file->num_pieces;
+            tnum_finished_pieces += file->downloaded_pieces;
+        }
     }
     num_pieces = tnum_pieces;
     num_finished_pieces = tnum_finished_pieces;
+    num_files = tnum_files;
 }
 
 string PostSet::status(void)
