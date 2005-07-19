@@ -129,7 +129,7 @@ int PostSetListScreen::handle_input(int key)
                 return 0; break;
 
             case IKEY_RIGHTARROW:
-                session->switch_postset_detail(newsgroup, postset_index);
+                session->switch_postset_detail(newsgroup, my_postsets[postset_index]);
                 return 0; break;
 
             default:
@@ -141,7 +141,7 @@ int PostSetListScreen::handle_input(int key)
             switch(key){
                 case IKEY_ENTER:
                 case IKEY_RIGHTARROW:
-                    session->switch_postset_detail(newsgroup, postset_index);
+                    session->switch_postset_detail(newsgroup, my_postsets[postset_index]);
                     return 0; break;
                     
                 case IKEY_UPARROW:

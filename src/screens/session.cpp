@@ -36,11 +36,11 @@ void Session::switch_screen(void)
     return;
 }
 
-void Session::switch_postset_detail(NewsGroup *newsgroup, int postset_no)
+void Session::switch_postset_detail(NewsGroup *newsgroup, PostSet *postset)
 {
     PostSetDetailScreen *scr = (PostSetDetailScreen *) widgets[2];
     scr->newsgroup = newsgroup;
-    scr->postset_index = postset_no;
+    scr->current_postset = postset;
     current_screen_id = ST_POSTSETDETAIL;
 }
         

@@ -4,6 +4,7 @@
 #include"SDL_types.h"
 #include"screen.hpp"
 #include"newsgroup.hpp"
+#include"post_set.hpp"
 
 class Session : public Screen{
     public:
@@ -14,7 +15,7 @@ class Session : public Screen{
         virtual int handle_input(int key);
 
         void switch_screen(void);
-        void switch_postset_detail(NewsGroup *newsgroup, int postset_no);
+        void switch_postset_detail(NewsGroup *newsgroup, PostSet *postset);
         void switch_postset_list(NewsGroup *newsgroup);
 
         Uint32 current_screen_id;
