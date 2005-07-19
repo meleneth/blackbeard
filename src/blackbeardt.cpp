@@ -32,6 +32,7 @@ void test_postset_objects(void);
 void test_bit_manipulations(void);
 void test_uudecode(void);
 void test_more_string_pattern(void);
+void test_generated_subject_line_tests(void);
 
 void generate_subject_line_test(NewsGroup *group, string message_id, string subject);
 
@@ -48,6 +49,7 @@ int main(int argc, char *argv[])
     newsgroup = new NewsGroup("misc.test");
     
 
+    test_generated_subject_line_tests();
     test_uudecode();
     test_strings();
     test_string_pattern();
@@ -167,17 +169,71 @@ void test_header_scoop(void)
 
 }
 
+void test_generated_subject_line_tests(void)
+{
+    string subject;
+    PostFile *postfile;
+    PostSet *postset;
+
+    NewsGroup *group = new NewsGroup("alt.kittens");
+
+    subject = "Beekmans post \"fUf.v6.pal.dvdr.nzb\" [000/104] - yEnc (1/9)";
+    postfile = group->digest_subject_line("3533", subject);
+    postset = postfile->post_set;
+    postset->recalculate_piece_info();
+
+    assert(9 == postfile->num_pieces);
+    assert(1 == postfile->seen_pieces);
+    assert(1 == postset->num_files);
+    assert(104 == postset->max_num_files);
+    assert(0 == postfile->filename.compare("fUf.v6.pal.dvdr.nzb"));
+    assert(0 == postfile->post_set->subject.compare("Beekmans post"));
+
+
+    subject = "Beekmans post \"fUf.v6.pal.dvdr.jpg\" [001/104] - yEnc (01/11)";
+    postfile = group->digest_subject_line("3534", subject);
+    postset = postfile->post_set;
+    postset->recalculate_piece_info();
+
+    assert(11 == postfile->num_pieces);
+    assert(1 == postfile->seen_pieces);
+    assert(2 == postset->num_files);
+    assert(104 == postset->max_num_files);
+    assert(0 == postfile->filename.compare("fUf.v6.pal.dvdr.jpg"));
+    assert(0 == postfile->post_set->subject.compare("Beekmans post"));
+
+
+    subject = "001 - Initial D S4D1 (1-9) - yEnc \"HD1_5.par2\" (1/1)";
+    postfile = group->digest_subject_line("3521", subject);
+    postset = postfile->post_set;
+    postset->recalculate_piece_info();
+
+    assert(1 == postfile->num_pieces);
+    assert(1 == postfile->seen_pieces);
+    assert(1 == postset->num_files);
+    assert(0 == postset->max_num_files);
+    assert(0 == postfile->filename.compare("HD1_5.par2"));
+    assert(0 == postfile->post_set->subject.compare("Initial D S4D1"));
+
+}
+
 
 void generate_subject_line_test(NewsGroup *group, string message_id, string subject)
 {
     stringstream buf;
     PostFile *postfile = group->digest_subject_line(message_id, subject);
+    PostSet *postset = postfile->post_set;
+    postset->recalculate_piece_info();
    
     buf << "subject = \"" << subject << "\";\n"
-        << "postfile = group->digest_subject_line(\"" << message_id << "\", \"" << subject << "\");\n"
+        << "postfile = group->digest_subject_line(\"" << message_id << "\", subject);\n"
+        << "postset = postfile->post_set;\n"
+        << "postset->recalculate_piece_info();\n"
         << "\n"
         << "assert(" << postfile->num_pieces <<  " == postfile->num_pieces);\n"
         << "assert(" << postfile->seen_pieces <<  " == postfile->seen_pieces);\n"
+        << "assert(" << postset->num_files <<  " == postset->num_files);\n"
+        << "assert(" << postset->max_num_files <<  " == postset->max_num_files);\n"
         << "assert(0 == postfile->filename.compare(\"" << postfile->filename <<  "\"));\n"
         << "assert(0 == postfile->post_set->subject.compare(\"" << postfile->post_set->subject <<  "\"));\n\n";
 
