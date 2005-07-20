@@ -278,7 +278,15 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
     if(s!=string::npos)
         return NULL;
 
+    s = subject.find("GATCHA");
+    if(s!=string::npos)
+        return NULL;
+
     s = subject.find("ailor");
+    if(s!=string::npos)
+        return NULL;
+
+    s = subject.find("Gundam");
     if(s!=string::npos)
         return NULL;
 

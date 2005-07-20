@@ -4,7 +4,7 @@
 
 StringPattern::StringPattern(Uint32 max_part_no)
 {
-    part_order.resize(max_part_no);
+    part_order.resize(max_part_no +2);
     results.resize(max_part_no);
     for(Uint32 i=0; i<max_part_no; i++){
         part_order[i] = 31337;
@@ -50,7 +50,7 @@ int StringPattern::match(string target)
         s++;
     }
     results[count] = target;
-    console->log("Pattern " + name + " matched");
+//    console->log("Pattern " + name + " matched");
     return 1;
 }
 
