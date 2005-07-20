@@ -48,6 +48,7 @@ void Screen::render_scrollable_line(Uint32 y, Uint32 x, Uint32 width, void *ptr)
 
 Uint32 Screen::search_match(string search, void *ptr)
 {
+    return 0;
 }
 
 

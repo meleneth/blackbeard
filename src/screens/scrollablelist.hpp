@@ -11,12 +11,6 @@
 
 using std::string;
 using std::stringstream;
-/*
- * How This All Works: (or should)
- *     template needs to know a) type of item to be displayed (why?  the screen displays it?) 
- *                            b) 
- *     wow I'm lost :(
- */
 
 template <class T>
 class ScrollableList : public Widget {

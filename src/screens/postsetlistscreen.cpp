@@ -10,8 +10,6 @@ PostSetListScreen::PostSetListScreen()
 {
     scroll_list = new ScrollableList<PostSet>;
     scroll_list->screen = this;
-    scroll_list->height = height - 2;
-    scroll_list->ypos = ypos + 1;
     widgets.push_back(scroll_list);
 }
 
@@ -36,12 +34,16 @@ void PostSetListScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 w
     
     buf << "[" << set->num_files << "/" << set->max_num_files << "]";
     str = buf.str();
-    mvaddnstr(yindex, width - str.length() - 3, str.c_str(), -1);
+    mvaddnstr(yindex,  x + width - 3 - str.length(), str.c_str(), -1);
 }
 
 void PostSetListScreen::render(void)
 {
     NewsGroup *group = newsgroup;
+
+    scroll_list->height = height - 2;
+    scroll_list->width = width -1;
+    scroll_list->ypos = ypos + 1;
     
     if(scroll_list->known_size != group->postsets.size()){
         scroll_list->all_items = group->postsets;
