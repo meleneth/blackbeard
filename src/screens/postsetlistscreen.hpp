@@ -4,10 +4,11 @@
 #include"SDL_types.h"
 #include"screen.hpp"
 #include"newsgroup.hpp"
+#include"scrollablelist.hpp"
 #include<string>
 #include<vector>
 
-class PostSetListScreen : public Screen{
+class PostSetListScreen : public Screen {
     public:
         PostSetListScreen();
         virtual ~PostSetListScreen();
@@ -15,16 +16,12 @@ class PostSetListScreen : public Screen{
         virtual void render(void);
         virtual void render_help(void);
         virtual int handle_input(int key);
+        virtual void handle_selection(void *postset);
+        virtual void render_scrollable_line(Uint32 y, Uint32 x, Uint32 width, void *ptr);
+        virtual Uint32 search_match(string search, void *ptr);
         void refine_search(void);
-        
-        
-        vector< PostSet * >my_postsets;
-        string search_string;
-        Uint32 is_searching;
-        Uint32 postset_index;
-        Uint32 scroll_index;
-        Uint32 known_size;
-
+    
+        ScrollableList<PostSet> *scroll_list;
         NewsGroup *newsgroup;
     private:
     protected:

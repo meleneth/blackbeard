@@ -37,6 +37,20 @@ void Screen::render_help(void)
     mvaddnstr(ypos+2, xpos + 2, "No help is available for this screen.", -1);
 }
 
+void Screen::handle_selection(void *ptr)
+{
+    //pure virtual?
+}
+
+void Screen::render_scrollable_line(Uint32 y, Uint32 x, Uint32 width, void *ptr)
+{
+}
+
+Uint32 Screen::search_match(string search, void *ptr)
+{
+}
+
+
 int Screen::handle_input(int key)
 {
     key = Widget::handle_input(key);
