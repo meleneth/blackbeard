@@ -9,6 +9,8 @@
 #include<string>
 #include<sstream>
 
+#include<ncurses.h>
+
 using std::string;
 using std::stringstream;
 
