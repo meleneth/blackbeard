@@ -11,143 +11,58 @@ using std::vector;
 
 NewsGroupListScreen::NewsGroupListScreen()
 {
-    ng_index = 0;
-    scroll_index = 0;
-    is_searching = 0;
-    search_string="";
-    known_size = 0;
+    scroll_list = new ScrollableList<NewsGroup>;
+    scroll_list->screen = this;
+    widgets.push_back(scroll_list);
 }
 
 NewsGroupListScreen::~NewsGroupListScreen()
 {
 }
 
-void NewsGroupListScreen::refine_search(void)
+Uint32 NewsGroupListScreen::search_match(string search, void *newsgroup)
 {
-    my_groups.clear();
-    Uint32 max = newsgroups.size();
-    for (Uint32 i = 0; i < max; ++i){
-        if (newsgroups[i]->name.find(search_string) != string::npos){
-            my_groups.push_back(newsgroups[i]);
-        }
-    }
+    return ((NewsGroup *)newsgroup)->name.find(search) != string::npos;
 }
 
-void NewsGroupListScreen::render(void)
+void NewsGroupListScreen::handle_selection(void *newsgroup)
 {
-    Screen::render();
-
-    if(help_visible)
-        return;
-    string str;
-    stringstream buf;
-    Uint32 yindex = ypos + 2;
-    
-    my_groups = newsgroups;
-    if(is_searching){
-        buf << "/" << search_string;
-        str = buf.str();
-        mvaddnstr(height-1, xpos + 1, str.c_str(), -1);
-        buf.str("");
-        refine_search();
-    }
-    
-    if(known_size != newsgroups.size()){
-        my_groups = newsgroups;
-        known_size = my_groups.size();
-    }
-    
-    mvaddnstr(ypos, xpos + 1, "NewsGroupListScreen::render", -1);
-    
-    Uint32 max_size = my_groups.size() > (height -3) 
-                    ? height-3
-                    : my_groups.size() - scroll_index;
-    
-    for (Uint32 i = 0; i < max_size; ++i){
-        buf << my_groups[scroll_index + i]->name;
-        str = buf.str();
-        mvaddnstr(yindex, xpos + 3, str.c_str(), -1);
-        if(ng_index == (yindex - (ypos +2) + scroll_index)) {
-            color_set(2, NULL);
-            mvaddnstr(yindex, xpos + 1, "**", -1);
-            mvaddnstr(yindex, xpos + 3, str.c_str(), -1);
-            color_set(1, NULL);
-        }
-        buf.str("");
-        ++yindex;
-    }
+    session->switch_postset_list((NewsGroup *)newsgroup);
 }
 
 int NewsGroupListScreen::handle_input(int key)
 {
-    if(Screen::handle_input(key)){
-        Uint32 max_size = newsgroups.size();
-        Uint32 render_size = height-2;
-        
-        if (is_searching){
-            switch(key){
-                case IKEY_ENTER:
-                    is_searching = 0;
-                    break;
-                    
-                case IKEY_UPARROW:
-                    if (ng_index){
-                        --ng_index;
-                    }
-                    if (ng_index < scroll_index)
-                        scroll_index = ng_index; 
-                    return 0; break;
-                    
-                case IKEY_DOWNARROW:
-                    if (ng_index < (max_size-1)){
-                        ++ng_index;
-                    }
-                    while (ng_index > (scroll_index + render_size -2))
-                        ++scroll_index; 
-                    return 0; break;
-                    
-                case IKEY_RIGHTARROW:
-                    session->switch_postset_list(newsgroups[ng_index]);
-                    return 0; break;
-                    
-                default:
-                    search_string += key;
-                    break;
-             }
-        }else{
-            switch(key){
-                case IKEY_ENTER:
-                case IKEY_RIGHTARROW:
-                    session->switch_postset_list(newsgroups[ng_index]);
-                    return 0; break;
-                    
-                case IKEY_UPARROW:
-                    if (ng_index){
-                        --ng_index;
-                    }
-                    if (ng_index < scroll_index)
-                        scroll_index = ng_index; 
-                    return 0; break;
-                    
-                case IKEY_DOWNARROW:
-                    if (ng_index < (max_size-1)){
-                        ++ng_index;
-                    }
-                    while (ng_index > (scroll_index + render_size -2))
-                        ++scroll_index; 
-                    return 0; break;
-                    
-                case IKEY_SLASH:
-                    my_groups = newsgroups;
-                    is_searching = 1;
-                    search_string = "";
-                    return 0; break;
-                    
-                default:
-                    return 1;
-            }
-        }
+    return scroll_list->handle_input(key) ?  Screen::handle_input(key) : 0;
+}
+
+void NewsGroupListScreen::render(void)
+{
+
+    scroll_list->height = height - 2;
+    scroll_list->width = width -1;
+    scroll_list->ypos = ypos + 1;
+    
+
+    if(scroll_list->known_size != newsgroups.size()){
+        scroll_list->all_items = newsgroups;
     }
-    return 0;
+
+    Screen::render();
+
+    mvaddnstr(ypos, xpos + 1, "NewsGroupListScreen::render", -1);
+    
+}
+
+void NewsGroupListScreen::render_help(void)
+{
+    Uint32 yindex = ypos +1;
+    
+    mvaddnstr(yindex++, xpos + 2, "This screen shows you a list of newsgroups. hit enter to see a list of PostSets.", -1);
+
+}
+
+void NewsGroupListScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 width, void *newsgroup)
+{
+     mvaddnstr(yindex,  x, ((NewsGroup *)newsgroup)->name.c_str(), -1);
 }
 

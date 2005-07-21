@@ -19,7 +19,6 @@ class PostSetListScreen : public Screen {
         virtual void handle_selection(void *postset);
         virtual void render_scrollable_line(Uint32 y, Uint32 x, Uint32 width, void *ptr);
         virtual Uint32 search_match(string search, void *ptr);
-        void refine_search(void);
     
         ScrollableList<PostSet> *scroll_list;
         NewsGroup *newsgroup;

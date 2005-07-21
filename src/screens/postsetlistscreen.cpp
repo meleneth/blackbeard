@@ -69,8 +69,5 @@ Uint32 PostSetListScreen::search_match(string search, void *ptr)
 
 int PostSetListScreen::handle_input(int key)
 {
-    if(!newsgroup)
-        return key;
-
     return scroll_list->handle_input(key) ?  Screen::handle_input(key) : 0;
 }

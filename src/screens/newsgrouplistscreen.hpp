@@ -5,6 +5,7 @@
 
 #include"screen.hpp"
 #include"newsgroup.hpp"
+#include"scrollablelist.hpp"
 #include<string>
 
 using std::string;
@@ -16,16 +17,14 @@ class NewsGroupListScreen : public Screen {
         ~NewsGroupListScreen();
 
         virtual void render(void);
+        virtual void render_help(void);
+        virtual void handle_selection(void *newsgroup);
         virtual int handle_input(int key);
-        void refine_search(void);
+        virtual void render_scrollable_line(Uint32 y, Uint32 x, Uint32 width, void *ptr);
+        virtual Uint32 search_match(string search, void *ptr);
 
-        vector< NewsGroup * >my_groups;
-        string search_string;
-        Uint32 is_searching;
-        Uint32 ng_index;
-        Uint32 scroll_index;
-        Uint32 known_size;
-        NewsGroup *newsgroup;
+        ScrollableList<NewsGroup> *scroll_list;
+
     private:
     protected:
 };
