@@ -7,22 +7,22 @@ Decoders:
 
 Threads:
     multiple net threads
-    console render thread
+*   console render thread
 *   input thread
 *   main() waiting for thread_join
 *   file decoder thread 
-    locking <- only needed in job control for the job list and 
+*   locking <- only needed in job control for the job list and 
                file decode to only mmap the file once (I think)
 
 
 Pattern matching:
     --
-    I want to be able to do this:
-
-    StringSplitter *splitter = new Stringsplitter();
-    splitter << "(" << FILE_NUM << ")" << OTHER_TEXT;
-
-    and have it be able to handle the parsing from there.
+*    I want to be able to do this:
+*
+*    StringSplitter *splitter = new Stringsplitter();
+*    splitter << "(" << FILE_NUM << ")" << OTHER_TEXT;
+*
+*    and have it be able to handle the parsing from there.
     --
 
     load patterns from config file
@@ -32,14 +32,14 @@ Interface:
     need to be able to mark PostSet for retrieval
     show pieces of the file queue instead of the big log
     have small log window, with scrollback
-    only allow typing when you're on the log window
+*   only allow typing when you're on the log window
 *   typing is sending commands to system, not directly interupting TCP streams
 *   tab to switch panes
 *   progress bar for postset downloads (brian)
-    multiple newsgroups
-    allow views of like panes - 
-        newsgroups
-        postsets
+*   multiple newsgroups
+*   allow views of like panes - 
+*       newsgroups
+*       postsets
     allow search - 
 *       newsgroups
 *       postsets
