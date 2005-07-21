@@ -84,6 +84,8 @@ void PostSet::recalculate_piece_info()
     Uint32 tnum_pieces = 0;
     Uint32 tnum_finished_pieces = 0;
     Uint32 tnum_files = 0;
+
+    lock_postsets();
     
     Uint32 max_size = files.size();
     for(Uint32 i = 0; i < max_size; ++i){
@@ -98,6 +100,8 @@ void PostSet::recalculate_piece_info()
     num_finished_pieces = tnum_finished_pieces;
     num_files = tnum_files;
     max_num_files = files.size();
+
+    unlock_postsets();
 }
 
 string PostSet::status(void)
@@ -106,3 +110,16 @@ string PostSet::status(void)
     buf << subject << ", " << num_files << " files. " << setprecision(3) << completed_percent() << "%";
     return buf.str();
 }
+
+pthread_mutex_t postset_lock = PTHREAD_MUTEX_INITIALIZER;
+
+void lock_postsets(void)
+{
+    pthread_mutex_lock(&postset_lock);
+}
+
+void unlock_postsets(void)
+{
+    pthread_mutex_unlock(&postset_lock);
+}
+
