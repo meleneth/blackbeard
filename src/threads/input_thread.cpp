@@ -24,9 +24,9 @@ void InputThread::Execute(void)
 //        usleep(10);
         int key = getch();
         if(key != ERR){
-            stringstream buf;
-            buf << "Recieved key: " << (int) key;
-            console->log(buf.str());
+          //  stringstream buf;
+          //  buf << "Recieved key: " << (int) key;
+          //  console->log(buf.str());
             session->handle_input(key);
         }
         erase();
