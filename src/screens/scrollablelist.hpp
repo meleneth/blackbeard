@@ -62,9 +62,9 @@ void ScrollableList<T>::render(void)
     Uint32 yindex = ypos;
     
     if(is_searching){
-        buf << " /" << search_string << " ";
+        buf << "|--> " << search_string << " ";
         str = buf.str();
-        mvaddnstr(height-1, xpos + 1, str.c_str(), -1);
+        mvaddnstr(height+1, xpos + 1, str.c_str(), -1);
         buf.str("");
         refine_search();
     }
@@ -80,7 +80,7 @@ void ScrollableList<T>::render(void)
     
     for (Uint32 i = 0; i < max_size; ++i){
 
-        if(pos_index == (yindex - (ypos + 2) + scroll_index)) {
+        if(pos_index == (yindex - ypos + scroll_index)) {
             color_set(2, NULL);
             mvaddnstr(yindex, xpos + 1, "**", -1);
         }
