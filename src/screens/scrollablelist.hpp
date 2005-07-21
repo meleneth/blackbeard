@@ -74,8 +74,8 @@ void ScrollableList<T>::render(void)
         refine_search();
     }
 
-    Uint32 max_size = my_items.size() > (height -3) 
-                    ? height-3
+    Uint32 max_size = my_items.size() > height
+                    ? height
                     : my_items.size() - scroll_index;
     
     for (Uint32 i = 0; i < max_size; ++i){
@@ -110,7 +110,7 @@ void ScrollableList<T>::refine_search(void)
 template <class T>
 int ScrollableList<T>::handle_input(int key)
 {
-    Uint32 max_size = all_items.size();
+    Uint32 max_size = all_items.size() -1;
 
     if (is_searching){
         switch(key){
@@ -127,15 +127,17 @@ int ScrollableList<T>::handle_input(int key)
                 return 0; break;
                 
             case IKEY_DOWNARROW:
-                if (pos_index < (max_size-1)){
+                if (pos_index < max_size -1){
                     ++pos_index;
                 }
-                while (pos_index > (scroll_index + height -2))
+                while (pos_index > (scroll_index + height -1))
                     ++scroll_index; 
                 return 0; break;
 
             case IKEY_RIGHTARROW:
-                screen->handle_selection(my_items[pos_index]);
+                if(my_items.size()){
+                    screen->handle_selection(my_items[pos_index]);
+                }
                 return 0; break;
 
             default:
@@ -146,7 +148,9 @@ int ScrollableList<T>::handle_input(int key)
         switch(key){
             case IKEY_ENTER:
             case IKEY_RIGHTARROW:
-                screen->handle_selection(my_items[pos_index]);
+                if (my_items.size()){
+                    screen->handle_selection(my_items[pos_index]);
+                }
                 return 0; break;
                 
             case IKEY_UPARROW:
@@ -158,10 +162,10 @@ int ScrollableList<T>::handle_input(int key)
                 return 0; break;
                 
             case IKEY_DOWNARROW:
-                if (pos_index < (max_size-1)){
+                if (pos_index < max_size -1){
                     ++pos_index;
                 }
-                while (pos_index > (scroll_index + height -2))
+                while (pos_index > (scroll_index + height  -1) )
                     ++scroll_index; 
                 return 0; break;
                 
