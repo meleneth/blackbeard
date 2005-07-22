@@ -59,7 +59,6 @@ void PostSetListScreen::render_help(void)
     Uint32 yindex = ypos +1;
     
     mvaddnstr(yindex++, xpos + 2, "This screen shows you a list of post sets. hit enter to see a list of files.", -1);
-
 }
 
 Uint32 PostSetListScreen::search_match(string search, void *ptr)
