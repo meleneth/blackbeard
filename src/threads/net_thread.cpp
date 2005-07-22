@@ -25,6 +25,7 @@ void NetThread::Execute(void)
         NewsGroup *newsgroup = new NewsGroup("alt.mama");
         newsgroups.push_back(newsgroup);
         newsgroup->load_from_file(config->load_file);
+        console->log("All subjects loaded");
     }else if(0 != config->load_group.compare("")){
         console->log("Loading groups from " + config->load_group);
         load_groups_from(config->load_group);

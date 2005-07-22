@@ -32,11 +32,12 @@ void NewsGroupListScreen::handle_selection(void *newsgroup)
 
 int NewsGroupListScreen::handle_input(int key)
 {
+    NewsGroup *g;
     if(scroll_list->handle_input(key)){
         if(Screen::handle_input(key)){
             switch(key){
                 case 's':
-                    NewsGroup *g = (NewsGroup *) scroll_list->get_selected_item();
+                    g = (NewsGroup *) scroll_list->get_selected_item();
                     if(g)
                         g->is_subscribed ^= 1;
                     return 0;
@@ -71,7 +72,10 @@ void NewsGroupListScreen::render_help(void)
 {
     Uint32 yindex = ypos +1;
     
-    mvaddnstr(yindex++, xpos + 2, "This screen shows you a list of newsgroups. hit enter to see a list of PostSets.", -1);
+    mvaddnstr(yindex++, xpos + 2, "This screen shows you a list of newsgroups.", -1);
+    yindex++;
+    mvaddnstr(yindex++, xpos + 2, "[enter] to see a list of PostSets.", -1);
+    mvaddnstr(yindex++, xpos + 2, "[s] subscribe/unsubscribe to group", -1);
 
 }
 
