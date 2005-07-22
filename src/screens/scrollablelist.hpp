@@ -23,6 +23,7 @@ class ScrollableList : public Widget {
         virtual int handle_input(int key);
         virtual void render(void);
         virtual void refine_search(void);
+        virtual void *get_selected_item(void);
 
         Uint32 is_searching;
         string search_string;
@@ -162,7 +163,7 @@ int ScrollableList<T>::handle_input(int key)
                 return 0; break;
                 
             case IKEY_DOWNARROW:
-                if (pos_index < max_size -1){
+                if (pos_index < max_size){
                     ++pos_index;
                 }
                 while (pos_index > (scroll_index + height  -1) )
@@ -180,6 +181,15 @@ int ScrollableList<T>::handle_input(int key)
         }
     }
     return 0;
+}
+
+template <class T>
+void *ScrollableList<T>::get_selected_item(void)
+{
+    if(known_size == 0)
+        return NULL;
+    return all_items[scroll_index];
+
 }
 
 #endif

@@ -24,6 +24,7 @@ Config::Config(int argc, char *argv[]) // Constructor
     password="guest";
     home_dir = getenv("HOME");
     blackbeard_dir = home_dir + "/blackbeard";
+    blackbeard_data_dir = blackbeard_dir + "/.control";
     config_filename = home_dir + CONFIGFILENAME;
     news_port = 119;
     debug_mode = 0;
@@ -126,6 +127,7 @@ void Config::read_config_file(void)
 void Config::setup_files(void)
 {
     mkdir(blackbeard_dir.c_str(), 01777);
+    mkdir(blackbeard_data_dir.c_str(), 01777);
 
     ofstream out;
     out.open(config_filename.c_str(), ios::out);

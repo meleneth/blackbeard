@@ -33,6 +33,7 @@ class NewsGroup {
         vector< PostSet * > postsets;
         string status;
         string name;
+        Uint32 is_subscribed;
     private:
         int return_code;
 
@@ -46,6 +47,8 @@ class NewsGroup {
 };
 
 void load_groups_from(string filename);
+void save_subscribed_groups_to(string filename);
+
 NewsGroup *group_for_name(string groupname);
 
 #endif

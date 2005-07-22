@@ -28,6 +28,7 @@ int Widget::handle_input(int key)
             return 0;
         case IKEY_Q:
         case IKEY_ESC:
+            save_subscribed_groups_to(config->blackbeard_data_dir + "/subscribed_newsgroups");
             endwin();
             delete console;
             exit(0);

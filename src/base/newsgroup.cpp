@@ -15,6 +15,7 @@ using std::endl;
 NewsGroup::NewsGroup(string group_name) // Constructor
 {
     name = group_name;
+    is_subscribed = 0;
     console->log("Creation of object for " + group_name);
   
     StringPattern *pattern;
@@ -373,6 +374,22 @@ void load_groups_from(string filename)
         group_for_name(pattern->results[0]);
         in.getline(linebuffer, 1024);
     }
+}
+
+void save_subscribed_groups_to(string filename)
+{
+    ofstream out;
+
+    out.open(filename.c_str(), ios::out);
+
+    Uint32 max_no = newsgroups.size();
+    for(Uint32 i=0; i<max_no; i++)
+    {
+        NewsGroup *group = newsgroups[i];
+       // if(newsgroups[i]->is_subscribed)
+            out << group->name << endl;
+    }
+
 }
 
 NewsGroup *group_for_name(string groupname)
