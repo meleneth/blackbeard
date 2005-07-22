@@ -6,6 +6,8 @@
 
 #include "config.hpp"
 #include "console.hpp"
+#include"newsgroup.hpp"
+#include"globals.hpp"
 
 #define CONFIGFILENAME "/.blackbeardrc"
 
@@ -137,6 +139,16 @@ void Config::setup_files(void)
     out << "#username=anonymous" << endl;
     out << "#password=guest" << endl;
     out.close();
+}
+
+void Config::load_persistant_data(void)
+{
+    load_groups_from(blackbeard_data_dir + "/subscribed_newsgroups");
+    Uint32 max_int = newsgroups.size();
+    for(Uint32 i = 0 ; i < max_int ; i++)
+    {
+       newsgroups[i]->is_subscribed = 1;
+    }
 }
 
 // Private members go here.

@@ -188,7 +188,7 @@ void *ScrollableList<T>::get_selected_item(void)
 {
     if(known_size == 0)
         return NULL;
-    return all_items[scroll_index];
+    return my_items[pos_index];
 
 }
 

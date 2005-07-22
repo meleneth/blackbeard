@@ -84,7 +84,7 @@ void do_init(void)
     jobqueue = new JobQueue();
     newsgroup = new NewsGroup(config->news_group);
     session = new Session();
-
+    config->load_persistant_data();
 }
 
 static void finish(int sig)

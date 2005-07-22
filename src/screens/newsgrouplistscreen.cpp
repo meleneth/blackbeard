@@ -32,7 +32,21 @@ void NewsGroupListScreen::handle_selection(void *newsgroup)
 
 int NewsGroupListScreen::handle_input(int key)
 {
-    return scroll_list->handle_input(key) ?  Screen::handle_input(key) : 0;
+    if(scroll_list->handle_input(key)){
+        if(Screen::handle_input(key)){
+            switch(key){
+                case 's':
+                    NewsGroup *g = (NewsGroup *) scroll_list->get_selected_item();
+                    if(g)
+                        g->is_subscribed ^= 1;
+                    return 0;
+                break;
+                default:
+                ;
+            }
+        }
+    }
+    return 1;
 }
 
 void NewsGroupListScreen::render(void)
@@ -63,6 +77,12 @@ void NewsGroupListScreen::render_help(void)
 
 void NewsGroupListScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 width, void *newsgroup)
 {
-     mvaddnstr(yindex,  x, ((NewsGroup *)newsgroup)->name.c_str(), -1);
+    NewsGroup *g = (NewsGroup *) newsgroup;
+    
+    if(g->is_subscribed)
+        attron(A_BOLD);
+
+    mvaddnstr(yindex,  x, g->name.c_str(), -1);
+    attroff(A_BOLD);
 }
 

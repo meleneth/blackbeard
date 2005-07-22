@@ -4,8 +4,10 @@
 #include "strutil.hpp"
 #include <iostream>  // I/O 
 #include <fstream>   // file I/O
+#include<sstream>
 
 using std::string;
+using std::stringstream;
 using std::ofstream;
 using std::ifstream;
 using std::ios;
@@ -366,13 +368,26 @@ void load_groups_from(string filename)
     char linebuffer[1024];
     ifstream in;
 
+    console->log("Opening file " + filename);
     in.open(filename.c_str(), ios::in);
-    in.getline(linebuffer, 1024);
-
-    while(!in.eof()){
-        pattern->match(linebuffer);
-        group_for_name(pattern->results[0]);
+    if(in.is_open()){
         in.getline(linebuffer, 1024);
+
+        while(!in.eof()){
+            stringstream buf;
+            buf << linebuffer << " is length " << strlen(linebuffer);
+            console->log(buf.str());
+
+            if(strlen(linebuffer)){
+                if(pattern->match(linebuffer)){
+                    group_for_name(pattern->results[0]);
+                    in.getline(linebuffer, 1024);
+                }else{
+                    group_for_name(linebuffer);
+                }
+            }
+            in.getline(linebuffer, 1024);
+        }
     }
 }
 
@@ -382,14 +397,15 @@ void save_subscribed_groups_to(string filename)
 
     out.open(filename.c_str(), ios::out);
 
-    Uint32 max_no = newsgroups.size();
-    for(Uint32 i=0; i<max_no; i++)
-    {
-        NewsGroup *group = newsgroups[i];
-       // if(newsgroups[i]->is_subscribed)
-            out << group->name << endl;
+    if(out.is_open()){
+        Uint32 max_no = newsgroups.size();
+        for(Uint32 i=0; i<max_no; i++)
+        {
+            NewsGroup *group = newsgroups[i];
+            if(newsgroups[i]->is_subscribed)
+                out << group->name << endl;
+        }
     }
-
 }
 
 NewsGroup *group_for_name(string groupname)
