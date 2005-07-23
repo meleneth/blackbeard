@@ -30,6 +30,7 @@ int Widget::handle_input(int key)
             //session->switch_screen();
             return 0;
         case IKEY_Q:
+        case IKEY_D:
         case IKEY_ESC:
             session->switch_shutdown_screen();
             save_subscribed_groups_to(config->blackbeard_data_dir + "/subscribed_newsgroups");

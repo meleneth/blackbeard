@@ -2,6 +2,7 @@
 #define ___post_set_inc 1
 
 #include"post_file.hpp"
+#include"job.hpp"
 
 #include"SDL_types.h"
 #include<string>

@@ -3,6 +3,7 @@
 
 #include"SDL_types.h"
 #include<string>
+#include "job.hpp"
 #include"newsgrouppost.hpp"
 #include"news_constants.hpp"
 #include"stringpattern.hpp"

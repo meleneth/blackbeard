@@ -2,6 +2,7 @@
 #define ___scrollablelist_inc 1
 
 #include"SDL_types.h"
+#include"globals.hpp"
 #include"widget.hpp"
 #include"screen.hpp"
 #include"keydefs.hpp"
@@ -144,8 +145,11 @@ int ScrollableList<T>::handle_input(int key)
                     screen->handle_selection(search_map[pos_index]);
                 }
                 return 0; break;
-
+	    case IKEY_D:
+		console->log("Got " + IKEY_D);
+		return 0; break;
             default:
+		console->log("Found: " + IKEY_D);
                 search_string += key;
                 break;
          }
@@ -180,35 +184,8 @@ int ScrollableList<T>::handle_input(int key)
                 search_string = "";
                 return 0; break;
                 
-            case IKEY_HOME:
-                pos_index = 0;
-                scroll_index = 0; 
-                return 0; break;
-                
-            case IKEY_END:
-                pos_index = my_items.size()-1;
-                scroll_index = (pos_index > height) 
-                                ? pos_index - height
-                                : 0;
-                return 0; break;
-                
-            case IKEY_PGUP:
-                pos_index = (pos_index > height) 
-                             ? pos_index - height
-                             : 0;
-                scroll_index = pos_index; 
-                return 0; break;
-                 
-            case IKEY_PGDN:
-                pos_index = (pos_index + height > my_items.size()-1) 
-                             ? my_items.size()-1
-                             : pos_index + height;
-                scroll_index = (my_items.size() < height)
-                                ? 0
-                                : pos_index - height-1;
-                return 0; break;
-                
             default:
+		console->log("Found: " + IKEY_D);
                 return 1;
         }
     }

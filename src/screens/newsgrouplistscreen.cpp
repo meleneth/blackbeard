@@ -1,4 +1,5 @@
 #include "newsgrouplistscreen.hpp"
+#include"globals.hpp"
 #include"keydefs.hpp"
 #include"session.hpp"
 #include<ncurses.h>
@@ -41,6 +42,8 @@ int NewsGroupListScreen::handle_input(int key)
                     if(g)
                         g->is_subscribed ^= 1;
                     return 0;
+		case 'd':
+		    console->log("Found: " + IKEY_D);
                 break;
                 default:
                 ;

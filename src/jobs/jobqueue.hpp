@@ -13,9 +13,13 @@ class JobQueue {
         ~JobQueue(); 
 
         Job *get_next_decoder_job(void);
-        void add_decoder_job(Job *job);
+        Job *get_next_postset_job(void);
 
-        list<Job *> jobs;
+        void add_decoder_job(Job *job);
+        void add_postset_job(Job *job);
+
+        list<Job *> decoder_jobs;
+        list<Job *> postset_jobs;
     private:
     protected:
 };

@@ -6,6 +6,7 @@
 #define IKEY_ESC         27
 #define IKEY_SLASH       47
 #define IKEY_Q           113
+#define IKEY_D           114
 #define IKEY_DOWNARROW   258
 #define IKEY_UPARROW     259
 #define IKEY_LEFTARROW   260

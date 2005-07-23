@@ -4,12 +4,13 @@
 #include"console.hpp"
 #include"newsgrouppost.hpp"
 #include"yenc_decoder.hpp"
+#include"postsetjob.hpp"
 
 // Public data members go here.
 NetThread::NetThread(Config *cfg) // Constructor
 {
     this->config = cfg;
-    connection = NULL;
+    connection = new NNTPServer(config->news_server, config->news_port);
 }
     
 NetThread::~NetThread() // Destructor
@@ -71,28 +72,9 @@ void NetThread::retrieve(PostSet *postset)
 
     console->log("Retrieving PostSet");
     console->log("Commented out till we have job stuff");
-    /* see log
-    for (v=postset->files.begin(); v!=postset->files.end(); ++v){
-        if(*v)
-            (*v)->status = "Marked for retrieval";
-    }
-    for (v=postset->files.begin(); v!=postset->files.end(); ++v){
-        if(*v){
-            current_postfile = *v;
-            console->log("Retrieveing " + (*v)->filename);
-            (*v)->downloaded_pieces = 0;
-            (*v)->status = "Downloading";
-            for (s=(*v)->pieces.begin(); s!=(*v)->pieces.end(); ++s){
-                if((*s).compare("")){
-                    NewsGroupPost *newsgrouppost = connection->body(*s);
-                    jobqueue->add_decoder_job((*v)->get_decoder(newsgrouppost, dest_dir, (*s)));
-                    (*v)->downloaded_pieces++;
-                }
-            }
-            (*v)->status = "Finished";
-        }
-    }
-    */
+    PostsetJob* postsetjob = new PostsetJob(postset);
+    jobqueue->add_postset_job(postsetjob);
+    console->log("Retrieveing a postset");
 }
 
 void NetThread::set_retrieve(void)
