@@ -6,6 +6,11 @@
 #include"newsgroup.hpp"
 #include"post_set.hpp"
 
+#include"newsgrouplistscreen.hpp"
+#include"postsetlistscreen.hpp"
+#include"postsetdetailscreen.hpp"
+#include"shutdownscreen.hpp"
+
 class Session : public Screen{
     public:
         Session();
@@ -14,12 +19,16 @@ class Session : public Screen{
         virtual void render(void);
         virtual int handle_input(int key);
 
-        void switch_screen(void);
         void switch_postset_detail(NewsGroup *newsgroup, PostSet *postset);
         void switch_postset_list(NewsGroup *newsgroup);
+        void switch_shutdown_screen(void);
 
-        Uint32 current_screen_id;
-        
+        NewsGroupListScreen *newsgrouplist; 
+        PostSetListScreen *postsetlist;
+        PostSetDetailScreen *postsetdetail;
+
+        Widget *current_screen;
+
     private:
     protected:
 };

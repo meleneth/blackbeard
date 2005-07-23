@@ -4,50 +4,50 @@
 #include"postsetdetailscreen.hpp"
 #include"newsgrouplistscreen.hpp"
 
-typedef enum { ST_NEWSGROUPLIST, ST_POSTSETLIST, ST_POSTSETDETAIL } screen_types;
-
 Session::Session()
 {
-    current_screen_id = 0;
-    widgets.resize(3);
-    widgets[ST_NEWSGROUPLIST] = new NewsGroupListScreen();
-    widgets[ST_POSTSETLIST] = new PostSetListScreen();
-    widgets[ST_POSTSETDETAIL] = new PostSetDetailScreen();
+    newsgrouplist = new NewsGroupListScreen();
+    postsetlist   = new PostSetListScreen();
+    postsetdetail = new PostSetDetailScreen();
+    current_screen = newsgrouplist;
 }
 
 Session::~Session()
 {
+    current_screen = new ShutDownScreen();
+    delete newsgrouplist;
+    delete postsetlist;
+    delete postsetdetail;
+    delete current_screen;
+    current_screen = NULL;
 }
 
 void Session::render(void)
 {
-    widgets[current_screen_id]->render();
+    if(current_screen)
+    current_screen->render();
 }
 
 int Session::handle_input(int key)
 {
-    return widgets[current_screen_id]->handle_input(key);
-}
-
-void Session::switch_screen(void)
-{
-    ++current_screen_id;
-    current_screen_id %= widgets.size();
-    return;
+    return current_screen->handle_input(key);
 }
 
 void Session::switch_postset_detail(NewsGroup *newsgroup, PostSet *postset)
 {
-    PostSetDetailScreen *scr = (PostSetDetailScreen *) widgets[2];
-    scr->newsgroup = newsgroup;
-    scr->current_postset = postset;
-    current_screen_id = ST_POSTSETDETAIL;
+    postsetdetail->newsgroup = newsgroup;
+    postsetdetail->current_postset = postset;
+    current_screen = postsetdetail;
 }
         
 void Session::switch_postset_list(NewsGroup *newsgroup)
 {
-    PostSetListScreen *scr = (PostSetListScreen *) widgets[1];
-    scr->newsgroup = newsgroup;
-    current_screen_id = ST_POSTSETLIST;
-
+    postsetlist->newsgroup = newsgroup;
+    current_screen = postsetlist;
 }
+
+void Session::switch_shutdown_screen(void)
+{
+    current_screen = new ShutDownScreen();
+}
+
