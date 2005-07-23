@@ -10,7 +10,7 @@
 NetThread::NetThread(Config *cfg) // Constructor
 {
     this->config = cfg;
-    connection = new NNTPServer(config->news_server, config->news_port);
+    connection = NULL;
 }
     
 NetThread::~NetThread() // Destructor
@@ -32,7 +32,7 @@ void NetThread::Execute(void)
     }else{
 
         console->log("Connecting to " + config->news_server + " to grab article list for group " + config->news_group);
-
+        connection = new NNTPServer(config->news_server, config->news_port);
         console->log("Selecting group " + config->news_group);
         connection->group(config->news_group);
         connection->xover(1);
