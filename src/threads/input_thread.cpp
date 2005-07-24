@@ -2,6 +2,7 @@
 #include"globals.hpp"
 #include"screen.hpp"
 #include"postsetdetailscreen.hpp"
+#include"post_set.hpp"
 #include<stdio.h>
 #include<ncurses.h>
 
@@ -30,7 +31,9 @@ void InputThread::Execute(void)
             session->handle_input(key);
         }
         erase();
+        lock_postsets();        
         session->render();
+        unlock_postsets();        
         refresh();
     }
 }

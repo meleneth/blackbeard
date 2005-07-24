@@ -85,8 +85,6 @@ void PostSet::recalculate_piece_info()
     Uint32 tnum_finished_pieces = 0;
     Uint32 tnum_files = 0;
 
-    lock_postsets();
-    
     Uint32 max_size = files.size();
     for(Uint32 i = 0; i < max_size; ++i){
         PostFile *file = files[i];
@@ -100,8 +98,6 @@ void PostSet::recalculate_piece_info()
     num_finished_pieces = tnum_finished_pieces;
     num_files = tnum_files;
     max_num_files = files.size();
-
-    unlock_postsets();
 }
 
 string PostSet::status(void)
