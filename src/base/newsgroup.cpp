@@ -296,7 +296,8 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
             lock_postsets();
-                PostSet *postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
+            PostSet *postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
+            postset->has_msg_ids = 1;
 
             PostFile *postfile = postset->file((*sp)->get_piecen(SP_FILENO), 
                                                      (*sp)->get_piecen(SP_MAXFILENO), 
@@ -304,7 +305,7 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
 
             postfile->decoder_type = DT_YENC;
             postfile->part((*sp)->get_piecen(SP_PARTNO), 
-                                   (*sp)->get_piecen(SP_MAXPARTNO), message_id);
+                                   (*sp)->get_piecen(SP_MAXPARTNO), atoi(message_id.c_str()));
             unlock_postsets();
             return postfile;
         }
@@ -313,13 +314,15 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
     for (sp = uu_subject_patterns.begin(); sp != uu_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
             lock_postsets();
-                PostSet *postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
+
+            PostSet *postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
+            postset->has_msg_ids = 1;
             PostFile *postfile = postset->file((*sp)->get_piecen(SP_FILENO), 
                                              (*sp)->get_piecen(SP_MAXFILENO), 
                                              (*sp)->get_piece(SP_FILENAME));
             postfile->decoder_type = DT_UUDECODE;
             postfile->part((*sp)->get_piecen(SP_PARTNO), 
-                                   (*sp)->get_piecen(SP_MAXPARTNO), message_id);
+                                   (*sp)->get_piecen(SP_MAXPARTNO), atoi(message_id.c_str()));
             unlock_postsets();
             return postfile;
         }
@@ -398,10 +401,61 @@ void load_groups_from(string filename)
     }
 }
 
+void NewsGroup::save_postsets(void)
+{
+    ofstream out;
+    string filename = config->blackbeard_data_dir + "/postsets." + name;
+
+    out.open(filename.c_str(), ios::out);
+
+    if(out.is_open()){
+        Uint32 max_no = postsets.size();
+        for(Uint32 i=0; i<max_no; i++)
+        {
+            PostSet *set = postsets[i];
+            out << set->min_msg_id() << " " << set->max_msg_id() << " " << set->subject << endl;
+        }
+    }
+}
+
+void NewsGroup::load_postsets(void)
+{
+    ifstream in;
+    char linebuffer[1024];
+
+    StringPattern *pattern = new StringPattern(3);
+    pattern->add_breaker(0);
+    pattern->add_breaker(" ");
+    pattern->add_breaker(1);
+    pattern->add_breaker(" ");
+    pattern->add_breaker(2);
+
+    string filename = config->blackbeard_data_dir + "/postsets." + name;
+
+    in.open(filename.c_str(), ios::in);
+
+    if(in.is_open()){
+        in.getline(linebuffer, 1024);
+        while(!in.eof()){
+            if(strlen(linebuffer)) {
+                if(pattern->match(linebuffer)){
+                    PostSet *set = postset_for_subject(pattern->get_piece(2));
+                    set->_min_msg_id = pattern->get_piecen(0);
+                    set->_max_msg_id = pattern->get_piecen(1);
+                    set->has_msg_ids = 0;
+                }
+            }
+            in.getline(linebuffer, 1024);
+        }
+    }
+}
+
+
 void save_subscribed_groups_to(string filename)
 {
     ofstream out;
 
+    lock_postsets();
     out.open(filename.c_str(), ios::out);
 
     if(out.is_open()){
@@ -409,10 +463,13 @@ void save_subscribed_groups_to(string filename)
         for(Uint32 i=0; i<max_no; i++)
         {
             NewsGroup *group = newsgroups[i];
-            if(newsgroups[i]->is_subscribed)
+            if(newsgroups[i]->is_subscribed){
                 out << group->name << endl;
+                newsgroups[i]->save_postsets();
+            }
         }
     }
+    unlock_postsets();
 }
 
 NewsGroup *group_for_name(string groupname)
@@ -429,5 +486,4 @@ NewsGroup *group_for_name(string groupname)
     newsgroups.push_back(news);
     return news;
 }
-
 

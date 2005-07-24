@@ -2,8 +2,8 @@
 #define ___getheadersforgroup_inc 1
 
 #include"SDL_types.h"
-#include"getxover.hpp";
-#include"job.hpp";
+#include"getxover.hpp"
+#include"job.hpp"
 
 #define HEADERS_PER_CHUNK 5000
 

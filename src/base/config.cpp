@@ -148,6 +148,7 @@ void Config::load_persistant_data(void)
     for(Uint32 i = 0 ; i < max_int ; i++)
     {
        newsgroups[i]->is_subscribed = 1;
+       newsgroups[i]->load_postsets();
     }
 }
 

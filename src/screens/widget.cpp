@@ -1,6 +1,7 @@
 #include "widget.hpp"
 #include"globals.hpp"
 #include"keydefs.hpp"
+#include"post_set.hpp"
 #include<ncurses.h>
 
 Widget::Widget()

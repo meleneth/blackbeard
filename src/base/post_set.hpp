@@ -18,6 +18,8 @@ class PostSet {
     
         double completed_percent(void);
         PostFile *file(Uint32 file_num, Uint32 max_file_num, string file_name);
+        Uint32 min_msg_id(void);
+        Uint32 max_msg_id(void);
         string status(void);
         void recalculate_piece_info();
 
@@ -29,6 +31,9 @@ class PostSet {
         Uint32 max_num_files;
         Uint32 num_pieces;
         Uint32 num_finished_pieces;
+        Uint32 has_msg_ids;
+        Uint32 _min_msg_id;
+        Uint32 _max_msg_id;
     private:
     protected:
 };

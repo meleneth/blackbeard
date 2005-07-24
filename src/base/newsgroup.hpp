@@ -22,6 +22,8 @@ class NewsGroup {
         void header_scoop(string xover_line);
         PostFile *digest_subject_line(string message_id, string subject);
         void load_from_file(string filename);
+        void save_postsets(void);
+        void load_postsets(void);
 
         PostSet *postset_for_subject(string subject);
         

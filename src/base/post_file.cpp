@@ -25,16 +25,16 @@ PostFile::~PostFile()
 {
 }
 
-void PostFile::part(Uint32 part_no, Uint32 max_part_no, string message_id)
+void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
 {
     if(num_pieces == 0){
         num_pieces = max_part_no;
         pieces.resize(num_pieces + 1);
 
-        pieces[max_part_no] = "";
+        pieces[max_part_no] = 0;
         while(max_part_no){
             max_part_no--;
-            pieces[max_part_no] = "";
+            pieces[max_part_no] = 0;
         }
         max_part_no = num_pieces;
     }
@@ -55,7 +55,7 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, string message_id)
     }
 }
 
-Decoder *PostFile::get_decoder(NewsGroupPost *newsgrouppost, string dest_dir, string message_id)
+Decoder *PostFile::get_decoder(NewsGroupPost *newsgrouppost, string dest_dir, Uint32 message_id)
 {
     switch(decoder_type){
         case DT_YENC:
@@ -105,12 +105,12 @@ string PostFile::get_bar(void)
     return bar;
 }
 
-Uint32 PostFile::piece_no(string message_id)
+Uint32 PostFile::piece_no(Uint32 message_id)
 {
     Uint32 i=0;
-    vector<string>::iterator p;
+    vector<Uint32>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
-        if(!(*p).compare(message_id)){
+        if(*p == message_id){
             return i;
         }
         i++;

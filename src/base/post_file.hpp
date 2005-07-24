@@ -19,11 +19,11 @@ class PostFile {
         PostFile(PostSet *set);
         ~PostFile();
 
-        void part(Uint32 part, Uint32 total_parts, string message_id);
+        void part(Uint32 part, Uint32 total_parts, Uint32 message_id);
         string status_string(void);
         string get_bar(void);
-        Decoder *get_decoder(NewsGroupPost *newsgrouppost, string dest_dir, string message_id);
-        Uint32 piece_no(string message_id);
+        Decoder *get_decoder(NewsGroupPost *newsgrouppost, string dest_dir, Uint32 message_id);
+        Uint32 piece_no(Uint32 message_id);
 
         Uint32 num_pieces;
         Uint32 seen_pieces;
@@ -36,7 +36,7 @@ class PostFile {
 
         DecoderType decoder_type;
 
-        vector<string> pieces;
+        vector<Uint32> pieces;
     private:
     protected:
 };

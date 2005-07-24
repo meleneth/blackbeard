@@ -14,6 +14,7 @@ PostSet::PostSet(string subject)
     num_finished_pieces = 0;
     pattern_name="";
     max_num_files = 0;
+    has_msg_ids = 0;
 }
     
 PostSet::~PostSet() 
@@ -107,6 +108,21 @@ string PostSet::status(void)
     return buf.str();
 }
 
+Uint32 PostSet::min_msg_id(void)
+{
+    Uint32 msg_id = 0;
+    msg_id--;
+
+    return msg_id;
+}
+
+Uint32 PostSet::max_msg_id(void)
+{
+    Uint32 msg_id = 0;
+
+    return msg_id;
+}
+
 pthread_mutex_t postset_lock = PTHREAD_MUTEX_INITIALIZER;
 
 void lock_postsets(void)
@@ -118,4 +134,5 @@ void unlock_postsets(void)
 {
     pthread_mutex_unlock(&postset_lock);
 }
+
 

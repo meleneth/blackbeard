@@ -16,7 +16,7 @@ UUDecoder::UUDecoder()
 {
 }
 
-UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, string message_id) : Decoder(newsgrouppost, file)// Constructor
+UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, Uint32 message_id) : Decoder(newsgrouppost, file)// Constructor
 {
     status = S_MESSAGE;
     piece_no = file->piece_no(message_id);
