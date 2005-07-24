@@ -22,7 +22,7 @@ void NetThread::Execute(void)
     console->log("Initialized.");
     if(0 != config->load_file.compare("")){
         console->log("Loading subjects from " + config->load_file);
-        NewsGroup *newsgroup = new NewsGroup("alt.mama");
+        NewsGroup *newsgroup = group_for_name("alt.mama");
         newsgroups.push_back(newsgroup);
         newsgroup->load_from_file(config->load_file);
         console->log("All subjects loaded");

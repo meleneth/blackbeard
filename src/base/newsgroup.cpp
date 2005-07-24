@@ -362,7 +362,9 @@ void NewsGroup::load_from_file(string filename)
 
 void load_groups_from(string filename)
 {
-    StringPattern *pattern = new StringPattern(2);
+    StringPattern *pattern = new StringPattern(4);
+    pattern->add_breaker(" ");
+    pattern->add_breaker(" ");
     pattern->add_breaker(" ");
     
     char linebuffer[1024];

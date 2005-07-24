@@ -7,6 +7,8 @@
 #include"strutil.hpp"
 #include"uu_decoder.hpp"
 #include"newsgroup.hpp"
+#include"getxover.hpp"
+#include"getheadersforgroup.hpp"
 
 #include<string>
 #include<sstream>
@@ -33,6 +35,7 @@ void test_bit_manipulations(void);
 void test_uudecode(void);
 void test_more_string_pattern(void);
 void test_generated_subject_line_tests(void);
+void test_header_retrieve_job(void);
 
 void generate_subject_line_test(NewsGroup *group, string message_id, string subject);
 
@@ -436,3 +439,32 @@ void assert_strings_eq(string s1, string s2)
         return;
     console->log("(" + s1 + ") is not equal to (" + s2 + ")");
 }
+
+void test_header_retrieve_job(void)
+{
+    GetHeadersForGroup *g = new GetHeadersForGroup();
+    g->group_name = "alt.binaries";
+    g->lower_id = 4000;
+    g->upper_id = 18000;
+
+    GetXover *x = g->get_next_job();
+    assert(x->group_name.compare("alt.binaries") == 0);
+    assert(x->lower_id == 4000);
+    assert(x->upper_id == 9000);
+    assert(g->lower_id == 9001);
+
+    x = g->get_next_job();
+    assert(x->group_name.compare("alt.binaries") == 0);
+    assert(x->lower_id == 9001);
+    assert(x->upper_id == 14001);
+    assert(g->lower_id == 14002);
+
+    x = g->get_next_job();
+    assert(x->group_name.compare("alt.binaries") == 0);
+    assert(x->lower_id == 14002);
+    assert(x->upper_id == 18000);
+
+    x = g->get_next_job();
+    assert(x == NULL);
+}
+
