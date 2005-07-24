@@ -117,3 +117,33 @@ Uint32 PostFile::piece_no(Uint32 message_id)
     }
     return 0;
 }
+
+Uint32 PostFile::min_msg_id(void)
+{
+    Uint32 msg_id = 0;
+    msg_id--;
+
+    Uint32 max = pieces.size();
+    for(Uint32 i=0; i<max; ++i) {
+        Uint32 x = pieces[i];
+        if(msg_id > x)
+            msg_id = x;
+    }
+    return msg_id;
+}
+
+Uint32 PostFile::max_msg_id(void)
+{
+    Uint32 msg_id = 0;
+    msg_id--;
+
+    Uint32 max = pieces.size();
+    for(Uint32 i=0; i<max; ++i) {
+        Uint32 x = pieces[i];
+        if(msg_id < x)
+            msg_id = x;
+    }
+
+    return msg_id;
+}
+
