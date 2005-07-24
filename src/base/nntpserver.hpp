@@ -27,7 +27,7 @@ class NNTPServer : public TCPConnection {
        void login(string username, string password);
        void quit();
        void group(string groupname);
-       void list();
+       vector<NewsGroup *> list();
        void listgroup();
        void xover();
        void xover(long article_id);

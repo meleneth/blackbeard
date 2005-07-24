@@ -48,9 +48,10 @@ void NNTPServer::group(string groupname)
     newsgroup = group_for_name(groupname);
 }
 
-void NNTPServer::list()
+vector<NewsGroup *> NNTPServer::list()
 {
     send_command(LIST);
+    read_multiline_response();
 }
 
 void NNTPServer::listgroup()

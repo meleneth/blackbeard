@@ -145,11 +145,7 @@ int ScrollableList<T>::handle_input(int key)
                     screen->handle_selection(search_map[pos_index]);
                 }
                 return 0; break;
-	    case IKEY_D:
-		console->log("Got " + IKEY_D);
-		return 0; break;
             default:
-		console->log("Found: " + IKEY_D);
                 search_string += key;
                 break;
          }
@@ -185,7 +181,6 @@ int ScrollableList<T>::handle_input(int key)
                 return 0; break;
                 
             default:
-		console->log("Found: " + IKEY_D);
                 return 1;
         }
     }

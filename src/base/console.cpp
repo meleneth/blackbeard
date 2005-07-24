@@ -2,6 +2,8 @@
 #include <ncurses.h>
 #include<iomanip>
 
+#include"globals.hpp"
+
 using std::string;
 using std::stringstream;
 using std::list;
