@@ -363,9 +363,13 @@ void NewsGroup::load_from_file(string filename)
 void load_groups_from(string filename)
 {
     StringPattern *pattern = new StringPattern(4);
+    pattern->add_breaker(0);
     pattern->add_breaker(" ");
+    pattern->add_breaker(1);
     pattern->add_breaker(" ");
+    pattern->add_breaker(2);
     pattern->add_breaker(" ");
+    pattern->add_breaker(3);
     
     char linebuffer[1024];
     ifstream in;
@@ -382,8 +386,9 @@ void load_groups_from(string filename)
 
             if(strlen(linebuffer)){
                 if(pattern->match(linebuffer)){
-                    group_for_name(pattern->results[0]);
-                    in.getline(linebuffer, 1024);
+                    NewsGroup *group = group_for_name(pattern->results[0]);
+                    group->last_article_number = pattern->get_piecen(1);
+                    group->first_article_number = pattern->get_piecen(2);
                 }else{
                     group_for_name(linebuffer);
                 }

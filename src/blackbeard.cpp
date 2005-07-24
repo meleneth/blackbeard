@@ -82,7 +82,7 @@ void do_init(void)
     current_postset = NULL;
     current_postfile = NULL;
     jobqueue = new JobQueue();
-    newsgroup = new NewsGroup(config->news_group);
+    newsgroup = group_for_name(config->news_group);
     session = new Session();
     config->load_persistant_data();
 }

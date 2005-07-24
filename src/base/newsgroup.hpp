@@ -34,11 +34,11 @@ class NewsGroup {
         string status;
         string name;
         Uint32 is_subscribed;
+        Uint32 first_article_number;
+        Uint32 last_article_number;
     private:
         int return_code;
 
-        long first_article_number;
-        long last_article_number;
         long current_article_number;
         long number_of_articles;
         std::string last_group_name;

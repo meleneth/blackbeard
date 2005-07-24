@@ -82,11 +82,13 @@ void NewsGroupListScreen::render_help(void)
 void NewsGroupListScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 width, void *newsgroup)
 {
     NewsGroup *g = (NewsGroup *) newsgroup;
-    
+    stringstream buf;
+
+    buf << g->name << "     " << g->first_article_number << "-" << g->last_article_number
+        << ", " << g->last_article_number - g->first_article_number << " possible"; 
     if(g->is_subscribed)
         attron(A_BOLD);
-
-    mvaddnstr(yindex,  x, g->name.c_str(), -1);
+    mvaddnstr(yindex,  x, buf.str().c_str(), -1);
     attroff(A_BOLD);
 }
 
