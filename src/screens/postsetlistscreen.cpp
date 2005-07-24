@@ -45,10 +45,11 @@ void PostSetListScreen::render(void)
     scroll_list->width = width -1;
     scroll_list->ypos = ypos + 1;
     
-    if(scroll_list->known_size != group->postsets.size()){
-        scroll_list->all_items = group->postsets;
+    if(group){
+        if(scroll_list->known_size != group->postsets.size()){
+            scroll_list->all_items = group->postsets;
+        }
     }
-
     Screen::render();
 
     mvaddnstr(ypos, xpos + 1, "PostSetListScreen::render", -1);
