@@ -1,7 +1,7 @@
 #include "post_file.hpp"
-#include"globals.hpp"
 #include"yenc_decoder.hpp"
 #include"uu_decoder.hpp"
+#include"console.hpp"
 #include<math.h>
 
 #include<sstream>

@@ -1,6 +1,6 @@
 #include "newsgrouplistscreen.hpp"
-#include"globals.hpp"
 #include"keydefs.hpp"
+#include"session.hpp"
 #include<ncurses.h>
 #include<sstream>
 #include<vector>

@@ -4,13 +4,14 @@
 #include "tcpconnection.hpp"
 #include "news_constants.hpp"
 #include "console.hpp"
+#include "config.hpp"
 #include "newsgrouppost.hpp"
 #include "yenc_decoder.hpp"
 
-#include "globals.hpp"
-
 using std::string;
 using std::stringstream;
+
+extern void shut_down(void);
 
 // Public data members go here.
 NNTPServer::NNTPServer(string hostname, int port) : TCPConnection(hostname, port) // Constructor

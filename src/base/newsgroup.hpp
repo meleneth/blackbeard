@@ -53,4 +53,6 @@ void save_subscribed_groups_to(string filename);
 
 NewsGroup *group_for_name(string groupname);
 
+extern vector<NewsGroup *> newsgroups;
+
 #endif

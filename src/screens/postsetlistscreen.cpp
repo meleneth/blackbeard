@@ -1,6 +1,7 @@
 #include "postsetlistscreen.hpp"
-#include"globals.hpp"
 #include"keydefs.hpp"
+#include"console.hpp"
+#include"session.hpp"
 #include<ncurses.h>
 #include<sstream>
 

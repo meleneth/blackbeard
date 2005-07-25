@@ -1,5 +1,4 @@
 #include "post_set.hpp"
-#include"globals.hpp"
 
 #include<sstream>
 #include<iomanip>

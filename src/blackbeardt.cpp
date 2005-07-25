@@ -8,6 +8,8 @@
 #include"uu_decoder.hpp"
 #include"newsgroup.hpp"
 #include"getxover.hpp"
+#include"config.hpp"
+#include"session.hpp"
 #include"getheadersforgroup.hpp"
 
 #include<string>

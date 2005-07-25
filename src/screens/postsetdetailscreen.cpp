@@ -1,6 +1,6 @@
 #include"postsetdetailscreen.hpp"
-#include"globals.hpp"
 #include"keydefs.hpp"
+#include"console.hpp"
 
 #include<sstream>
 #include<ncurses.h>

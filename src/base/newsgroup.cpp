@@ -1,6 +1,7 @@
 #include "newsgroup.hpp"
 #include "news_constants.hpp"
-#include "globals.hpp"
+#include"console.hpp"
+#include"config.hpp"
 #include "strutil.hpp"
 #include <iostream>  // I/O 
 #include <fstream>   // file I/O

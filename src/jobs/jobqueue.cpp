@@ -1,5 +1,4 @@
 #include "jobqueue.hpp"
-#include"globals.hpp"
 
 JobQueue::JobQueue() 
 {

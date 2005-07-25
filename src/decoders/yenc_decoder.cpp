@@ -1,7 +1,6 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include "yenc_decoder.hpp"
-#include"globals.hpp"
 #include<stdio.h>
 
 #define ASCII_NULL  0x00

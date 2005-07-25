@@ -1,5 +1,4 @@
 #include "session.hpp"
-#include"globals.hpp"
 #include"postsetlistscreen.hpp"
 #include"postsetdetailscreen.hpp"
 #include"newsgrouplistscreen.hpp"

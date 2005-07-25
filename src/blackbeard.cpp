@@ -9,7 +9,9 @@
 #include"decoder_thread.hpp"
 #include"input_thread.hpp"
 #include"post_set.hpp"
-#include"globals.hpp"
+#include"console.hpp"
+#include"jobqueue.hpp"
+#include"session.hpp"
 
 
 Console *console;

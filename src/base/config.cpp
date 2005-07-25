@@ -7,7 +7,6 @@
 #include "config.hpp"
 #include "console.hpp"
 #include"newsgroup.hpp"
-#include"globals.hpp"
 
 #define CONFIGFILENAME "/.blackbeardrc"
 

@@ -36,4 +36,6 @@ class Config {
         // Protected members go here.
 };
 
+extern Config *config;
+
 #endif

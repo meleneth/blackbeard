@@ -1,5 +1,6 @@
 #include "screen.hpp"
-#include"globals.hpp"
+#include"session.hpp"
+#include"console.hpp"
 #include"keydefs.hpp"
 
 #include<ncurses.h>

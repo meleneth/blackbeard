@@ -1,6 +1,5 @@
 #include"news_constants.hpp"
 #include"stringpattern.hpp"
-#include"globals.hpp"
 
 StringPattern::StringPattern(Uint32 max_part_no)
 {

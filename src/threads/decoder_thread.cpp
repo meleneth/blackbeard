@@ -1,5 +1,6 @@
 #include "decoder_thread.hpp"
-#include"globals.hpp"
+#include"jobqueue.hpp"
+#include"console.hpp"
 
 using std::stringstream;
 

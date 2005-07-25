@@ -33,4 +33,6 @@ class Session : public Screen{
     protected:
 };
 
+extern Session *session;
+
 #endif

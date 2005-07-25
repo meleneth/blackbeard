@@ -1,5 +1,7 @@
 #include "widget.hpp"
-#include"globals.hpp"
+#include"config.hpp"
+#include"console.hpp"
+#include"session.hpp"
 #include"keydefs.hpp"
 #include"post_set.hpp"
 #include<ncurses.h>

@@ -1,5 +1,4 @@
 #include "getheadersforgroup.hpp"
-#include"globals.hpp"
 
 GetHeadersForGroup::GetHeadersForGroup()
 {

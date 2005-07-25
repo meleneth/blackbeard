@@ -2,8 +2,8 @@
 
 #include<sstream>
 using std::stringstream;
-#include"globals.hpp"
 #include"strutil.hpp"
+#include"console.hpp"
 
 /* piece files are 7500 lines
  * lines hold 45 bytes each (decoded)

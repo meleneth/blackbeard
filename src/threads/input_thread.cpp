@@ -1,7 +1,7 @@
 #include "input_thread.hpp"
-#include"globals.hpp"
 #include"screen.hpp"
 #include"postsetdetailscreen.hpp"
+#include"session.hpp"
 #include"post_set.hpp"
 #include<stdio.h>
 #include<ncurses.h>

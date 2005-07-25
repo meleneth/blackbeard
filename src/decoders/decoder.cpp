@@ -1,7 +1,9 @@
 #include "decoder.hpp"
+#include"console.hpp"
+#include"config.hpp"
+
 #include <sys/types.h>
 #include <sys/stat.h>
-#include"globals.hpp"
 
 
 

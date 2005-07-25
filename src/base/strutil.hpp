@@ -6,7 +6,6 @@
 #include <vector>
 
 #include"SDL_types.h"
-#include"globals.hpp"
 
 using std::string;
 using std::vector;

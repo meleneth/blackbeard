@@ -1,5 +1,6 @@
 #include "shutdownscreen.hpp"
-#include"globals.hpp"
+
+#include<ncurses.h>
 
 ShutDownScreen::ShutDownScreen()
 {

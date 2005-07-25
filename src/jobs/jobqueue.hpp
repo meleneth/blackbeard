@@ -20,4 +20,6 @@ class JobQueue {
     protected:
 };
 
+extern JobQueue *jobqueue;
+
 #endif
