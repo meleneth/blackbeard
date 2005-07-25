@@ -38,7 +38,7 @@ void Screen::render_help(void)
     mvaddnstr(ypos+2, xpos + 2, "No help is available for this screen.", -1);
 }
 
-void Screen::handle_selection(void *ptr)
+void Screen::handle_selection(Uint32 index)
 {
     //pure virtual?
 }

@@ -29,6 +29,7 @@ class ScrollableList : public Widget {
         string search_string;
         vector<T *> my_items;
         vector<T *> all_items;
+        vector<Uint32> search_map;
         Uint32 pos_index;
         Uint32 scroll_index;
         Uint32 known_size;
@@ -97,10 +98,13 @@ template <class T>
 void ScrollableList<T>::refine_search(void)
 {
     my_items.clear();
+    search_map.clear();
     Uint32 max = all_items.size();
     for (Uint32 i = 0; i < max; ++i){
+
         if (screen->search_match(search_string, all_items[i])){
             my_items.push_back(all_items[i]);
+            search_map.push_back(i);
         }
     }
     if (pos_index > my_items.size()){
@@ -137,7 +141,7 @@ int ScrollableList<T>::handle_input(int key)
 
             case IKEY_RIGHTARROW:
                 if(my_items.size()){
-                    screen->handle_selection(my_items[pos_index]);
+                    screen->handle_selection(search_map[pos_index]);
                 }
                 return 0; break;
 
@@ -150,7 +154,7 @@ int ScrollableList<T>::handle_input(int key)
             case IKEY_ENTER:
             case IKEY_RIGHTARROW:
                 if (my_items.size()){
-                    screen->handle_selection(my_items[pos_index]);
+                    screen->handle_selection(search_map[pos_index]);
                 }
                 return 0; break;
                 

@@ -25,9 +25,9 @@ Uint32 NewsGroupListScreen::search_match(string search, void *newsgroup)
     return ((NewsGroup *)newsgroup)->name.find(search) != string::npos;
 }
 
-void NewsGroupListScreen::handle_selection(void *newsgroup)
+void NewsGroupListScreen::handle_selection(Uint32 index)
 {
-    session->switch_postset_list((NewsGroup *)newsgroup);
+    session->switch_postset_list((NewsGroup *)scroll_list->get_selected_item());
 }
 
 int NewsGroupListScreen::handle_input(int key)

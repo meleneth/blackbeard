@@ -17,9 +17,10 @@ PostSetListScreen::~PostSetListScreen()
 {
 }
 
-void PostSetListScreen::handle_selection(void *postset)
+void PostSetListScreen::handle_selection(Uint32 index)
 {
-    session->switch_postset_detail(newsgroup, (PostSet *) postset);
+    NewsGroup *group = newsgroup;
+    session->switch_postset_detail(group,  index);
 }
 
 void PostSetListScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 width, void *postset)

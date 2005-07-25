@@ -33,7 +33,6 @@ void PostSetDetailScreen::render(void)
         return;
     
     Uint32 num_postsets = 0;
-    Uint32 num_postfiles = 0;
     Uint32 three_quarters = (height * 3) / 4;
     Uint32 current_postset_no = 0;
 
@@ -50,17 +49,14 @@ void PostSetDetailScreen::render(void)
         
         attron(A_BOLD);
         int max_p = newsgroup->postsets.size();
-        for(int p = 0; p < max_p; ++p){
-            num_postsets++;
-            num_postfiles += newsgroup->postsets[p]->num_files;
-            if(current_postset == newsgroup->postsets[p]){
-                current_postset_no = num_postsets;
-            }
+        PostSet *set = NULL;
+        if(max_p){
+            set = newsgroup->postsets[current_postset_no];
         }
 
-        if(current_postset){
-            scroll_list->all_items = current_postset->files;
-            mvaddnstr(2, 1, current_postset->status().c_str(), -1);
+        if(set){
+            scroll_list->all_items = set->files;
+            mvaddnstr(2, 1, set->status().c_str(), -1);
 
             stringstream buf;
             buf << "(" << current_postset_no << "/" << num_postsets << ") postsets";
@@ -68,7 +64,6 @@ void PostSetDetailScreen::render(void)
             mvaddnstr(3, COLS - (str.length() + 3), str.c_str(), -1);
         }
         attroff(A_BOLD);
-        
     }
 
     console->render(three_quarters, height-4);
@@ -98,17 +93,11 @@ int PostSetDetailScreen::handle_input(int key)
                     if (postset_index){
                         --postset_index;
                     }
-                    if(max_size){
-                        current_postset = newsgroup->postsets[postset_index];
-                    }
                     return 0; break;
                     
                 case IKEY_RIGHTARROW:
-                    if (postset_index < (max_size-1)){
+                    if (postset_index < max_size){
                         ++postset_index;
-                    }
-                    if(max_size){
-                        current_postset = newsgroup->postsets[postset_index];
                     }
                     return 0; break;
                     
@@ -120,7 +109,7 @@ int PostSetDetailScreen::handle_input(int key)
     return 0;
 }
 
-void PostSetDetailScreen::handle_selection(void *postset)
+void PostSetDetailScreen::handle_selection(Uint32 index)
 {
     //console->net_thread->set_retrieve();
 }

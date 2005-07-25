@@ -33,10 +33,10 @@ int Session::handle_input(int key)
     return current_screen->handle_input(key);
 }
 
-void Session::switch_postset_detail(NewsGroup *newsgroup, PostSet *postset)
+void Session::switch_postset_detail(NewsGroup *newsgroup, Uint32 selected_postset_no)
 {
     postsetdetail->newsgroup = newsgroup;
-    postsetdetail->current_postset = postset;
+    postsetdetail->postset_index = selected_postset_no;
     current_screen = postsetdetail;
 }
         
