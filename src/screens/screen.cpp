@@ -1,5 +1,6 @@
 #include "screen.hpp"
 #include"globals.hpp"
+#include"keydefs.hpp"
 
 #include<ncurses.h>
 
@@ -63,6 +64,19 @@ int Screen::handle_input(int key)
         case 'H':
             help_visible = !help_visible;
             break;
+            
+        case IKEY_F5:
+            session->current_screen = session->newsgrouplist;
+            break;
+
+        case IKEY_F6:
+            session->current_screen = session->postsetlist;
+            break;
+
+        case IKEY_F7:
+            session->current_screen = session->postsetdetail;
+            break;
+
         default:
             return key;
     }
