@@ -11,7 +11,7 @@
 NetThread::NetThread(Config *cfg) // Constructor
 {
     this->config = cfg;
-    connection = new NNTPServer(config->news_server, config->news_port);
+    connection = NULL;
 }
     
 NetThread::~NetThread() // Destructor
