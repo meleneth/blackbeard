@@ -2,7 +2,6 @@
 #define ___scrollablelist_inc 1
 
 #include"SDL_types.h"
-#include"globals.hpp"
 #include"widget.hpp"
 #include"screen.hpp"
 #include"keydefs.hpp"

@@ -5,6 +5,7 @@
 #include"newsgrouppost.hpp"
 #include"yenc_decoder.hpp"
 #include"postsetjob.hpp"
+#include"jobqueue.hpp"
 
 // Public data members go here.
 NetThread::NetThread(Config *cfg) // Constructor

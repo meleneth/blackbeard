@@ -1,5 +1,4 @@
 #include "postsetjob.hpp"
-#include"globals.hpp"
 
 PostsetJob::PostsetJob(PostSet* post_set)
 {

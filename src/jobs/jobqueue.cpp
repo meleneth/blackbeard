@@ -1,5 +1,5 @@
 #include "jobqueue.hpp"
-#include"globals.hpp"
+#include "postsetjob.hpp"
 
 JobQueue::JobQueue() 
 {
