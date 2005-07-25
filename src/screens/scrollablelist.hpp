@@ -176,6 +176,34 @@ int ScrollableList<T>::handle_input(int key)
                 search_string = "";
                 return 0; break;
                 
+            case IKEY_HOME:
+                pos_index = 0;
+                scroll_index = 0; 
+                return 0; break;
+                
+            case IKEY_END:
+                pos_index = my_items.size()-1;
+                scroll_index = (pos_index > height) 
+                                ? pos_index - height
+                                : 0;
+                return 0; break;
+                
+            case IKEY_PGUP:
+                pos_index = (pos_index > height) 
+                             ? pos_index - height
+                             : 0;
+                scroll_index = pos_index; 
+                return 0; break;
+                 
+            case IKEY_PGDN:
+                pos_index = (pos_index + height > my_items.size()-1) 
+                             ? my_items.size()-1
+                             : pos_index + height;
+                scroll_index = (my_items.size() < height)
+                                ? 0
+                                : pos_index - height-1;
+                return 0; break;
+                
             default:
                 return 1;
         }

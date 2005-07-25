@@ -10,5 +10,12 @@
 #define IKEY_UPARROW     259
 #define IKEY_LEFTARROW   260
 #define IKEY_RIGHTARROW  261
+#define IKEY_HOME        262
+#define IKEY_F6          270
+#define IKEY_F7          271
+#define IKEY_PGDN        338
+#define IKEY_PGUP        339
+#define IKEY_END         360
+#define IKEY_F5          269
 
 #endif
