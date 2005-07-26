@@ -136,7 +136,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->name = "RzrBladeZombie";
 
 //(Sailormoon Sailor Stars Disk 4 par to follow) [012/213] - "yEnc "ss4_scn.part011.rar" (077/209)
-    pattern = new StringPattern(SP_LASTPART +1);
+    pattern = new StringPattern(SP_LASTPART +2);
     pattern->add_breaker("(");
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker(") [");
@@ -283,10 +283,6 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
         return NULL;
 
     s = subject.find("GATCHA");
-    if(s!=string::npos)
-        return NULL;
-
-    s = subject.find("ailor");
     if(s!=string::npos)
         return NULL;
 
