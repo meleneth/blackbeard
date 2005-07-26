@@ -396,6 +396,7 @@ void test_postset_objects(void)
     console->log("Calling assert_postset_filenames_eq");
     assert_postset_filenames_eq(post, s);
 
+    console->log("Second pass..");
     post = new PostSet("brick brothers presents");
     post->file(0, 0, "info.txt");
     post->file(0, 0, "checksum.SFV");
@@ -417,6 +418,9 @@ void assert_postset_filenames_eq(PostSet *checkme, list<string> filenames)
 {
     stringstream buf;
     console->log("Checking size..");
+    buf << checkme->num_files << " <-> " <<  filenames.size();
+    console->log(buf.str());
+    buf.str("");
     assert(checkme->num_files == filenames.size());
 
     console->log("Checking contents...");

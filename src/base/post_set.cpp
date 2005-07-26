@@ -62,6 +62,7 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
         
         files[file_num] = new PostFile(this);
         files[file_num]->filename = file_name;
+        num_files++;
         return files[file_num];
     }
 
