@@ -282,10 +282,6 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
     if(s!=string::npos)
         return NULL;
 
-    s = subject.find("GATCHA");
-    if(s!=string::npos)
-        return NULL;
-
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
             lock_postsets();
@@ -295,7 +291,10 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
             PostFile *postfile = postset->file((*sp)->get_piecen(SP_FILENO), 
                                                      (*sp)->get_piecen(SP_MAXFILENO), 
                                                      (*sp)->get_piece(SP_FILENAME));
-
+            if(!postfile){
+                unlock_postsets();
+                return NULL;
+            }
             postfile->decoder_type = DT_YENC;
             postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), atoi(message_id.c_str()));
@@ -313,6 +312,11 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
             PostFile *postfile = postset->file((*sp)->get_piecen(SP_FILENO), 
                                              (*sp)->get_piecen(SP_MAXFILENO), 
                                              (*sp)->get_piece(SP_FILENAME));
+            if(!postfile){
+                unlock_postsets();
+                return NULL;
+            }
+
             postfile->decoder_type = DT_UUDECODE;
             postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), atoi(message_id.c_str()));
@@ -328,10 +332,11 @@ PostSet *NewsGroup::postset_for_subject(string subject)
     int max_length = postsets.size();
     for(int i = 0; i < max_length; ++i){
         if(0 == subject.compare((postsets[i])->subject)){
+            console->log("Found postset");
             return postsets[i];
         }
     }
-
+    console->log("Creating postset");
     PostSet *new_post = new PostSet(subject);
     postsets.push_back(new_post);
     return new_post;

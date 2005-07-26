@@ -170,6 +170,8 @@ void test_header_scoop(void)
     generate_subject_line_test(group, "3537", "(aR) [087/104] - \"ar-bgv4.part84.rar\" yEnc (201/201)");
     generate_subject_line_test(group, "3538", "(aR) [091/104] - \"ar-bgv4.sfv\" yEnc (1/1)");
     generate_subject_line_test(group, "4000", "(Gundam Seed V4+V6 Kimagure V2-V5) [001/556] -  yEnc \"Gundam_Seed_Vol4.par2\" (1/1)");
+    generate_subject_line_test(group, "4001", "(OMNI) Gundam Seed Movie [91/91] - \"jspec-gundam.seed.movie.1.rar\" yEnc (32/33)");
+    generate_subject_line_test(group, "4002", "(OMNI) Gundam Seed Movie [093/105] - \"jspec-gundam.seed.movie.1.vol000+01.PAR2\" yEnc (1/2)");
 
     generate_subject_line_test(group, "31337", "NVIDIA linux drivers - File 1 of 1: \"NVIDIA-Linux-x86-1.0-4496-pkg2.run\" yEnc (16/25)");
 

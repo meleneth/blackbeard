@@ -1,4 +1,5 @@
 #include "post_set.hpp"
+#include"console.hpp"
 
 #include<sstream>
 #include<iomanip>
@@ -54,6 +55,11 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
             for(i=0;i<max_num_files;i++){
                 files[i] = NULL;
             }
+        }
+
+        if(file_num > max_num_files){
+            console->log("Cowardly refusing to do a crashy op");
+            return NULL;
         }
 
         if(files[file_num]){
