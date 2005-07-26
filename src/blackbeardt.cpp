@@ -169,6 +169,7 @@ void test_header_scoop(void)
     generate_subject_line_test(group, "3536", "(Sailormoon Sailor Stars Disk 4 par to follow) [012/213] - \"yEnc \"ss4_scn.part011.rar\" (077/209)");
     generate_subject_line_test(group, "3537", "(aR) [087/104] - \"ar-bgv4.part84.rar\" yEnc (201/201)");
     generate_subject_line_test(group, "3538", "(aR) [091/104] - \"ar-bgv4.sfv\" yEnc (1/1)");
+    generate_subject_line_test(group, "4000", "(Gundam Seed V4+V6 Kimagure V2-V5) [001/556] -  yEnc \"Gundam_Seed_Vol4.par2\" (1/1)");
 
     generate_subject_line_test(group, "31337", "NVIDIA linux drivers - File 1 of 1: \"NVIDIA-Linux-x86-1.0-4496-pkg2.run\" yEnc (16/25)");
 

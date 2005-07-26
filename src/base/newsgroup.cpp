@@ -118,7 +118,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->name = "poostabber";
 
 //(Gundam Seed V4+V6 Kimagure V2-V5) [293/556] -  yEnc "Kimagure_Vol3.part11.rar" (66/69)
-    pattern = new StringPattern(SP_LASTPART +1);
+    pattern = new StringPattern(SP_LASTPART + 2);
     pattern->add_breaker("(");
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker(") [");
@@ -287,10 +287,6 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
         return NULL;
 
     s = subject.find("ailor");
-    if(s!=string::npos)
-        return NULL;
-
-    s = subject.find("Gundam");
     if(s!=string::npos)
         return NULL;
 

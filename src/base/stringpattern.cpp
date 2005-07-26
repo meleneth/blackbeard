@@ -1,5 +1,6 @@
 #include"news_constants.hpp"
 #include"stringpattern.hpp"
+#include"console.hpp"
 
 StringPattern::StringPattern(Uint32 max_part_no)
 {
@@ -30,6 +31,7 @@ void StringPattern::add_breaker(Uint32 target)
 int StringPattern::match(string target)
 {
     list<string>::iterator s;
+    console->log("Matching pattern " + name);
 
     for(Uint32 i=0; i<max_part_no; i++){
         results[i] = "";
