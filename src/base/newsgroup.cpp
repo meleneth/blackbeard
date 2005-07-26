@@ -268,19 +268,6 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
         subject.replace(s, 6, "_DVD9_");
         s=subject.find("[DVD9]");
     }
-    // FIXME omg EVIL
-
-    s = subject.find("Fooly");
-    if(s!=string::npos)
-        return NULL;
-
-    s = subject.find("Blood");
-    if(s!=string::npos)
-        return NULL;
-
-    s = subject.find("aR");
-    if(s!=string::npos)
-        return NULL;
 
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
@@ -332,11 +319,9 @@ PostSet *NewsGroup::postset_for_subject(string subject)
     int max_length = postsets.size();
     for(int i = 0; i < max_length; ++i){
         if(0 == subject.compare((postsets[i])->subject)){
-            console->log("Found postset");
             return postsets[i];
         }
     }
-    console->log("Creating postset");
     PostSet *new_post = new PostSet(subject);
     postsets.push_back(new_post);
     return new_post;
@@ -375,16 +360,11 @@ void load_groups_from(string filename)
     char linebuffer[1024];
     ifstream in;
 
-    console->log("Opening file " + filename);
     in.open(filename.c_str(), ios::in);
     if(in.is_open()){
         in.getline(linebuffer, 1024);
 
         while(!in.eof()){
-            stringstream buf;
-            buf << linebuffer << " is length " << strlen(linebuffer);
-            console->log(buf.str());
-
             if(strlen(linebuffer)){
                 if(pattern->match(linebuffer)){
                     NewsGroup *group = group_for_name(pattern->results[0]);

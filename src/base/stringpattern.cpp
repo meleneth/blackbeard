@@ -31,7 +31,6 @@ void StringPattern::add_breaker(Uint32 target)
 int StringPattern::match(string target)
 {
     list<string>::iterator s;
-    console->log("Matching pattern " + name);
 
     for(Uint32 i=0; i<max_part_no; i++){
         results[i] = "";
@@ -51,7 +50,6 @@ int StringPattern::match(string target)
         s++;
     }
     results[count] = target;
-//    console->log("Pattern " + name + " matched");
     return 1;
 }
 
