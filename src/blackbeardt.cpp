@@ -62,6 +62,7 @@ int main(int argc, char *argv[])
     test_postset_objects();
     test_bit_manipulations();
     test_more_string_pattern();
+    test_header_retrieve_job();
 	return 0;
 }
 

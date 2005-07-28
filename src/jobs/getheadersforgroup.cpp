@@ -21,7 +21,7 @@ GetXover *GetHeadersForGroup::get_next_job(void)
         finished = 1;
     }else{
         g->upper_id = lower_id + HEADERS_PER_CHUNK;
-        lower_id += HEADERS_PER_CHUNK;
+        lower_id += HEADERS_PER_CHUNK + 1;
     }
 }
 
