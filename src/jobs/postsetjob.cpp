@@ -11,8 +11,11 @@ PostsetJob::~PostsetJob()
 
 Job* PostsetJob::get_next_job()
 {
-    Job* job = new Job();
-    return job;
+	if (pieces_left_to_download() > 0) {
+		Job* job = new Job();
+		return job; 
+	}
+    return NULL;
 }
 
 Uint32 PostsetJob::pieces_left_to_download()
