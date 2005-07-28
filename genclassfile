@@ -35,7 +35,6 @@ close(EP);
 open (EP, ">$infile.cpp");
 print EP <<"HERE";
 #include "${infile}.hpp"
-#include"globals.hpp"
 
 ${classname}::${classname}(int bar)
 {
