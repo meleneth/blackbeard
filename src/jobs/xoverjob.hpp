@@ -14,7 +14,7 @@ class XoverJob {
     public:
         XoverJob();
         ~XoverJob();
-	Uint32 type();
+	void process();
 
         string group_name;
         Uint32 lower_id;

@@ -8,11 +8,6 @@ Job::~Job()
 {
 }
 
-Uint32
-Job::type()
-{
-}
-
 void Job::process()
 {
 }

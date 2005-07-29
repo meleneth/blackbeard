@@ -8,8 +8,6 @@ XoverJob::~XoverJob()
 {
 }
 
-Uint32
-XoverJob::type()
+void XoverJob::process()
 {
-    return 3;
 }

@@ -11,7 +11,7 @@ class PostsetJob : public Job {
         ~PostsetJob();
 	Job* get_next_job();
 	Uint32 pieces_left_to_download();
-	Uint32 type();
+	void process();
 
 	PostSet *postset;
 

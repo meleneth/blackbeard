@@ -23,8 +23,7 @@ Uint32 PostsetJob::pieces_left_to_download()
     return (postset->num_finished_pieces < postset->num_pieces);
 }
 
-Uint32
-PostsetJob::type()
+void PostsetJob::process()
 {
-    return 1;
+
 }

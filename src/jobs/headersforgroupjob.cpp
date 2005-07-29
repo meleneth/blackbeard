@@ -26,8 +26,6 @@ XoverJob *HeadersForGroupJob::get_next_job(void)
     return g;
 }
 
-Uint32
-HeadersForGroupJob::type()
+void HeadersForGroupJob::process()
 {
-    return 2;
 }
