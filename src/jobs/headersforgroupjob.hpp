@@ -10,10 +10,10 @@
 class HeadersForGroupJob : public Job{
     public:
         HeadersForGroupJob();
-        ~HeadersForGroupJob();
+        virtual ~HeadersForGroupJob();
 
         XoverJob *get_next_job(void);
-	void process();
+        virtual void process();
 
         string group_name;
         Uint32 lower_id;

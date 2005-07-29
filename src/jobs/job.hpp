@@ -6,8 +6,10 @@
 class Job {
     public:
         Job();
-        ~Job();
-	void process();
+        virtual ~Job();
+	virtual void process();
+
+    Uint32 priority;
 
     private:
     protected:

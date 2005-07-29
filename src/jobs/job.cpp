@@ -2,6 +2,7 @@
 
 Job::Job()
 {
+    priority = 50;
 }
 
 Job::~Job()

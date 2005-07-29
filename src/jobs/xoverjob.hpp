@@ -13,8 +13,8 @@ using std::string;
 class XoverJob {
     public:
         XoverJob();
-        ~XoverJob();
-	void process();
+        virtual ~XoverJob();
+        virtual void process();
 
         string group_name;
         Uint32 lower_id;
