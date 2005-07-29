@@ -12,5 +12,7 @@ using std::vector;
 
 void Tokenize(const string& str, vector<string>& tokens, const string& delimiters);
 string bitviz(Uint32 showme);
+string trimmed(string shaggy);
+Uint32 is_whitespace(char c);
 
 #endif

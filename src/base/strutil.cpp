@@ -28,3 +28,29 @@ string bitviz(Uint32 showme)
     }
     return res;
 }
+
+string trimmed(string shaggy)
+{
+    Uint32 start = 0;
+    Uint32 end = shaggy.length();
+    while(is_whitespace(shaggy[start]) && start < end){
+        start++;
+    }
+    while(is_whitespace(shaggy[end]) && start < end){
+        end--;
+    }
+
+    return shaggy.substr(start, end);
+}
+
+Uint32 is_whitespace(char c)
+{
+    switch(c){
+        case ' ':
+        case '\t':
+            return 1;
+        default:
+        return 0;
+    }
+}
+

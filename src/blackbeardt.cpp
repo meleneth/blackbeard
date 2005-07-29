@@ -100,6 +100,11 @@ void test_strings(void)
 
     string baz(20, 'x');
     console->log(baz);
+
+    string ziz = "  foo bar baz   ";
+    string res = trimmed(ziz);
+    assert(0 == res.compare("foo bar baz"));
+
 }
 
 void test_string_pattern(void)

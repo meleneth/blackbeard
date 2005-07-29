@@ -66,7 +66,7 @@ int main(int argc, char *argv[])
 
 void do_init(void)
 {
-    if(0 == config->debug_mode){
+    if(!config->debug_mode){
         // ncurses
         signal(SIGINT, finish);
         initscr();
