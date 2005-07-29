@@ -74,7 +74,7 @@ void NetThread::retrieve(PostSet *postset)
     console->log("Retrieving PostSet");
     console->log("Commented out till we have job stuff");
     PostsetJob* postsetjob = new PostsetJob(postset);
-    jobqueue->add_postset_job(postsetjob);
+    jobqueue->add_text_job(postsetjob);
     console->log("Retrieveing a postset");
 }
 

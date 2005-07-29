@@ -1,5 +1,5 @@
-#ifndef ___getxover_inc
-#define ___getxover_inc 1
+#ifndef ___xoverjob_inc
+#define ___xoverjob_inc 1
 
 #include"SDL_types.h"
 
@@ -10,10 +10,11 @@ using std::string;
 
 #define XOVER_CHUNK_SIZE 5000
 
-class GetXover {
+class XoverJob {
     public:
-        GetXover();
-        ~GetXover();
+        XoverJob();
+        ~XoverJob();
+	Uint32 type();
 
         string group_name;
         Uint32 lower_id;

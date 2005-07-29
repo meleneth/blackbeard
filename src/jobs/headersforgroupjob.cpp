@@ -1,19 +1,19 @@
-#include "getheadersforgroup.hpp"
+#include "headersforgroupjob.hpp"
 
-GetHeadersForGroup::GetHeadersForGroup()
+HeadersForGroupJob::HeadersForGroupJob()
 {
     finished = 0;
 }
 
-GetHeadersForGroup::~GetHeadersForGroup()
+HeadersForGroupJob::~HeadersForGroupJob()
 {
 }
 
-GetXover *GetHeadersForGroup::get_next_job(void)
+XoverJob *HeadersForGroupJob::get_next_job(void)
 {
     if(finished)
         return NULL;
-    GetXover *g = new GetXover();
+    XoverJob *g = new XoverJob();
     g->group_name = group_name;
     g->lower_id = lower_id;
     if ((lower_id + HEADERS_PER_CHUNK) > upper_id ){
@@ -23,5 +23,11 @@ GetXover *GetHeadersForGroup::get_next_job(void)
         g->upper_id = lower_id + HEADERS_PER_CHUNK;
         lower_id += HEADERS_PER_CHUNK;
     }
+    return g;
 }
 
+Uint32
+HeadersForGroupJob::type()
+{
+    return 2;
+}

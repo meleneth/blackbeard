@@ -7,10 +7,10 @@
 #include"strutil.hpp"
 #include"uu_decoder.hpp"
 #include"newsgroup.hpp"
-#include"getxover.hpp"
+#include"xoverjob.hpp"
 #include"config.hpp"
 #include"session.hpp"
-#include"getheadersforgroup.hpp"
+#include"headersforgroupjob.hpp"
 
 #include<string>
 #include<sstream>
@@ -452,12 +452,12 @@ void assert_strings_eq(string s1, string s2)
 
 void test_header_retrieve_job(void)
 {
-    GetHeadersForGroup *g = new GetHeadersForGroup();
+    HeadersForGroupJob *g = new HeadersForGroupJob();
     g->group_name = "alt.binaries";
     g->lower_id = 4000;
     g->upper_id = 18000;
 
-    GetXover *x = g->get_next_job();
+    XoverJob *x = g->get_next_job();
     assert(x->group_name.compare("alt.binaries") == 0);
     assert(x->lower_id == 4000);
     assert(x->upper_id == 9000);

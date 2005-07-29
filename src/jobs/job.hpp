@@ -7,6 +7,8 @@ class Job {
     public:
         Job();
         ~Job();
+	Uint32 type();
+	void process();
 
     private:
     protected:
