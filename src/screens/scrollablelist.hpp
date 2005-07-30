@@ -117,73 +117,83 @@ int ScrollableList<T>::handle_input(int key)
 {
     Uint32 max_size = all_items.size() -1;
 
+    switch(key){
+        case IKEY_RIGHTARROW:
+            if (my_items.size()){
+                screen->handle_selection(search_map[pos_index]);
+            }
+            return 0; break;
+            
+        case IKEY_UPARROW:
+            if (pos_index){
+                --pos_index;
+            }
+            if (pos_index < scroll_index)
+                scroll_index = pos_index; 
+            return 0; break;
+            
+        case IKEY_DOWNARROW:
+            if (pos_index < max_size){
+                ++pos_index;
+            }
+            while (pos_index > (scroll_index + height  -1) )
+                ++scroll_index; 
+            return 0; break;
+            
+        case IKEY_SLASH:
+            my_items = all_items;
+            is_searching = 1;
+            search_string = "";
+            return 0; break;
+            
+        case IKEY_HOME:
+            pos_index = 0;
+            scroll_index = 0; 
+            return 0; break;
+            
+        case IKEY_END:
+            pos_index = max_size;
+            while (pos_index > (scroll_index + height -1))
+                ++scroll_index; 
+            return 0; break;
+            
+        case IKEY_PGUP:
+            pos_index = (pos_index > height) 
+                         ? pos_index - height
+                         : 0;
+            scroll_index = pos_index; 
+            return 0; break;
+             
+        case IKEY_PGDN:
+            pos_index = (pos_index + height > max_size) 
+                         ? max_size
+                         : pos_index + height;
+            while (pos_index > (scroll_index + height -1))
+                ++scroll_index; 
+            return 0; break;
+    }
+    
     if (is_searching){
         switch(key){
             case IKEY_ENTER:
                 is_searching = 0;
-                break;
-                
-            case IKEY_UPARROW:
-                if (pos_index){
-                    --pos_index;
-                }
-                if (pos_index < scroll_index)
-                    scroll_index = pos_index; 
                 return 0; break;
                 
-            case IKEY_DOWNARROW:
-                if (pos_index < max_size -1){
-                    ++pos_index;
-                }
-                while (pos_index > (scroll_index + height -1))
-                    ++scroll_index; 
-                return 0; break;
-
-            case IKEY_RIGHTARROW:
-                if(my_items.size()){
-                    screen->handle_selection(search_map[pos_index]);
-                }
-                return 0; break;
             default:
                 search_string += key;
-                break;
+                return 0; break;
+                
          }
-    }else{
+    } else {
         switch(key){
             case IKEY_ENTER:
-            case IKEY_RIGHTARROW:
                 if (my_items.size()){
                     screen->handle_selection(search_map[pos_index]);
                 }
                 return 0; break;
-                
-            case IKEY_UPARROW:
-                if (pos_index){
-                    --pos_index;
-                }
-                if (pos_index < scroll_index)
-                    scroll_index = pos_index; 
-                return 0; break;
-                
-            case IKEY_DOWNARROW:
-                if (pos_index < max_size){
-                    ++pos_index;
-                }
-                while (pos_index > (scroll_index + height  -1) )
-                    ++scroll_index; 
-                return 0; break;
-                
-            case IKEY_SLASH:
-                my_items = all_items;
-                is_searching = 1;
-                search_string = "";
-                return 0; break;
-                
-            default:
-                return 1;
         }
     }
-    return 0;
+    return key;
 }
 
 template <class T>
