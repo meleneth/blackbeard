@@ -2,6 +2,8 @@
 #include"keydefs.hpp"
 #include"console.hpp"
 #include"session.hpp"
+#include"jobqueue.hpp"
+#include"job.hpp"
 #include<ncurses.h>
 #include<sstream>
 
@@ -71,5 +73,12 @@ Uint32 PostSetListScreen::search_match(string search, void *ptr)
 
 int PostSetListScreen::handle_input(int key)
 {
-    return scroll_list->handle_input(key) ?  Screen::handle_input(key) : 0;
+    if(scroll_list->handle_input(key)){
+        if(key == 'd'){
+            Job *job = new Job();
+            jobqueue->add_text_job(job);
+            return 0;
+        }
+    }
+    return Screen::handle_input(key);
 }
