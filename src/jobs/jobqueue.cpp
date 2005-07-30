@@ -38,3 +38,10 @@ void JobQueue::add_text_job(Job *job)
 {
     text_jobs.push_back(job);
 }
+
+void JobQueue::finish(Job *job)
+{
+    active_jobs.remove(job);
+    dead_jobs.push_front(job);
+}
+

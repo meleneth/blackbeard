@@ -3,6 +3,7 @@
 
 #include"newsgrouppost.hpp"
 #include"post_set.hpp"
+#include"post_file.hpp"
 #include"stringpattern.hpp"
 
 #include"SDL_types.h"
@@ -14,6 +15,8 @@ using std::list;
 using std::vector;
 using std::string;
 
+class PostFile;
+class PostSet;
 class NewsGroup {
     public:
         // Public data members go here.

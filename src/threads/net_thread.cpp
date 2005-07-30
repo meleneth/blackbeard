@@ -11,7 +11,7 @@
 NetThread::NetThread(Config *cfg) // Constructor
 {
     this->config = cfg;
-    connection = NULL;
+    _connection = NULL;
 }
     
 NetThread::~NetThread() // Destructor
@@ -21,48 +21,30 @@ NetThread::~NetThread() // Destructor
 void NetThread::Execute(void)
 {
     console->log("Initialized.");
-    if(0 != config->load_file.compare("")){
-        console->log("Loading subjects from " + config->load_file);
-        NewsGroup *newsgroup = group_for_name("alt.mama");
-        newsgroups.push_back(newsgroup);
-        newsgroup->load_from_file(config->load_file);
-        console->log("All subjects loaded");
-    }else if(0 != config->load_group.compare("")){
-        console->log("Loading groups from " + config->load_group);
-        load_groups_from(config->load_group);
-    }else{
 
-        console->log("Connecting to " + config->news_server + " to grab article list for group " + config->news_group);
-        connection = new NNTPServer(config->news_server, config->news_port);
-        console->log("Selecting group " + config->news_group);
-        connection->group(config->news_group);
-        connection->xover(1);
-
-    /*
-        connection->last();
-        connection->help();
-        connection->date();
-        connection->next();
-        connection->stat();
-
-        long art_id = 1;
-        connection->xover(1);
-        connection->article(art_id);
-        connection->head(art_id);
-        connection->body(art_id);
-    */
-        console->log("---- End of pre-configured commands ----");
-        while(1){
-            /* Downloading broken for now due to refactoring.  Need job queue FIXME */
-            /*  if(_fetch && console->current_postset){
-                retrieve(console->current_postset);
-                _fetch = 0;
+    console->log("---- End of pre-configured commands ----");
+    while(1){
+        Job *job = jobqueue->get_next_text_job();
+        if(job){
+            job->process(get_connection());
+            if(job->is_finished){
+                jobqueue->finish(job);
+            } else {
+                jobqueue->add_text_job(job);
             }
-            while(connection->has_data_waiting()){
-                console->log(connection->get_line());
-            } */
         }
     }
+}
+
+NNTPServer *NetThread::get_connection()
+{
+    if(_connection){
+        if(_connection->connected)
+            return _connection;
+    }
+
+    _connection = new NNTPServer(config->news_server, config->news_port);
+    return _connection;
 }
 
 void NetThread::retrieve(PostSet *postset)

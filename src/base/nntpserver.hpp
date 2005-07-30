@@ -7,10 +7,13 @@
 #include "newsgrouppost.hpp"
 #include"newsgroup.hpp"
 #include<string>
+#include<vector>
 #include<list>
 
 using std::string;
+using std::vector;
 
+class NewsGroup;
 class NNTPServer : public TCPConnection {
     public:
         // Public data members go here.
@@ -44,6 +47,7 @@ class NNTPServer : public TCPConnection {
 
 
 	int server_status;
+    Uint32 is_connected;
     NewsGroup *newsgroup;
     private:
         // Private members go here.

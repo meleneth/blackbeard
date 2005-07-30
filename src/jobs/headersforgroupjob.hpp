@@ -7,7 +7,8 @@
 
 #define HEADERS_PER_CHUNK 5000
 
-class HeadersForGroupJob : public Job{
+class Job;
+class HeadersForGroupJob : public Job {
     public:
         HeadersForGroupJob();
         virtual ~HeadersForGroupJob();

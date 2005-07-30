@@ -38,6 +38,7 @@ int main(int argc, char *argv[])
     console = new Console();
     config = new Config(argc, argv);
     config->read_config_file();
+    InputThread *input_thread = NULL;
 
     do_init();
 
@@ -50,10 +51,24 @@ int main(int argc, char *argv[])
     decoder_thread->Start();
 
     if(0 == config->debug_mode){
-        InputThread *input_thread = new InputThread(net_thread);
+        input_thread = new InputThread(net_thread);
         input_thread->Start();
-        pthread_join(input_thread->ThreadId, NULL);
     }
+
+    if(0 != config->load_file.compare("")){
+        console->log("Loading subjects from " + config->load_file);
+        NewsGroup *newsgroup = group_for_name("alt.mama");
+        newsgroups.push_back(newsgroup);
+        newsgroup->load_from_file(config->load_file);
+        console->log("All subjects loaded");
+    }else if(0 != config->load_group.compare("")){
+        console->log("Loading groups from " + config->load_group);
+        load_groups_from(config->load_group);
+    }
+
+    if(input_thread){
+        pthread_join(input_thread->ThreadId, NULL);
+    } 
 
     pthread_join(net_thread->ThreadId, NULL);
     pthread_join(decoder_thread->ThreadId, NULL);

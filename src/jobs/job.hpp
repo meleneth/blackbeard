@@ -7,9 +7,11 @@ class Job {
     public:
         Job();
         virtual ~Job();
-	virtual void process();
+        virtual void process();
+        virtual void process(void *connection);
 
     Uint32 priority;
+    Uint32 is_finished;
 
     private:
     protected:

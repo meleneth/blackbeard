@@ -16,10 +16,15 @@ class JobQueue {
         Job *get_next_text_job(void);
 
         void add_decoder_job(Job *job);
-	void add_text_job(Job *job);
+        void add_text_job(Job *job);
+
+        void finish(Job *job);
 
         list<Job *> decoder_jobs;
         list<Job *> text_jobs;
+
+        list<Job *> active_jobs;
+        list<Job *> dead_jobs;
     private:
     protected:
 };

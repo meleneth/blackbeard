@@ -15,10 +15,11 @@ class NetThread : public Thread {
         virtual void Execute(void);
         void retrieve(PostSet *postset);
         void set_retrieve();
+        NNTPServer *get_connection(void);
 
         Config *config;
-        NNTPServer *connection;
         Uint32 _fetch;
+        NNTPServer *_connection;
     private:
         // Private members go here.
     protected:
