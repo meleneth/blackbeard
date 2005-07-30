@@ -2,6 +2,7 @@
 #include "postsetjob.hpp"
 #include "headersforgroupjob.hpp"
 #include "xoverjob.hpp"
+#include "console.hpp"
 
 JobQueue::JobQueue() 
 {
@@ -14,8 +15,13 @@ JobQueue::~JobQueue()
 Job *JobQueue::get_next_decoder_job(void)
 {
     if(decoder_jobs.size()){
-        Job *job = *decoder_jobs.begin();
-        decoder_jobs.pop_front();
+        vector<Job *>::iterator j;
+        Job * job;
+        
+        j = decoder_jobs.begin();
+        job = *j;
+        decoder_jobs.erase(j);
+        active_jobs.push_back(job);
         return job;
     }
     return NULL;
@@ -24,7 +30,14 @@ Job *JobQueue::get_next_decoder_job(void)
 Job *JobQueue::get_next_text_job(void)
 {
     if(text_jobs.size()){
-        return *text_jobs.begin();
+        vector<Job *>::iterator j;
+        Job * job;
+        
+        j = text_jobs.begin();
+        job = *j;
+        text_jobs.erase(j);
+        console->log("i found a job in the queue!!!!");
+        return job;
     }
     return NULL;
 }
@@ -41,7 +54,13 @@ void JobQueue::add_text_job(Job *job)
 
 void JobQueue::finish(Job *job)
 {
-    active_jobs.remove(job);
-    dead_jobs.push_front(job);
+    vector<Job *>::iterator j;
+    
+    for(j = active_jobs.begin(); j != active_jobs.end(); ++j){
+        if((*j) == job){
+          //  active_jobs.erase(j);
+          //  dead_jobs.push_back(job);
+        }
+    }
 }
 

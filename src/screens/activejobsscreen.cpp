@@ -1,4 +1,6 @@
-#include "activejobsscreen.hpp"
+#include"activejobsscreen.hpp"
+#include"jobqueue.hpp"
+#include"console.hpp"
 
 ActiveJobsScreen::ActiveJobsScreen()
 {
@@ -18,6 +20,7 @@ void ActiveJobsScreen::handle_selection(Uint32 index)
 void ActiveJobsScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 width, void *job)
 {
     Job *current_job = (Job *) job;
+    console->log(current_job->status_line().c_str());
     mvaddnstr(yindex, x, current_job->status_line().c_str(), -1);
 }
 
@@ -27,6 +30,7 @@ void ActiveJobsScreen::render(void)
     scroll_list->width = width -1;
     scroll_list->ypos = ypos + 1;
     
+    scroll_list->all_items = jobqueue->text_jobs;
     Screen::render();
 
     mvaddnstr(ypos, xpos + 1, "ActiveJobsScreen::render", -1);

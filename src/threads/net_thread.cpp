@@ -46,16 +46,3 @@ NNTPServer *NetThread::get_connection()
     return _connection;
 }
 
-void NetThread::retrieve(PostSet *postset)
-{
-    vector< PostFile * >::iterator v;
-    vector< string >::iterator s;
-    string dest_dir = config->blackbeard_dir + "/" + postset->subject;
-
-    console->log("Retrieving PostSet");
-    console->log("Commented out till we have job stuff");
-    PostsetJob* postsetjob = new PostsetJob(postset);
-    jobqueue->add_text_job(postsetjob);
-    console->log("Retrieveing a postset");
-}
-

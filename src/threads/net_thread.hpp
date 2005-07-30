@@ -13,7 +13,6 @@ class NetThread : public Thread {
         NetThread(); // Constructor
         ~NetThread(); // Destructor
         virtual void Execute(void);
-        void retrieve(PostSet *postset);
         void set_retrieve();
         NNTPServer *get_connection(void);
 

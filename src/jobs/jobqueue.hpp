@@ -3,9 +3,9 @@
 
 #include "SDL_types.h"
 #include "job.hpp"
-#include <list>
+#include <vector>
 
-using std::list;
+using std::vector;
 
 class JobQueue {
     public:
@@ -20,11 +20,11 @@ class JobQueue {
 
         void finish(Job *job);
 
-        list<Job *> decoder_jobs;
-        list<Job *> text_jobs;
+        vector<Job *> decoder_jobs;
+        vector<Job *> text_jobs;
 
-        list<Job *> active_jobs;
-        list<Job *> dead_jobs;
+        vector<Job *> active_jobs;
+        vector<Job *> dead_jobs;
     private:
     protected:
 };
