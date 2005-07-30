@@ -8,13 +8,13 @@
 class PostsetJob : public Job {
     public:
         PostsetJob(PostSet* post_set);
-        ~PostsetJob();
-	Job* get_next_job();
-	Uint32 pieces_left_to_download();
-	virtual void process();
+        virtual ~PostsetJob();
 
-	PostSet *postset;
+        Job *get_next_job();
+        Uint32 pieces_left_to_download();
+        virtual void process();
 
+        PostSet *postset;
     private:
     protected:
 };
