@@ -9,7 +9,7 @@ class BodyRetrieverJob : public Job {
         BodyRetrieverJob();
         virtual ~BodyRetrieverJob();
 
-        int Foo(void);
+        virtual void process(void *connection);;
 
     private:
     protected:

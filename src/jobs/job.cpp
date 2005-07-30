@@ -21,6 +21,5 @@ void Job::process(void *connection)
 
 string Job::status_line()
 {
-   string result = "";
-   return result;
+   return "Default status for Job";
 }
