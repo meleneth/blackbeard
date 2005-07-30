@@ -50,6 +50,7 @@ int StringPattern::match(string target)
         s++;
     }
     results[count] = target;
+    console->log(name + " matched");
     return 1;
 }
 

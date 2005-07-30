@@ -88,6 +88,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
 
 //new and improved blackbeard arrr - "blb" yEnc (1/6)
 //GuNdaM wiNG v. 10 [par2]  - "gundam_wing_v10.vol0986+115.par2" yEnc (099/120)
+//
     pattern = new StringPattern(SP_LASTPART +1);
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker("- \"");
@@ -103,11 +104,11 @@ NewsGroup::NewsGroup(string group_name) // Constructor
 //GuNdaM wiNG v. 10 [063/108]  - "gundam_wing_v10.part061.rar" yEnc (004/115)
     pattern = new StringPattern(SP_LASTPART +1);
     pattern->add_breaker(SP_SUBJECT);
-    pattern->add_breaker(" [");
+    pattern->add_breaker("[");
     pattern->add_breaker(SP_FILENO);
     pattern->add_breaker("/");
     pattern->add_breaker(SP_MAXFILENO);
-    pattern->add_breaker("=  - \"");
+    pattern->add_breaker("]  - \"");
     pattern->add_breaker(SP_FILENAME);
     pattern->add_breaker("\" yEnc (");
     pattern->add_breaker(SP_PARTNO);
@@ -116,6 +117,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(")");
     yenc_subject_patterns.push_front(pattern);
     pattern->name = "poostabber";
+
 
 //(Gundam Seed V4+V6 Kimagure V2-V5) [293/556] -  yEnc "Kimagure_Vol3.part11.rar" (66/69)
     pattern = new StringPattern(SP_LASTPART + 2);
