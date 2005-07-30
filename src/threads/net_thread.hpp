@@ -10,15 +10,13 @@
 class NetThread : public Thread {
     public:
         // Public data members go here.
-        NetThread(Config *cfg); // Constructor
+        NetThread(); // Constructor
         ~NetThread(); // Destructor
         virtual void Execute(void);
         void retrieve(PostSet *postset);
         void set_retrieve();
         NNTPServer *get_connection(void);
 
-        Config *config;
-        Uint32 _fetch;
         NNTPServer *_connection;
     private:
         // Private members go here.

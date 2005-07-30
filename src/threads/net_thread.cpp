@@ -8,9 +8,8 @@
 #include"jobqueue.hpp"
 
 // Public data members go here.
-NetThread::NetThread(Config *cfg) // Constructor
+NetThread::NetThread() // Constructor
 {
-    this->config = cfg;
     _connection = NULL;
 }
     
@@ -60,7 +59,3 @@ void NetThread::retrieve(PostSet *postset)
     console->log("Retrieveing a postset");
 }
 
-void NetThread::set_retrieve(void)
-{
-    _fetch = 1;
-}

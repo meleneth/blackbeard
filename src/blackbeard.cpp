@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
 
     string input("");
 
-    NetThread *net_thread = new NetThread(config);
+    NetThread *net_thread = new NetThread();
     net_thread->Start();
 
     DecoderThread *decoder_thread = new DecoderThread();

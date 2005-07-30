@@ -12,7 +12,7 @@ class PostsetJob : public Job {
 
         Job *get_next_job();
         Uint32 pieces_left_to_download();
-        virtual void process();
+        virtual void process(void *connection);
 
         PostSet *postset;
     private:

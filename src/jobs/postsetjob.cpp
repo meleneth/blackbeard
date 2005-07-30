@@ -1,4 +1,5 @@
 #include "postsetjob.hpp"
+#include"nntpserver.hpp"
 
 PostsetJob::PostsetJob(PostSet* post_set)
 {
@@ -23,7 +24,7 @@ Uint32 PostsetJob::pieces_left_to_download()
     return (postset->num_finished_pieces < postset->num_pieces);
 }
 
-void PostsetJob::process()
+void PostsetJob::process(void *connection)
 {
-
+    NNTPServer *srv = (NNTPServer *)connection;
 }
