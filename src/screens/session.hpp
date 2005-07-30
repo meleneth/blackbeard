@@ -9,6 +9,7 @@
 #include"newsgrouplistscreen.hpp"
 #include"postsetlistscreen.hpp"
 #include"postsetdetailscreen.hpp"
+#include"activejobsscreen.hpp"
 #include"shutdownscreen.hpp"
 
 class Session : public Screen{
@@ -26,7 +27,7 @@ class Session : public Screen{
         NewsGroupListScreen *newsgrouplist; 
         PostSetListScreen *postsetlist;
         PostSetDetailScreen *postsetdetail;
-
+        ActiveJobsScreen *activejobs; 
         Widget *current_screen;
 
     private:

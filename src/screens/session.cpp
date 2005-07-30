@@ -2,12 +2,14 @@
 #include"postsetlistscreen.hpp"
 #include"postsetdetailscreen.hpp"
 #include"newsgrouplistscreen.hpp"
+#include"activejobsscreen.hpp"
 
 Session::Session()
 {
-    newsgrouplist = new NewsGroupListScreen();
-    postsetlist   = new PostSetListScreen();
-    postsetdetail = new PostSetDetailScreen();
+    newsgrouplist  = new NewsGroupListScreen();
+    postsetlist    = new PostSetListScreen();
+    postsetdetail  = new PostSetDetailScreen();
+    activejobs     = new ActiveJobsScreen();
     current_screen = newsgrouplist;
 }
 

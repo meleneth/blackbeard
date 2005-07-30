@@ -78,6 +78,10 @@ int Screen::handle_input(int key)
             session->current_screen = session->postsetdetail;
             break;
 
+        case IKEY_F8:
+            session->current_screen = session->activejobs;;
+            break;
+
         default:
             return key;
     }

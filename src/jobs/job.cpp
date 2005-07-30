@@ -18,3 +18,9 @@ void Job::process(void *connection)
 {
     // do stuff here
 }
+
+string Job::status_line()
+{
+   string result = "";
+   return result;
+}
