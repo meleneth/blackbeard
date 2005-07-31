@@ -20,7 +20,7 @@ class Decoder : public Job {
         Decoder();
         virtual ~Decoder(); // Destructor
 
-        virtual void decode();
+        virtual void process();
         virtual void decode_line(string line);
         virtual void open_file();
         virtual void close_file();

@@ -3,14 +3,17 @@
 
 #include"SDL_types.h"
 #include"job.hpp"
+#include<string>
+
+using std::string;
 
 class SubjectFileLoaderJob : public Job {
     public:
-        SubjectFileLoaderJob();
+        SubjectFileLoaderJob(string filename);
         ~SubjectFileLoaderJob();
 
         virtual void process(void);
-
+        string filename;
     private:
     protected:
 };

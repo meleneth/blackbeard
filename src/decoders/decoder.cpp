@@ -28,7 +28,7 @@ Decoder::~Decoder() // Destructor
     close_file();
 }
 
-void Decoder::decode()
+void Decoder::process()
 {
     list<string>::iterator s;
     

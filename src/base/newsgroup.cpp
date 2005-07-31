@@ -336,16 +336,6 @@ int NewsGroup::status_code()
 
 void NewsGroup::load_from_file(string filename)
 {
-    char linebuffer[1024];
-    ifstream in;
-
-    in.open(filename.c_str(), ios::in);
-    in.getline(linebuffer, 1024);
-
-    while(!in.eof()){
-        digest_subject_line("stored", linebuffer);
-        in.getline(linebuffer, 1024);
-    }
 }
 
 void load_groups_from(string filename)

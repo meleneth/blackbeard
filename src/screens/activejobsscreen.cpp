@@ -26,7 +26,7 @@ void ActiveJobsScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 wi
 
 void ActiveJobsScreen::render(void)
 {
-    scroll_list->height = height - 2;
+    scroll_list->height = height - 3;
     scroll_list->width = width -1;
     scroll_list->ypos = ypos + 1;
     
