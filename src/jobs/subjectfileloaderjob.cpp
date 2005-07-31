@@ -23,6 +23,11 @@ SubjectFileLoaderJob::~SubjectFileLoaderJob()
 {
 }
 
+string SubjectFileLoaderJob::status_line(void)
+{
+    return "Reading subjects from " + filename;
+}
+
 void SubjectFileLoaderJob::process(void)
 {
     console->log("Loading subjects from " + filename);

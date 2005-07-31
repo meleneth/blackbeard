@@ -102,13 +102,14 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->name = "Matilda";
 
 //GuNdaM wiNG v. 10 [063/108]  - "gundam_wing_v10.part061.rar" yEnc (004/115)
-    pattern = new StringPattern(SP_LASTPART +1);
+    pattern = new StringPattern(SP_LASTPART +2);
     pattern->add_breaker(SP_SUBJECT);
     pattern->add_breaker("[");
     pattern->add_breaker(SP_FILENO);
     pattern->add_breaker("/");
     pattern->add_breaker(SP_MAXFILENO);
-    pattern->add_breaker("]  - \"");
+    pattern->add_breaker("]");
+    pattern->add_breaker("- \"");
     pattern->add_breaker(SP_FILENAME);
     pattern->add_breaker("\" yEnc (");
     pattern->add_breaker(SP_PARTNO);
