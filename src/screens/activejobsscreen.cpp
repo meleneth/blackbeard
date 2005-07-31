@@ -30,7 +30,7 @@ void ActiveJobsScreen::render(void)
     scroll_list->width = width -1;
     scroll_list->ypos = ypos + 1;
     
-    scroll_list->all_items = jobqueue->text_jobs;
+    scroll_list->all_items = jobqueue->active_jobs;
     Screen::render();
 
     mvaddnstr(ypos, xpos + 1, "ActiveJobsScreen::render", -1);
