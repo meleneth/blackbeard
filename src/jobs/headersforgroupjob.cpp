@@ -1,7 +1,9 @@
 #include "headersforgroupjob.hpp"
+#include"nntpserver.hpp"
 
-HeadersForGroupJob::HeadersForGroupJob()
+HeadersForGroupJob::HeadersForGroupJob(NewsGroup *group)
 {
+    this->group = group;
     finished = 0;
 }
 
@@ -13,19 +15,20 @@ XoverJob *HeadersForGroupJob::get_next_job(void)
 {
     if(finished)
         return NULL;
-    XoverJob *g = new XoverJob();
-    g->group_name = group_name;
-    g->lower_id = lower_id;
+
+    Uint32 upid;
     if ((lower_id + HEADERS_PER_CHUNK) > upper_id ){
-        g->upper_id = upper_id;
+        upid = upper_id;
         finished = 1;
     }else{
-        g->upper_id = lower_id + HEADERS_PER_CHUNK;
+        upid = lower_id + HEADERS_PER_CHUNK;
         lower_id += HEADERS_PER_CHUNK;
     }
-    return g;
+
+    return new XoverJob(group, lower_id, upid);
 }
 
-void HeadersForGroupJob::process()
+void HeadersForGroupJob::process(void *connection)
 {
+    NNTPServer *srv = (NNTPServer *) connection;
 }

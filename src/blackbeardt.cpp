@@ -457,25 +457,25 @@ void assert_strings_eq(string s1, string s2)
 
 void test_header_retrieve_job(void)
 {
-    HeadersForGroupJob *g = new HeadersForGroupJob();
-    g->group_name = "alt.binaries";
+    NewsGroup *ng = new NewsGroup("alt.binaries");
+    HeadersForGroupJob *g = new HeadersForGroupJob(ng);
     g->lower_id = 4000;
     g->upper_id = 18000;
 
     XoverJob *x = g->get_next_job();
-    assert(x->group_name.compare("alt.binaries") == 0);
+    assert(x->group->name.compare("alt.binaries") == 0);
     assert(x->lower_id == 4000);
     assert(x->upper_id == 9000);
     assert(g->lower_id == 9001);
 
     x = g->get_next_job();
-    assert(x->group_name.compare("alt.binaries") == 0);
+    assert(x->group->name.compare("alt.binaries") == 0);
     assert(x->lower_id == 9001);
     assert(x->upper_id == 14001);
     assert(g->lower_id == 14002);
 
     x = g->get_next_job();
-    assert(x->group_name.compare("alt.binaries") == 0);
+    assert(x->group->name.compare("alt.binaries") == 0);
     assert(x->lower_id == 14002);
     assert(x->upper_id == 18000);
 

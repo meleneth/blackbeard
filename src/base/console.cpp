@@ -7,6 +7,8 @@ using std::stringstream;
 using std::list;
 using std::setprecision;
 
+#define CONSOLE_MAX_SIZE 1000
+
 // Public data members go here.
 Console::Console() // Constructor
 {

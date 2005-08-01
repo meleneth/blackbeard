@@ -3,6 +3,7 @@
 
 #include"SDL_types.h"
 #include"job.hpp"
+#include"newsgroup.hpp"
 
 #include<string>
 
@@ -13,11 +14,11 @@ using std::string;
 
 class XoverJob : public Job {
     public:
-        XoverJob();
+        XoverJob(NewsGroup *group, Uint32 lower, Uint32 upper);
         virtual ~XoverJob();
-        virtual void process();
+        virtual void process(void *connection);
 
-        string group_name;
+        NewsGroup *group;
         Uint32 lower_id;
         Uint32 upper_id;
     private:
