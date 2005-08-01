@@ -21,6 +21,7 @@ void Screen::render(void)
     width = COLS;
     height = LINES;
 
+    height--;
     console->draw_box(0, 0, width-1, height-1);
 
     if(help_visible){
@@ -31,6 +32,8 @@ void Screen::render(void)
             widgets[w]->render();
         }
     }
+
+    mvaddnstr(ypos + height, xpos + 2, "0 jobs queued 0.0k/sec 0G downloaded", -1);
 
 }
 
