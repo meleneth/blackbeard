@@ -20,6 +20,7 @@ NNTPServer::NNTPServer(string hostname, int port) : TCPConnection(hostname, port
     read_packets();
     get_line();
     newsgroup = NULL;
+    is_multiline_reading = 0;
 }
     
 NNTPServer::~NNTPServer() // Destructor
@@ -147,63 +148,28 @@ void NNTPServer::xover_format()
 NewsGroupPost *NNTPServer::read_body_response()
 {
     NewsGroupPost *newsgrouppost = new NewsGroupPost;
-    int data_end = 0;
-    while(data_end == 0){
-        if(has_data_waiting()){
-            string line = get_line();
-            if((line.length() == 1 ) && (line[0] == '.')){
-                data_end=1;
-            }else{
-                if(line[0] == '.'){
-                    line.erase(0,1);
-                }
-                newsgrouppost->lines.push_back(line);
-            }
-        }else{
-            read_packets();
-        }
+    string line = get_next_multi_line();
+    while(is_multiline_reading) {
+        newsgrouppost->lines.push_back(line);
+        line = get_next_multi_line();
     }
     return newsgrouppost;
 }
 
 void NNTPServer::read_multiline_response()
 {
-    int data_end = 0;
-    while(data_end == 0){
-        if(has_data_waiting()){
-            string line = get_line();
-            //console->log("Considering (" + line + ")");
-            if((line.length() == 1 ) && (line[0] == '.')){
-                data_end=1;
-              //  console->log("Found end of multi-line response");
-            }else{
-                if(line[0] == '.'){
-                    line.erase(0,1);
-                }
-            }
-        }else{
-            read_packets();
-        }
+    string line = get_next_multi_line();
+    while(is_multiline_reading) {
+        line = get_next_multi_line();
     }
 }
 
 void NNTPServer::read_xover_response()
 {
-    int data_end = 0;
-    while(data_end == 0){
-        if(has_data_waiting()){
-            string line = get_line();
-            if((line.length() == 1 ) && (line[0] == '.')){
-                data_end=1;
-            }else{
-                if(line[0] == '.'){
-                    line.erase(0,1);
-                }
-                newsgroup->header_scoop(line);
-            }
-        }else{
-            read_packets();
-        }
+    string line = get_next_multi_line();
+    while(is_multiline_reading) {
+        newsgroup->header_scoop(line);
+        line = get_next_multi_line();
     }
 }
 
@@ -229,5 +195,27 @@ void NNTPServer::send_command(string command)
         return send_command(command);
     }
 }
-// Private members go here.
-// Protected members go here.
+
+string NNTPServer::get_next_multi_line(void)
+{
+    if(!is_multiline_reading){
+        return "";
+    }
+
+    while(!has_data_waiting()){
+        read_packets();
+    }
+
+    string line = get_line();
+    if((line.length() == 1 ) && (line[0] == '.')){
+        is_multiline_reading = 0;
+        return "";
+    }
+
+    if(line[0] == '.'){
+        line.erase(0,1);
+    }
+
+    return line;
+}
+

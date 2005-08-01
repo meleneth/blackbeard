@@ -25,6 +25,7 @@ class NNTPServer : public TCPConnection {
         void read_multiline_response(void);
         void read_xover_response();
         NewsGroupPost *read_body_response(void);
+        string get_next_multi_line(void);
 
        int status();
        void login(string username, string password);
@@ -48,6 +49,7 @@ class NNTPServer : public TCPConnection {
 
 	int server_status;
     Uint32 is_connected;
+    Uint32 is_multiline_reading;
     NewsGroup *newsgroup;
     private:
         // Private members go here.
