@@ -1,6 +1,8 @@
 #include "newsgrouplistscreen.hpp"
 #include"keydefs.hpp"
 #include"session.hpp"
+#include"jobqueue.hpp"
+#include"newsgrouplistretrieverjob.hpp"
 #include<ncurses.h>
 #include<sstream>
 #include<vector>
@@ -41,6 +43,9 @@ int NewsGroupListScreen::handle_input(int key)
                     if(g)
                         g->is_subscribed ^= 1;
                     return 0;
+                case 'g':
+                    jobqueue->add_text_job(new NewsGroupListRetrieverJob());    
+                    return 0;
                 default:
                 ;
             }
@@ -73,8 +78,9 @@ void NewsGroupListScreen::render_help(void)
     
     mvaddnstr(yindex++, xpos + 2, "This screen shows you a list of newsgroups.", -1);
     yindex++;
-    mvaddnstr(yindex++, xpos + 2, "[enter] to see a list of PostSets.", -1);
+    mvaddnstr(yindex++, xpos + 2, "[enter] to see a list of PostSets for the selected newsgroup.", -1);
     mvaddnstr(yindex++, xpos + 2, "[s] subscribe/unsubscribe to group", -1);
+    mvaddnstr(yindex++, xpos + 2, "[g] fetch list of newsgroups from server", -1);
 
 }
 
