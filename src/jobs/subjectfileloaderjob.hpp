@@ -15,6 +15,10 @@ class SubjectFileLoaderJob : public Job {
         virtual void process(void);
         string filename;
         virtual string status_line();
+
+        Uint32 total_bytes;
+        Uint32 bytes_read;
+
     private:
     protected:
 };
