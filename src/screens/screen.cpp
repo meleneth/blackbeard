@@ -2,8 +2,12 @@
 #include"session.hpp"
 #include"console.hpp"
 #include"keydefs.hpp"
+#include"jobqueue.hpp"
 
 #include<ncurses.h>
+#include<sstream>
+
+using std::stringstream;
 
 Screen::Screen()
 {
@@ -33,7 +37,9 @@ void Screen::render(void)
         }
     }
 
-    mvaddnstr(ypos + height, xpos + 2, "0 jobs queued 0.0k/sec 0G downloaded", -1);
+    stringstream buf;
+    buf << jobqueue->active_jobs.size() << " jobs queued 0.0k/sec 0G downloaded";
+    mvaddnstr(ypos + height, xpos + 2, buf.str().c_str(), -1);
 
 }
 
