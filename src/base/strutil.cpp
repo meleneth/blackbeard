@@ -32,7 +32,7 @@ string bitviz(Uint32 showme)
 string trimmed(string shaggy)
 {
     Uint32 start = 0;
-    Uint32 end = shaggy.length();
+    Uint32 end = shaggy.length() -1;
     while(is_whitespace(shaggy[start]) && start < end){
         start++;
     }
@@ -40,7 +40,7 @@ string trimmed(string shaggy)
         end--;
     }
 
-    return shaggy.substr(start, end);
+    return shaggy.substr(start, end-1);
 }
 
 Uint32 is_whitespace(char c)
