@@ -5,6 +5,9 @@
 #include"job.hpp"
 #include"post_set.hpp"
 
+#include<string>
+using std::string;
+
 class PostsetJob : public Job {
     public:
         PostsetJob(PostSet* post_set);
@@ -13,6 +16,7 @@ class PostsetJob : public Job {
         Job *get_next_job();
         Uint32 pieces_left_to_download();
         virtual void process(void *connection);
+        virtual string status_line();
 
         PostSet *postset;
     private:

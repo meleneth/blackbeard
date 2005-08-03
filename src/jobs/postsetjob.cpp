@@ -1,6 +1,10 @@
 #include "postsetjob.hpp"
 #include"nntpserver.hpp"
 
+using std::string;
+using std::stringstream;
+#include<sstream>
+
 PostsetJob::PostsetJob(PostSet* post_set)
 {
     postset = post_set;
@@ -27,4 +31,11 @@ Uint32 PostsetJob::pieces_left_to_download()
 void PostsetJob::process(void *connection)
 {
     NNTPServer *srv = (NNTPServer *)connection;
+}
+
+string PostsetJob::status_line(void)
+{
+    stringstream buf;
+    buf << "Download job for " << postset->subject;
+    return buf.str();
 }

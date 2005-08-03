@@ -21,7 +21,8 @@ class ActiveJobsScreen : public Screen {
         virtual void render_scrollable_line(Uint32 y, Uint32 x, Uint32 width, void *ptr);
         virtual Uint32 search_match(string search, void *ptr);
 
-        ScrollableList<Job> *scroll_list;
+        ScrollableList<Job> *active_list;
+        ScrollableList<Job> *queued_list;
     private:
     protected:
 };

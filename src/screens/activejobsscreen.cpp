@@ -4,9 +4,13 @@
 
 ActiveJobsScreen::ActiveJobsScreen()
 {
-    scroll_list = new ScrollableList<Job>;
-    scroll_list->screen = this;
-    widgets.push_back(scroll_list);
+    active_list = new ScrollableList<Job>;
+    active_list->screen = this;
+    widgets.push_back(active_list);
+
+    queued_list = new ScrollableList<Job>;
+    queued_list->screen = this;
+    widgets.push_back(queued_list);
 }
 
 ActiveJobsScreen::~ActiveJobsScreen()
@@ -26,12 +30,18 @@ void ActiveJobsScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 wi
 
 void ActiveJobsScreen::render(void)
 {
-    scroll_list->height = height - 3;
-    scroll_list->width = width -1;
-    scroll_list->ypos = ypos + 1;
-    
-    scroll_list->all_items = jobqueue->active_jobs;
+    active_list->height = (height - 3)/2;
+    active_list->width = width -1;
+    active_list->ypos = ypos + 1;
+    active_list->all_items = jobqueue->active_jobs;
+
+    queued_list->height = (height - 3)/2;
+    queued_list->width = width -1;
+    queued_list->ypos = active_list->height + ypos + 2;
+    queued_list->all_items = jobqueue->text_jobs;
+
     Screen::render();
+    console->draw_box(0, 0, width-1, (height-1)/2);
 
     mvaddnstr(ypos, xpos + 1, "ActiveJobsScreen::render", -1);
 }
@@ -50,5 +60,5 @@ Uint32 ActiveJobsScreen::search_match(string search, void *ptr)
 
 int ActiveJobsScreen::handle_input(int key)
 {
-    return scroll_list->handle_input(key) ?  Screen::handle_input(key) : 0;
+    return active_list->handle_input(key) ?  Screen::handle_input(key) : 0;
 }
