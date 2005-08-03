@@ -23,3 +23,17 @@ string Job::status_line()
 {
    return "Default status for Job";
 }
+
+pthread_mutex_t job_lock = PTHREAD_MUTEX_INITIALIZER;
+
+void lock_jobs(void)
+{
+    pthread_mutex_lock(&job_lock);
+}
+
+void unlock_jobs(void)
+{
+    pthread_mutex_unlock(&job_lock);
+}
+
+
