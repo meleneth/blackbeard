@@ -24,6 +24,7 @@ void DecoderThread::Execute(void)
             jobqueue->finish(decoder);
             delete decoder;
         }
+        sleep(1);
     }
 }
 

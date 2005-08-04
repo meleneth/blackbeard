@@ -5,6 +5,7 @@
 #include"post_set.hpp"
 #include<stdio.h>
 #include<ncurses.h>
+#include<time.h>
 
 #include<sstream>
 
@@ -21,6 +22,9 @@ InputThread::~InputThread()
 
 void InputThread::Execute(void)
 {
+    struct timespec interval;
+
+    interval.tv_nsec = 40000000;
     while(1){
 //        usleep(10);
         int key = getch();
@@ -37,6 +41,7 @@ void InputThread::Execute(void)
         unlock_postsets();
         unlock_jobs();
         refresh();
+        nanosleep(&interval, NULL);
     }
 }
 
