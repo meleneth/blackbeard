@@ -15,6 +15,7 @@ JobQueue::~JobQueue()
 Job *JobQueue::get_next_decoder_job(void)
 {
     if(decoder_jobs.size()){
+        lock_jobs();
         vector<Job *>::iterator j;
         Job * job;
         
@@ -22,6 +23,7 @@ Job *JobQueue::get_next_decoder_job(void)
         job = *j;
         decoder_jobs.erase(j);
         active_jobs.push_back(job);
+        unlock_jobs();
         return job;
     }
     return NULL;
@@ -30,6 +32,7 @@ Job *JobQueue::get_next_decoder_job(void)
 Job *JobQueue::get_next_text_job(void)
 {
     if(text_jobs.size()){
+        lock_jobs();
         vector<Job *>::iterator j;
         Job * job;
         
@@ -37,6 +40,7 @@ Job *JobQueue::get_next_text_job(void)
         job = *j;
         text_jobs.erase(j);
         console->log("i found a job in the queue!!!!");
+        unlock_jobs();
         return job;
     }
     return NULL;
@@ -44,23 +48,30 @@ Job *JobQueue::get_next_text_job(void)
 
 void JobQueue::add_decoder_job(Job *job)
 {
+    lock_jobs();
     decoder_jobs.push_back(job);
+    unlock_jobs();
 }
 
 void JobQueue::add_text_job(Job *job)
 {
+    lock_jobs();
     text_jobs.push_back(job);
+    unlock_jobs();
 }
 
 void JobQueue::finish(Job *job)
 {
+    lock_jobs();
     vector<Job *>::iterator j;
     
     for(j = active_jobs.begin(); j != active_jobs.end(); ++j){
         if((*j) == job){
-          //  active_jobs.erase(j);
-          //  dead_jobs.push_back(job);
+            active_jobs.erase(j);
+            unlock_jobs();
+            return;
         }
     }
+    unlock_jobs();
 }
 

@@ -31,9 +31,11 @@ void InputThread::Execute(void)
             session->handle_input(key);
         }
         erase();
-        lock_postsets();        
+        lock_jobs();
+        lock_postsets();
         session->render();
-        unlock_postsets();        
+        unlock_postsets();
+        unlock_jobs();
         refresh();
     }
 }

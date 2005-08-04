@@ -24,7 +24,6 @@ class JobQueue {
         vector<Job *> text_jobs;
 
         vector<Job *> active_jobs;
-        vector<Job *> dead_jobs;
     private:
     protected:
 };

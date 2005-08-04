@@ -21,6 +21,7 @@ void DecoderThread::Execute(void)
         if(NULL != decoder){
             console->log("I gotta job!");
             decoder->process();
+            jobqueue->finish(decoder);
             delete decoder;
         }
     }
