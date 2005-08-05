@@ -41,7 +41,7 @@ void InputThread::Execute(void)
         unlock_postsets();
         unlock_jobs();
         refresh();
-        nanosleep(&interval, NULL);
+//        nanosleep(&interval, NULL);
     }
 }
 

@@ -32,7 +32,7 @@ void NetThread::Execute(void)
                 jobqueue->add_text_job(job);
             }
         }
-        sleep(1);
+//        sleep(1);
     }
 }
 
