@@ -18,6 +18,8 @@ class JobQueue {
         void add_decoder_job(Job *job);
         void add_text_job(Job *job);
 
+        void process_jobs(void);
+
         void finish(Job *job);
 
         vector<Job *> decoder_jobs;

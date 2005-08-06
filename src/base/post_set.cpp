@@ -148,16 +148,3 @@ Uint32 PostSet::min_msg_id(void)
     return msg_id;
 }
 
-pthread_mutex_t postset_lock = PTHREAD_MUTEX_INITIALIZER;
-
-void lock_postsets(void)
-{
-    pthread_mutex_lock(&postset_lock);
-}
-
-void unlock_postsets(void)
-{
-    pthread_mutex_unlock(&postset_lock);
-}
-
-

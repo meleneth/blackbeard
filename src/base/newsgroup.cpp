@@ -274,7 +274,6 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
 
     for (sp = yenc_subject_patterns.begin(); sp != yenc_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
-            lock_postsets();
             PostSet *postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
             postset->has_msg_ids = 1;
 
@@ -282,35 +281,29 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
                                                      (*sp)->get_piecen(SP_MAXFILENO), 
                                                      (*sp)->get_piece(SP_FILENAME));
             if(!postfile){
-                unlock_postsets();
                 return NULL;
             }
             postfile->decoder_type = DT_YENC;
             postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), atoi(message_id.c_str()));
-            unlock_postsets();
             return postfile;
         }
     }
 
     for (sp = uu_subject_patterns.begin(); sp != uu_subject_patterns.end(); ++sp){
         if((*sp)->match(subject)){
-            lock_postsets();
-
             PostSet *postset = postset_for_subject((*sp)->get_piece(SP_SUBJECT));
             postset->has_msg_ids = 1;
             PostFile *postfile = postset->file((*sp)->get_piecen(SP_FILENO), 
                                              (*sp)->get_piecen(SP_MAXFILENO), 
                                              (*sp)->get_piece(SP_FILENAME));
             if(!postfile){
-                unlock_postsets();
                 return NULL;
             }
 
             postfile->decoder_type = DT_UUDECODE;
             postfile->part((*sp)->get_piecen(SP_PARTNO), 
                                    (*sp)->get_piecen(SP_MAXPARTNO), atoi(message_id.c_str()));
-            unlock_postsets();
             return postfile;
         }
     }
@@ -426,7 +419,6 @@ void save_subscribed_groups_to(string filename)
 {
     ofstream out;
 
-    lock_postsets();
     out.open(filename.c_str(), ios::out);
 
     if(out.is_open()){
@@ -440,7 +432,6 @@ void save_subscribed_groups_to(string filename)
             }
         }
     }
-    unlock_postsets();
 }
 
 NewsGroup *group_for_name(string groupname)

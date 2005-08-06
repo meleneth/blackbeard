@@ -6,6 +6,7 @@
 #include <sys/stat.h>
 
 
+#define DECODER_LINES_PER_SLICE 2000
 
 // Public data members go here.
 //
@@ -31,9 +32,13 @@ Decoder::~Decoder() // Destructor
 void Decoder::process()
 {
     list<string>::iterator s;
+    Uint32 ctr = DECODER_LINES_PER_SLICE;
     
     for (s=post->lines.begin(); s!=post->lines.end(); ++s){
         decode_line(*s);
+        if(!ctr--){
+            return;
+        }
     }
 }
 

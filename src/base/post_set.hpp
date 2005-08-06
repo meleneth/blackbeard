@@ -39,7 +39,5 @@ class PostSet {
     protected:
 };
 
-void lock_postsets(void);
-void unlock_postsets(void);
 
 #endif

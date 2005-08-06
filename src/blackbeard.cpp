@@ -5,14 +5,13 @@
 #include<algorithm>
 
 #include"tcpconnection.hpp"
-#include"net_thread.hpp"
-#include"decoder_thread.hpp"
-#include"input_thread.hpp"
 #include"post_set.hpp"
+#include"config.hpp"
 #include"console.hpp"
 #include"jobqueue.hpp"
 #include"session.hpp"
 #include"subjectfileloaderjob.hpp"
+#include"netcentral.hpp"
 
 
 Console *console;
@@ -23,6 +22,7 @@ PostSet *current_postset;
 PostFile *current_postfile;
 JobQueue *jobqueue;
 Session *session;
+NetCentral *netcentral;
 
 void do_init(void);
 static void finish(int sig);
@@ -39,39 +39,35 @@ int main(int argc, char *argv[])
     console = new Console();
     config = new Config(argc, argv);
     config->read_config_file();
-    InputThread *input_thread = NULL;
+    netcentral = new NetCentral();
 
     do_init();
 
     string input("");
-
-    NetThread *net_thread = new NetThread();
-    net_thread->Start();
-
-    DecoderThread *decoder_thread = new DecoderThread();
-    decoder_thread->Start();
-
-    if(0 == config->debug_mode){
-        input_thread = new InputThread(net_thread);
-        input_thread->Start();
-    }
-
     if(0 != config->load_file.compare("")){
-        jobqueue->add_decoder_job(new SubjectFileLoaderJob(config->load_file));
+        jobqueue->active_jobs.push_back(new SubjectFileLoaderJob(config->load_file));
     }else if(0 != config->load_group.compare("")){
-        console->log("Loading groups from " + config->load_group);
-        load_groups_from(config->load_group);
+//        console->log("Loading groups from " + config->load_group);
+//        load_groups_from(config->load_group);  Job-ify me FIXME
     }
 
-    if(input_thread){
-        pthread_join(input_thread->ThreadId, NULL);
-    } 
+    while(1){
+        jobqueue->process_jobs();
+        netcentral->tick();
 
-    pthread_join(net_thread->ThreadId, NULL);
-    pthread_join(decoder_thread->ThreadId, NULL);
-    
-    // will never get here, too many infinite loops in the threads
-    
+        int key = getch();
+        if(key != ERR){
+          //  stringstream buf;
+          //  buf << "Recieved key: " << (int) key;
+          //  console->log(buf.str());
+            session->handle_input(key);
+        }
+
+        erase();
+        session->render();
+        refresh();
+
+    }
     finish(0);
 
 }

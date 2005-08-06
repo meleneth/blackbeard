@@ -21,7 +21,5 @@ class Job {
     protected:
 };
 
-void lock_jobs(void);
-void unlock_jobs(void);
 
 #endif
