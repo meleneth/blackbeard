@@ -15,7 +15,7 @@
 class Session : public Screen{
     public:
         Session();
-        ~Session();
+        virtual ~Session();
 
         virtual void render(void);
         virtual int handle_input(int key);

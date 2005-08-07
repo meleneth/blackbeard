@@ -1,11 +1,9 @@
 #include<signal.h>
 #include<ncurses.h>
-#include<pthread.h>
 
 #include<algorithm>
 
 #include"tcpconnection.hpp"
-#include"post_set.hpp"
 #include"config.hpp"
 #include"console.hpp"
 #include"jobqueue.hpp"
@@ -18,8 +16,6 @@ Console *console;
 Config *config;
 NewsGroup *newsgroup;
 vector< NewsGroup * >newsgroups;
-PostSet *current_postset;
-PostFile *current_postfile;
 JobQueue *jobqueue;
 Session *session;
 NetCentral *netcentral;
@@ -89,8 +85,6 @@ void do_init(void)
     }
     
     // global objects
-    current_postset = NULL;
-    current_postfile = NULL;
     jobqueue = new JobQueue();
     newsgroup = group_for_name(config->news_group);
     session = new Session();
