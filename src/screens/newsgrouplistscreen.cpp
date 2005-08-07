@@ -1,6 +1,7 @@
 #include "newsgrouplistscreen.hpp"
 #include"keydefs.hpp"
 #include"session.hpp"
+#include"netcentral.hpp"
 #include"jobqueue.hpp"
 #include"newsgrouplistretrieverjob.hpp"
 #include"headersforgroupjob.hpp"
@@ -46,10 +47,10 @@ int NewsGroupListScreen::handle_input(int key)
                     return 0;
                 case 'p':
                     g = (NewsGroup *) scroll_list->get_selected_item();
-                    jobqueue->add_text_job(new HeadersForGroupJob(g));    
+                    netcentral->add_job(new HeadersForGroupJob(g));    
                     return 0;
                 case 'g':
-                    jobqueue->add_text_job(new NewsGroupListRetrieverJob());    
+                    netcentral->add_job(new NewsGroupListRetrieverJob());    
                     return 0;
                 default:
                 ;

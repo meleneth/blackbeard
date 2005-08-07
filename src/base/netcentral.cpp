@@ -13,12 +13,11 @@ NetCentral::~NetCentral() // Destructor
 {
 }
 
-void NetCentral::tick(void)
+void NetCentral::process_jobs(void)
 {
     if(connections.size() == 0){
         return;
     }
-    std::list<NNTPServer *>::iterator i;
     FD_ZERO(&read_fds);
 
     struct timeval tv;
@@ -26,10 +25,13 @@ void NetCentral::tick(void)
     tv.tv_usec = 10;
     fdmax = 0;
 
-    for(i = connections.begin(); i != connections.end(); ++i){
-        FD_SET((*i)->sockfd, &read_fds);
-        if(fdmax < (*i)->sockfd){
-            fdmax = (*i)->sockfd;
+    Uint32 max_con = connections.size();
+    Uint32 i;
+
+    for(i = 0; i<max_con; ++i){
+        FD_SET(connections[i]->sockfd, &read_fds);
+        if(fdmax < connections[i]->sockfd){
+            fdmax = connections[i]->sockfd;
         }
     }
 
@@ -38,20 +40,20 @@ void NetCentral::tick(void)
         exit(1);
     }
 
-    for(i = connections.begin(); i != connections.end(); ++i){
-        if(FD_ISSET((*i)->sockfd, &read_fds)){
-            (*i)->read_packets();
+    for(i = 0; i<max_con; ++i){
+        if(FD_ISSET(connections[i]->sockfd, &read_fds)){
+            connections[i]->read_packets();
         }
 
-        if((*i)->has_data_waiting()){
-            console->log((*i)->get_line());
+        if(connections[i]->has_data_waiting()){
+            console->log(connections[i]->get_line());
         }
     }
 }
 
 void NetCentral::add_connection(NNTPServer *connection)
 {
-    connections.push_front(connection);
+    connections.push_back(connection);
     if(fdmax < connection->sockfd){
         fdmax = connection->sockfd;
     }

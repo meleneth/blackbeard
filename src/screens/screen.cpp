@@ -39,7 +39,7 @@ void Screen::render(void)
     }
 
     stringstream buf;
-    buf << jobqueue->active_jobs.size() << " jobs queued 0.0k/sec 0G downloaded";
+    buf << jobqueue->jobs.size() << " jobs queued 0.0k/sec 0G downloaded";
     mvaddnstr(ypos + height, xpos + 2, buf.str().c_str(), -1);
 
 }

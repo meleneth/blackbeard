@@ -10,22 +10,17 @@ using std::vector;
 class JobQueue {
     public:
         JobQueue();
-        ~JobQueue(); 
+        virtual ~JobQueue(); 
 
-        Job *get_next_decoder_job(void);
-        Job *get_next_text_job(void);
+        Job *get_next_job(void);
 
-        void add_decoder_job(Job *job);
-        void add_text_job(Job *job);
+        void add_job(Job *job);
 
-        void process_jobs(void);
+        virtual void process_jobs(void);
 
         void finish(Job *job);
 
-        vector<Job *> decoder_jobs;
-        vector<Job *> text_jobs;
-
-        vector<Job *> active_jobs;
+        vector<Job *> jobs;
     private:
     protected:
 };

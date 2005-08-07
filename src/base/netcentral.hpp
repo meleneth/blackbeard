@@ -1,21 +1,24 @@
 #ifndef ___netcentral_inc
 #define ___netcentral_inc 1
 
-#include<list>
 #include"SDL_types.h"
 
 #include"nntpserver.hpp"
+#include"jobqueue.hpp"
+#include<vector>
 
-class NetCentral {
+using std::vector;
+
+class NetCentral : public JobQueue {
     public:
         // Public data members go here.
         NetCentral(void); // Constructor
-        ~NetCentral(); // Destructor
+        virtual ~NetCentral(); // Destructor
 
-        void tick(void);
+        virtual void process_jobs(void);
         void add_connection(NNTPServer *connection);
 
-        std::list<NNTPServer *> connections;
+        vector <NNTPServer *> connections;
         int fdmax;
 
         fd_set master;   // master file descriptor list

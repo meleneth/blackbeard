@@ -1,5 +1,6 @@
 #include"activejobsscreen.hpp"
 #include"jobqueue.hpp"
+#include"netcentral.hpp"
 #include"console.hpp"
 
 ActiveJobsScreen::ActiveJobsScreen()
@@ -35,12 +36,12 @@ void ActiveJobsScreen::render(void)
     active_list->height = (height - 3)/2;
     active_list->width = width -1;
     active_list->ypos = ypos + 1;
-    active_list->all_items = jobqueue->active_jobs;
+    active_list->all_items = jobqueue->jobs;
 
     queued_list->height = (height - 3)/2;
     queued_list->width = width -1;
     queued_list->ypos = active_list->height + ypos + 2;
-    queued_list->all_items = jobqueue->text_jobs;
+    queued_list->all_items = netcentral->jobs;
 
     Screen::render();
     console->draw_box(0, 0, width-1, (height-1)/2);
