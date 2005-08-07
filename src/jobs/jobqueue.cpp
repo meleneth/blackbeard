@@ -16,14 +16,17 @@ void JobQueue::process_jobs(void)
 {
     Uint32 j;
     Job *job;
-    Uint32 max_num = jobs.size();
+    Uint32 max_num = active_jobs.size();
     
+    if(0 == max_num){
+        get_next_job();
+    }
     for(j=0; j<max_num; ++j){
-        job = jobs[j];
+        job = active_jobs[j];
         job->process();
         if (job->is_finished){
             finish(job);
-            max_num = jobs.size();
+            max_num = active_jobs.size();
             --j;
         }
     }
@@ -31,16 +34,16 @@ void JobQueue::process_jobs(void)
 
 Job *JobQueue::get_next_job(void)
 {
-    /*if(jobs.size()){
+    if(0 == active_jobs.size()){
         vector<Job *>::iterator j;
         Job * job;
         
         j = jobs.begin();
         job = *j;
-        decoder_jobs.erase(j);
+        jobs.erase(j);
         active_jobs.push_back(job);
         return job;
-    }*/
+    }
     return NULL;
 }
 

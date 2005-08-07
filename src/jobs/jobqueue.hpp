@@ -12,7 +12,7 @@ class JobQueue {
         JobQueue();
         virtual ~JobQueue(); 
 
-        Job *get_next_job(void);
+        virtual Job *get_next_job(void);
 
         void add_job(Job *job);
 
@@ -21,6 +21,7 @@ class JobQueue {
         void finish(Job *job);
 
         vector<Job *> jobs;
+        vector<Job *> active_jobs;
     private:
     protected:
 };

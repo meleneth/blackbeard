@@ -3,6 +3,7 @@
 #include"console.hpp"
 #include"session.hpp"
 #include"jobqueue.hpp"
+#include"netcentral.hpp"
 #include"postsetjob.hpp"
 #include<ncurses.h>
 #include<sstream>
@@ -76,7 +77,7 @@ int PostSetListScreen::handle_input(int key)
     if(scroll_list->handle_input(key)){
         if(key == 'd'){
             console->log("Caught keyboard input 'd'");
-            jobqueue->add_job(new PostsetJob((PostSet *) scroll_list->get_selected_item()));
+            netcentral->add_job(new PostsetJob((PostSet *) scroll_list->get_selected_item()));
             return 0;
         }
     }

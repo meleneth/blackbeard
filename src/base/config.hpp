@@ -26,10 +26,11 @@ class Config {
         string blackbeard_data_dir;
         string username;
         string password;
+        Uint32 news_port;
         Uint32 debug_mode;
         Uint32 show_groups_screen;
+        Uint32 max_net_connections;
 
-        Uint32 news_port;
     private:
         // Private members go here.
     protected:

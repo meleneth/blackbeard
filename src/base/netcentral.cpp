@@ -1,5 +1,6 @@
 #include "netcentral.hpp"
 #include"console.hpp"
+#include"config.hpp"
 
 // Public data members go here.
 NetCentral::NetCentral(void) // Constructor
@@ -40,6 +41,12 @@ void NetCentral::process_jobs(void)
         exit(1);
     }
 
+//    if(jobs.size()){
+//        if(active_jobs.size() < config->max_net_connections){
+//            get_next_job();
+//        }    
+//    }
+
     for(i = 0; i<max_con; ++i){
         if(FD_ISSET(connections[i]->sockfd, &read_fds)){
             connections[i]->read_packets();
@@ -49,6 +56,21 @@ void NetCentral::process_jobs(void)
             console->log(connections[i]->get_line());
         }
     }
+}
+
+Job *NetCentral::get_next_job(void)
+{
+    if(config->max_net_connections == active_jobs.size()){
+        vector<Job *>::iterator j;
+        Job * job;
+        
+        j = jobs.begin();
+        job = *j;
+        jobs.erase(j);
+        active_jobs.push_back(job);
+        return job;
+    }
+    return NULL;
 }
 
 void NetCentral::add_connection(NNTPServer *connection)
