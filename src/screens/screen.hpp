@@ -25,6 +25,7 @@ class Screen : public Widget {
 
         vector<Widget *> widgets;
         Uint32 help_visible;
+        Uint32 active_widget;
     private:
     protected:
 };

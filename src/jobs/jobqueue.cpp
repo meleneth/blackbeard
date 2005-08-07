@@ -25,6 +25,7 @@ void JobQueue::process_jobs(void)
         if (job->is_finished){
             finish(job);
             max_num = active_jobs.size();
+            --j;
         }
     }
 }

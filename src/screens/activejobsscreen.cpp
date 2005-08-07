@@ -62,5 +62,10 @@ Uint32 ActiveJobsScreen::search_match(string search, void *ptr)
 
 int ActiveJobsScreen::handle_input(int key)
 {
-    return active_list->handle_input(key) ?  Screen::handle_input(key) : 0;
+    static ScrollableList<Job> *ptr;
+    if (key == IKEY_TAB) 
+    {
+        ptr = ptr == active_list ? queued_list : active_list;
+    }
+    return ptr->handle_input(key) ?  Screen::handle_input(key) : 0;
 }

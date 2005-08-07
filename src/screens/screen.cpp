@@ -1,4 +1,4 @@
-#include "screen.hpp"
+#include"screen.hpp"
 #include"session.hpp"
 #include"console.hpp"
 #include"keydefs.hpp"
@@ -14,6 +14,7 @@ Screen::Screen()
     xpos=0;
     ypos=0;
     help_visible = 0;
+    active_widget = 31337;
 }
 
 Screen::~Screen()
@@ -73,6 +74,17 @@ int Screen::handle_input(int key)
         case '?':
         case 'H':
             help_visible = !help_visible;
+            break;
+
+        case IKEY_TAB:
+            if(31337 == active_widget){
+                if(widgets.size()){
+                    active_widget = 0;
+                }
+                break;
+            }
+            ++active_widget;
+            active_widget %= widgets.size();
             break;
             
         case IKEY_F5:
