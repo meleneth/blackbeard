@@ -51,7 +51,10 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
     }
 
     if(part_no > max_part_no){
-        console->log("Not adding nonsensicle part no");
+        // scoop scoop
+        if(config->debug_logging)
+            console->log("Not adding nonsensicle part no");
+
     }else{
         pieces[part_no] = message_id;
         seen_pieces++;
