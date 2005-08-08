@@ -4,6 +4,7 @@ Job::Job()
 {
     priority = 50;
     is_finished = 0;
+    srv = NULL;
 }
 
 Job::~Job()
@@ -12,11 +13,6 @@ Job::~Job()
 
 void Job::process()
 {
-}
-
-void Job::process(void *connection)
-{
-    // do stuff here
 }
 
 string Job::status_line()

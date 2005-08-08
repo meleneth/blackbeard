@@ -16,13 +16,10 @@ class NetCentral : public JobQueue {
         virtual ~NetCentral(); // Destructor
 
         virtual void process_jobs(void);
-        void add_connection(NNTPServer *connection);
         virtual Job *get_next_job(void);
 
-        vector <NNTPServer *> connections;
         int fdmax;
 
-        vector <Uint32> connection_index;
         fd_set master;   // master file descriptor list
         fd_set read_fds; // temp file descriptor list for select()
     private:

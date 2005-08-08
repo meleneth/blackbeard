@@ -16,9 +16,11 @@ NetCentral::~NetCentral() // Destructor
 
 void NetCentral::process_jobs(void)
 {
-    if(connections.size() == 0){
+    if((0 == jobs.size()) && (0 == active_jobs.size())){
+        usleep(10);
         return;
     }
+
     FD_ZERO(&read_fds);
 
     struct timeval tv;
@@ -26,13 +28,14 @@ void NetCentral::process_jobs(void)
     tv.tv_usec = 10;
     fdmax = 0;
 
-    Uint32 max_con = connections.size();
+    Uint32 max_jobid = active_jobs.size();
     Uint32 i;
 
-    for(i = 0; i<max_con; ++i){
-        FD_SET(connections[i]->sockfd, &read_fds);
-        if(fdmax < connections[i]->sockfd){
-            fdmax = connections[i]->sockfd;
+    for(i = 0; i<max_jobid; ++i){
+        NNTPServer *connection = (NNTPServer *) active_jobs[i]->srv;
+        FD_SET(connection->sockfd, &read_fds);
+        if(fdmax < connection->sockfd){
+            fdmax = connection->sockfd;
         }
     }
 
@@ -47,14 +50,27 @@ void NetCentral::process_jobs(void)
 //        }    
 //    }
 
-    for(i = 0; i<max_con; ++i){
-        if(FD_ISSET(connections[i]->sockfd, &read_fds)){
-            connections[i]->read_packets();
+    for(i = 0; i<max_jobid; ++i){
+        Job *job = active_jobs[i];
+        NNTPServer *connection = (NNTPServer *) active_jobs[i]->srv;
+
+        if(FD_ISSET(connection->sockfd, &read_fds)){
+            connection->read_packets();
+        }
+        job->process();
+        if(job->is_finished){
+            Job *new_job = get_next_job();
+            if(new_job){
+                new_job->srv = job->srv;
+                active_jobs[i] = new_job;
+                delete job;
+            }else{
+                active_jobs.erase(active_jobs.begin() + i);
+                max_jobid = active_jobs.size();
+                i--;
+            }
         }
 
-        if(connections[i]->has_data_waiting()){
-            console->log(connections[i]->get_line());
-        }
     }
 }
 
@@ -71,15 +87,6 @@ Job *NetCentral::get_next_job(void)
         return job;
     }
     return NULL;
-}
-
-void NetCentral::add_connection(NNTPServer *connection)
-{
-    connections.push_back(connection);
-    if(fdmax < connection->sockfd){
-        fdmax = connection->sockfd;
-    }
-    FD_SET(connection->sockfd, &master);
 }
 
 // Private members go here.
