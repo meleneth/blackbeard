@@ -68,5 +68,9 @@ int ActiveJobsScreen::handle_input(int key)
     {
         ptr = ptr == active_list ? queued_list : active_list;
     }
-    return ptr->handle_input(key) ?  Screen::handle_input(key) : 0;
+    if(ptr){
+        return ptr->handle_input(key) ?  Screen::handle_input(key) : 0;
+    } else {
+        return Screen::handle_input(key);
+    }
 }
