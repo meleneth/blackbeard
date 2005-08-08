@@ -63,14 +63,13 @@ void NetCentral::process_jobs(void)
             if(new_job){
                 new_job->srv = job->srv;
                 active_jobs[i] = new_job;
-                delete job;
             }else{
                 active_jobs.erase(active_jobs.begin() + i);
                 max_jobid = active_jobs.size();
                 i--;
             }
+                delete job;
         }
-
     }
 }
 
@@ -83,7 +82,6 @@ Job *NetCentral::get_next_job(void)
         j = jobs.begin();
         job = *j;
         jobs.erase(j);
-        active_jobs.push_back(job);
         return job;
     }
     return NULL;

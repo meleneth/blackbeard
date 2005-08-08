@@ -6,7 +6,6 @@
 
 using std::string;
 
-class NNTPServer;
 class Job {
     public:
         Job();

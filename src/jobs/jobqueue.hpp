@@ -18,8 +18,6 @@ class JobQueue {
 
         virtual void process_jobs(void);
 
-        void finish(Job *job);
-
         vector<Job *> jobs;
         vector<Job *> active_jobs;
     private:

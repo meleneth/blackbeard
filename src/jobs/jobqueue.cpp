@@ -19,29 +19,34 @@ void JobQueue::process_jobs(void)
     Uint32 max_num = active_jobs.size();
     
     if(0 == max_num){
-        get_next_job();
+        Job *job = get_next_job();
+        if(job) {
+            active_jobs.push_back(job);
+            max_num = 1;
+        }
     }
     for(j=0; j<max_num; ++j){
         job = active_jobs[j];
         job->process();
         if (job->is_finished){
-            finish(job);
-            max_num = active_jobs.size();
-            --j;
+            Job *new_job = get_next_job();
+            if(new_job){
+                active_jobs[j] = new_job;
+            }else{
+                active_jobs.erase(active_jobs.begin() + j);
+                max_num = active_jobs.size();
+                --j;
+            }
+            delete job;
         }
     }
 }
 
 Job *JobQueue::get_next_job(void)
 {
-    if(0 == active_jobs.size()){
-        vector<Job *>::iterator j;
-        Job * job;
-        
-        j = jobs.begin();
-        job = *j;
-        jobs.erase(j);
-        active_jobs.push_back(job);
+    if(jobs.size()){
+        Job * job = *jobs.begin();
+        jobs.erase(jobs.begin());
         return job;
     }
     return NULL;
@@ -53,15 +58,4 @@ void JobQueue::add_job(Job *job)
     jobs.push_back(job);
 }
 
-void JobQueue::finish(Job *job)
-{
-    vector<Job *>::iterator j;
-    
-    for(j = jobs.begin(); j != jobs.end(); ++j){
-        if((*j) == job){
-            jobs.erase(j);
-            return;
-        }
-    }
-}
 
