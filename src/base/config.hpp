@@ -30,6 +30,7 @@ class Config {
         Uint32 debug_mode;
         Uint32 show_groups_screen;
         Uint32 max_net_connections;
+        Uint32 debug_logging;
 
     private:
         // Private members go here.

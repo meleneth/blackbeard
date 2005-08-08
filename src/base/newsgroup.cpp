@@ -263,7 +263,8 @@ void NewsGroup::header_scoop(string xover_line)
 PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
 {
     list< StringPattern * >::iterator sp;
-    console->log("Subject: " + subject);
+    if(config->debug_logging)
+        console->log("Subject: " + subject);
 
     //"[DVD9]" evil delete it >.<
     size_t s = subject.find("[DVD9]");

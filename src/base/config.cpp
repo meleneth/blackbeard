@@ -33,6 +33,7 @@ Config::Config(int argc, char *argv[]) // Constructor
     show_groups_screen = 0;
     console->print_on_delete = 0;
     max_net_connections = 4;
+    debug_logging = 0;
 
     int ac=1;
     string debug = "-d";
