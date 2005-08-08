@@ -1,3 +1,8 @@
+Current priority: 
+flesh out net jobs so we can remove threading files
+
+
+
 Decoders:
     Implement UUDecoder
 *   Implement yEnc Decoder
@@ -5,15 +10,15 @@ Decoders:
     Optimize Decoders
 
 
-Threads:
-    multiple net threads
-*   console render thread
-*   input thread
-*   main() waiting for thread_join
-*   file decoder thread 
-*   locking <- only needed in job control for the job list and 
-               file decode to only mmap the file once (I think)
-
+XXXXXXXXXXXThreads:  <--- REMOVED DUE TO INSANITY
+XXXXXXXXXXX    multiple net threads
+XXXXXXXXXXX*   console render thread
+XXXXXXXXXXX*   input thread
+XXXXXXXXXXX*   main() waiting for thread_join
+XXXXXXXXXXX*   file decoder thread 
+XXXXXXXXXXX*   locking <- only needed in job control for the job list and 
+XXXXXXXXXXX               file decode to only mmap the file once (I think)
+XXXXXXXXXXX
 
 Pattern matching:
     --
@@ -53,5 +58,5 @@ General:
     Save memory by stripping information for postsets we're not particularly interested into postset name, and min/max message_id for easy recreation with a targetted xover
     Persistence:
 *       newsgroups
-        postsets
+*       postsets
         jobs
