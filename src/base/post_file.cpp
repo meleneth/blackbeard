@@ -3,6 +3,7 @@
 #include"uu_decoder.hpp"
 #include"console.hpp"
 #include<math.h>
+#include<config.hpp>
 
 #include<sstream>
 #include<iomanip>
@@ -40,10 +41,12 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
     }
 
     if(max_part_no != num_pieces){
-        stringstream buf;
-        buf << "Unhandled error: num pieces changed on message.  Was "
-            << max_part_no << " and is now " << num_pieces << " <" << filename << ">";
-        console->log(buf.str());
+        if(config->debug_logging){
+            stringstream buf;
+            buf << "Unhandled error: num pieces changed on message.  Was "
+                << max_part_no << " and is now " << num_pieces << " <" << filename << ">";
+            console->log(buf.str());
+        }
         return;
     }
 

@@ -1,5 +1,6 @@
 #include "post_set.hpp"
 #include"console.hpp"
+#include"config.hpp"
 
 #include<sstream>
 #include<iomanip>
@@ -58,7 +59,8 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
         }
 
         if(file_num > max_num_files){
-            console->log("Cowardly refusing to do a crashy op");
+            if(config->debug_logging)
+                console->log("Cowardly refusing to do a crashy op");
             return NULL;
         }
 
