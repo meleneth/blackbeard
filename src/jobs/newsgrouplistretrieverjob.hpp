@@ -10,7 +10,7 @@ class NewsGroupListRetrieverJob : public Job {
         virtual ~NewsGroupListRetrieverJob();
 
         virtual void process(void *connection);
-        virtual string status_line();
+        string status_line();
 
     private:
     protected:

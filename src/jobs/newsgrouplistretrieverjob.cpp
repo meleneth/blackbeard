@@ -11,12 +11,14 @@ NewsGroupListRetrieverJob::~NewsGroupListRetrieverJob()
 
 string NewsGroupListRetrieverJob::status_line(void)
 {
-    return "no status for newsgroup retriever";
+    return status;
 }
 
 void NewsGroupListRetrieverJob::process(void *ptr)
 {
+    status = "Retrieving group list";
     NNTPServer *srv = (NNTPServer *)ptr;
+    srv->send_command(LIST);
     
 }
 
