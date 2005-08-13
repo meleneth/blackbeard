@@ -16,6 +16,7 @@ class HeadersForGroupJob : public Job {
 
         XoverJob *get_next_job(void);
         virtual void process(void *connection);
+        virtual string status_line();
 
         NewsGroup *group;
         Uint32 lower_id;

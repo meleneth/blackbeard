@@ -10,6 +10,7 @@ class BodyRetrieverJob : public Job {
         virtual ~BodyRetrieverJob();
 
         virtual void process(void *connection);;
+        virtual string status_line();
 
     private:
     protected:

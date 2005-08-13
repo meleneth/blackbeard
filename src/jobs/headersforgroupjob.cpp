@@ -28,6 +28,11 @@ XoverJob *HeadersForGroupJob::get_next_job(void)
     return new XoverJob(group, lower_id, upid);
 }
 
+string HeadersForGroupJob::status_line(void)
+{
+    return "default status for HeadersForGroupJob";
+}
+
 void HeadersForGroupJob::process(void *connection)
 {
     NNTPServer *srv = (NNTPServer *) connection;

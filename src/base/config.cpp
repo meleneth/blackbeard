@@ -144,6 +144,7 @@ void Config::setup_files(void)
 
 void Config::load_persistant_data(void)
 {
+    console->log("restoring persistent data..");
     load_groups_from(blackbeard_data_dir + "/subscribed_newsgroups");
     Uint32 max_int = newsgroups.size();
     for(Uint32 i = 0 ; i < max_int ; i++)
@@ -151,6 +152,7 @@ void Config::load_persistant_data(void)
        newsgroups[i]->is_subscribed = 1;
        newsgroups[i]->load_postsets();
     }
+    console->log("finshed restoring persistent data");
 }
 
 // Private members go here.
