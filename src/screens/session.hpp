@@ -10,6 +10,7 @@
 #include"postsetlistscreen.hpp"
 #include"postsetdetailscreen.hpp"
 #include"activejobsscreen.hpp"
+#include"activenetjobsscreen.hpp"
 #include"shutdownscreen.hpp"
 
 class Session : public Screen{
@@ -28,6 +29,7 @@ class Session : public Screen{
         PostSetListScreen *postsetlist;
         PostSetDetailScreen *postsetdetail;
         ActiveJobsScreen *activejobs; 
+        ActiveNetJobsScreen *activenetjobs; 
         Widget *current_screen;
 
     private:

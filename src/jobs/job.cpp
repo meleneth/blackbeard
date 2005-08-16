@@ -6,7 +6,7 @@ Job::Job()
     is_finished = 0;
     srv = NULL;
 
-    status = "Default status for Job";
+    _status = "Default status for Job";
 }
 
 Job::~Job()
@@ -19,6 +19,6 @@ void Job::process()
 
 string Job::status_line()
 {
-   return status;
+   return _status;
 }
 

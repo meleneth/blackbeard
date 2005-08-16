@@ -24,12 +24,12 @@ NewsGroupListRetrieverJob::~NewsGroupListRetrieverJob()
 
 string NewsGroupListRetrieverJob::status_line(void)
 {
-    return status;
+    return "Status for NGLRJ [" + _status + "]";
 }
 
 void NewsGroupListRetrieverJob::process(void *ptr)
 {
-    status = "Retrieving group list";
+    _status = "Retrieving group list";
     NNTPServer *srv = (NNTPServer *)ptr;
 
     if(!sent_list_command){

@@ -16,7 +16,7 @@ class Job {
     Uint32 priority;
     Uint32 is_finished;
     void *srv;
-    string status;
+    string _status;
 
     private:
     protected:

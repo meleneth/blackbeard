@@ -36,12 +36,12 @@ void ActiveJobsScreen::render(void)
     active_list->height = (height - 3)/2;
     active_list->width = width -1;
     active_list->ypos = ypos + 1;
-    active_list->all_items = jobqueue->jobs;
+    active_list->all_items = jobqueue->active_jobs;
 
     queued_list->height = (height - 3)/2;
     queued_list->width = width -1;
     queued_list->ypos = active_list->height + ypos + 2;
-    queued_list->all_items = netcentral->jobs;
+    queued_list->all_items = jobqueue->jobs;
 
     Screen::render();
     console->draw_box(0, 0, width-1, (height-1)/2);

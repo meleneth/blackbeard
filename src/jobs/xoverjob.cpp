@@ -16,3 +16,8 @@ void XoverJob::process(void *connection)
 {
     NNTPServer *srv = (NNTPServer *) connection;
 }
+
+string XoverJob::status_line(void)
+{
+    return "Default status for XoverJob";
+}

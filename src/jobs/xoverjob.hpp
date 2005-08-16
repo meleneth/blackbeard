@@ -17,6 +17,7 @@ class XoverJob : public Job {
         XoverJob(NewsGroup *group, Uint32 lower, Uint32 upper);
         virtual ~XoverJob();
         virtual void process(void *connection);
+        virtual string status_line(void);
 
         NewsGroup *group;
         Uint32 lower_id;

@@ -5,6 +5,7 @@
 #include"jobqueue.hpp"
 #include"newsgrouplistretrieverjob.hpp"
 #include"headersforgroupjob.hpp"
+#include"console.hpp"
 #include<ncurses.h>
 #include<sstream>
 #include<vector>
@@ -44,13 +45,16 @@ int NewsGroupListScreen::handle_input(int key)
                     g = (NewsGroup *) scroll_list->get_selected_item();
                     if(g)
                         g->is_subscribed ^= 1;
+                    console->log("Toggling subscribed on " + g->name);
                     return 0;
                 case 'p':
                     g = (NewsGroup *) scroll_list->get_selected_item();
                     netcentral->add_job(new HeadersForGroupJob(g));    
+                    console->log("Getting headers gor group " + g->name);
                     return 0;
                 case 'g':
                     netcentral->add_job(new NewsGroupListRetrieverJob());    
+                    console->log("Getting newsgroup list..");
                     return 0;
                 default:
                 ;

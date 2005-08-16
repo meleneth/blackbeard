@@ -16,6 +16,7 @@
 #define IKEY_F6          270
 #define IKEY_F7          271
 #define IKEY_F8          272
+#define IKEY_F9          273
 #define IKEY_PGDN        338
 #define IKEY_PGUP        339
 #define IKEY_END         360

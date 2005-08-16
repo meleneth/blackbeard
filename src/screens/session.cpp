@@ -3,6 +3,7 @@
 #include"postsetdetailscreen.hpp"
 #include"newsgrouplistscreen.hpp"
 #include"activejobsscreen.hpp"
+#include"activenetjobsscreen.hpp"
 
 Session::Session()
 {
@@ -10,6 +11,7 @@ Session::Session()
     postsetlist    = new PostSetListScreen();
     postsetdetail  = new PostSetDetailScreen();
     activejobs     = new ActiveJobsScreen();
+    activenetjobs     = new ActiveNetJobsScreen();
     current_screen = newsgrouplist;
 }
 
@@ -26,7 +28,7 @@ Session::~Session()
 void Session::render(void)
 {
     if(current_screen)
-    current_screen->render();
+        current_screen->render();
 }
 
 int Session::handle_input(int key)

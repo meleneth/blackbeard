@@ -103,6 +103,10 @@ int Screen::handle_input(int key)
             session->current_screen = session->activejobs;;
             break;
 
+        case IKEY_F9:
+            session->current_screen = session->activenetjobs;;
+            break;
+
         default:
             return key;
     }
