@@ -39,16 +39,14 @@ void NewsGroupListRetrieverJob::process(void *ptr)
 
     string line = srv->get_next_multi_line();
     while(srv->is_multiline_reading) {
+        if(breaker->match(line)){
+            NewsGroup *group = group_for_name(breaker->results[0]);
+            group->last_article_number = breaker->get_piecen(1);
+            group->first_article_number = breaker->get_piecen(2);
+        }else{
+            group_for_name(line);
+        }
         line = srv->get_next_multi_line();
     }
-
-    if(breaker->match(line)){
-        NewsGroup *group = group_for_name(breaker->results[0]);
-        group->last_article_number = breaker->get_piecen(1);
-        group->first_article_number = breaker->get_piecen(2);
-    }else{
-        group_for_name(line);
-    }
-    
 }
 
