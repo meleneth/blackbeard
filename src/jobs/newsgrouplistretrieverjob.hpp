@@ -3,6 +3,7 @@
 
 #include"job.hpp"
 #include"SDL_types.h"
+#include"stringpattern.hpp"
 
 class NewsGroupListRetrieverJob : public Job {
     public:
@@ -10,7 +11,10 @@ class NewsGroupListRetrieverJob : public Job {
         virtual ~NewsGroupListRetrieverJob();
 
         virtual void process(void *connection);
-        string status_line();
+        virtual string status_line();
+
+        StringPattern *breaker;
+        Uint8 sent_list_command;
 
     private:
     protected:
