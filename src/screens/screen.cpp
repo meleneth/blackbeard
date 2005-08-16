@@ -3,6 +3,7 @@
 #include"console.hpp"
 #include"keydefs.hpp"
 #include"jobqueue.hpp"
+#include"netcentral.hpp"
 
 #include<ncurses.h>
 #include<sstream>
@@ -39,7 +40,7 @@ void Screen::render(void)
     }
 
     stringstream buf;
-    buf << jobqueue->jobs.size() << " jobs queued 0.0k/sec 0G downloaded";
+    buf << netcentral->jobs.size() << " jobs queued 0.0k/sec 0G downloaded";
     mvaddnstr(ypos + height, xpos + 2, buf.str().c_str(), -1);
 
 }
