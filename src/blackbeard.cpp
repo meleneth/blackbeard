@@ -35,7 +35,6 @@ int main(int argc, char *argv[])
     console = new Console();
     config = new Config(argc, argv);
     config->read_config_file();
-    netcentral = new NetCentral();
 
     do_init();
 
@@ -88,6 +87,7 @@ void do_init(void)
     jobqueue = new JobQueue();
     newsgroup = group_for_name(config->news_group);
     session = new Session();
+    netcentral = new NetCentral();
     config->load_persistant_data();
 }
 

@@ -44,11 +44,15 @@ void NetCentral::process_jobs(void)
         exit(1);
     }
 
-//    if(jobs.size()){
-//        if(active_jobs.size() < config->max_net_connections){
-//            get_next_job();
-//        }    
-//    }
+    if(jobs.size()){
+        if(active_jobs.size() < config->max_net_connections){
+            Job *new_job = get_next_job();
+            if(new_job){
+                new_job->srv = new NNTPServer(config->news_server, config->news_port);
+                active_jobs.push_back(new_job);
+            }
+        }    
+    }
 
     for(i = 0; i<max_jobid; ++i){
         Job *job = active_jobs[i];
@@ -73,19 +77,6 @@ void NetCentral::process_jobs(void)
     }
 }
 
-Job *NetCentral::get_next_job(void)
-{
-    if(config->max_net_connections == active_jobs.size()){
-        vector<Job *>::iterator j;
-        Job * job;
-        
-        j = jobs.begin();
-        job = *j;
-        jobs.erase(j);
-        return job;
-    }
-    return NULL;
-}
 
 // Private members go here.
 // Protected members go here.

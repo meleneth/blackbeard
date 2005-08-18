@@ -16,7 +16,6 @@ class NetCentral : public JobQueue {
         virtual ~NetCentral(); // Destructor
 
         virtual void process_jobs(void);
-        virtual Job *get_next_job(void);
 
         int fdmax;
 

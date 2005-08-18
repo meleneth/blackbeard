@@ -24,7 +24,7 @@ NewsGroupListRetrieverJob::~NewsGroupListRetrieverJob()
 
 string NewsGroupListRetrieverJob::status_line(void)
 {
-    return "Status for NGLRJ [" + _status + "]";
+    return "Status for NewsGroupListRetrieverJob [" + _status + "]";
 }
 
 void NewsGroupListRetrieverJob::process(void *ptr)
