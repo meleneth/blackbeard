@@ -89,7 +89,7 @@ void NNTPServer::group(string groupname)
 vector<NewsGroup *> NNTPServer::list()
 {
     send_command(LIST);
-    read_multiline_response();
+    is_multiline_reading = 1;
 }
 
 void NNTPServer::listgroup()
