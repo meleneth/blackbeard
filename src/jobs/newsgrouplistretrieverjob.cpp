@@ -16,6 +16,7 @@ NewsGroupListRetrieverJob::NewsGroupListRetrieverJob()
     breaker->add_breaker(" ");
     breaker->add_breaker(3);
     sent_list_command = 0;
+    _status = "Waiting for CPU";
 }
 
 NewsGroupListRetrieverJob::~NewsGroupListRetrieverJob()
@@ -27,26 +28,33 @@ string NewsGroupListRetrieverJob::status_line(void)
     return "Status for NewsGroupListRetrieverJob [" + _status + "]";
 }
 
-void NewsGroupListRetrieverJob::process(void *ptr)
+void NewsGroupListRetrieverJob::process()
 {
     _status = "Retrieving group list";
-    NNTPServer *srv = (NNTPServer *)ptr;
+    NNTPServer *server = (NNTPServer *)srv;
 
     if(!sent_list_command){
-        sent_list_command = 1;
-        srv->send_command(LIST);
+        if(server->_status == NS_CONNECTED){
+            sent_list_command = 1;
+            server->send_command(LIST);
+        }
+        return;
     }
 
-    string line = srv->get_next_multi_line();
-    while(srv->is_multiline_reading) {
-        if(breaker->match(line)){
-            NewsGroup *group = group_for_name(breaker->results[0]);
-            group->last_article_number = breaker->get_piecen(1);
-            group->first_article_number = breaker->get_piecen(2);
+    string line = server->get_next_multi_line();
+    while(server->has_data_waiting()){
+        if(server->is_multiline_reading) {
+            if(breaker->match(line)){
+                NewsGroup *group = group_for_name(breaker->results[0]);
+                group->last_article_number = breaker->get_piecen(1);
+                group->first_article_number = breaker->get_piecen(2);
+            }else{
+                group_for_name(line);
+            }
+            line = server->get_next_multi_line();
         }else{
-            group_for_name(line);
+            is_finished = 1;
         }
-        line = srv->get_next_multi_line();
     }
 }
 

@@ -13,6 +13,8 @@
 using std::string;
 using std::vector;
 
+typedef enum { NS_IDLE, NS_CONNECTED, NS_LOGIN, NS_PASSWORD, NS_COMMAND_RESPONSE } NNTPServer_Status;
+
 class NewsGroup;
 class NNTPServer : public TCPConnection {
     public:
@@ -26,7 +28,8 @@ class NNTPServer : public TCPConnection {
         void read_xover_response();
         NewsGroupPost *read_body_response(void);
         string get_next_multi_line(void);
-
+    
+        string _current_command;
        int status();
        void login(string username, string password);
        void quit();
@@ -45,9 +48,12 @@ class NNTPServer : public TCPConnection {
        void next();
        void post();
        void stat();
+       void tick(void);
 
 
-	int server_status;
+	    NNTPServer_Status _status;
+        string _username;
+        string _password;
     Uint32 is_connected;
     Uint32 is_multiline_reading;
     NewsGroup *newsgroup;

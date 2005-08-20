@@ -27,6 +27,7 @@ PostFile *current_postfile;
 JobQueue *jobqueue;
 Config *config;
 Session *session;
+string last_msg;
 
 
 void test_header_scoop(void);

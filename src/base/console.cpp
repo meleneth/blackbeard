@@ -1,6 +1,7 @@
 #include "console.hpp"
 #include <ncurses.h>
 #include<iomanip>
+#include"config.hpp"
 
 using std::string;
 using std::stringstream;
@@ -17,6 +18,7 @@ Console::Console() // Constructor
     input = "";
     print_on_delete = 0;
     keep_logs = 1;
+    save_to_file = 0;
 }
 
 Console::~Console() // Destructor
@@ -32,6 +34,17 @@ Console::~Console() // Destructor
             }
         }
     }
+    if(save_to_file){
+        out.close();
+    }
+}
+
+void Console::open_log_file(void)
+{
+    ofstream out;
+
+    out.open("console.log", ios::out);
+    save_to_file = 1;
 }
 
 void Console::render(Uint32 top, Uint32 bottom)
@@ -63,10 +76,16 @@ void Console::check_input(char key)
 
 void Console::log(string line)
 {
+    extern string last_msg;
+    last_msg = line;
     if(keep_logs)
         loglines.push_front(line);
     if(print_logs)
         printf("%s\n", line.c_str());
+    if(save_to_file){
+        loglines.push_front("And saved!");
+        out << line << endl;
+    }
 }
 
 void Console::fatal(string line)

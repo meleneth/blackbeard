@@ -50,18 +50,22 @@ void NetCentral::process_jobs(void)
             if(new_job){
                 new_job->srv = new NNTPServer(config->news_server, config->news_port);
                 active_jobs.push_back(new_job);
+                max_jobid = active_jobs.size();
             }
         }    
     }
-
+    
     for(i = 0; i<max_jobid; ++i){
         Job *job = active_jobs[i];
-        NNTPServer *connection = (NNTPServer *) active_jobs[i]->srv;
+        NNTPServer *connection = (NNTPServer *) job->srv;
 
         if(FD_ISSET(connection->sockfd, &read_fds)){
             connection->read_packets();
         }
+
+        connection->tick();
         job->process();
+
         if(job->is_finished){
             Job *new_job = get_next_job();
             if(new_job){

@@ -16,11 +16,9 @@ extern void shut_down(void);
 // Public data members go here.
 NNTPServer::NNTPServer(string hostname, int port) : TCPConnection(hostname, port) // Constructor
 {
-    server_status = 0;
-    read_packets();
-    get_line();
     newsgroup = NULL;
     is_multiline_reading = 0;
+    _status = NS_COMMAND_RESPONSE;
 }
     
 NNTPServer::~NNTPServer() // Destructor
@@ -29,13 +27,52 @@ NNTPServer::~NNTPServer() // Destructor
 
 int NNTPServer::status()
 {
-    return server_status;
+}
+
+void NNTPServer::tick(void)
+{
+    switch(_status){
+        case NS_IDLE:
+            break;
+        case NS_CONNECTED:
+            break;
+        case NS_LOGIN:
+            if(has_data_waiting()){
+                string line = get_line();
+                TCPConnection::send_command("authinfo pass " + _password);
+                _password = "";
+                _status = NS_PASSWORD;
+            }
+            break;
+        case NS_PASSWORD:
+            if(has_data_waiting()){
+                string line = get_line();
+                _status = NS_CONNECTED;
+                if(_current_command.compare("")){
+                    send_command(_current_command);
+                }
+            }
+            break;
+        case NS_COMMAND_RESPONSE:
+            if(has_data_waiting()){
+                string line = get_line();
+                string server_response = line.substr(0, 3);
+                _status = NS_CONNECTED;
+                if(0 == server_response.compare(AUTH_REQUIRED)){
+                    login(config->username, config->password);
+                    break;
+                }
+                _current_command = "";
+            }
+            break;
+    }
 }
 
 void NNTPServer::login(string username, string password)
 {
     send_command("authinfo user " + username);
-    send_command("authinfo pass " + password);
+    _status = NS_LOGIN;
+    _password = password;
 }
 
 void NNTPServer::quit()
@@ -181,19 +218,15 @@ void NNTPServer::send_command(string command)
         shut_down();
     }
 
-    console->log("Sending command: " + command);
-    TCPConnection::send_command(command);
-
-    read_packets();
-    string response = get_line();
-    console->log(response);
-    console->log("[-<>-]");
-
-    string server_response = response.substr(0, 3);
-    if(0 == server_response.compare(AUTH_REQUIRED)){
-        login(config->username, config->password);
-        return send_command(command);
+    if(_status != NS_CONNECTED){
+        console->log("Can't send command(" + command + ") unless status is NS_CONNECTED");
+        shut_down();
     }
+
+    console->log("Sending command: " + command);
+    _current_command = command;
+    TCPConnection::send_command(command);
+    _status = NS_COMMAND_RESPONSE;
 }
 
 string NNTPServer::get_next_multi_line(void)
@@ -202,8 +235,8 @@ string NNTPServer::get_next_multi_line(void)
         return "";
     }
 
-    while(!has_data_waiting()){
-        read_packets();
+    if(!has_data_waiting()){
+        return "";
     }
 
     string line = get_line();

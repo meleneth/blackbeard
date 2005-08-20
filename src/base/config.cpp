@@ -37,6 +37,7 @@ Config::Config(int argc, char *argv[]) // Constructor
 
     int ac=1;
     string debug = "-d";
+    string save_console_to_file_flag = "-f";
     string load_headers = "-l";
     string load_groups = "-g";
     string show_groups_flag = "-G";
@@ -59,14 +60,17 @@ Config::Config(int argc, char *argv[]) // Constructor
       //      console->keep_logs = 0;
         }else if(0 == show_groups_flag.compare(argv[ac])){
             show_groups_screen = 1;
+        }else if(0 == save_console_to_file_flag.compare(argv[ac])){
+            console->open_log_file();
         }else if(0 == need_help_flag.compare(argv[ac])){
             console->print_logs = 1;
             console->keep_logs = 0;
-            console->log("blb [-d] [-l filename] [-g filename] [-G] [-h]");
+            console->log("blb [-d] [-l filename] [-g filename] [-G] [-f] [-h]");
             console->log(" -d debug mode.  No ncurses, dumps log to STDOUT");
             console->log(" -l load subjects from filename, one per line");
             console->log(" -g load newsgroups from filename, one per line");
             console->log(" -G activate newsgroup browser mode");
+            console->log(" -f save console logs to console.log");
             console->log(" -h This help");
             console->log("");
             exit(0);

@@ -24,6 +24,7 @@ void do_init(void);
 static void finish(int sig);
 void create_nntp_thread(void);
 void shut_down(void);
+string last_msg;
 
 using std::string;
 using std::stringstream;
@@ -69,6 +70,7 @@ int main(int argc, char *argv[])
 
 void do_init(void)
 {
+    last_msg = "";
     if(!config->debug_mode){
         // ncurses
         signal(SIGINT, finish);
@@ -95,6 +97,8 @@ static void finish(int sig)
 {
     endwin();
     delete console;
+    printf("Finish called\n");
+    printf(last_msg.c_str());
     exit(0);
 }
 

@@ -12,8 +12,14 @@
 
 #define MAKE_STRING( msg )  ( ((std::ostringstream&)(std::ostringstream() << msg)).str() )
 
+#include <iostream>  // I/O 
+#include <fstream>   // file I/O
+
 using std::list;
 using std::string;
+using std::ofstream;
+using std::ios;
+using std::endl;
 
 class Console {
     public:
@@ -27,6 +33,7 @@ class Console {
         void fatal(std::string line);
         void box_log(std::string line);
         void draw_box(Uint32 x, Uint32 y, Uint32 width, Uint32 height);
+        void open_log_file(void);
 
 
         list<std::string> loglines;
@@ -34,6 +41,8 @@ class Console {
         Uint32 print_logs;
         Uint32 print_on_delete;
         Uint32 keep_logs;
+        Uint32 save_to_file;
+        ofstream out;
 
     private:
         // Private members go here.
