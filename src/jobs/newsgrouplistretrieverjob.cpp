@@ -34,8 +34,8 @@ void NewsGroupListRetrieverJob::process_line(string line)
     _status = "Retrieving group list";
     if(breaker->match(line)){
         NewsGroup *group = group_for_name(breaker->results[0]);
-        group->last_article_number = breaker->get_piecen(1);
-        group->first_article_number = breaker->get_piecen(2);
+        group->last_article_number = breaker->get_piecen(2);
+        group->first_article_number = breaker->get_piecen(1);
     }else{
         group_for_name(line);
     }
