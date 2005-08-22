@@ -22,5 +22,5 @@ AC_PROG_INSTALL
 AC_PROG_RANLIB
 
 # Finally create all the generated files
-AC_OUTPUT(Makefile src/base/Makefile src/decoders/Makefile src/jobs/Makefile src/screens/Makefile src/Makefile)
+AC_OUTPUT(Makefile src/base/Makefile src/jobs/Makefile src/screens/Makefile src/Makefile)
 

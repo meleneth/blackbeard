@@ -5,8 +5,7 @@
 
 NetJob::NetJob()
 {
-    net_cmd = "";
-    sent_command = 0;
+    is_finished = 0;
 }
 
 NetJob::~NetJob()
@@ -18,11 +17,14 @@ void NetJob::process(void)
     NNTPServer *server = (NNTPServer *) srv;
     Uint32 max_lines = MAX_NETJOB_LINES_PER_SLICE;
 
-    if(!sent_command){
+    if(net_cmds.begin() != net_cmds.end()){
         if(server->_status == NS_CONNECTED){
-            sent_command = 1;
+            list<string>::iterator i = net_cmds.begin();
+            string net_cmd = *i;
+            net_cmds.erase(i);
             server->send_command(net_cmd);
-            server->is_multiline_reading = 1;
+            if(net_cmds.begin() == net_cmds.end())
+                server->is_multiline_reading = 1;
         }
         return;
     }
@@ -31,6 +33,8 @@ void NetJob::process(void)
         string line = server->get_next_multi_line();
         if(server->is_multiline_reading) {
             process_line(line);
+        }else{
+            finish();
         }
     }
     return;
@@ -39,4 +43,10 @@ void NetJob::process(void)
 void NetJob::process_line(string line)
 {
     console->log("Probably want to override NetJob::process_line");
+}
+
+void NetJob::finish(void)
+{
+    is_finished = 1;
+    console->log("Job finished");
 }

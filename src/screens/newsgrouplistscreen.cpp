@@ -50,7 +50,7 @@ int NewsGroupListScreen::handle_input(int key)
                 case 'p':
                     g = (NewsGroup *) scroll_list->get_selected_item();
                     netcentral->add_job(new HeadersForGroupJob(g));    
-                    console->log("Getting headers gor group " + g->name);
+                    console->log("Getting headers for group " + g->name);
                     return 0;
                 case 'g':
                     netcentral->add_job(new NewsGroupListRetrieverJob());    

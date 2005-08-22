@@ -4,28 +4,12 @@
 HeadersForGroupJob::HeadersForGroupJob(NewsGroup *group)
 {
     this->group = group;
-    finished = 0;
+    net_cmds.push_back("group " + group->name);
+    net_cmds.push_back("xover 1-");
 }
 
 HeadersForGroupJob::~HeadersForGroupJob()
 {
-}
-
-XoverJob *HeadersForGroupJob::get_next_job(void)
-{
-    if(finished)
-        return NULL;
-
-    Uint32 upid;
-    if ((lower_id + HEADERS_PER_CHUNK) > upper_id ){
-        upid = upper_id;
-        finished = 1;
-    }else{
-        upid = lower_id + HEADERS_PER_CHUNK;
-        lower_id += HEADERS_PER_CHUNK;
-    }
-
-    return new XoverJob(group, lower_id, upid);
 }
 
 string HeadersForGroupJob::status_line(void)
@@ -33,7 +17,7 @@ string HeadersForGroupJob::status_line(void)
     return "default status for HeadersForGroupJob";
 }
 
-void HeadersForGroupJob::process(void *connection)
+void HeadersForGroupJob::process_line(string line)
 {
-    NNTPServer *srv = (NNTPServer *) connection;
+    group->header_scoop(line);
 }

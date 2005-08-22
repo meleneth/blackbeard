@@ -3,11 +3,13 @@
 
 #include"SDL_types.h"
 #include<string>
+#include<list>
 #include"job.hpp"
 
 #define MAX_NETJOB_LINES_PER_SLICE 5000
 
 using std::string;
+using std::list;
 
 // This handles a multi-line response generic network job
 
@@ -17,9 +19,9 @@ class NetJob : public Job {
         ~NetJob();
         virtual void process(void);
         virtual void process_line(string line);
+        virtual void finish(void);
 
-        string net_cmd;
-        Uint32 sent_command;
+        list<string> net_cmds;
     private:
     protected:
 };
