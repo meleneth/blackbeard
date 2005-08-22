@@ -184,7 +184,7 @@ void NNTPServer::xover_format()
 
 NewsGroupPost *NNTPServer::read_body_response()
 {
-    NewsGroupPost *newsgrouppost = new NewsGroupPost;
+    NewsGroupPost *newsgrouppost = new NewsGroupPost();
     string line = get_next_multi_line();
     while(is_multiline_reading) {
         newsgrouppost->lines.push_back(line);

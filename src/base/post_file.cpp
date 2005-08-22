@@ -63,17 +63,6 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
 
 Decoder *PostFile::get_decoder(NewsGroupPost *newsgrouppost, string dest_dir, Uint32 message_id)
 {
-    /*
-    switch(decoder_type){
-        case DT_YENC:
-            return new yEncDecoder(newsgrouppost, this);
-        case DT_UUDECODE:
-            return new UUDecoder(newsgrouppost, this, message_id);
-        case DT_MIME:
-        case DT_UNKNOWN:
-            return NULL;
-    }
-    */
     return NULL;
 }
 
