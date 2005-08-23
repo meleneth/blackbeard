@@ -61,11 +61,6 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
     }
 }
 
-Decoder *PostFile::get_decoder(NewsGroupPost *newsgrouppost, string dest_dir, Uint32 message_id)
-{
-    return NULL;
-}
-
 string PostFile::status_string(void)
 {
     stringstream mystatus;

@@ -8,6 +8,7 @@ using std::stringstream;
 PostsetJob::PostsetJob(PostSet* post_set)
 {
     postset = post_set;
+    j = NULL;
 }
 
 PostsetJob::~PostsetJob()
@@ -28,9 +29,17 @@ Uint32 PostsetJob::pieces_left_to_download()
     return (postset->num_finished_pieces < postset->num_pieces);
 }
 
-void PostsetJob::process(void *connection)
+void PostsetJob::process()
 {
-    NNTPServer *srv = (NNTPServer *)connection;
+    if(j){
+        j->process();
+        if(j->is_finished){
+            delete j;
+            j = NULL;
+        }
+    }
+    if(!j){
+    }
 }
 
 string PostsetJob::status_line(void)

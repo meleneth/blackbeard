@@ -22,7 +22,6 @@ class PostFile {
         void part(Uint32 part, Uint32 total_parts, Uint32 message_id);
         string status_string(void);
         string get_bar(void);
-        Decoder *get_decoder(NewsGroupPost *newsgrouppost, string dest_dir, Uint32 message_id);
         Uint32 piece_no(Uint32 message_id);
         Uint32 max_msg_id(void);
         Uint32 min_msg_id(void);

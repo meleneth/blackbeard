@@ -76,8 +76,9 @@ int PostSetListScreen::handle_input(int key)
 {
     if(scroll_list->handle_input(key)){
         if(key == 'd'){
-            console->log("Caught keyboard input 'd'");
-            netcentral->add_job(new PostsetJob((PostSet *) scroll_list->get_selected_item()));
+            PostSet *s = (PostSet *) scroll_list->get_selected_item();
+            netcentral->add_job(new PostsetJob(s));
+            console->log("Queued download job for " + s->subject);
             return 0;
         }
     }
