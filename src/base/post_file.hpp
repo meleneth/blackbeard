@@ -12,6 +12,8 @@
 using std::string;
 using std::vector;
 
+typedef enum { MISSING, SEEN, DOWNLOADING, DECODING, FINISHED } PIECE_STATUS;
+
 class PostSet;
 class Decoder;
 class PostFile {
@@ -38,6 +40,7 @@ class PostFile {
         DecoderType decoder_type;
 
         vector<Uint32> pieces;
+        vector<PIECE_STATUS> piece_status;
     private:
     protected:
 };

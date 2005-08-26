@@ -31,11 +31,13 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
     if(num_pieces == 0){
         num_pieces = max_part_no;
         pieces.resize(num_pieces + 1);
+        piece_status.resize(num_pieces + 1);
 
         pieces[max_part_no] = 0;
         while(max_part_no){
             max_part_no--;
             pieces[max_part_no] = 0;
+            piece_status[max_part_no] = MISSING;
         }
         max_part_no = num_pieces;
     }
@@ -57,6 +59,7 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
 
     }else{
         pieces[part_no] = message_id;
+        piece_status[part_no] = SEEN;
         seen_pieces++;
     }
 }
