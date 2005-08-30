@@ -70,7 +70,7 @@ void NNTPServer::tick(void)
 
 void NNTPServer::login(string username, string password)
 {
-    send_command("authinfo user " + username);
+    TCPConnection::send_command("authinfo user " + username);
     _status = NS_LOGIN;
     _password = password;
 }
