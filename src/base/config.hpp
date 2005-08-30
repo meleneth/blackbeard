@@ -18,7 +18,6 @@ class Config {
         void setup_test_config();
 
         string news_server;
-        string news_group;
         string home_dir;
         string blackbeard_dir;
         string config_filename;

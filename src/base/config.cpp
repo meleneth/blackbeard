@@ -20,7 +20,6 @@ using std::string;
 Config::Config(int argc, char *argv[]) // Constructor
 {
     news_server = "localhost";
-    news_group  = "alt.text";
     username="anonymous";
     password="guest";
     home_dir = getenv("HOME");
@@ -114,8 +113,6 @@ void Config::read_config_file(void)
 
             if(0 == cmd.compare("news_server")){
                 news_server = value;
-            } else if(0 == cmd.compare("news_group")){
-                news_group = value;
             } else if(0 == cmd.compare("news_port")){
                 news_port = atoi(value.c_str());
             } else if(0 == cmd.compare("username")){
@@ -139,7 +136,6 @@ void Config::setup_files(void)
     ofstream out;
     out.open(config_filename.c_str(), ios::out);
     out << "#news_server=localhost" << endl;
-    out << "#news_group=alt.text" << endl;
     out << "#news_port=119" << endl;
     out << "#username=anonymous" << endl;
     out << "#password=guest" << endl;

@@ -14,7 +14,6 @@
 
 Console *console;
 Config *config;
-NewsGroup *newsgroup;
 vector< NewsGroup * >newsgroups;
 JobQueue *jobqueue;
 Session *session;
@@ -86,7 +85,6 @@ void do_init(void)
     
     // global objects
     jobqueue = new JobQueue();
-    newsgroup = group_for_name(config->news_group);
     session = new Session();
     netcentral = new NetCentral();
     config->load_persistant_data();
