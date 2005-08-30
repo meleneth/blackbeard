@@ -1,24 +1,8 @@
-Current priority: 
-flesh out net jobs so we can remove threading files
-
-
-
 Decoders:
     Implement UUDecoder
 *   Implement yEnc Decoder
     Implement MIME Decoder
     Optimize Decoders
-
-
-XXXXXXXXXXXThreads:  <--- REMOVED DUE TO INSANITY
-XXXXXXXXXXX    multiple net threads
-XXXXXXXXXXX*   console render thread
-XXXXXXXXXXX*   input thread
-XXXXXXXXXXX*   main() waiting for thread_join
-XXXXXXXXXXX*   file decoder thread 
-XXXXXXXXXXX*   locking <- only needed in job control for the job list and 
-XXXXXXXXXXX               file decode to only mmap the file once (I think)
-XXXXXXXXXXX
 
 Pattern matching:
     --
@@ -34,7 +18,7 @@ Pattern matching:
 
 Interface:
 *   need to be able to use arrow keys to flip between PostSets
-    need to be able to mark PostSet for retrieval
+*   need to be able to mark PostSet for retrieval
 *   show pieces of the file queue instead of the big log
     have small log window, with scrollback
 *   only allow typing when you're on the log window
@@ -53,7 +37,7 @@ Interface:
 General:
     Add ability to check cross-posted groups for missing pieces
 *   Add resize support (ncurses)
-    Add net jobs
+*   Add net jobs
 *   Add decoder jobs
     Save memory by stripping information for postsets we're not particularly interested into postset name, and min/max message_id for easy recreation with a targetted xover
     Persistence:
