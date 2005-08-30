@@ -159,5 +159,9 @@ void Config::load_persistant_data(void)
     console->log("finshed restoring persistent data");
 }
 
+void Config::setup_test_config(void)
+{
+}
+
 // Private members go here.
 // Protected members go here.

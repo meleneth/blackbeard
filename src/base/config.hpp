@@ -15,6 +15,7 @@ class Config {
         void read_config_file(void);
         void setup_files(void);
         void load_persistant_data(void);
+        void setup_test_config();
 
         string news_server;
         string news_group;

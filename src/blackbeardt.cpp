@@ -53,6 +53,8 @@ int main(int argc, char *argv[])
     console = new Console();
     console->print_logs = 1;
     newsgroup = new NewsGroup("misc.test");
+    config = new Config(0, NULL);
+    config->setup_test_config();
     
 
     test_generated_subject_line_tests();
