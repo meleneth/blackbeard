@@ -41,8 +41,6 @@ Console::~Console() // Destructor
 
 void Console::open_log_file(void)
 {
-    ofstream out;
-
     out.open("console.log", ios::out);
     save_to_file = 1;
 }
