@@ -1,6 +1,6 @@
 noinst_PROGRAMS = blb bt
 
-AM_CXXFLAGS = -Wall -D_REENTRANT -Ibase -Iscreens -Ijobs
+AM_CXXFLAGS = -Wall -D_REENTRANT -Ibase -Iscreens -Ijobs -g
 
 bt_SOURCES = blackbeardt.cpp
 blb_SOURCES = blackbeard.cpp

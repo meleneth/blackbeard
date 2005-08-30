@@ -1,5 +1,6 @@
 #include "postsetjob.hpp"
 #include"nntpserver.hpp"
+#include"bodyretrieverjob.hpp"
 
 using std::string;
 using std::stringstream;
@@ -9,6 +10,8 @@ PostsetJob::PostsetJob(PostSet* post_set)
 {
     postset = post_set;
     job = NULL;
+    file_no = 0;
+    piece_no = 0;
 }
 
 PostsetJob::~PostsetJob()
@@ -21,11 +24,25 @@ Job* PostsetJob::get_next_job()
         return NULL;
     }
 
-
-	if (pieces_left_to_download() > 0) {
-		Job* job = new Job();
-		return job; 
-	}
+    PostFile *file = postset->files[file_no];
+    PIECE_STATUS s = file->piece_status[piece_no];
+    switch(s){
+        case MISSING:
+        case DOWNLOADING:
+        case DECODING:
+        case FINISHED:
+            if(++piece_no > file->num_pieces){
+                piece_no = 0;
+                if(++file_no > postset->num_files){
+                    is_finished = 1;
+                    return NULL;
+                }
+            }
+            break;
+        case SEEN:
+            file->piece_status[piece_no] = DOWNLOADING;
+            return new BodyRetrieverJob(file, file->pieces[piece_no]);
+    }
     return NULL;
 }
 

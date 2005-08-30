@@ -16,6 +16,7 @@ PostSet::PostSet(string subject)
     pattern_name="";
     max_num_files = 0;
     has_msg_ids = 0;
+    group = NULL;
 }
     
 PostSet::~PostSet() 

@@ -5,10 +5,10 @@
 #include"uu_decoder.hpp"
 #include"jobqueue.hpp"
 
-BodyRetrieverJob::BodyRetrieverJob(NewsGroup *group, PostFile *file, Uint32 msg_id)
+BodyRetrieverJob::BodyRetrieverJob(PostFile *file, Uint32 msg_id)
 {
-    net_cmds.push_back("group " + group->name);
     net_cmds.push_back("body " + msg_id);
+    console->log("body retriever job");
 
     post = new NewsGroupPost();
     this->file = file;

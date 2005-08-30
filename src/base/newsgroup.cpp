@@ -321,6 +321,7 @@ PostSet *NewsGroup::postset_for_subject(string subject)
     }
     PostSet *new_post = new PostSet(subject);
     postsets.push_back(new_post);
+    new_post->group = this;
     return new_post;
 }
 
@@ -408,6 +409,7 @@ void NewsGroup::load_postsets(void)
                     set->_min_msg_id = pattern->get_piecen(0);
                     set->_max_msg_id = pattern->get_piecen(1);
                     set->has_msg_ids = 0;
+                    set->group = this;
                 }
             }
             in.getline(linebuffer, 1024);

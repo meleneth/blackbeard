@@ -3,6 +3,7 @@
 
 #include"post_file.hpp"
 #include"job.hpp"
+#include"newsgroup.hpp"
 
 #include"SDL_types.h"
 #include<string>
@@ -12,6 +13,7 @@ using std::string;
 using std::vector;
 
 class PostFile;
+class NewsGroup;
 class PostSet {
     public:
         PostSet(string subject);
@@ -27,6 +29,8 @@ class PostSet {
         string subject;
         vector<PostFile *> files;
         string pattern_name;
+
+        NewsGroup *group;
 
         Uint32 num_files;
         Uint32 max_num_files;

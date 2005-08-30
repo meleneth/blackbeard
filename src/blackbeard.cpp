@@ -22,7 +22,6 @@ NetCentral *netcentral;
 
 void do_init(void);
 static void finish(int sig);
-void create_nntp_thread(void);
 void shut_down(void);
 string last_msg;
 
