@@ -34,6 +34,7 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
         piece_status.resize(num_pieces + 1);
 
         pieces[max_part_no] = 0;
+        piece_status[max_part_no] = MISSING;
         while(max_part_no){
             max_part_no--;
             pieces[max_part_no] = 0;
@@ -72,7 +73,7 @@ string PostFile::status_string(void)
              << downloaded_pieces << "/"  << num_pieces << " pieces downloaded  ";
     if(num_pieces == downloaded_pieces){
         mystatus << "100%";
-    }else{
+   }else{
         if(num_pieces > 0)
            mystatus << setprecision(3) 
                   << ((double)downloaded_pieces / (double)num_pieces) * (double) 100
