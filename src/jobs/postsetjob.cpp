@@ -8,7 +8,7 @@ using std::stringstream;
 PostsetJob::PostsetJob(PostSet* post_set)
 {
     postset = post_set;
-    j = NULL;
+    job = NULL;
 }
 
 PostsetJob::~PostsetJob()
@@ -17,6 +17,11 @@ PostsetJob::~PostsetJob()
 
 Job* PostsetJob::get_next_job()
 {
+    if(is_finished){
+        return NULL;
+    }
+
+
 	if (pieces_left_to_download() > 0) {
 		Job* job = new Job();
 		return job; 
@@ -31,14 +36,16 @@ Uint32 PostsetJob::pieces_left_to_download()
 
 void PostsetJob::process()
 {
-    if(j){
-        j->process();
-        if(j->is_finished){
-            delete j;
-            j = NULL;
+    if(job){
+        job->process();
+        if(job->is_finished){
+            delete job;
+            job = NULL;
         }
     }
-    if(!j){
+
+    if(!job){
+        job = get_next_job();
     }
 }
 

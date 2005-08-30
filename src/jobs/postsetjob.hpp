@@ -18,8 +18,12 @@ class PostsetJob : public Job {
         virtual void process();
         virtual string status_line();
 
-        Job *j;
+        Job *job;
         PostSet *postset;
+        Uint32 file_no;
+        Uint32 piece_no;
+        Uint32 max_file_no;
+        Uint32 max_piece_no;
     private:
     protected:
 };
