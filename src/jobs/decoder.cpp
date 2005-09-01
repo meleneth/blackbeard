@@ -34,12 +34,18 @@ void Decoder::process()
 {
     list<string>::iterator s;
     Uint32 ctr = DECODER_LINES_PER_SLICE;
-    
-    for (s=post->lines.begin(); s!=post->lines.end(); ++s){
+    Uint32 line_count = post->lines.size();
+
+    if(!line_count){
+        is_finished = 1;
+    }
+
+    while(line_count && ctr) {
+        s = post->lines.begin();
         decode_line(*s);
-        if(!ctr--){
-            return;
-        }
+        post->lines.erase(s);
+        ctr--;
+        line_count--;
     }
 }
 
@@ -51,7 +57,8 @@ void Decoder::open_file(void)
         mkdir(dest_dir.c_str(), 01777);
     }
     string real_filename = dest_dir + "/" + filename;
-    console->log("Opening [" + real_filename + "] for writing");
+    console->log("Opening [] for writing");
+            //real_filename + 
     if(stat(real_filename.c_str(), &my_stats) == -1){
         fileptr = fopen(real_filename.c_str(), "w");
     } else {
