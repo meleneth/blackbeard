@@ -12,6 +12,7 @@
 //
 Decoder::Decoder()
 {
+    console->log("My love for you a ticking clock DECODER");
 }
 
 Decoder::Decoder(NewsGroupPost *newsgrouppost, PostFile *file) // Constructor

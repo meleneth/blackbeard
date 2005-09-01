@@ -6,7 +6,7 @@
 #include<list>
 #include"job.hpp"
 
-#define MAX_NETJOB_LINES_PER_SLICE 500
+#define MAX_NETJOB_LINES_PER_SLICE 5000
 
 using std::string;
 using std::list;

@@ -5,9 +5,16 @@
 #include"uu_decoder.hpp"
 #include"jobqueue.hpp"
 
+#include<sstream>
+
+using std::stringstream;
+
 BodyRetrieverJob::BodyRetrieverJob(PostFile *file, Uint32 msg_id)
 {
-    net_cmds.push_back("body " + msg_id);
+    stringstream cmd;
+    cmd << "body " << msg_id;
+
+    net_cmds.push_back(cmd.str());
     console->log("body retriever job");
 
     post = new NewsGroupPost();
@@ -26,7 +33,7 @@ void BodyRetrieverJob::process_line(string line)
 
 string BodyRetrieverJob::status_line(void)
 {
-    return "Default status for BodyRetrieverJob";
+    return "Default status for BodyRetrieverJob: " + file->get_bar();
 }
 
 void BodyRetrieverJob::finish()

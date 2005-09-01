@@ -497,8 +497,8 @@ void test_download_netjob(void)
     NewsGroup *group = new NewsGroup("fusion.downloads");
     PostSet *post = new PostSet("brick brothers presents");
     post->group = group;
-    post->file(1, 2, "info.txt");
-    post->file(2, 2, "checksum.SFV");
+    post->file(1, 2, "info.txt")    ->part(1, 32, 31337);
+    post->file(2, 2, "checksum.SFV")->part(1, 32, 31338);
 
     PostsetJob *psj = new PostsetJob(post);
     psj->srv = (void *)4096;

@@ -59,6 +59,7 @@ void NNTPServer::tick(void)
                 string server_response = line.substr(0, 3);
                 _status = NS_CONNECTED;
                 if(0 == server_response.compare(AUTH_REQUIRED)){
+                    console->log("Server is requesting authentication.  Logging in.");
                     login(config->username, config->password);
                     break;
                 }

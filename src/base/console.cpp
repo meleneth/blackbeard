@@ -81,7 +81,6 @@ void Console::log(string line)
     if(print_logs)
         printf("%s\n", line.c_str());
     if(save_to_file){
-        loglines.push_front("And saved!");
         out << line << endl;
     }
 }

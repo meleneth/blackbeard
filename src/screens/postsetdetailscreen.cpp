@@ -71,10 +71,12 @@ void PostSetDetailScreen::render(void)
 
 void PostSetDetailScreen::render_scrollable_line(Uint32 y, Uint32 x, Uint32 width, void *ptr)
 {
-    string completed_bar;
-    completed_bar = ((PostFile *) ptr)->get_bar();
-    mvaddnstr(y, 1, ((PostFile *) ptr)->status_string().c_str(), -1);
-    mvaddnstr(y, COLS - completed_bar.length() -3, completed_bar.c_str(), -1);
+    if(ptr){
+        string completed_bar;
+        completed_bar = ((PostFile *) ptr)->get_bar();
+        mvaddnstr(y, 1, ((PostFile *) ptr)->status_string().c_str(), -1);
+        mvaddnstr(y, COLS - completed_bar.length() -3, completed_bar.c_str(), -1);
+    }
 }
 
 void PostSetDetailScreen::render_current_postset(PostSet *set, Uint32 postset_no, Uint32 num_postsets, Uint32 lowest_line)

@@ -25,24 +25,33 @@ Job* PostsetJob::get_next_job()
     }
 
     PostFile *file = postset->files[file_no];
-    PIECE_STATUS s = file->piece_status[piece_no];
-    switch(s){
-        case MISSING:
-        case DOWNLOADING:
-        case DECODING:
-        case FINISHED:
-            if(++piece_no > file->num_pieces){
-                piece_no = 0;
-                if(++file_no > postset->num_files){
-                    is_finished = 1;
-                    return NULL;
-                }
-            }
-            break;
-        case SEEN:
-            file->piece_status[piece_no] = DOWNLOADING;
-            return new BodyRetrieverJob(file, file->pieces[piece_no]);
+    if(file){
+        PIECE_STATUS s = file->piece_status[piece_no];
+        switch(s){
+            case MISSING:
+            case DOWNLOADING:
+            case DECODING:
+            case FINISHED:
+                break;
+            case SEEN:
+                file->piece_status[piece_no] = DOWNLOADING;
+                BodyRetrieverJob *new_job = new BodyRetrieverJob(file, file->pieces[piece_no]);
+                new_job->srv = srv;
+                return new_job;
+        }
+        if(++piece_no > file->num_pieces){
+            piece_no = 0;
+            ++file_no;
+        }
+    } else {
+        piece_no = 0;
+        ++file_no;
     }
+
+    if(file_no > postset->num_files){
+        is_finished = 1;
+    }
+
     return NULL;
 }
 

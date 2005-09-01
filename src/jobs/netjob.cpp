@@ -18,13 +18,17 @@ void NetJob::process(void)
     Uint32 max_lines = MAX_NETJOB_LINES_PER_SLICE;
 
     if(net_cmds.begin() != net_cmds.end()){
-        if(server->_status == NS_CONNECTED){
-            list<string>::iterator i = net_cmds.begin();
-            string net_cmd = *i;
-            net_cmds.erase(i);
-            server->send_command(net_cmd);
-            if(net_cmds.begin() == net_cmds.end())
-                server->is_multiline_reading = 1;
+        if(server){
+            if(server->_status == NS_CONNECTED){
+                list<string>::iterator i = net_cmds.begin();
+                string net_cmd = *i;
+                net_cmds.erase(i);
+                server->send_command(net_cmd);
+                if(!net_cmds.size())
+                    server->is_multiline_reading = 1;
+            }
+        }else{
+            console->log("No server for net job??");
         }
         return;
     }
