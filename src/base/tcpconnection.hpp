@@ -17,7 +17,7 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 
-#define MAXDATASIZE 9000
+#define MAXDATASIZE 960000
 
 using std::list;
 using std::string;

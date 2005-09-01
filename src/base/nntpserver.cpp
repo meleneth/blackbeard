@@ -56,6 +56,7 @@ void NNTPServer::tick(void)
         case NS_COMMAND_RESPONSE:
             if(has_data_waiting()){
                 string line = get_line();
+                console->log("Cmd Rspnse: " + line);
                 string server_response = line.substr(0, 3);
                 _status = NS_CONNECTED;
                 if(0 == server_response.compare(AUTH_REQUIRED)){
