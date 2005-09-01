@@ -11,6 +11,7 @@
 #include"config.hpp"
 #include"session.hpp"
 #include"headersforgroupjob.hpp"
+#include"postsetjob.hpp"
 
 #include<string>
 #include<sstream>
@@ -39,6 +40,7 @@ void test_uudecode(void);
 void test_more_string_pattern(void);
 void test_generated_subject_line_tests(void);
 void test_header_retrieve_job(void);
+void test_download_netjob(void);
 
 void generate_subject_line_test(NewsGroup *group, string message_id, string subject);
 
@@ -56,7 +58,7 @@ int main(int argc, char *argv[])
     config = new Config(0, NULL);
     config->setup_test_config();
     
-
+    test_download_netjob();
     test_generated_subject_line_tests();
     test_uudecode();
     test_strings();
@@ -489,3 +491,22 @@ void test_header_retrieve_job(void)
 */
 }
 
+void test_download_netjob(void)
+{
+    console->log("Testing postset download jobs..");
+    NewsGroup *group = new NewsGroup("fusion.downloads");
+    PostSet *post = new PostSet("brick brothers presents");
+    post->group = group;
+    post->file(1, 2, "info.txt");
+    post->file(2, 2, "checksum.SFV");
+
+    PostsetJob *psj = new PostsetJob(post);
+    psj->srv = (void *)4096;
+    psj->process();
+
+}
+
+void shut_down(void)
+{
+    printf("Mooooooo!\n");
+}
