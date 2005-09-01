@@ -32,6 +32,7 @@ class Decoder : public Job {
         NewsGroupPost *post;
         Uint32 piece_no;
         Uint32 num_bytes_written;
+        Uint32 file_is_open;
 
         enum DECODER_STATUS status;
 

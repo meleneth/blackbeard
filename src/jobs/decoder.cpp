@@ -13,6 +13,7 @@
 Decoder::Decoder()
 {
     console->log("My love for you a ticking clock DECODER");
+    file_is_open = 0;
 }
 
 Decoder::Decoder(NewsGroupPost *newsgrouppost, PostFile *file) // Constructor
@@ -23,11 +24,13 @@ Decoder::Decoder(NewsGroupPost *newsgrouppost, PostFile *file) // Constructor
     filename = post_file->filename;
     status = S_MESSAGE;
     num_bytes_written = 0;
+    file_is_open = 0;
 }
     
 Decoder::~Decoder() // Destructor
 {
-    close_file();
+    if(file_is_open)
+        close_file();
 }
 
 void Decoder::process()
@@ -51,6 +54,9 @@ void Decoder::process()
 
 void Decoder::open_file(void)
 {
+    if(file_is_open)
+        return;
+    
     struct stat my_stats;
     string dest_dir = config->blackbeard_dir + "/" + post_file->post_set->subject;
     if(stat(dest_dir.c_str(), &my_stats) == -1){
@@ -64,11 +70,16 @@ void Decoder::open_file(void)
     } else {
         fileptr = fopen(real_filename.c_str(), "r+");
     }
+
+    file_is_open = 1;
 }
 
 void Decoder::close_file(void)
 {
+    if(!file_is_open)
+        return;
     fclose(fileptr);
+    file_is_open = 0;
 }
 
 void Decoder::decode_line(string line)
