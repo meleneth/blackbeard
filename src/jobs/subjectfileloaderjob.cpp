@@ -25,7 +25,7 @@ SubjectFileLoaderJob::SubjectFileLoaderJob(string filename)
     this->filename = filename;
 
     total_bytes = 0;
-    console->log("Loading subjects from " + filename);
+    console->log("Loading full headers from " + filename);
     struct stat my_stats;
     if(stat(filename.c_str(), &my_stats) == -1){
         return;
@@ -59,7 +59,7 @@ void SubjectFileLoaderJob::process(void)
     Uint32 ctr = MAX_SUBJECTS_PER_TICK;
     while(!in.eof()){
         bytes_read += strlen(linebuffer);
-        newsgroup->digest_subject_line("stored", linebuffer);
+        newsgroup->header_scoop(linebuffer);
         in.getline(linebuffer, 1024);
         if(!ctr--)
             return;

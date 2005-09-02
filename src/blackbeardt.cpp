@@ -68,6 +68,7 @@ int main(int argc, char *argv[])
     test_bit_manipulations();
     test_more_string_pattern();
     test_header_retrieve_job();
+    test_generated_subject_line_tests();
 	return 0;
 }
 
@@ -185,6 +186,7 @@ void test_header_scoop(void)
     generate_subject_line_test(group, "4002", "(OMNI) Gundam Seed Movie [093/105] - \"jspec-gundam.seed.movie.1.vol000+01.PAR2\" yEnc (1/2)");
 
     generate_subject_line_test(group, "31337", "NVIDIA linux drivers - File 1 of 1: \"NVIDIA-Linux-x86-1.0-4496-pkg2.run\" yEnc (16/25)");
+    generate_subject_line_test(group, "31337", "[503]-[#altbin@EFNet]-[FULL/PART]-[Immortel (ad vitam) (2004)]-[01/91] - \"BTV_Immortel.part016.rar\" yEnc (01/65)");
 
 }
 

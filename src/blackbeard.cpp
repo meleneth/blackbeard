@@ -57,9 +57,11 @@ int main(int argc, char *argv[])
             session->handle_input(key);
         }
 
-        erase();
-        session->render();
-        refresh();
+        if(!config->debug_mode){
+            erase();
+            session->render();
+            refresh();
+        }
 
     }
     finish(0);

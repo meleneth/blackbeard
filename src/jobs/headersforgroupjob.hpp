@@ -4,8 +4,10 @@
 #include"SDL_types.h"
 #include"netjob.hpp"
 #include"newsgroup.hpp"
-
-#define HEADERS_PER_CHUNK 5000
+#include"config.hpp"
+#include <iostream>  // I/O 
+#include<fstream>
+using std::ofstream;
 
 class HeadersForGroupJob : public NetJob {
     public:
@@ -16,6 +18,7 @@ class HeadersForGroupJob : public NetJob {
         virtual string status_line();
 
         NewsGroup *group;
+        ofstream out;
     private:
     protected:
 };

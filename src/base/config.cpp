@@ -33,6 +33,7 @@ Config::Config(int argc, char *argv[]) // Constructor
     console->print_on_delete = 0;
     max_net_connections = 4;
     debug_logging = 0;
+    dump_subject_file = 0;
 
     int ac=1;
     string debug = "-d";
@@ -41,6 +42,7 @@ Config::Config(int argc, char *argv[]) // Constructor
     string load_groups = "-g";
     string show_groups_flag = "-G";
     string need_help_flag = "-h";
+    string dump_subjects_flag = "-s";
 
     while(ac < argc){
         if(0 == debug.compare(argv[ac])){
@@ -59,6 +61,8 @@ Config::Config(int argc, char *argv[]) // Constructor
       //      console->keep_logs = 0;
         }else if(0 == show_groups_flag.compare(argv[ac])){
             show_groups_screen = 1;
+        }else if(0 == dump_subjects_flag.compare(argv[ac])){
+            dump_subject_file = 1;
         }else if(0 == save_console_to_file_flag.compare(argv[ac])){
             console->open_log_file();
         }else if(0 == need_help_flag.compare(argv[ac])){
@@ -66,10 +70,11 @@ Config::Config(int argc, char *argv[]) // Constructor
             console->keep_logs = 0;
             console->log("blb [-d] [-l filename] [-g filename] [-G] [-f] [-h]");
             console->log(" -d debug mode.  No ncurses, dumps log to STDOUT");
-            console->log(" -l load subjects from filename, one per line");
+            console->log(" -l load full headers from filename, one per line");
             console->log(" -g load newsgroups from filename, one per line");
             console->log(" -G activate newsgroup browser mode");
             console->log(" -f save console logs to console.log");
+            console->log(" -s save full headers to headers.log instead of processing");
             console->log(" -h This help");
             console->log("");
             exit(0);
