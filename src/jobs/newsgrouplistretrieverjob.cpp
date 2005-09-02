@@ -33,7 +33,8 @@ void NewsGroupListRetrieverJob::process_line(string line)
 {
     _status = "Retrieving group list";
     if(breaker->match(line)){
-        NewsGroup *group = group_for_name(breaker->results[0]);
+        NewsGroup *group = new NewsGroup(breaker->results[0]);
+        newsgroups.push_back(group);
         group->last_article_number = breaker->get_piecen(1);
         group->first_article_number = breaker->get_piecen(2);
     }else{
