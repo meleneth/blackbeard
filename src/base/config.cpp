@@ -49,6 +49,7 @@ Config::Config(int argc, char *argv[]) // Constructor
             console->print_logs = 1;
             console->keep_logs = 0;
             debug_mode = 1;
+            debug_logging =1;
         }else if(0 == load_headers.compare(argv[ac])){
             ac++;
             load_file = argv[ac];

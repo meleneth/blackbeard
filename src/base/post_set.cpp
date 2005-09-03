@@ -49,6 +49,10 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
 {
     stringstream buf;
 
+    //if(!file_name.compare("")){
+    //   return NULL;
+    //}
+
     if(max_file_num != 0) {
         if(!this->max_num_files){
             this->max_num_files = max_file_num;
@@ -77,8 +81,10 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
 
     vector<PostFile *>::iterator f;
     for(f = files.begin(); f!= files.end() ; ++f){
-        if((*f)->filename.compare(file_name) == 0){
-            return *f;
+        if(*f){
+            if((*f)->filename.compare(file_name) == 0){
+                return *f;
+            }
         }
     }
 

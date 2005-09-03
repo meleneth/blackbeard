@@ -174,6 +174,24 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     yenc_subject_patterns.push_front(pattern);
     pattern->name = "switch";
 
+//Noir vol 2 as reguested [003of102] - "VIDEO_TS.part01.rar" yEnc (001/118)
+    pattern = new StringPattern(SP_LASTPART +1);
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker(" [");
+    pattern->add_breaker(SP_FILENO);
+    pattern->add_breaker("of");
+    pattern->add_breaker(SP_MAXFILENO);
+    pattern->add_breaker("] - \"");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker("\" yEnc (");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker(")");
+    yenc_subject_patterns.push_front(pattern);
+    pattern->name = "damacy";
+
+
 //UUDecode patterns
 
 //SDL for those in need - SDL-1.2.7.tar.gz (1/8)
@@ -242,6 +260,25 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     pattern->add_breaker(")");
     uu_subject_patterns.push_front(pattern);
     pattern->name = "vonDerscmidt";
+
+//(REQ: R.O.D. TV VOLS1,2,4,5,6 HERE IS VOL 3)[001/228] - ROD_TV_VOL3.par2 (1/1)
+//
+    pattern = new StringPattern(SP_LASTPART +2);
+    pattern->add_breaker("(");
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker(")[");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker("] - ");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker("(");
+    pattern->add_breaker(SP_FILENO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXFILENO);
+    pattern->add_breaker(")");
+    uu_subject_patterns.push_front(pattern);
+    pattern->name = "lu-wow";
 }
 
     

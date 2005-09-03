@@ -31,7 +31,7 @@ SubjectFileLoaderJob::SubjectFileLoaderJob(string filename)
         return;
     }
     total_bytes = my_stats.st_size;
-    newsgroup = group_for_name("alt.mama");
+    newsgroup = group_for_name("alt.binaries.dvd.anime");
     newsgroups.push_back(newsgroup);
 
     in.open(filename.c_str(), ios::in);
