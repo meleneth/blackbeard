@@ -118,12 +118,6 @@ int ScrollableList<T>::handle_input(int key)
     Uint32 max_size = all_items.size() -1;
 
     switch(key){
-        case IKEY_RIGHTARROW:
-            if (my_items.size()){
-                screen->handle_selection(search_map[pos_index]);
-            }
-            return 0; break;
-            
         case IKEY_UPARROW:
             if (pos_index){
                 --pos_index;

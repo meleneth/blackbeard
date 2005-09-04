@@ -23,7 +23,7 @@ void PostSetDetailScreen::render_help(void)
 {
     Uint32 yindex = ypos +1;
     
-    mvaddnstr(yindex++, xpos + 2, "This screen shows you a list of post files for the current post set. hit enter to see magic happen.", -1);
+    mvaddnstr(yindex++, xpos + 2, "This screen shows you a list of post files for the current post set.", -1);
 }
 
 void PostSetDetailScreen::render(void)
@@ -34,7 +34,6 @@ void PostSetDetailScreen::render(void)
     
     Uint32 num_postsets = 0;
     Uint32 three_quarters = (height * 3) / 4;
-    Uint32 current_postset_no = 0;
 
     scroll_list->width = width -1;
     scroll_list->ypos = ypos + 4;
@@ -48,10 +47,10 @@ void PostSetDetailScreen::render(void)
         mvaddnstr(1, 1, groupline.c_str(), -1);
         
         attron(A_BOLD);
-        int max_p = newsgroup->postsets.size();
+        num_postsets = newsgroup->postsets.size();
         PostSet *set = NULL;
-        if(max_p){
-            set = newsgroup->postsets[current_postset_no];
+        if(num_postsets){
+            set = newsgroup->postsets[postset_index];
         }
 
         if(set){
@@ -59,7 +58,7 @@ void PostSetDetailScreen::render(void)
             mvaddnstr(2, 1, set->status().c_str(), -1);
 
             stringstream buf;
-            buf << "(" << current_postset_no << "/" << num_postsets << ") postsets";
+            buf << "(" << postset_index << "/" << num_postsets << ") postsets";
             string str = buf.str();
             mvaddnstr(3, COLS - (str.length() + 3), str.c_str(), -1);
         }
