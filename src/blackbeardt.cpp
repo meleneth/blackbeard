@@ -7,7 +7,6 @@
 #include"strutil.hpp"
 #include"uu_decoder.hpp"
 #include"newsgroup.hpp"
-#include"xoverjob.hpp"
 #include"config.hpp"
 #include"session.hpp"
 #include"headersforgroupjob.hpp"

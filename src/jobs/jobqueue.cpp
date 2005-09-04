@@ -1,7 +1,6 @@
 #include "jobqueue.hpp"
 #include "postsetjob.hpp"
 #include "headersforgroupjob.hpp"
-#include "xoverjob.hpp"
 #include "console.hpp"
 
 JobQueue::JobQueue() 

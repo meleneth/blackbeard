@@ -27,6 +27,7 @@ NNTPServer::~NNTPServer() // Destructor
 
 int NNTPServer::status()
 {
+    return 0;
 }
 
 void NNTPServer::tick(void)
@@ -88,7 +89,7 @@ void NNTPServer::group(string groupname)
     newsgroup = group_for_name(groupname);
 }
 
-vector<NewsGroup *> NNTPServer::list()
+void NNTPServer::list()
 {
     send_command(LIST);
     is_multiline_reading = 1;

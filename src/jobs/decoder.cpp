@@ -12,7 +12,6 @@
 //
 Decoder::Decoder()
 {
-    console->log("My love for you a ticking clock DECODER");
     file_is_open = 0;
 }
 
@@ -63,8 +62,6 @@ void Decoder::open_file(void)
         mkdir(dest_dir.c_str(), 01777);
     }
     string real_filename = dest_dir + "/" + filename;
-    console->log("Opening [] for writing");
-            //real_filename + 
     if(stat(real_filename.c_str(), &my_stats) == -1){
         fileptr = fopen(real_filename.c_str(), "w");
     } else {
