@@ -191,6 +191,25 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     yenc_subject_patterns.push_front(pattern);
     pattern->name = "damacy";
 
+//Ghost in the Shell 2: Innocence DVD5 [Day 1 of 4] [02/26] - yEnc "gits2-dpimp.part002.rar" (62/79)
+//
+    pattern = new StringPattern(SP_LASTPART +3);
+    pattern->add_breaker(SP_SUBJECT);
+    pattern->add_breaker(" [Day ");
+    pattern->add_breaker(" of ");
+    pattern->add_breaker("] [");
+    pattern->add_breaker(SP_FILENO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXFILENO);
+    pattern->add_breaker("] - yEnc \"");
+    pattern->add_breaker(SP_FILENAME);
+    pattern->add_breaker("\" (");
+    pattern->add_breaker(SP_PARTNO);
+    pattern->add_breaker("/");
+    pattern->add_breaker(SP_MAXPARTNO);
+    pattern->add_breaker(")");
+    yenc_subject_patterns.push_front(pattern);
+    pattern->name = "gitsy";
 
 //UUDecode patterns
 
