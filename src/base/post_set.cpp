@@ -127,7 +127,6 @@ string PostSet::status(void)
 Uint32 PostSet::max_msg_id(void)
 {
     Uint32 msg_id = 0;
-    msg_id--;
 
     Uint32 max = files.size();
     for(Uint32 i=0; i<max; ++i) {
@@ -150,8 +149,10 @@ Uint32 PostSet::min_msg_id(void)
     for(Uint32 i=0; i<max; ++i) {
         if(files[i]){
             Uint32 x = files[i]->min_msg_id();
-            if(msg_id > x)
-                msg_id = x;
+            if(x){
+                if(msg_id > x)
+                    msg_id = x;
+            }
         }
     }
     return msg_id;
