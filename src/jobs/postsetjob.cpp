@@ -1,10 +1,18 @@
-#include "postsetjob.hpp"
-#include"nntpserver.hpp"
-#include"bodyretrieverjob.hpp"
+#include<sstream>
+#include<iostream>  // I/O 
+#include<fstream>   // file I/O
+#include<sstream>
 
 using std::string;
 using std::stringstream;
-#include<sstream>
+using std::ofstream;
+using std::ifstream;
+using std::ios;
+using std::endl;
+
+#include"postsetjob.hpp"
+#include"nntpserver.hpp"
+#include"bodyretrieverjob.hpp"
 
 PostsetJob::PostsetJob(PostSet* post_set)
 {
@@ -81,3 +89,30 @@ string PostsetJob::status_line(void)
     buf << "Download job for " << postset->subject;
     return buf.str();
 }
+
+void PostsetJob::save_job_status(void)
+{
+    ofstream out;
+
+    out.open(job_status_filename.c_str(), ios::out);
+
+    if(out.is_open()){
+        Uint32 max_no = postset->files.size();
+        for(Uint32 i=0; i<max_no; i++)
+        {
+            PostFile *file = postset->files[i]; 
+            if(file){
+                out << file->num_pieces << " " << file->filename << endl;
+                Uint32 max_piece_no = file->pieces.size();
+                for(Uint32 j=0 ; j<max_piece_no ; j++){
+                    out << file->piece_status[j] << " " << file->pieces[j] << endl;
+                }
+            }
+        }
+    }
+}
+
+void PostsetJob::load_job_status(void)
+{
+}
+

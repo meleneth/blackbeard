@@ -4,5 +4,5 @@ libbase_a_SOURCES = config.cpp console.hpp news_constants.hpp newsgrouppost.cpp 
 					post_file.cpp post_set.hpp stringpattern.hpp tcpconnection.cpp console.cpp keydefs.hpp \
 					newsgroup.hpp nntpserver.cpp post_file.hpp SDL_types.h strutil.cpp tcpconnection.hpp \
 					netcentral.hpp netcentral.cpp
-AM_CXXFLAGS = -Wall -D_REENTRANT -I../decoders -I../jobs -I../screens
+AM_CXXFLAGS = -Wall -D_REENTRANT -I../jobs -I../screens
 

@@ -4,5 +4,5 @@ libscreens_a_SOURCES = newsgrouplistscreen.cpp postsetdetailscreen.cpp postsetli
 					   postsetlistscreen.hpp screen.hpp session.hpp widget.hpp scrollablelist.hpp \
                        shutdownscreen.cpp shutdownscreen.hpp activejobsscreen.cpp activejobsscreen.hpp \
 					   activenetjobsscreen.cpp activenetjobsscreen.hpp
-AM_CXXFLAGS = -Wall -D_REENTRANT -I../base -I../decoders -I../jobs
+AM_CXXFLAGS = -Wall -D_REENTRANT -I../base -I../jobs
 

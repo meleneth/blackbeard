@@ -17,6 +17,8 @@ class PostsetJob : public Job {
         Uint32 pieces_left_to_download();
         virtual void process();
         virtual string status_line();
+        void save_job_status();
+        void load_job_status();
 
         Job *job;
         PostSet *postset;
@@ -24,6 +26,7 @@ class PostsetJob : public Job {
         Uint32 piece_no;
         Uint32 max_file_no;
         Uint32 max_piece_no;
+        string job_status_filename;
     private:
     protected:
 };

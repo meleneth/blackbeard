@@ -4,5 +4,5 @@ libjobs_a_SOURCES = headersforgroupjob.cpp headersforgroupjob.hpp job.cpp job.hp
 				subjectfileloaderjob.cpp  subjectfileloaderjob.hpp newsgrouplistretrieverjob.cpp newsgrouplistretrieverjob.hpp \
                 netjob.hpp netjob.cpp decoder.cpp decoder.hpp uu_decoder.cpp uu_decoder.hpp yenc_decoder.cpp yenc_decoder.hpp
 
-AM_CXXFLAGS = -Wall -D_REENTRANT -I../base -I../screens -I../decoders
+AM_CXXFLAGS = -Wall -D_REENTRANT -I../base -I../screens 
 
