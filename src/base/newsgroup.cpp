@@ -20,6 +20,9 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     name = group_name;
     is_subscribed = 0;
     console->log("Creation of object for " + group_name);
+    first_article_number = 0;
+    first_article_number--;
+    last_article_number = 0;
   
     StringPattern *pattern;
 //1997-11-19 Atripolis_2097-MIRAGE "ATRIPOLI.R10" (4/4) yEnc
@@ -322,6 +325,13 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
     if(config->debug_logging)
         console->log("Subject: " + subject);
 
+    Uint32 msg_id = atoi(message_id.c_str());
+
+    if(msg_id < first_article_number)
+        first_article_number = msg_id;
+    if(msg_id > last_article_number)
+        last_article_number = msg_id;
+
     //"[DVD9]" evil delete it >.<
     size_t s = subject.find("[DVD9]");
     while(s < string::npos){
@@ -342,7 +352,7 @@ PostFile *NewsGroup::digest_subject_line(string message_id, string subject)
             }
             postfile->decoder_type = DT_YENC;
             postfile->part((*sp)->get_piecen(SP_PARTNO), 
-                                   (*sp)->get_piecen(SP_MAXPARTNO), atoi(message_id.c_str()));
+                                   (*sp)->get_piecen(SP_MAXPARTNO), msg_id);
             return postfile;
         }
     }
@@ -486,7 +496,7 @@ void save_subscribed_groups_to(string filename)
         {
             NewsGroup *group = newsgroups[i];
             if(newsgroups[i]->is_subscribed){
-                out << group->name << endl;
+                out << group->first_article_number << " " << group->last_article_number << " " << group->name << endl;
                 newsgroups[i]->save_postsets();
             }
         }

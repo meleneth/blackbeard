@@ -14,5 +14,7 @@ void Tokenize(const string& str, vector<string>& tokens, const string& delimiter
 string bitviz(Uint32 showme);
 string trimmed(string shaggy);
 Uint32 is_whitespace(char c);
+string get_crc_32(string process_me);
+void generate_crc_table(Uint32 *table);
 
 #endif

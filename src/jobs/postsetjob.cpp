@@ -13,6 +13,7 @@ using std::endl;
 #include"postsetjob.hpp"
 #include"nntpserver.hpp"
 #include"bodyretrieverjob.hpp"
+#include"strutil.hpp"
 
 PostsetJob::PostsetJob(PostSet* post_set)
 {
@@ -20,6 +21,7 @@ PostsetJob::PostsetJob(PostSet* post_set)
     job = NULL;
     file_no = 0;
     piece_no = 0;
+    job_status_filename = get_crc_32(post_set->subject);
 }
 
 PostsetJob::~PostsetJob()

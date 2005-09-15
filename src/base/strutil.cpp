@@ -1,5 +1,14 @@
 #include "strutil.hpp"
 
+#include <iostream>  // I/O 
+#include <fstream>   // file I/O
+#include<sstream>
+
+using std::string;
+using std::stringstream;
+using std::ofstream;
+using std::hex;
+
 void Tokenize(const string& str, vector<string>& tokens, const string& delimiters = " ")
 {
     // Skip delimiters at beginning.
@@ -51,6 +60,46 @@ Uint32 is_whitespace(char c)
             return 1;
         default:
         return 0;
+    }
+}
+
+string get_crc_32(string process_me)
+{
+    static int generated_table = 0;
+    static Uint32 CRC32Table[256];
+
+    if(!generated_table){
+        generate_crc_table(CRC32Table);
+        generated_table = 1;
+    }
+
+    Uint32 max_no = process_me.length();
+    Uint32 CRC = 0;
+
+    for(Uint32 i=0; i<max_no; i++){
+        CRC = (CRC >> 8 )^ CRC32Table[ process_me[i] ^ (( CRC ) & 0x000000FF )];
+    }
+
+    stringstream result;
+    result << hex << CRC;
+    return result.str();
+}
+
+void generate_crc_table(Uint32 *table)
+{
+    Uint32 Polynomial = 0xEDB88320;
+    Uint32 CRC;
+
+    for(int i = 0; i < 256; i++){
+        CRC = i;
+        for(int j = 8; j > 0; j--) {
+            if(CRC & 1){
+                CRC = (CRC >> 1) ^ Polynomial;
+            } else {
+                CRC >>= 1;
+            }
+        }
+        *(table + i)= CRC;
     }
 }
 
