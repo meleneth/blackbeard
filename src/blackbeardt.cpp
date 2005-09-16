@@ -40,6 +40,7 @@ void test_more_string_pattern(void);
 void test_generated_subject_line_tests(void);
 void test_header_retrieve_job(void);
 void test_download_netjob(void);
+void test_crc32(void);
 
 void generate_subject_line_test(NewsGroup *group, string message_id, string subject);
 
@@ -56,7 +57,7 @@ int main(int argc, char *argv[])
     newsgroup = new NewsGroup("misc.test");
     config = new Config(0, NULL);
     config->setup_test_config();
-    
+    test_crc32(); 
     test_download_netjob();
     test_generated_subject_line_tests();
     test_uudecode();
@@ -69,6 +70,14 @@ int main(int argc, char *argv[])
     test_header_retrieve_job();
     test_generated_subject_line_tests();
 	return 0;
+}
+
+void test_crc32(void)
+{
+    string source = "may the source be with you";
+    string dest = get_crc_32(source);
+    console->log(dest);
+    assert(dest.compare("3b354087") == 0);
 }
 
 void test_bit_manipulations(void)
