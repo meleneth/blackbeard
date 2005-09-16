@@ -13,6 +13,7 @@ using std::endl;
 #include"postsetjob.hpp"
 #include"nntpserver.hpp"
 #include"bodyretrieverjob.hpp"
+#include"headersforgroupjob.hpp"
 #include"strutil.hpp"
 
 PostsetJob::PostsetJob(PostSet* post_set)
@@ -32,6 +33,10 @@ Job* PostsetJob::get_next_job()
 {
     if(is_finished){
         return NULL;
+    }
+
+    if(!postset->has_msg_ids){
+        return new HeadersForGroupJob(postset->group, postset->_min_msg_id, postset->_max_msg_id);
     }
 
     PostFile *file = postset->files[file_no];
