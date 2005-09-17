@@ -18,6 +18,8 @@ class Job {
     void *srv;
     string _status;
 
+    string job_status_filename;
+
     private:
     protected:
 };

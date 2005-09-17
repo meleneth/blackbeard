@@ -7,6 +7,7 @@ Job::Job()
     srv = NULL;
 
     _status = "Default status for Job";
+    job_status_filename = "";
 }
 
 Job::~Job()

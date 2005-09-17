@@ -26,7 +26,6 @@ class PostsetJob : public Job {
         Uint32 piece_no;
         Uint32 max_file_no;
         Uint32 max_piece_no;
-        string job_status_filename;
     private:
     protected:
 };
