@@ -17,6 +17,10 @@ class Config {
         void load_persistant_data(void);
         void setup_test_config();
 
+        string subscribed_groups_filename();
+        string net_jobs_filename();
+        string full_job_filename(string job_filename);
+
         string news_server;
         string home_dir;
         string blackbeard_dir;

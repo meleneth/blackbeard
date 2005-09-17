@@ -151,7 +151,7 @@ void Config::setup_files(void)
 void Config::load_persistant_data(void)
 {
     console->log("restoring persistent data..");
-    load_groups_from(blackbeard_data_dir + "/subscribed_newsgroups");
+    load_groups_from(subscribed_groups_filename());
     Uint32 max_int = newsgroups.size();
     for(Uint32 i = 0 ; i < max_int ; i++)
     {
@@ -163,6 +163,21 @@ void Config::load_persistant_data(void)
 
 void Config::setup_test_config(void)
 {
+}
+
+string Config::subscribed_groups_filename()
+{
+    return blackbeard_data_dir + "/subscribed_newsgroups";
+}
+
+string Config::net_jobs_filename()
+{
+    return blackbeard_data_dir + "/net_jobs";
+}
+
+string Config::full_job_filename(string job_filename)
+{
+    return blackbeard_data_dir + "/" + job_filename;
 }
 
 // Private members go here.
