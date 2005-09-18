@@ -408,8 +408,6 @@ void load_groups_from(string filename)
     pattern->add_breaker(1);
     pattern->add_breaker(" ");
     pattern->add_breaker(2);
-    pattern->add_breaker(" ");
-    pattern->add_breaker(3);
     
     char linebuffer[1024];
     ifstream in;
@@ -421,9 +419,9 @@ void load_groups_from(string filename)
         while(!in.eof()){
             if(strlen(linebuffer)){
                 if(pattern->match(linebuffer)){
-                    NewsGroup *group = group_for_name(pattern->results[0]);
-                    group->last_article_number = pattern->get_piecen(1);
-                    group->first_article_number = pattern->get_piecen(2);
+                    NewsGroup *group = group_for_name(pattern->results[2]);
+                    group->last_article_number = pattern->get_piecen(0);
+                    group->first_article_number = pattern->get_piecen(1);
                 }else{
                     group_for_name(linebuffer);
                 }
