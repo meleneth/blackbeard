@@ -28,6 +28,7 @@ void JobQueue::process_jobs(void)
         job = active_jobs[j];
         job->process();
         if (job->is_finished){
+            finish_job(job);
             Job *new_job = get_next_job();
             if(new_job){
                 active_jobs[j] = new_job;
@@ -55,6 +56,10 @@ Job *JobQueue::get_next_job(void)
 void JobQueue::add_job(Job *job)
 {
     jobs.push_back(job);
+}
+
+void JobQueue::finish_job(Job *job)
+{
 }
 
 

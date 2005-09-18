@@ -16,11 +16,16 @@ class NetCentral : public JobQueue {
         virtual ~NetCentral(); // Destructor
 
         virtual void process_jobs(void);
+        void save_active_list_file();
+        virtual void add_job(Job *job);
+        virtual void finish_job(Job *job);
 
         int fdmax;
 
         fd_set master;   // master file descriptor list
         fd_set read_fds; // temp file descriptor list for select()
+  
+        vector<string> job_filenames; 
     private:
         // Private members go here.
     protected:

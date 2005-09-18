@@ -14,9 +14,10 @@ class JobQueue {
 
         virtual Job *get_next_job(void);
 
-        void add_job(Job *job);
+        virtual void add_job(Job *job);
 
         virtual void process_jobs(void);
+        virtual void finish_job(Job *job);
 
         vector<Job *> jobs;
         vector<Job *> active_jobs;

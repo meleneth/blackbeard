@@ -1,6 +1,16 @@
-#include "netcentral.hpp"
+#include"netcentral.hpp"
 #include"console.hpp"
 #include"config.hpp"
+#include<iostream>  // I/O 
+#include<fstream>   // file I/O
+#include<sstream>
+
+using std::string;
+using std::stringstream;
+using std::ofstream;
+using std::ifstream;
+using std::ios;
+using std::endl;
 
 // Public data members go here.
 NetCentral::NetCentral(void) // Constructor
@@ -67,11 +77,13 @@ void NetCentral::process_jobs(void)
         job->process();
 
         if(job->is_finished){
+            finish_job(job);
             Job *new_job = get_next_job();
             if(new_job){
                 new_job->srv = job->srv;
                 active_jobs[i] = new_job;
             }else{
+                //FIXME what happens to srv connection here?
                 active_jobs.erase(active_jobs.begin() + i);
                 max_jobid = active_jobs.size();
                 i--;
@@ -81,6 +93,47 @@ void NetCentral::process_jobs(void)
     }
 }
 
+void NetCentral::save_active_list_file(void)
+{
+    string filename = config->net_jobs_filename();
+    ofstream out;
+
+    out.open(filename.c_str(), ios::out);
+
+    if(out.is_open()){
+        Uint32 max_no = job_filenames.size();
+        for(Uint32 i=0; i<max_no; i++)
+        {
+            out << job_filenames[i] << endl;
+        }
+        out.close();
+    }
+}
+
+void NetCentral::add_job(Job *job)
+{
+    if(job->job_status_filename.compare("")){
+        job_filenames.push_back(job->job_status_filename);
+    }
+    JobQueue::add_job(job);
+}
+
+void NetCentral::finish_job(Job *job)
+{
+    string filename = job->job_status_filename;
+    if(filename.compare("")){
+        vector<string> new_filename_list;
+        Uint32 max_no = job_filenames.size();
+        for(Uint32 i = 0; i<max_no ; ++i)
+        {
+            if(0 != job_filenames[i].compare(filename)){
+                new_filename_list.push_back(filename);
+            }
+        }
+        job_filenames = new_filename_list;
+    }
+    JobQueue::finish_job(job);
+}
 
 // Private members go here.
 // Protected members go here.
