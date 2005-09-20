@@ -30,6 +30,7 @@ TCPConnection::TCPConnection(string hostname, int port) // Constructor
         exit(1);
     }
     connected = 1;
+    last_second = time(NULL);
 }
     
 TCPConnection::~TCPConnection() // Destructor
@@ -69,7 +70,7 @@ void TCPConnection::slice_buffer_strings(void)
     memmove(buf, buf + buf_start_pos, num_bytes);
     buf_end_pos = num_bytes;
     buf_start_pos = 0;
-
+    krate = 0;
 }
 
 void TCPConnection::send_command(string command)
@@ -105,6 +106,19 @@ void TCPConnection::read_packets(void)
     if ((numbytes=recv(sockfd, buf + buf_end_pos, MAXDATASIZE - buf_end_pos, 0)) == -1) {
         console->log("Error from recv - disconnecting");
         connected = 0;
+    }
+
+    bytes_since_last_second +=  numbytes;
+    time_t now = time(NULL);
+    if(now != last_second){
+        if(bytes_since_last_second){
+            krate += (now - last_second) / bytes_since_last_second;
+            krate /= 2;
+            bytes_since_last_second = 0;
+        }else{
+            krate = 0;
+        }
+        last_second = now;
     }
     buf_end_pos += numbytes;
     slice_buffer_strings();

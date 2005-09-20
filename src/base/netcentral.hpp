@@ -16,6 +16,7 @@ class NetCentral : public JobQueue {
         virtual ~NetCentral(); // Destructor
 
         virtual void process_jobs(void);
+        Uint32 krate(void);
         void save_active_list_file();
         virtual void add_job(Job *job);
         virtual void finish_job(Job *job);

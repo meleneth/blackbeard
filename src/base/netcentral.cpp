@@ -24,6 +24,19 @@ NetCentral::~NetCentral() // Destructor
 {
 }
 
+Uint32 NetCentral::krate(void)
+{
+    Uint32 max_no = active_jobs.size();
+    Uint32 krate = 0;
+    Uint32 i;
+
+    for(i = 0; i<max_no; ++i){
+        Job *job = active_jobs[i];
+        krate += job->krate;
+    }
+    return krate;
+}
+
 void NetCentral::process_jobs(void)
 {
     if((0 == jobs.size()) && (0 == active_jobs.size())){

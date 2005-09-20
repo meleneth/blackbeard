@@ -16,6 +16,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
+#include<time.h>
 
 #define MAXDATASIZE 960000
 
@@ -43,6 +44,9 @@ class TCPConnection {
         struct sockaddr_in their_addr; // connector's address information 
         list<string> lines;
         int connected;
+        time_t last_second;
+        Uint32 bytes_since_last_second;
+        Uint32 krate;
     private:
         // Private members go here.
     protected:

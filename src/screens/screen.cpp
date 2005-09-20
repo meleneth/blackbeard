@@ -40,7 +40,7 @@ void Screen::render(void)
     }
 
     stringstream buf;
-    buf << netcentral->jobs.size() << " jobs queued 0.0k/sec 0G downloaded";
+    buf << netcentral->jobs.size() << " jobs queued " << netcentral->krate() << "k/sec 0G downloaded";
     mvaddnstr(ypos + height, xpos + 2, buf.str().c_str(), -1);
 
 }
