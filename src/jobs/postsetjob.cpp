@@ -82,6 +82,7 @@ void PostsetJob::process()
         if(job->is_finished){
             delete job;
             job = NULL;
+            save_job_status();
         }
     }
 

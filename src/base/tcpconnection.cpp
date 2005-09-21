@@ -70,7 +70,6 @@ void TCPConnection::slice_buffer_strings(void)
     memmove(buf, buf + buf_start_pos, num_bytes);
     buf_end_pos = num_bytes;
     buf_start_pos = 0;
-    krate = 0;
 }
 
 void TCPConnection::send_command(string command)
@@ -112,8 +111,7 @@ void TCPConnection::read_packets(void)
     time_t now = time(NULL);
     if(now != last_second){
         if(bytes_since_last_second){
-            krate += (now - last_second) / bytes_since_last_second;
-            krate /= 2;
+            krate = (bytes_since_last_second / (now - last_second))/1024;
             bytes_since_last_second = 0;
         }else{
             krate = 0;
