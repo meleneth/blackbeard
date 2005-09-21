@@ -32,7 +32,8 @@ Uint32 NetCentral::krate(void)
 
     for(i = 0; i<max_no; ++i){
         Job *job = active_jobs[i];
-        krate += job->krate;
+        NNTPServer *srv = (NNTPServer *) job->srv;
+        krate += srv->krate;
     }
     return krate;
 }
