@@ -7,11 +7,13 @@ Needs to do:
     keep up to date with headers in newsgroups, expire old ones and the postsets that had them
     store list of active jobs in file
     be able to retrieve headers as first thing if postset job doesn't have all the message id's
-    make indicators work - k/sec meter etc
+    make indicators work
+    *   k/sec
+        gigs downloaded
     load previous jobs at startup
     fix yEnc decoder to be able to download further pieces if one piece missing - fseek problem not going past EOF
     silence logs, info should be user-useful.
-    handle more msg ids coming in for a postset we have marked for retrieval
+    handle more msg ids coming in for a postset we have marked for retrieval -- doesn't this work automagically?  I think it does
 
 Decoders:
     Implement UUDecoder

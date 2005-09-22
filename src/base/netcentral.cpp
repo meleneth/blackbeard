@@ -4,6 +4,7 @@
 #include<iostream>  // I/O 
 #include<fstream>   // file I/O
 #include<sstream>
+#include"nntpserver.hpp"
 
 using std::string;
 using std::stringstream;
@@ -124,10 +125,15 @@ void NetCentral::save_active_list_file(void)
     }
 }
 
+void NetCentral::restore_saved_jobs(void)
+{
+}
+
 void NetCentral::add_job(Job *job)
 {
     if(job->job_status_filename.compare("")){
         job_filenames.push_back(job->job_status_filename);
+        save_active_list_file();
     }
     JobQueue::add_job(job);
 }
@@ -146,6 +152,7 @@ void NetCentral::finish_job(Job *job)
         }
         job_filenames = new_filename_list;
     }
+    save_active_list_file();
     JobQueue::finish_job(job);
 }
 

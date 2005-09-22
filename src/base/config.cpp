@@ -7,6 +7,7 @@
 #include "config.hpp"
 #include "console.hpp"
 #include"newsgroup.hpp"
+#include"netcentral.hpp"
 
 #define CONFIGFILENAME "/.blackbeardrc"
 
@@ -158,6 +159,7 @@ void Config::load_persistant_data(void)
        newsgroups[i]->is_subscribed = 1;
        newsgroups[i]->load_postsets();
     }
+    netcentral->restore_saved_jobs();
     console->log("finshed restoring persistent data");
 }
 

@@ -18,6 +18,7 @@ class NetCentral : public JobQueue {
         virtual void process_jobs(void);
         Uint32 krate(void);
         void save_active_list_file();
+        void restore_saved_jobs();
         virtual void add_job(Job *job);
         virtual void finish_job(Job *job);
 
