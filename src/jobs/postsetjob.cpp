@@ -15,6 +15,7 @@ using std::endl;
 #include"bodyretrieverjob.hpp"
 #include"headersforgroupjob.hpp"
 #include"strutil.hpp"
+#include"config.hpp"
 
 PostsetJob::PostsetJob(PostSet* post_set)
 {
@@ -23,6 +24,15 @@ PostsetJob::PostsetJob(PostSet* post_set)
     file_no = 0;
     piece_no = 0;
     job_status_filename = get_crc_32(post_set->subject);
+}
+
+PostsetJob::PostsetJob(string filename)
+{
+    job = NULL;
+    file_no = 0;
+    piece_no = 0;
+    job_status_filename = filename;
+    load_job_status();
 }
 
 PostsetJob::~PostsetJob()
@@ -102,9 +112,10 @@ void PostsetJob::save_job_status(void)
 {
     ofstream out;
 
-    out.open(job_status_filename.c_str(), ios::out);
+    out.open(config->full_job_filename(job_status_filename).c_str(), ios::out);
 
     if(out.is_open()){
+        out << postset->subject << endl;
         Uint32 max_no = postset->files.size();
         for(Uint32 i=0; i<max_no; i++)
         {
@@ -122,5 +133,41 @@ void PostsetJob::save_job_status(void)
 
 void PostsetJob::load_job_status(void)
 {
+    StringPattern *filepattern = new StringPattern(4);
+    filepattern->add_breaker(0);
+    filepattern->add_breaker("FILE: ");
+    filepattern->add_breaker(1);
+    filepattern->add_breaker(" ");
+    filepattern->add_breaker(2);
+    
+    StringPattern *piecepattern = new StringPattern(2);
+    piecepattern->add_breaker(0);
+    piecepattern->add_breaker(" ");
+    piecepattern->add_breaker(1);
+    
+    ifstream in;
+    in.open(config->full_job_filename(job_status_filename).c_str(), ios::in);
+    
+    char linebuffer[1024];
+    PostFile * file = NULL;
+
+    if(in.is_open()){
+        in.getline(linebuffer, 1024);
+        postset = new PostSet(linebuffer);
+        
+        in.getline(linebuffer, 1024);
+        while(!in.eof()){
+            if(strlen(linebuffer)){
+                if(piecepattern->match(linebuffer)){
+                    file->pieces.push_back(piecepattern->get_piecen(1));
+                    file->piece_status.push_back((PIECE_STATUS) piecepattern->get_piecen(0));
+                } else if(filepattern->match(linebuffer)){
+                    file = new PostFile(postset);
+                    file->filename = filepattern->get_piece(2);
+                }
+            }
+            in.getline(linebuffer, 1024);
+        }
+    }    
 }
 

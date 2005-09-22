@@ -5,6 +5,7 @@
 #include<fstream>   // file I/O
 #include<sstream>
 #include"nntpserver.hpp"
+#include"postsetjob.hpp"
 
 using std::string;
 using std::stringstream;
@@ -128,6 +129,20 @@ void NetCentral::save_active_list_file(void)
 
 void NetCentral::restore_saved_jobs(void)
 {
+    ifstream in;
+    char linebuffer[1024];
+    
+    in.open(config->net_jobs_filename().c_str());
+    if(in.is_open()){
+        in.getline(linebuffer, 1024);
+
+        while(!in.eof()){
+            if(strlen(linebuffer)){
+               jobs.push_back(new PostsetJob(linebuffer));
+            }
+            in.getline(linebuffer, 1024);
+        }
+    }
 }
 
 void NetCentral::add_job(Job *job)

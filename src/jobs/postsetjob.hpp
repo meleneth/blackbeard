@@ -11,6 +11,7 @@ using std::string;
 class PostsetJob : public Job {
     public:
         PostsetJob(PostSet* post_set);
+        PostsetJob(string filename);
         virtual ~PostsetJob();
 
         Job *get_next_job();
