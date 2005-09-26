@@ -13,6 +13,8 @@ Needs to do:
     fix yEnc decoder to be able to download further pieces if one piece missing - fseek problem not going past EOF
     silence logs, info should be user-useful.
     handle more msg ids coming in for a postset we have marked for retrieval -- doesn't this work automagically?  I think it does
+    be able to mark individual files from a postset for retrieval
+    be able to retrieve multiple files from a postset simultainiously
 
 Decoders:
     Implement UUDecoder
