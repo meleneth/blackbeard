@@ -161,6 +161,7 @@ void PostsetJob::load_job_status(void)
                 if(filepattern->match(linebuffer)){
                     file = new PostFile(postset);
                     file->filename = filepattern->get_piece(2);
+                    postset->files.push_back(file);
                 } else {
                     if(piecepattern->match(linebuffer)){
                         file->pieces.push_back(piecepattern->get_piecen(1));
