@@ -138,7 +138,9 @@ void NetCentral::restore_saved_jobs(void)
 
         while(!in.eof()){
             if(strlen(linebuffer)){
-               jobs.push_back(new PostsetJob(linebuffer));
+                string msg = "Restoring ";
+                console->log(msg + linebuffer);
+                jobs.push_back(new PostsetJob(linebuffer));
             }
             in.getline(linebuffer, 1024);
         }

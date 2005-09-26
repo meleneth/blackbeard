@@ -16,6 +16,7 @@ using std::endl;
 #include"headersforgroupjob.hpp"
 #include"strutil.hpp"
 #include"config.hpp"
+#include"console.hpp"
 
 PostsetJob::PostsetJob(PostSet* post_set)
 {
@@ -154,21 +155,23 @@ void PostsetJob::load_job_status(void)
     if(in.is_open()){
         in.getline(linebuffer, 1024);
         postset = new PostSet(linebuffer);
-        postset->has_msg_ids = 1;
         
-        in.getline(linebuffer, 1024);
         while(!in.eof()){
             if(strlen(linebuffer)){
-                if(piecepattern->match(linebuffer)){
-                    file->pieces.push_back(piecepattern->get_piecen(1));
-                    file->piece_status.push_back((PIECE_STATUS) piecepattern->get_piecen(0));
-                } else if(filepattern->match(linebuffer)){
+                if(filepattern->match(linebuffer)){
                     file = new PostFile(postset);
                     file->filename = filepattern->get_piece(2);
-                }
+                } else {
+                    if(piecepattern->match(linebuffer)){
+                        file->pieces.push_back(piecepattern->get_piecen(1));
+                        file->piece_status.push_back((PIECE_STATUS) piecepattern->get_piecen(0));
+                    }
+                }  
             }
             in.getline(linebuffer, 1024);
         }
-    }    
+    } else {
+        console->log("File open failed!");
+    }
 }
 
