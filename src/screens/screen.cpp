@@ -101,11 +101,11 @@ int Screen::handle_input(int key)
             break;
 
         case IKEY_F8:
-            session->current_screen = session->activejobs;;
+            session->current_screen = session->activejobs;
             break;
 
         case IKEY_F9:
-            session->current_screen = session->activenetjobs;;
+            session->current_screen = session->activenetjobs;
             break;
 
         default:

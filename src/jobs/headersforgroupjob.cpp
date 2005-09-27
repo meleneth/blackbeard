@@ -37,7 +37,10 @@ HeadersForGroupJob::~HeadersForGroupJob()
 
 string HeadersForGroupJob::status_line(void)
 {
-    return "default status for HeadersForGroupJob";
+    stringstream c;
+    c << "Download header list for ";
+    c << this->group->name;
+    return c.str();
 }
 
 void HeadersForGroupJob::process_line(string line)
