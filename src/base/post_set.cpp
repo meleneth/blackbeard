@@ -126,6 +126,10 @@ string PostSet::status(void)
 
 Uint32 PostSet::max_msg_id(void)
 {
+    if(!has_msg_ids){
+        return _max_msg_id;
+    }
+
     Uint32 msg_id = 0;
 
     Uint32 max = files.size();
@@ -142,6 +146,10 @@ Uint32 PostSet::max_msg_id(void)
 
 Uint32 PostSet::min_msg_id(void)
 {
+    if(!has_msg_ids){
+        return _min_msg_id;
+    }
+
     Uint32 msg_id = 0;
     msg_id--;
 
