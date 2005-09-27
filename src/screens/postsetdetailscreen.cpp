@@ -86,6 +86,7 @@ void PostSetDetailScreen::render_current_postset(PostSet *set, Uint32 postset_no
 
 int PostSetDetailScreen::handle_input(int key)
 {
+    PostFile *f = NULL;
     if (scroll_list->handle_input(key)){
         if(Screen::handle_input(key)){
             if(!newsgroup)
@@ -104,7 +105,7 @@ int PostSetDetailScreen::handle_input(int key)
                     }
                     return 0; break;
                 case 'd':
-                    PostFile *f = (PostFile *) scroll_list->get_selected_item();
+                    f = (PostFile *) scroll_list->get_selected_item();
                     netcentral->add_job(new PostfileJob(f));
                     return 0; break;
                     
