@@ -47,7 +47,9 @@ Job* PostsetJob::get_next_job()
     }
 
     if(!postset->has_msg_ids){
-        return new HeadersForGroupJob(postset->group, postset->_min_msg_id, postset->_max_msg_id);
+        HeadersForGroupJob *new_job = new HeadersForGroupJob(postset->group, postset->_min_msg_id, postset->_max_msg_id);
+        new_job->srv = srv;
+        return new_job;
     }
 
     PostFile *file = postset->files[file_no];
