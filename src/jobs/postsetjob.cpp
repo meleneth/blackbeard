@@ -157,7 +157,8 @@ void PostsetJob::load_job_status(void)
     if(in.is_open()){
         in.getline(linebuffer, 1024);
         postset = new PostSet(linebuffer);
-        
+        postset->has_msg_ids = 1;
+
         while(!in.eof()){
             if(strlen(linebuffer)){
                 if(filepattern->match(linebuffer)){
