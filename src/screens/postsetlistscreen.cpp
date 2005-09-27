@@ -5,6 +5,7 @@
 #include"jobqueue.hpp"
 #include"netcentral.hpp"
 #include"postsetjob.hpp"
+#include"headersforgroupjob.hpp"
 #include<ncurses.h>
 #include<sstream>
 
@@ -65,6 +66,8 @@ void PostSetListScreen::render_help(void)
     Uint32 yindex = ypos +1;
     
     mvaddnstr(yindex++, xpos + 2, "This screen shows you a list of post sets. hit enter to see a list of files.", -1);
+    mvaddnstr(yindex++, xpos + 2, "d will download the selected postset", -1);
+    mvaddnstr(yindex++, xpos + 2, "p will grab headers for the selected postset (use if 0/0)", -1);
 }
 
 Uint32 PostSetListScreen::search_match(string search, void *ptr)
@@ -79,6 +82,12 @@ int PostSetListScreen::handle_input(int key)
             PostSet *s = (PostSet *) scroll_list->get_selected_item();
             netcentral->add_job(new PostsetJob(s));
             console->log("Queued download job for " + s->subject);
+            return 0;
+        }
+        if(key == 'p'){
+            PostSet *s = (PostSet *) scroll_list->get_selected_item();
+            netcentral->add_job(new HeadersForGroupJob(s->group, s->_min_msg_id, s->_max_msg_id));
+            console->log("Queued header retrieval for postset " + s->subject);
             return 0;
         }
     }

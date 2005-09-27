@@ -1,6 +1,8 @@
 #include"postsetdetailscreen.hpp"
 #include"keydefs.hpp"
 #include"console.hpp"
+#include"netcentral.hpp"
+#include"postfilejob.hpp"
 
 #include<sstream>
 #include<ncurses.h>
@@ -100,6 +102,10 @@ int PostSetDetailScreen::handle_input(int key)
                     if (postset_index < max_size){
                         ++postset_index;
                     }
+                    return 0; break;
+                case 'd':
+                    PostFile *f = (PostFile *) scroll_list->get_selected_item();
+                    netcentral->add_job(new PostfileJob(f));
                     return 0; break;
                     
                 default:
