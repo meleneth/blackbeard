@@ -63,7 +63,7 @@ void yEncDecoder::decode_line(string line)
             //console->log("Opening file for part_pattern match");
                 status = S_BODY;
                 open_file();
-                fseek(fileptr, atoi(part_pattern->results[1].c_str()) -1, SEEK_SET);
+                lseek(fileno(fileptr), atoi(part_pattern->results[1].c_str()) -1, SEEK_SET);
             }
         }
     }else{
