@@ -39,7 +39,7 @@ string HeadersForGroupJob::status_line(void)
 {
     stringstream c;
     c << "Download header list for ";
-    c << this->group->name;
+    c << group->name;
     return c.str();
 }
 
@@ -50,4 +50,9 @@ void HeadersForGroupJob::process_line(string line)
     }else{
         group->header_scoop(line);
     }
+}
+
+void HeadersForGroupJob::finish(void)
+{
+    group->save_postsets();
 }

@@ -17,6 +17,7 @@ class HeadersForGroupJob : public NetJob {
 
         virtual void process_line(string line);
         virtual string status_line();
+        virtual void finish(void);
 
         NewsGroup *group;
         ofstream out;
