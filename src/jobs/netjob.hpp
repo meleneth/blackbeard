@@ -5,6 +5,7 @@
 #include<string>
 #include<list>
 #include"job.hpp"
+#include"newsgroup.hpp"
 
 #define MAX_NETJOB_LINES_PER_SLICE 5000
 
@@ -22,6 +23,7 @@ class NetJob : public Job {
         virtual void finish(void);
 
         list<string> net_cmds;
+        NewsGroup *group;
     private:
     protected:
 };

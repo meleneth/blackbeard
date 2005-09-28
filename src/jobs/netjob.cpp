@@ -6,6 +6,7 @@
 NetJob::NetJob()
 {
     is_finished = 0;
+    group = NULL;
 }
 
 NetJob::~NetJob()
@@ -20,6 +21,16 @@ void NetJob::process(void)
     if(net_cmds.begin() != net_cmds.end()){
         if(server){
             if(server->_status == NS_CONNECTED){
+                if(group){
+                    if(group != server->newsgroup){
+                        string cmd = "group " + group->name;
+                        server->send_command(cmd);
+                        server->newsgroup = group;
+                        return;
+                    }
+                }else{
+                    server->newsgroup = NULL;
+                }
                 list<string>::iterator i = net_cmds.begin();
                 string net_cmd = *i;
                 net_cmds.erase(i);

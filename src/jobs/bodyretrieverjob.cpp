@@ -13,8 +13,7 @@ BodyRetrieverJob::BodyRetrieverJob(PostFile *file, Uint32 msg_id)
 {
     stringstream cmd;
     cmd << "body " << msg_id;
-
-    net_cmds.push_back("group " + file->post_set->group->name);
+    group = file->post_set->group;
     net_cmds.push_back(cmd.str());
     console->log("body retriever job");
 
