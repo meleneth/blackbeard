@@ -56,11 +56,11 @@ void yEncDecoder::decode_line(string line)
             status = S_BODY;
             this->post_file->filename = header_pattern->results[3];
             filename = this->post_file->filename;
-            console->log("Opening file for header_pattern match");
+            //console->log("Opening file for header_pattern match");
             open_file();
         } else {
             if(part_pattern->match(line)){
-            console->log("Opening file for part_pattern match");
+            //console->log("Opening file for part_pattern match");
                 status = S_BODY;
                 open_file();
                 fseek(fileptr, atoi(part_pattern->results[1].c_str()) -1, SEEK_SET);
@@ -70,7 +70,7 @@ void yEncDecoder::decode_line(string line)
         string footer="=yend";
         if(0 == footer.compare(line.substr(0, footer.length()))){
             status = S_MESSAGE;
-            console->log("Closing file due to yend");
+            //console->log("Closing file due to yend");
             close_file();
         } else {
             string decoded_line = do_the_math(line);

@@ -25,7 +25,18 @@ PostsetJob::PostsetJob(PostSet* post_set)
     file_no = 0;
     piece_no = 0;
     job_status_filename = get_crc_32(post_set->subject);
+
+    Uint32 max_file_no = postset->files.size();
+
+    for(Uint32 i=0; i < max_file_no ; i++)
+    {
+        PostFile *f = postset->files[i];
+        if(f){
+            f->status = "Queued";
+        }
+    }
 }
+
 
 PostsetJob::PostsetJob(string filename)
 {
@@ -62,12 +73,14 @@ Job* PostsetJob::get_next_job()
             case FINISHED:
                 break;
             case SEEN:
+                file->status = "Downloading";
                 file->piece_status[piece_no] = DOWNLOADING;
                 BodyRetrieverJob *new_job = new BodyRetrieverJob(file, file->pieces[piece_no]);
                 new_job->srv = srv;
                 return new_job;
         }
         if(++piece_no > file->num_pieces){
+            file->status = "Finished";
             piece_no = 0;
             ++file_no;
         }

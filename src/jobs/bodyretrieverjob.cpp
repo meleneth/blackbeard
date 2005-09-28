@@ -40,7 +40,7 @@ string BodyRetrieverJob::status_line(void)
 
 void BodyRetrieverJob::finish()
 {
-    console->log("Finished with body retrieval - should spawn decodder here");
+    file->downloaded_pieces++;
     switch(file->decoder_type){
         case DT_YENC:
             jobqueue->jobs.push_back(new yEncDecoder(post, file));
