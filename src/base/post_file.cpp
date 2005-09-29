@@ -1,4 +1,5 @@
 #include "post_file.hpp"
+#include "stringpattern.hpp"
 #include"yenc_decoder.hpp"
 #include"uu_decoder.hpp"
 #include"console.hpp"
@@ -24,6 +25,19 @@ PostFile::PostFile(PostSet *postset)
     
 PostFile::~PostFile() 
 {
+}
+
+Uint32 PostFile::is_par()
+{
+    StringPattern *pattern = new StringPattern(2);
+
+    pattern->add_breaker(".PAR2");
+    if(pattern->match(filename)){
+        delete pattern;
+        return 1;
+    }
+    delete pattern;
+    return 0;
 }
 
 void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)

@@ -24,6 +24,7 @@ class PostFile {
         void part(Uint32 part, Uint32 total_parts, Uint32 message_id);
         string status_string(void);
         string get_bar(void);
+        Uint32 is_par();
         Uint32 piece_no(Uint32 message_id);
         Uint32 max_msg_id(void);
         Uint32 min_msg_id(void);
@@ -32,11 +33,11 @@ class PostFile {
         Uint32 seen_pieces;
         Uint32 piece_size;
         Uint32 downloaded_pieces;
+        
         string filename;
         string status;
 
         PostSet *post_set;
-
         DecoderType decoder_type;
 
         vector<Uint32> pieces;

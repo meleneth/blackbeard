@@ -65,6 +65,11 @@ Job* PostsetJob::get_next_job()
 
     PostFile *file = postset->files[file_no];
     if(file){
+        if(file->is_par()){
+            file->status = "Skipped";
+            ++file_no;
+            return NULL;
+        }
         PIECE_STATUS s = file->piece_status[piece_no];
         switch(s){
             case MISSING:
