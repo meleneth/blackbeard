@@ -18,7 +18,7 @@ Needs to do:
     be able to retrieve multiple files from a postset simultainiously
     implement new template base class for jobs that have sub-jobs
     allow multi line status
-    skip PAR2's
+*   skip PAR2's
     <Cancelled> save file info for postsets, not just postset
     fix displays
         postset detail doesn't update display of files as they come in
