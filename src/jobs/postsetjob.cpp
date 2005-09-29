@@ -63,6 +63,11 @@ Job* PostsetJob::get_next_job()
         return new_job;
     }
 
+    if(file_no > postset->num_files){
+        is_finished = 1;
+        return NULL;
+    }
+
     PostFile *file = postset->files[file_no];
     if(file){
         if(file->is_par()){
@@ -94,9 +99,6 @@ Job* PostsetJob::get_next_job()
         ++file_no;
     }
 
-    if(file_no > postset->num_files){
-        is_finished = 1;
-    }
 
     return NULL;
 }
