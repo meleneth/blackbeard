@@ -11,7 +11,7 @@ Needs to do:
     *   k/sec
         gigs downloaded
     * load previous jobs at startup
-    fix yEnc decoder to be able to download further pieces if one piece missing - fseek problem not going past EOF
+    * fix yEnc decoder to be able to download further pieces if one piece missing - fseek problem not going past EOF
     silence logs, info should be user-useful.
     handle more msg ids coming in for a postset we have marked for retrieval -- doesn't this work automagically?  I think it does
     * be able to mark individual files from a postset for retrieval
@@ -19,10 +19,10 @@ Needs to do:
     implement new template base class for jobs that have sub-jobs
     allow multi line status
     skip PAR2's
-    save file info for postsets, not just postset
+    <Cancelled> save file info for postsets, not just postset
     fix displays
         postset detail doesn't update display of files as they come in
-        postset detail doesn't show actual status of downloading files
+        *postset detail doesn't show actual status of downloading files
 
 Decoders:
     Implement UUDecoder
