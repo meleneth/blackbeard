@@ -37,6 +37,14 @@ Uint32 PostFile::is_par()
         return 1;
     }
     delete pattern;
+    pattern = new StringPattern(2);
+
+    pattern->add_breaker(".par2");
+    if(pattern->match(filename)){
+        delete pattern;
+        return 1;
+    }
+    delete pattern;
     return 0;
 }
 

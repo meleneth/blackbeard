@@ -15,8 +15,6 @@ BodyRetrieverJob::BodyRetrieverJob(PostFile *file, Uint32 msg_id)
     cmd << "body " << msg_id;
     group = file->post_set->group;
     net_cmds.push_back(cmd.str());
-    console->log("body retriever job");
-
 
     post = new NewsGroupPost();
     this->file = file;
