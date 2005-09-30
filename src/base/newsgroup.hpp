@@ -3,6 +3,7 @@
 
 #include"newsgrouppost.hpp"
 #include"post_set.hpp"
+#include"post_set_splitter.hpp"
 #include"post_file.hpp"
 #include"stringpattern.hpp"
 
@@ -17,13 +18,13 @@ using std::string;
 
 class PostFile;
 class PostSet;
+class PostSetSplitter;
 class NewsGroup {
     public:
         // Public data members go here.
         NewsGroup(string group_name); // Constructor
         ~NewsGroup(); // Destructor
         void header_scoop(string xover_line);
-        PostFile *digest_subject_line(string message_id, string subject);
         void load_from_file(string filename);
         void save_postsets(void);
         void load_postsets(void);
@@ -33,8 +34,6 @@ class NewsGroup {
         
         int status_code();
 
-        list< StringPattern * > yenc_subject_patterns;
-        list< StringPattern * > uu_subject_patterns;
         list< NewsGroupPost * > messages;
         vector< PostSet * > postsets;
         string status;
@@ -42,6 +41,7 @@ class NewsGroup {
         Uint32 is_subscribed;
         Uint32 first_article_number;
         Uint32 last_article_number;
+        PostSetSplitter *splitter;
     private:
         int return_code;
 
