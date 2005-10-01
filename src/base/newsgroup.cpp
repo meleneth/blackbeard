@@ -4,6 +4,7 @@
 #include"config.hpp"
 #include "strutil.hpp"
 #include"post_set_splitter_staticmatch.hpp"
+#include"post_set_splitter_dynamicmatch.hpp"
 #include"messageheader.hpp"
 #include <iostream>  // I/O 
 #include <fstream>   // file I/O
@@ -27,8 +28,11 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     first_article_number--;
     last_article_number = 0;
 
-    splitter = new PostSetSplitterStaticMatch(this);
-  
+    if (config->use_newsplit){ 
+        splitter = new PostSetSplitterDynamicMatch(this);
+    } else {
+        splitter = new PostSetSplitterStaticMatch(this);
+    }    
 }
 
     
