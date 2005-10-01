@@ -1,16 +1,17 @@
-#include"console.hpp"
-#include"newsgroup.hpp"
-#include"stringpattern.hpp"
-#include"post_set.hpp"
-#include"assert.h"
-#include"jobqueue.hpp"
-#include"strutil.hpp"
-#include"uu_decoder.hpp"
-#include"newsgroup.hpp"
-#include"config.hpp"
-#include"session.hpp"
-#include"headersforgroupjob.hpp"
-#include"postsetjob.hpp"
+#include "console.hpp"
+#include "newsgroup.hpp"
+#include "stringpattern.hpp"
+#include "post_set.hpp"
+#include "assert.h"
+#include "jobqueue.hpp"
+#include "strutil.hpp"
+#include "uu_decoder.hpp"
+#include "newsgroup.hpp"
+#include "config.hpp"
+#include "session.hpp"
+#include "headersforgroupjob.hpp"
+#include "postsetjob.hpp"
+#include "post_set_splitter_dynamicmatch.hpp"
 
 #include<string>
 #include<sstream>
@@ -40,6 +41,7 @@ void test_more_string_pattern(void);
 void test_generated_subject_line_tests(void);
 void test_download_netjob(void);
 void test_crc32(void);
+void test_simple_x(void);
 
 void generate_subject_line_test(NewsGroup *group, string message_id, string subject);
 
@@ -53,8 +55,8 @@ int main(int argc, char *argv[])
 {
     console = new Console();
     console->print_logs = 1;
-    newsgroup = new NewsGroup("misc.test");
     config = new Config(0, NULL);
+    newsgroup = new NewsGroup("misc.test");
     config->setup_test_config();
     test_crc32(); 
     test_download_netjob();
@@ -66,6 +68,7 @@ int main(int argc, char *argv[])
     test_postset_objects();
     test_bit_manipulations();
     test_more_string_pattern();
+    test_simple_x();
 	return 0;
 }
 
@@ -156,6 +159,12 @@ void test_more_string_pattern()
                       "1997-02-23 The_Fourth_Generation_FULL_CD-FURY");
 
     assert(0 == pattern->get_piecen(SP_MAXFILENO));
+}
+
+void test_simple_x(void)
+{
+    string result = simple_x("abc123hehehe");
+    assert(0 == result.compare("abcXXXhehehe"));
 }
 
 void test_header_scoop(void)

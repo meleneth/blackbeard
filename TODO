@@ -7,6 +7,7 @@ Needs to do:
     * store list of active jobs in file
     * be able to retrieve headers as first thing if postset job doesn't have all the message id's
     keep up to date with headers in subscribed newsgroups, expire old ones and the postsets that had them
+        after a postsetjob is done, add a new newsgroupping job
     make indicators work
     *   k/sec
         gigs downloaded

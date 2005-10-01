@@ -118,6 +118,7 @@ void NewsGroup::save_postsets(void)
             PostSet *set = postsets[i];
             out << set->min_msg_id() << " " << set->max_msg_id() << " " << set->subject << endl;
         }
+        out.close();
     }
 }
 

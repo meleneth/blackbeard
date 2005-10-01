@@ -7,8 +7,10 @@
 #include "messageheader.hpp"
 #include "stringpattern.hpp"
 #include <vector>
+#include <string>
 
 using std::vector;
+using std::string;
 
 class PSDMSubMatch {
     public:
@@ -37,6 +39,8 @@ class PostSetSplitterDynamicMatch : public PostSetSplitter {
     private:
     protected:
 };
+
+string simple_x(string eatme);
 
 
 #endif
