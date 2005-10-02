@@ -166,3 +166,7 @@ Uint32 PostFile::max_msg_id(void)
     return msg_id;
 }
 
+void PostFile::saw_message_id(Uint32 msg_id)
+{
+}
+

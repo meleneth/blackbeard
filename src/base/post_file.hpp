@@ -24,6 +24,7 @@ class PostFile {
         void part(Uint32 part, Uint32 total_parts, Uint32 message_id);
         string status_string(void);
         string get_bar(void);
+        void saw_message_id(Uint32 msg_id);
         Uint32 is_par();
         Uint32 piece_no(Uint32 message_id);
         Uint32 max_msg_id(void);

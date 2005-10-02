@@ -28,7 +28,7 @@ void PostSetSplitterDynamicMatch::process_header(MessageHeader *header)
     max_no = unprocessed.size();
     for(Uint32 i=0; i<max_no; ++i){
         if(is_close(unprocessed[i], header)){
-            active.push_back(new PSDMSubMatch(header, unprocessed[i]));
+            active.push_back(new PSDMSubMatch(group, header, unprocessed[i]));
             reprocess_unprocessed();
             return;
         }
@@ -46,13 +46,24 @@ void PostSetSplitterDynamicMatch::reprocess_unprocessed(void)
 {
     Uint32 max_no = unprocessed.size();
     Uint32 max_active_no = active.size();
-    for(Uint32 j=0; j<max_active_no; ++j){
-        for(Uint32 i=0; i<max_no; ++i){
-            if(active[j]->pattern->match(unprocessed[i]->subject)){
-                active[j]->process_header(unprocessed[i]);
+    vector<MessageHeader *> remaining;
+
+    for(Uint32 i=0; i<max_no; ++i){
+        MessageHeader *h = unprocessed[i];
+        for(Uint32 j=0; j<max_active_no; ++j){
+            if(h){
+                if(active[j]->pattern->match(h->subject)){
+                    active[j]->process_header(h);
+                    delete h;
+                    h = NULL;
+                }
             }
         }
+        if(h){
+            remaining.push_back(h);
+        }
     }
+    unprocessed = remaining;
 }
 
 string simple_x(string eatme)
@@ -83,7 +94,7 @@ string simple_x(string eatme)
 }
 
 
-PSDMSubMatch::PSDMSubMatch(MessageHeader *h1, MessageHeader *h2)
+PSDMSubMatch::PSDMSubMatch(NewsGroup *group, MessageHeader *h1, MessageHeader *h2)
 {
     is_active = 0;
     filename_index     = -1;
@@ -91,10 +102,11 @@ PSDMSubMatch::PSDMSubMatch(MessageHeader *h1, MessageHeader *h2)
     max_piece_no_index = -1;
     file_no_index      = -1;
     max_file_no_index  = -1;
+    this->group = group;
+    postset = NULL;
 
     vector<string> header_pieces;
     string subject = simple_x(h1->subject);
-    console->log(subject);
     Tokenize(subject, header_pieces, "\t");
 
     Uint32 max_no = header_pieces.size();
@@ -103,7 +115,6 @@ PSDMSubMatch::PSDMSubMatch(MessageHeader *h1, MessageHeader *h2)
         string p = header_pieces[i];
         pattern->add_breaker(p);
         if(p[p.length() -1] == '"'){
-            console->log("Found filename..");
             filename_index = i+1;
         }
     }
@@ -117,10 +128,35 @@ void PSDMSubMatch::process_header(MessageHeader *header)
 {
     if(pattern->match(header->subject)){
         if(filename_index != -1){
-            console->log("Handling result for '" + pattern->results[filename_index] + "'");
+//            console->log("Handling result for '" + pattern->results[filename_index] + "'");
+            postset = get_postset(header);
+            postset->subject = subject(header);
+            PostFile *file = postset->file(pattern->results[filename_index]);
+            file->saw_message_id(header->message_id);
         } else {
             console->log("Bliss would be being able to handle :: " + header->subject);
             console->log("Especially since I knew what to do");
         }
     }
+}
+
+PostSet *PSDMSubMatch::get_postset(MessageHeader *header)
+{
+    if(postset)
+        return postset;
+
+    PostSet *p = new PostSet(subject(header));
+    p->group = group;
+    group->postsets.push_back(p);
+    return p;
+}
+
+string PSDMSubMatch::subject(MessageHeader *header)
+{
+    string sub = header->subject;
+    size_t pos = sub.find("\"", 0);
+    if(pos != string::npos){
+        sub = sub.substr(0, pos);
+    }
+    return sub;
 }

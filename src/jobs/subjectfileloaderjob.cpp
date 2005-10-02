@@ -10,7 +10,7 @@
 #include <sys/stat.h>
 #include<iomanip>
 
-#define MAX_SUBJECTS_PER_TICK 2000
+#define MAX_SUBJECTS_PER_TICK 20
 
 using std::string;
 using std::stringstream;

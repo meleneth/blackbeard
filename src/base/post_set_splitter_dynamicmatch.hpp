@@ -14,10 +14,13 @@ using std::string;
 
 class PSDMSubMatch {
     public:
-        PSDMSubMatch(MessageHeader *h1, MessageHeader *h2);
+        PSDMSubMatch(NewsGroup *group, MessageHeader *h1, MessageHeader *h2);
         ~PSDMSubMatch();
 
         void process_header(MessageHeader *header);
+        string subject(MessageHeader *header);
+        PostSet *get_postset(MessageHeader *header);
+
         PostSet *postset;
         StringPattern *pattern;
         string posted_by;
@@ -27,6 +30,7 @@ class PSDMSubMatch {
         Sint32 max_piece_no_index;
         Sint32 file_no_index;
         Sint32 max_file_no_index;
+        NewsGroup *group;
 
         Uint32 is_active;
     private:

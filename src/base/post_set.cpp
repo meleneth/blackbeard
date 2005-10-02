@@ -78,18 +78,23 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
         num_files++;
         return files[file_num];
     }
+    
+    return file(file_name);
+}
 
+PostFile *PostSet::file(string filename)
+{
     vector<PostFile *>::iterator f;
     for(f = files.begin(); f!= files.end() ; ++f){
         if(*f){
-            if((*f)->filename.compare(file_name) == 0){
+            if((*f)->filename.compare(filename) == 0){
                 return *f;
             }
         }
     }
 
     PostFile *postfile = new PostFile(this);
-    postfile->filename = file_name;
+    postfile->filename = filename;
     files.push_back(postfile);
     num_files++;
     return postfile;
