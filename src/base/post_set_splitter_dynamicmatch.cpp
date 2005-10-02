@@ -2,6 +2,8 @@
 #include "console.hpp"
 #include "strutil.hpp"
 
+#include <string>
+
 PostSetSplitterDynamicMatch::PostSetSplitterDynamicMatch(NewsGroup *group):PostSetSplitter(group)
 {
     
@@ -58,14 +60,22 @@ string simple_x(string eatme)
     Uint32 max_no = eatme.length();
     for(Uint32 i=0; i<max_no; ++i){
         if((eatme[i] >= '0') && (eatme[i] <= '9')){
-            eatme[i] = 'X';
+            eatme[i] = '\t';
         }
     }
 
-    size_t s = eatme.find("XX");
+    size_t s = eatme.find("\t\t");
     while(s < string::npos){
-        eatme.replace(s, 2, "X");
-        s=eatme.find("XX");
+        eatme.replace(s, 2, "\t");
+        s=eatme.find("\t\t");
+    }
+
+    Uint32 first_quote = eatme.find("\"", 0);
+    if(first_quote != string::npos){
+        Uint32 second_quote = eatme.find("\"", first_quote);
+        if(second_quote != string::npos){
+            eatme.replace(first_quote +1, second_quote -1, "\t");
+        }
     }
 
     return eatme;
@@ -75,6 +85,13 @@ string simple_x(string eatme)
 
 PSDMSubMatch::PSDMSubMatch(MessageHeader *h1, MessageHeader *h2)
 {
+    is_active = 0;
+    filename_index     = -1;
+    piece_no_index     = -1;
+    max_piece_no_index = -1;
+    file_no_index      = -1;
+    max_file_no_index  = -1;
+
     vector<string> header_pieces;
     string subject = simple_x(h1->subject);
     Tokenize(subject, header_pieces, "X");
@@ -82,7 +99,11 @@ PSDMSubMatch::PSDMSubMatch(MessageHeader *h1, MessageHeader *h2)
     Uint32 max_no = header_pieces.size();
     pattern = new StringPattern(max_no + 2);
     for(Uint32 i=0; i<max_no; ++i){
-        pattern->add_breaker(header_pieces[i]);
+        string p = header_pieces[i];
+        pattern->add_breaker(p);
+        if(p[p.length()] == '"'){
+            filename_index = i;
+        }
     }
 }
 
@@ -93,7 +114,7 @@ PSDMSubMatch::~PSDMSubMatch()
 void PSDMSubMatch::process_header(MessageHeader *header)
 {
     if(pattern->match(header->subject)){
-        console->log("Bliss would be being able to handle" + header->subject);
+        console->log("Bliss would be being able to handle :: " + header->subject);
         console->log("Especially since I knew what to do");
     }
 }

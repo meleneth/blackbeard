@@ -166,7 +166,11 @@ void test_more_string_pattern()
 void test_simple_x(void)
 {
     string result = simple_x("abc123hehehe");
-    assert(0 == result.compare("abcXhehehe"));
+    assert(0 == result.compare("abc\thehehe"));
+
+    result = simple_x("abc123hehehe - \"hotstuff.rar\" yEnc (001/100)");
+    console->log(result);
+    assert(0 == result.compare("abc\thehehe - \"\t\" yEnc (\t/\t)"));
 }
 
 void test_header_scoop(void)
@@ -324,7 +328,7 @@ void test_dynamic_postsplit(void)
 {
     config->use_newsplit = 1;
     NewsGroup *group = new NewsGroup("net.fusion.downloads");
-    PostSetSplitter *splitter = group->splitter;
+    PostSetSplitterDynamicMatch *splitter = (PostSetSplitterDynamicMatch *) group->splitter;
 
     splitter->process_header(new MessageHeader(group, 31337, "Horny Peeps \"hornypeeps.rar\" yEnc (23/59)", "jim@bo.com"));
     assert(0 == group->postsets.size());

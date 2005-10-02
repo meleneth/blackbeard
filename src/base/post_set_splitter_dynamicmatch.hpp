@@ -21,6 +21,14 @@ class PSDMSubMatch {
         PostSet *postset;
         StringPattern *pattern;
         string posted_by;
+
+        Sint32 filename_index;
+        Sint32 piece_no_index;
+        Sint32 max_piece_no_index;
+        Sint32 file_no_index;
+        Sint32 max_file_no_index;
+
+        Uint32 is_active;
     private:
     protected:
 };
