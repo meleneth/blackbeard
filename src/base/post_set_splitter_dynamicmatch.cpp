@@ -72,9 +72,9 @@ string simple_x(string eatme)
 
     Uint32 first_quote = eatme.find("\"", 0);
     if(first_quote != string::npos){
-        Uint32 second_quote = eatme.find("\"", first_quote);
+        Uint32 second_quote = eatme.find("\"", first_quote + 1);
         if(second_quote != string::npos){
-            eatme.replace(first_quote +1, second_quote -1, "\t");
+            eatme.replace(first_quote +1, second_quote - first_quote -1, "\t");
         }
     }
 
@@ -94,15 +94,17 @@ PSDMSubMatch::PSDMSubMatch(MessageHeader *h1, MessageHeader *h2)
 
     vector<string> header_pieces;
     string subject = simple_x(h1->subject);
-    Tokenize(subject, header_pieces, "X");
+    console->log(subject);
+    Tokenize(subject, header_pieces, "\t");
 
     Uint32 max_no = header_pieces.size();
     pattern = new StringPattern(max_no + 2);
     for(Uint32 i=0; i<max_no; ++i){
         string p = header_pieces[i];
         pattern->add_breaker(p);
-        if(p[p.length()] == '"'){
-            filename_index = i;
+        if(p[p.length() -1] == '"'){
+            console->log("Found filename..");
+            filename_index = i+1;
         }
     }
 }
@@ -114,7 +116,11 @@ PSDMSubMatch::~PSDMSubMatch()
 void PSDMSubMatch::process_header(MessageHeader *header)
 {
     if(pattern->match(header->subject)){
-        console->log("Bliss would be being able to handle :: " + header->subject);
-        console->log("Especially since I knew what to do");
+        if(filename_index != -1){
+            console->log("Handling result for '" + pattern->results[filename_index] + "'");
+        } else {
+            console->log("Bliss would be being able to handle :: " + header->subject);
+            console->log("Especially since I knew what to do");
+        }
     }
 }
