@@ -62,6 +62,12 @@ string simple_x(string eatme)
         }
     }
 
+    size_t s = eatme.find("XX");
+    while(s < string::npos){
+        eatme.replace(s, 2, "X");
+        s=eatme.find("XX");
+    }
+
     return eatme;
 
 }

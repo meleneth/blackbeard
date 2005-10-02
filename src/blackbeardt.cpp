@@ -164,7 +164,7 @@ void test_more_string_pattern()
 void test_simple_x(void)
 {
     string result = simple_x("abc123hehehe");
-    assert(0 == result.compare("abcXXXhehehe"));
+    assert(0 == result.compare("abcXhehehe"));
 }
 
 void test_header_scoop(void)
