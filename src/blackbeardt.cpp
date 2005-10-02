@@ -42,6 +42,7 @@ void test_generated_subject_line_tests(void);
 void test_download_netjob(void);
 void test_crc32(void);
 void test_simple_x(void);
+void test_dynamic_postsplit(void);
 
 void generate_subject_line_test(NewsGroup *group, string message_id, string subject);
 
@@ -69,6 +70,7 @@ int main(int argc, char *argv[])
     test_bit_manipulations();
     test_more_string_pattern();
     test_simple_x();
+    test_dynamic_postsplit();
 	return 0;
 }
 
@@ -315,6 +317,20 @@ void test_download_netjob(void)
     PostsetJob *psj = new PostsetJob(post);
     psj->srv = (void *)4096;
     psj->process();
+
+}
+
+void test_dynamic_postsplit(void)
+{
+    config->use_newsplit = 1;
+    NewsGroup *group = new NewsGroup("net.fusion.downloads");
+    PostSetSplitter *splitter = group->splitter;
+
+    splitter->process_header(new MessageHeader(group, 31337, "Horny Peeps \"hornypeeps.rar\" yEnc (23/59)", "jim@bo.com"));
+    assert(0 == group->postsets.size());
+    splitter->process_header(new MessageHeader(group, 31338, "Horny Peeps \"hornypeeps.rar\" yEnc (24/59)", "jim@bo.com"));
+    assert(1 == group->postsets.size());
+    config->use_newsplit = 0;
 
 }
 
