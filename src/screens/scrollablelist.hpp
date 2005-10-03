@@ -79,6 +79,10 @@ void ScrollableList<T>::render(void)
         refine_search();
     }
 
+    if(my_items.size() ==0){
+        return;
+    }
+
     Uint32 max_size = my_items.size() > height
                     ? height
                     : my_items.size() - scroll_index;
