@@ -156,6 +156,15 @@ PostSet *PSDMSubMatch::get_postset(MessageHeader *header)
     if(postset)
         return postset;
 
+    string s = subject(header);
+    string simple = simple_x(s);
+    Uint32 max_no = group->postsets.size();
+    for(Uint32 i=0; i<max_no; ++i){
+        if(simple_x(group->postsets[i]->subject).compare(simple) ==0){
+            return group->postsets[i];
+        }
+    }
+
     PostSet *p = new PostSet(subject(header));
     p->group = group;
     group->postsets.push_back(p);
