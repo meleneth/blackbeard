@@ -12,6 +12,7 @@ class Job {
         virtual ~Job();
         virtual void process();
         virtual string status_line();
+        static bool compare(const Job* a, const Job* b);
 
     Uint32 priority;
     Uint32 is_finished;

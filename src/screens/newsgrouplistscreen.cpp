@@ -56,6 +56,10 @@ int NewsGroupListScreen::handle_input(int key)
                     netcentral->add_job(new NewsGroupListRetrieverJob());    
                     console->log("Getting newsgroup list..");
                     return 0;
+                case 'S':
+                    scroll_list->sort();
+//                    std::sort(scroll_list->all_items.begin(), scroll_list->all_items.end());
+                    return 0;
                 default:
                 ;
             }

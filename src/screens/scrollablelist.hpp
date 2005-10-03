@@ -5,6 +5,8 @@
 #include"widget.hpp"
 #include"screen.hpp"
 #include"keydefs.hpp"
+#include "newsgroup.hpp"
+#include "console.hpp"
 
 #include<string>
 #include<sstream>
@@ -24,6 +26,7 @@ class ScrollableList : public Widget {
         virtual void render(void);
         virtual void refine_search(void);
         virtual void *get_selected_item(void);
+        virtual void sort(void);
 
         Uint32 is_searching;
         string search_string;
@@ -197,6 +200,14 @@ void *ScrollableList<T>::get_selected_item(void)
         return NULL;
     return my_items[pos_index];
 
+}
+
+template <class T>
+void ScrollableList<T>::sort(void)
+{
+    console->log("ScrollableList::sort() called");
+    std::sort(my_items.begin(), my_items.end(), T::compare);
+//    std::sort(my_items.begin(), my_items.end());
 }
 
 #endif

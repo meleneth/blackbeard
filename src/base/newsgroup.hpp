@@ -28,6 +28,8 @@ class NewsGroup {
         void load_from_file(string filename);
         void save_postsets(void);
         void load_postsets(void);
+        static bool compare(const NewsGroup *a, const NewsGroup *b);
+        bool operator< (const NewsGroup& b);
         void expire_old_postsets(Uint32 low_msg_id);
 
         PostSet *postset_for_subject(string subject);

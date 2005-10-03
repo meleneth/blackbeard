@@ -26,6 +26,8 @@ class PostSet {
         Uint32 max_msg_id(void);
         string status(void);
         void recalculate_piece_info();
+        static bool compare(const PostSet* a, const PostSet* b);
+        bool operator< (const PostSet &b);
 
         string subject;
         vector<PostFile *> files;

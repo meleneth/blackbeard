@@ -73,6 +73,12 @@ void NewsGroup::load_from_file(string filename)
 {
 }
 
+bool NewsGroup::compare(const NewsGroup *a, const NewsGroup *b)
+{
+    console->log("Comparing " + a->name + " with " + b->name);
+    return a < b;
+}
+
 void load_groups_from(string filename)
 {
     StringPattern *pattern = new StringPattern(4);
@@ -200,3 +206,8 @@ NewsGroup *group_for_name(string groupname)
     return news;
 }
 
+bool NewsGroup::operator<(const NewsGroup& b)
+{
+    console->log("comparing " + this->name + " with " + b.name);
+    return this->name < b.name;
+}

@@ -23,3 +23,7 @@ string Job::status_line()
    return _status;
 }
 
+bool Job::compare(const Job* a, const Job* b)
+{
+    return (a->priority < b->priority);
+}

@@ -178,3 +178,13 @@ Uint32 PostSet::min_msg_id(void)
     return msg_id;
 }
 
+bool PostSet::compare(const PostSet* a, const PostSet* b)
+{
+    console->log("Comparing " + a->subject + " with " + b->subject);
+    return a < b;
+}
+
+bool PostSet::operator< (const PostSet &b)
+{
+    return (this->subject < b.subject);
+}

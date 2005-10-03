@@ -179,3 +179,13 @@ void PostFile::saw_message_id(Uint32 msg_id)
     piece_status.push_back(SEEN);
 }
 
+bool PostFile::compare(const PostFile* a, const PostFile* b)
+{
+    return a < b;
+}
+
+bool PostFile::operator< (const PostFile &b)
+{
+    console->log("Comparing " + this->filename + " with " + b.filename);
+    return (this->filename < b.filename);
+}
