@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 
 
-#define DECODER_LINES_PER_SLICE 2000
+#define DECODER_LINES_PER_SLICE 200000
 
 // Public data members go here.
 //
@@ -57,7 +57,7 @@ void Decoder::open_file(void)
         return;
     
     struct stat my_stats;
-    string dest_dir = config->blackbeard_dir + "/" + post_file->post_set->subject;
+    string dest_dir = config->blackbeard_dir + "/" + safe_dirname(post_file->post_set->subject);
     if(stat(dest_dir.c_str(), &my_stats) == -1){
         mkdir(dest_dir.c_str(), 01777);
     }
@@ -69,6 +69,22 @@ void Decoder::open_file(void)
     }
 
     file_is_open = 1;
+}
+string Decoder::safe_dirname(string unsafe)
+{
+    string s = unsafe;
+    Uint32 max_no = s.length();
+    Uint32 is_unsafe;
+    for(Uint32 i=0; i<max_no; ++i){
+        is_unsafe = 1;
+        if(s[i] >= 'a' && s[i] <= 'z')
+            is_unsafe = 0;
+        if(s[i] >= 'A' && s[i] <= 'Z')
+            is_unsafe = 0;
+        if(is_unsafe)
+            s[i] = '_';
+    }
+    return s;
 }
 
 void Decoder::close_file(void)

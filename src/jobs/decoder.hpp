@@ -1,13 +1,13 @@
 #ifndef ___decoder_inc
 #define ___decoder_inc 1
 
-#include"SDL_types.h"
-#include<string>
-#include"newsgrouppost.hpp"
-#include"news_constants.hpp"
-#include"stringpattern.hpp"
-#include"post_file.hpp"
-#include"job.hpp"
+#include "SDL_types.h"
+#include <string>
+#include "newsgrouppost.hpp"
+#include "news_constants.hpp"
+#include "stringpattern.hpp"
+#include "post_file.hpp"
+#include "job.hpp"
 
 using std::string;
 
@@ -24,6 +24,8 @@ class Decoder : public Job {
         virtual void decode_line(string line);
         virtual void open_file();
         virtual void close_file();
+
+        string safe_dirname(string unsafe);
 
         string filename;
         FILE *fileptr;

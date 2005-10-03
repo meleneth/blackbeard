@@ -84,6 +84,9 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
         pieces[part_no] = message_id;
         piece_status[part_no] = SEEN;
         seen_pieces++;
+        if(num_pieces < seen_pieces){
+            num_pieces = seen_pieces;
+        }
     }
 }
 
@@ -174,7 +177,10 @@ void PostFile::saw_message_id(Uint32 msg_id)
             return;
         }
     }
-
+    seen_pieces++;
+    if(num_pieces < seen_pieces){
+        num_pieces = seen_pieces;
+    }
     pieces.push_back(msg_id);
     piece_status.push_back(SEEN);
 }

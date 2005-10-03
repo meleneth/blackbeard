@@ -15,11 +15,13 @@ PostSetSplitterDynamicMatch::~PostSetSplitterDynamicMatch()
 
 void PostSetSplitterDynamicMatch::process_header(MessageHeader *header)
 {
+    vector <PSDMSubMatch *> still_active;
     Uint32 max_no = active.size();
     for(Uint32 i=0; i<max_no; ++i){
         if (0 == active[i]->posted_by.compare(header->posted_by)){
             if(active[i]->pattern->match(header->subject)){
                 active[i]->process_header(header);
+                active[i]->last_seen_msg_id = header->message_id;
                 return;
             }
         }
@@ -109,6 +111,7 @@ PSDMSubMatch::PSDMSubMatch(NewsGroup *group, MessageHeader *h1, MessageHeader *h
     max_piece_no_index = -1;
     file_no_index      = -1;
     max_file_no_index  = -1;
+    last_seen_msg_id = 0;
     this->group = group;
     postset = NULL;
     posted_by = h1->posted_by;
@@ -139,8 +142,13 @@ void PSDMSubMatch::process_header(MessageHeader *header)
 //            console->log("Handling result for '" + pattern->results[filename_index] + "'");
             postset = get_postset(header);
             postset->subject = subject(header);
+            postset->has_msg_ids = 1;
             PostFile *file = postset->file(pattern->results[filename_index]);
             file->saw_message_id(header->message_id);
+            size_t yEnc_pos = header->subject.find("yEnc", 0);
+            if(yEnc_pos != string::npos){
+                file->decoder_type = DT_YENC;
+            }
         } else {
             /* FIXME
             console->log("no file name found error");
