@@ -6,6 +6,7 @@ MessageHeader::MessageHeader(NewsGroup *group, Uint32 message_id, string subject
     this->message_id = message_id;
     this->subject = subject;
     this->posted_by = posted_by;
+    process_count = 0;
 }
 
 MessageHeader::~MessageHeader()

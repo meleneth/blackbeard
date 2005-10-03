@@ -17,6 +17,7 @@ class MessageHeader {
         Uint32 message_id;
         string subject;
         string posted_by;
+        Uint32 process_count;
     private:
     protected:
 };

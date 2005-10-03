@@ -60,7 +60,14 @@ void PostSetSplitterDynamicMatch::reprocess_unprocessed(void)
             }
         }
         if(h){
-            remaining.push_back(h);
+            h->process_count++;
+            if(h->process_count < 1000){
+                remaining.push_back(h);
+            } else {
+                delete h;
+                h = NULL;
+            }
+
         }
     }
     unprocessed = remaining;
@@ -104,6 +111,7 @@ PSDMSubMatch::PSDMSubMatch(NewsGroup *group, MessageHeader *h1, MessageHeader *h
     max_file_no_index  = -1;
     this->group = group;
     postset = NULL;
+    posted_by = h1->posted_by;
 
     vector<string> header_pieces;
     string subject = simple_x(h1->subject);
@@ -134,8 +142,11 @@ void PSDMSubMatch::process_header(MessageHeader *header)
             PostFile *file = postset->file(pattern->results[filename_index]);
             file->saw_message_id(header->message_id);
         } else {
+            /* FIXME
+            console->log("no file name found error");
             console->log("Bliss would be being able to handle :: " + header->subject);
             console->log("Especially since I knew what to do");
+            */
         }
     }
 }

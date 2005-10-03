@@ -17,6 +17,7 @@ PostSet::PostSet(string subject)
     max_num_files = 0;
     has_msg_ids = 0;
     group = NULL;
+    _last_file = NULL;
 }
     
 PostSet::~PostSet() 
@@ -84,10 +85,16 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
 
 PostFile *PostSet::file(string filename)
 {
+    if(_last_file){
+        if(_last_file->filename.compare(filename) == 0){
+            return _last_file;
+        }
+    }
     vector<PostFile *>::iterator f;
     for(f = files.begin(); f!= files.end() ; ++f){
         if(*f){
             if((*f)->filename.compare(filename) == 0){
+                _last_file = *f;
                 return *f;
             }
         }

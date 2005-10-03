@@ -40,6 +40,7 @@ class PostSet {
         Uint32 has_msg_ids;
         Uint32 _min_msg_id;
         Uint32 _max_msg_id;
+        PostFile *_last_file;
     private:
     protected:
 };
