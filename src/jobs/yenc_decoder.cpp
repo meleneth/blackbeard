@@ -63,7 +63,7 @@ void yEncDecoder::decode_line(string line)
             //console->log("Opening file for part_pattern match");
                 status = S_BODY;
                 open_file();
-                lseek(fileno(fileptr), atoi(part_pattern->results[1].c_str()) -1, SEEK_SET);
+                file_pos = atoi(part_pattern->results[1].c_str());
             }
         }
     }else{
@@ -74,7 +74,9 @@ void yEncDecoder::decode_line(string line)
             close_file();
         } else {
             string decoded_line = do_the_math(line);
-            fwrite(decoded_line.c_str(), 1, decoded_line.length(), fileptr);
+            Uint32 len = decoded_line.length();
+            file->write_x_bytes_at(len, file_pos, decoded_line.c_str());
+            file_pos += len;
         }
     }
 }

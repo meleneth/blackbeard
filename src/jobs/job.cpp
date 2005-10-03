@@ -1,4 +1,5 @@
 #include "job.hpp"
+#include "file_handle.hpp"
 
 Job::Job()
 {
@@ -12,6 +13,7 @@ Job::Job()
 
 Job::~Job()
 {
+    close_finished_files();
 }
 
 void Job::process()

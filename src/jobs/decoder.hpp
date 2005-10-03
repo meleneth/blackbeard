@@ -8,6 +8,7 @@
 #include "stringpattern.hpp"
 #include "post_file.hpp"
 #include "job.hpp"
+#include "file_handle.hpp"
 
 using std::string;
 
@@ -28,7 +29,6 @@ class Decoder : public Job {
         string safe_dirname(string unsafe);
 
         string filename;
-        FILE *fileptr;
 
         PostFile *post_file;
         NewsGroupPost *post;
@@ -41,6 +41,8 @@ class Decoder : public Job {
         StringPattern *header_pattern;
         StringPattern *part_pattern;
         StringPattern *footer_pattern;
+        FileHandle *file;
+        Uint32 file_pos;
     private:
         // Private members go here.
     protected:

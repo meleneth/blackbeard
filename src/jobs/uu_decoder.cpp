@@ -42,8 +42,7 @@ void UUDecoder::open_file(void)
     Decoder::open_file();
 
     size_t seek_offset =  post_file->piece_size * (piece_no - 1);
-
-    fseek(fileptr, seek_offset, SEEK_SET);
+    file_pos = seek_offset;
 }
 
 void UUDecoder::decode_line(string line)
@@ -61,8 +60,10 @@ void UUDecoder::decode_line(string line)
         if(line.compare("end") == 0)
             return;
         string decoded_line = do_the_math(line);
-        fwrite(decoded_line.c_str(), decoded_line.length(), 1, fileptr);
-        num_bytes_written += decoded_line.length();
+        Uint32 num_bytes = decoded_line.length();
+        file->write_x_bytes_at(num_bytes, file_pos, decoded_line.c_str());
+        file_pos += num_bytes;
+        num_bytes_written += num_bytes;;
     }
 }
 

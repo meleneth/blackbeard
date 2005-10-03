@@ -5,6 +5,7 @@ libbase_a_SOURCES = config.cpp console.hpp news_constants.hpp newsgrouppost.cpp 
 					newsgroup.hpp nntpserver.cpp post_file.hpp SDL_types.h strutil.cpp tcpconnection.hpp \
                     messageheader.cpp messageheader.hpp post_set_splitter.cpp post_set_splitter.hpp \
                     post_set_splitter_staticmatch.cpp post_set_splitter_staticmatch.hpp \
-                    post_set_splitter_dynamicmatch.cpp post_set_splitter_dynamicmatch.hpp
+                    post_set_splitter_dynamicmatch.cpp post_set_splitter_dynamicmatch.hpp \
+                    file_handle.cpp file_handle.hpp
 AM_CXXFLAGS = -Wall -D_REENTRANT -I../jobs -I../screens
 

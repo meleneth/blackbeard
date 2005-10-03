@@ -13,6 +13,7 @@
 Decoder::Decoder()
 {
     file_is_open = 0;
+    file_pos = 0;
 }
 
 Decoder::Decoder(NewsGroupPost *newsgrouppost, PostFile *file) // Constructor
@@ -30,6 +31,7 @@ Decoder::~Decoder() // Destructor
 {
     if(file_is_open)
         close_file();
+    close_finished_files();
 }
 
 void Decoder::process()
@@ -62,12 +64,7 @@ void Decoder::open_file(void)
         mkdir(dest_dir.c_str(), 01777);
     }
     string real_filename = dest_dir + "/" + filename;
-    if(stat(real_filename.c_str(), &my_stats) == -1){
-        fileptr = fopen(real_filename.c_str(), "w");
-    } else {
-        fileptr = fopen(real_filename.c_str(), "r+");
-    }
-
+    file = new FileHandle(real_filename);
     file_is_open = 1;
 }
 string Decoder::safe_dirname(string unsafe)
@@ -91,7 +88,7 @@ void Decoder::close_file(void)
 {
     if(!file_is_open)
         return;
-    fclose(fileptr);
+    file->close();
     file_is_open = 0;
 }
 
