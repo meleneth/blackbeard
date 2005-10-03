@@ -168,5 +168,14 @@ Uint32 PostFile::max_msg_id(void)
 
 void PostFile::saw_message_id(Uint32 msg_id)
 {
+    vector<Uint32>::iterator p;
+    for(p = pieces.begin() ; p != pieces.end() ; ++p){
+        if(*p == msg_id){
+            return;
+        }
+    }
+
+    pieces.push_back(msg_id);
+    piece_status.push_back(SEEN);
 }
 
