@@ -6,7 +6,7 @@
 #include <sys/stat.h>
 
 
-#define DECODER_LINES_PER_SLICE 200000
+#define DECODER_LINES_PER_SLICE 2000
 
 // Public data members go here.
 //

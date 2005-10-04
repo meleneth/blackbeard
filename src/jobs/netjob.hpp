@@ -7,7 +7,7 @@
 #include"job.hpp"
 #include"newsgroup.hpp"
 
-#define MAX_NETJOB_LINES_PER_SLICE 5000
+#define MAX_NETJOB_LINES_PER_SLICE 2000
 
 using std::string;
 using std::list;
