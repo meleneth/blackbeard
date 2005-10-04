@@ -16,6 +16,7 @@ FileHandle::FileHandle(string filename)
     }
     pos = 0;
     this->filename = filename;
+    ref_count = 0;
 }
 
 FileHandle::~FileHandle()
@@ -44,7 +45,7 @@ void FileHandle::close()
     ref_count--;
 }
 
-FileHandle *open_file(string filename)
+FileHandle *open_filehandle(string filename)
 {
     Uint32 max_no = open_files.size();
     for(Uint32 i=0; i<max_no; ++i){

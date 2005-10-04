@@ -26,7 +26,7 @@ class FileHandle {
     protected:
 };
 
-FileHandle *open_file(string filename);
+FileHandle *open_filehandle(string filename);
 void close_finished_files(void);
 
 #endif
