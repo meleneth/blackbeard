@@ -1,7 +1,7 @@
-#include<sstream>
-#include<iostream>  // I/O 
-#include<fstream>   // file I/O
-#include<sstream>
+#include <sstream>
+#include <iostream>  // I/O 
+#include <fstream>   // file I/O
+#include <sstream>
 
 using std::string;
 using std::stringstream;
@@ -10,13 +10,14 @@ using std::ifstream;
 using std::ios;
 using std::endl;
 
-#include"postsetjob.hpp"
-#include"nntpserver.hpp"
-#include"bodyretrieverjob.hpp"
-#include"headersforgroupjob.hpp"
-#include"strutil.hpp"
-#include"config.hpp"
-#include"console.hpp"
+#include "postsetjob.hpp"
+#include "nntpserver.hpp"
+#include "bodyretrieverjob.hpp"
+#include "headersforgroupjob.hpp"
+#include "strutil.hpp"
+#include "config.hpp"
+#include "console.hpp"
+#include "session.hpp"
 
 PostsetJob::PostsetJob(PostSet* post_set)
 {
@@ -32,9 +33,15 @@ PostsetJob::PostsetJob(PostSet* post_set)
     {
         PostFile *f = postset->files[i];
         if(f){
-            f->status = "Queued";
+            if(f->is_par()){
+                f->status = "Skipped";
+            }else{
+                f->status = "Queued";
+            }
         }
     }
+
+    job_type = POSTSET_DOWNLOAD;
 }
 
 

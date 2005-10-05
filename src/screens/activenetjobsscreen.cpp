@@ -1,7 +1,9 @@
-#include"activenetjobsscreen.hpp"
-#include"jobqueue.hpp"
-#include"netcentral.hpp"
-#include"console.hpp"
+#include "activenetjobsscreen.hpp"
+#include "jobqueue.hpp"
+#include "netcentral.hpp"
+#include "console.hpp"
+#include "postsetjob.hpp"
+#include "session.hpp"
 
 ActiveNetJobsScreen::ActiveNetJobsScreen()
 {
@@ -12,6 +14,7 @@ ActiveNetJobsScreen::ActiveNetJobsScreen()
     queued_list = new ScrollableList<Job>;
     queued_list->screen = this;
     widgets.push_back(queued_list);
+    widget_ptr = active_list;
 }
 
 ActiveNetJobsScreen::~ActiveNetJobsScreen()
@@ -20,6 +23,13 @@ ActiveNetJobsScreen::~ActiveNetJobsScreen()
 
 void ActiveNetJobsScreen::handle_selection(Uint32 index)
 {
+    Job *job = widget_ptr->my_items[index];
+
+    if(job->job_type == POSTSET_DOWNLOAD){
+        PostsetJob *j = (PostsetJob *)job;
+        PostSet *set = j->postset;
+        session->switch_postset_detail(set->group, set->group->postset_index(set));
+    }
 }
 
 void ActiveNetJobsScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 width, void *job)
@@ -63,13 +73,12 @@ Uint32 ActiveNetJobsScreen::search_match(string search, void *ptr)
 
 int ActiveNetJobsScreen::handle_input(int key)
 {
-    static ScrollableList<Job> *ptr;
     if (key == IKEY_TAB) 
     {
-        ptr = ptr == active_list ? queued_list : active_list;
+        widget_ptr = widget_ptr == active_list ? queued_list : active_list;
     }
-    if(ptr){
-        return ptr->handle_input(key) ?  Screen::handle_input(key) : 0;
+    if(widget_ptr){
+        return widget_ptr->handle_input(key) ?  Screen::handle_input(key) : 0;
     } else {
         return Screen::handle_input(key);
     }

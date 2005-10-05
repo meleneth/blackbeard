@@ -19,6 +19,8 @@ BodyRetrieverJob::BodyRetrieverJob(PostFile *file, Uint32 msg_id)
     post = new NewsGroupPost();
     this->file = file;
     this->msg_id = msg_id;
+    file->status = "Queued";
+    job_type = BODY_DOWNLOAD;
 }
 
 BodyRetrieverJob::~BodyRetrieverJob()

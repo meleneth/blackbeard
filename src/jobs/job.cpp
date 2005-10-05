@@ -9,6 +9,7 @@ Job::Job()
 
     _status = "Default status for Job";
     job_status_filename = "";
+    job_type = MISC;
 }
 
 Job::~Job()
@@ -29,3 +30,4 @@ bool Job::compare(const Job* a, const Job* b)
 {
     return (a->priority < b->priority);
 }
+

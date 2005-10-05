@@ -23,6 +23,9 @@ class ActiveNetJobsScreen : public Screen {
 
         ScrollableList<Job> *active_list;
         ScrollableList<Job> *queued_list;
+        ScrollableList<Job> *widget_ptr;
+
+
     private:
     protected:
 };

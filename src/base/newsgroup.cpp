@@ -50,6 +50,18 @@ void NewsGroup::header_scoop(string xover_line)
     splitter->process_header(info);
 }
 
+Uint32 NewsGroup::postset_index(PostSet *set)
+{
+    Uint32 max_no = postsets.size();
+    for(Uint32 i=0; i<max_no; ++i) {
+       if(set == postsets[i])
+           return i;
+    }
+    Uint32 i=0;
+    i--;
+    return i;
+}
+
 PostSet *NewsGroup::postset_for_subject(string subject)
 {
     int max_length = postsets.size();

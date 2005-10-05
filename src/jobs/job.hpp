@@ -6,6 +6,8 @@
 
 using std::string;
 
+typedef enum { MISC, POSTSET_DOWNLOAD, BODY_DOWNLOAD } JobType;
+
 class Job {
     public:
         Job();
@@ -14,12 +16,12 @@ class Job {
         virtual string status_line();
         static bool compare(const Job* a, const Job* b);
 
-    Uint32 priority;
-    Uint32 is_finished;
-    void *srv;
-    string _status;
-
-    string job_status_filename;
+        Uint32 priority;
+        Uint32 is_finished;
+        void *srv;
+        string _status;
+        JobType job_type;
+        string job_status_filename;
 
     private:
     protected:
