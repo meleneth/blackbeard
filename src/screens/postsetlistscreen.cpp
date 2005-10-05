@@ -34,7 +34,6 @@ void PostSetListScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 w
     string str;
     
     PostSet *set = (PostSet *) postset;
-    set->recalculate_piece_info();
     
     mvaddnstr(yindex, x, set->subject.c_str(), -1);
     

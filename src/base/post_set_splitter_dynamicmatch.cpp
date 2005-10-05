@@ -142,7 +142,6 @@ void PSDMSubMatch::process_header(MessageHeader *header)
         if(filename_index != -1){
 //            console->log("Handling result for '" + pattern->results[filename_index] + "'");
             postset = get_postset(header);
-            postset->subject = subject(header);
             postset->has_msg_ids = 1;
             PostFile *file = postset->file(pattern->results[filename_index]);
             file->saw_message_id(header->message_id);
@@ -164,20 +163,45 @@ PostSet *PSDMSubMatch::get_postset(MessageHeader *header)
 {
     if(postset)
         return postset;
-
-    string s = subject(header);
-    string simple = simple_x(s);
+    string s = header->subject;
+    string simple = super_simple(s);
     Uint32 max_no = group->postsets.size();
     for(Uint32 i=0; i<max_no; ++i){
-        if(simple_x(group->postsets[i]->subject).compare(simple) ==0){
+        if(simple.compare(group->postsets[i]->subject) ==0){
             return group->postsets[i];
         }
     }
 
-    PostSet *p = new PostSet(subject(header));
+    PostSet *p = new PostSet(simple);
     p->group = group;
     group->postsets.push_back(p);
     return p;
+}
+
+string PSDMSubMatch::super_simple(string eatme)
+{
+    Uint32 max_no = eatme.length();
+    for(Uint32 i=0; i<max_no; ++i){
+        if((eatme[i] >= '0') && (eatme[i] <= '9')){
+            eatme[i] = ' ';
+        }
+    }
+
+    size_t s = eatme.find("  ");
+    while(s < string::npos){
+        eatme.replace(s, 2, " ");
+        s=eatme.find("  ");
+    }
+
+    Uint32 first_quote = eatme.find("\"", 0);
+    if(first_quote != string::npos){
+        Uint32 second_quote = eatme.find("\"", first_quote + 1);
+        if(second_quote != string::npos){
+            eatme.replace(first_quote +1, second_quote - first_quote -1, " ");
+        }
+    }
+
+    return eatme;
 }
 
 string PSDMSubMatch::subject(MessageHeader *header)

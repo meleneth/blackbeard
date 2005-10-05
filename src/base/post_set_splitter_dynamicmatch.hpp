@@ -20,6 +20,7 @@ class PSDMSubMatch {
         void process_header(MessageHeader *header);
         string subject(MessageHeader *header);
         PostSet *get_postset(MessageHeader *header);
+        string super_simple(string eatme);
 
         PostSet *postset;
         StringPattern *pattern;
