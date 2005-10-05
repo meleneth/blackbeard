@@ -169,14 +169,19 @@ void PostsetJob::load_job_status(void)
     filepattern->add_breaker(1);
     filepattern->add_breaker(" ");
     filepattern->add_breaker(2);
+    filepattern->name = "File";
     
     StringPattern *piecepattern = new StringPattern(2);
     piecepattern->add_breaker(0);
     piecepattern->add_breaker(" ");
     piecepattern->add_breaker(1);
+    piecepattern->name = "Piece";
     
     ifstream in;
-    in.open(config->full_job_filename(job_status_filename).c_str(), ios::in);
+    string f = config->full_job_filename(job_status_filename);
+    console->log("Restoring job from " + f);
+
+    in.open(f.c_str(), ios::in);
     
     char linebuffer[1024];
     PostFile * file = NULL;

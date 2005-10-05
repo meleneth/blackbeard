@@ -103,3 +103,14 @@ void generate_crc_table(Uint32 *table)
     }
 }
 
+string replace_all_substrings(string from_me, string take_me, string for_me)
+{
+    size_t s = from_me.find(take_me);
+    Uint32 t_length = take_me.length();
+    while(s < string::npos){
+        from_me.replace(s, t_length, for_me);
+        s=from_me.find(take_me);
+    }
+    return from_me;
+}
+

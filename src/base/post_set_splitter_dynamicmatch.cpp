@@ -85,11 +85,7 @@ string simple_x(string eatme)
         }
     }
 
-    size_t s = eatme.find("\t\t");
-    while(s < string::npos){
-        eatme.replace(s, 2, "\t");
-        s=eatme.find("\t\t");
-    }
+    eatme = replace_all_substrings(eatme, "\t\t", "\t");
 
     Uint32 first_quote = eatme.find("\"", 0);
     if(first_quote != string::npos){
@@ -187,11 +183,7 @@ string PSDMSubMatch::super_simple(string eatme)
         }
     }
 
-    size_t s = eatme.find("  ");
-    while(s < string::npos){
-        eatme.replace(s, 2, " ");
-        s=eatme.find("  ");
-    }
+    eatme = replace_all_substrings(eatme, "  ", " ");
 
     Uint32 first_quote = eatme.find("\"", 0);
     if(first_quote != string::npos){
@@ -200,6 +192,11 @@ string PSDMSubMatch::super_simple(string eatme)
             eatme.replace(first_quote +1, second_quote - first_quote -1, " ");
         }
     }
+
+    eatme = replace_all_substrings(eatme, "( / )", " ");
+    eatme = replace_all_substrings(eatme, " - \" \"", " ");
+    eatme = replace_all_substrings(eatme, "[ / ]", " ");
+    eatme = replace_all_substrings(eatme, "  ", " ");
 
     return eatme;
 }
