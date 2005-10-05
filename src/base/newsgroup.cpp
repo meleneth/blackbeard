@@ -29,9 +29,9 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     last_article_number = 0;
 
     if (config->use_newsplit){ 
-        splitter = new PostSetSplitterDynamicMatch(this);
-    } else {
         splitter = new PostSetSplitterStaticMatch(this);
+    } else {
+        splitter = new PostSetSplitterDynamicMatch(this);
     }    
 }
 
