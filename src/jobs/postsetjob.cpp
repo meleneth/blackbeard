@@ -146,6 +146,7 @@ void PostsetJob::save_job_status(void)
 
     if(out.is_open()){
         out << postset->subject << endl;
+        out << postset->group->name << endl;
         Uint32 max_no = postset->files.size();
         for(Uint32 i=0; i<max_no; i++)
         {
@@ -190,6 +191,8 @@ void PostsetJob::load_job_status(void)
         in.getline(linebuffer, 1024);
         postset = new PostSet(linebuffer);
         postset->has_msg_ids = 1;
+        in.getline(linebuffer, 1024);
+        postset->group = group_for_name(linebuffer);
         in.getline(linebuffer, 1024);
 
         while(!in.eof()){
