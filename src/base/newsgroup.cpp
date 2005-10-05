@@ -134,7 +134,10 @@ void NewsGroup::save_postsets(void)
         for(Uint32 i=0; i<max_no; i++)
         {
             PostSet *set = postsets[i];
-            out << set->min_msg_id() << " " << set->max_msg_id() << " " << set->subject << endl;
+            out << set->min_msg_id()    << " " 
+                << set->max_msg_id()    << " " 
+                << set->max_num_files() << " "
+                << set->subject << endl;
         }
         out.close();
     }
@@ -145,12 +148,14 @@ void NewsGroup::load_postsets(void)
     ifstream in;
     char linebuffer[1024];
 
-    StringPattern *pattern = new StringPattern(3);
+    StringPattern *pattern = new StringPattern(4);
     pattern->add_breaker(0);
     pattern->add_breaker(" ");
     pattern->add_breaker(1);
     pattern->add_breaker(" ");
     pattern->add_breaker(2);
+    pattern->add_breaker(" ");
+    pattern->add_breaker(3);
 
     string filename = config->blackbeard_data_dir + "/postsets." + name;
 
@@ -161,9 +166,10 @@ void NewsGroup::load_postsets(void)
         while(!in.eof()){
             if(strlen(linebuffer)) {
                 if(pattern->match(linebuffer)){
-                    PostSet *set = postset_for_subject(pattern->get_piece(2));
+                    PostSet *set = postset_for_subject(pattern->get_piece(3));
                     set->_min_msg_id = pattern->get_piecen(0);
                     set->_max_msg_id = pattern->get_piecen(1);
+                    set->_max_num_files = pattern->get_piecen(2);
                     set->has_msg_ids = 0;
                     set->group = this;
                 }

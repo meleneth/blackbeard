@@ -235,7 +235,7 @@ void generate_subject_line_test(NewsGroup *group, string message_id, string subj
         << "assert(" << postfile->num_pieces <<  " == postfile->num_pieces);\n"
         << "assert(" << postfile->seen_pieces <<  " == postfile->seen_pieces);\n"
         << "assert(" << postset->num_files <<  " == postset->num_files);\n"
-        << "assert(" << postset->max_num_files <<  " == postset->max_num_files);\n"
+        << "assert(" << postset->max_num_files() <<  " == postset->max_num_files());\n"
         << "assert(0 == postfile->filename.compare(\"" << postfile->filename <<  "\"));\n"
         << "assert(0 == postfile->post_set->subject.compare(\"" << postfile->post_set->subject <<  "\"));\n\n";
 

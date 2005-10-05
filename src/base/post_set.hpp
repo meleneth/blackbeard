@@ -26,6 +26,7 @@ class PostSet {
         Uint32 max_msg_id(void);
         string status(void);
         void recalculate_piece_info();
+        Uint32 max_num_files(void);
         static bool compare(const PostSet* a, const PostSet* b);
         bool operator< (const PostSet &b);
 
@@ -36,7 +37,7 @@ class PostSet {
         NewsGroup *group;
 
         Uint32 num_files;
-        Uint32 max_num_files;
+        Uint32 _max_num_files;
         Uint32 num_pieces;
         Uint32 num_finished_pieces;
         Uint32 has_msg_ids;

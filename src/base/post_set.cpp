@@ -14,7 +14,7 @@ PostSet::PostSet(string subject)
     num_pieces = 0;
     num_finished_pieces = 0;
     pattern_name="";
-    max_num_files = 0;
+    _max_num_files = 0;
     has_msg_ids = 0;
     group = NULL;
     _last_file = NULL;
@@ -55,16 +55,16 @@ PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
     //}
 
     if(max_file_num != 0) {
-        if(!this->max_num_files){
-            this->max_num_files = max_file_num;
-            files.resize(max_num_files + 1);
+        if(!this->_max_num_files){
+            this->_max_num_files = max_file_num;
+            files.resize(_max_num_files + 1);
             Uint32 i;
-            for(i=0;i<max_num_files;i++){
+            for(i=0;i<_max_num_files;i++){
                 files[i] = NULL;
             }
         }
 
-        if(file_num > max_num_files){
+        if(file_num > _max_num_files){
             if(config->debug_logging)
                 console->log("Cowardly refusing to do a crashy op");
             return NULL;
@@ -104,6 +104,7 @@ PostFile *PostSet::file(string filename)
     postfile->filename = filename;
     files.push_back(postfile);
     num_files++;
+    _max_num_files = files.size();
     return postfile;
 }
 
@@ -125,7 +126,15 @@ void PostSet::recalculate_piece_info()
     num_pieces = tnum_pieces;
     num_finished_pieces = tnum_finished_pieces;
     num_files = tnum_files;
-    max_num_files = files.size();
+    _max_num_files = files.size();
+}
+
+Uint32 PostSet::max_num_files(void)
+{
+    if(has_msg_ids){
+        recalculate_piece_info();
+    }
+    return _max_num_files;
 }
 
 string PostSet::status(void)
