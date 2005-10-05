@@ -23,6 +23,7 @@ PostfileJob::PostfileJob(PostFile* post_file)
     postfile = post_file;
     job = NULL;
     piece_no = 0;
+    postfile->status = "Queued";
 }
 
 PostfileJob::~PostfileJob()

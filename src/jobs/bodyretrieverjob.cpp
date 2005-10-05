@@ -19,7 +19,6 @@ BodyRetrieverJob::BodyRetrieverJob(PostFile *file, Uint32 msg_id)
     post = new NewsGroupPost();
     this->file = file;
     this->msg_id = msg_id;
-    file->status = "Queued";
     job_type = BODY_DOWNLOAD;
 }
 
@@ -39,6 +38,7 @@ string BodyRetrieverJob::status_line(void)
 
 void BodyRetrieverJob::finish()
 {
+    file->status = "Finished";
     file->downloaded_pieces++;
     switch(file->decoder_type){
         case DT_YENC:
