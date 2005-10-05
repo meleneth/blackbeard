@@ -22,6 +22,7 @@ void PostSetSplitterDynamicMatch::process_header(MessageHeader *header)
             if(active[i]->pattern->match(header->subject)){
                 active[i]->process_header(header);
                 active[i]->last_seen_msg_id = header->message_id;
+                delete header;
                 return;
             }
         }
