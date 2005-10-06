@@ -326,7 +326,6 @@ void test_download_netjob(void)
 
 void test_dynamic_postsplit(void)
 {
-    config->use_newsplit = 1;
     NewsGroup *group = new NewsGroup("net.fusion.downloads");
     PostSetSplitterDynamicMatch *splitter = (PostSetSplitterDynamicMatch *) group->splitter;
     console->log("Parsing (Horny Peeps \"hornypeeps.rar\" yEnc (23/59))");
@@ -334,7 +333,6 @@ void test_dynamic_postsplit(void)
     assert(0 == group->postsets.size());
     splitter->process_header(new MessageHeader(group, 31338, "Horny Peeps \"hornypeeps.rar\" yEnc (24/59)", "jim@bo.com"));
     assert(1 == group->postsets.size());
-    config->use_newsplit = 0;
 
 }
 

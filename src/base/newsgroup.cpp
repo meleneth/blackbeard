@@ -1,14 +1,13 @@
 #include "newsgroup.hpp"
 #include "news_constants.hpp"
-#include"console.hpp"
-#include"config.hpp"
+#include "console.hpp"
+#include "config.hpp"
 #include "strutil.hpp"
-#include"post_set_splitter_staticmatch.hpp"
-#include"post_set_splitter_dynamicmatch.hpp"
-#include"messageheader.hpp"
+#include "post_set_splitter_dynamicmatch.hpp"
+#include "messageheader.hpp"
 #include <iostream>  // I/O 
 #include <fstream>   // file I/O
-#include<sstream>
+#include <sstream>
 
 
 using std::string;
@@ -28,11 +27,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     first_article_number--;
     last_article_number = 0;
 
-    if (config->use_newsplit){ 
-        splitter = new PostSetSplitterStaticMatch(this);
-    } else {
-        splitter = new PostSetSplitterDynamicMatch(this);
-    }    
+    splitter = new PostSetSplitterDynamicMatch(this);
 }
 
     

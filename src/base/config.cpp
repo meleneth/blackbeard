@@ -44,7 +44,6 @@ Config::Config(int argc, char *argv[]) // Constructor
     string show_groups_flag = "-G";
     string need_help_flag = "-h";
     string dump_subjects_flag = "-s";
-    string use_newsplit_flag = "-x";
 
     while(ac < argc){
         if(0 == debug.compare(argv[ac])){
@@ -62,8 +61,6 @@ Config::Config(int argc, char *argv[]) // Constructor
             load_group = argv[ac];
             console->log("Will load groups from file: " + load_groups);
       //      console->keep_logs = 0;
-        }else if(0 == use_newsplit_flag.compare(argv[ac])){
-            use_newsplit = 1;
         }else if(0 == show_groups_flag.compare(argv[ac])){
             show_groups_screen = 1;
         }else if(0 == dump_subjects_flag.compare(argv[ac])){
