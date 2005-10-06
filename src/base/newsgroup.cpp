@@ -106,8 +106,8 @@ void load_groups_from(string filename)
             if(strlen(linebuffer)){
                 if(pattern->match(linebuffer)){
                     NewsGroup *group = group_for_name(pattern->results[2]);
-                    group->last_article_number = pattern->get_piecen(0);
-                    group->first_article_number = pattern->get_piecen(1);
+                    group->first_article_number = pattern->get_piecen(0);
+                    group->last_article_number = pattern->get_piecen(1);
                 }else{
                     group_for_name(linebuffer);
                 }
