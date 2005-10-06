@@ -195,6 +195,8 @@ string PSDMSubMatch::super_simple(string eatme)
 
     eatme = replace_all_substrings(eatme, "( / )", " ");
     eatme = replace_all_substrings(eatme, " - \" \"", " ");
+    eatme = replace_all_substrings(eatme, " \" \"", " ");
+    eatme = replace_all_substrings(eatme, " yEnc", " ");
     eatme = replace_all_substrings(eatme, "[ / ]", " ");
     eatme = replace_all_substrings(eatme, "  ", " ");
 

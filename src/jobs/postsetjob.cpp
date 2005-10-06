@@ -65,6 +65,7 @@ Job* PostsetJob::get_next_job()
     }
 
     if(!postset->has_msg_ids){
+        console->log("Getting message ID's for PostSet");
         HeadersForGroupJob *new_job = new HeadersForGroupJob(postset->group, postset->_min_msg_id, postset->_max_msg_id);
         new_job->srv = srv;
         return new_job;
@@ -193,6 +194,7 @@ void PostsetJob::load_job_status(void)
         postset->has_msg_ids = 1;
         in.getline(linebuffer, 1024);
         postset->group = group_for_name(linebuffer);
+        postset->group->postsets.push_back(postset);
         in.getline(linebuffer, 1024);
 
         while(!in.eof()){
