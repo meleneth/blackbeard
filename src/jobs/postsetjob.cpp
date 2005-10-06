@@ -65,7 +65,6 @@ Job* PostsetJob::get_next_job()
     }
 
     if(!postset->has_msg_ids){
-        console->log("Getting message ID's for PostSet");
         HeadersForGroupJob *new_job = new HeadersForGroupJob(postset->group, postset->_min_msg_id, postset->_max_msg_id);
         new_job->srv = srv;
         return new_job;
@@ -91,14 +90,13 @@ Job* PostsetJob::get_next_job()
             case FINISHED:
                 break;
             case SEEN:
-                file->status = "Downloading";
                 file->piece_status[piece_no] = DOWNLOADING;
+                file->update_status_from_pieces();
                 BodyRetrieverJob *new_job = new BodyRetrieverJob(file, file->pieces[piece_no]);
                 new_job->srv = srv;
                 return new_job;
         }
         if(++piece_no > file->num_pieces){
-            file->status = "Finished";
             piece_no = 0;
             ++file_no;
         }
@@ -211,6 +209,10 @@ void PostsetJob::load_job_status(void)
                 }  
             }
             in.getline(linebuffer, 1024);
+        }
+        Uint32 max_no = postset->files.size();
+        for(Uint32 i=0; i<max_no; ++i){
+            postset->files[i]->update_status_from_pieces();
         }
     } else {
         console->log("File open failed!");

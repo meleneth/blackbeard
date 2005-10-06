@@ -190,8 +190,45 @@ bool PostFile::compare(const PostFile* a, const PostFile* b)
     return a < b;
 }
 
+void PostFile::update_status_from_pieces(void)
+{
+    status = "Ignored";
+    Uint32 max_no = pieces.size();
+    Uint32 finished_count = 0;
+    Uint32 seen_count = 0;
+    Uint32 downloading_count = 0;
+
+    for(Uint32 i=0; i<max_no; ++i) {
+        switch(piece_status[i]){
+            case MISSING:
+                status = "Missing Pieces";
+                return;
+                break;
+            case SEEN:
+                seen_count++;
+                break;
+            case DOWNLOADING:
+                status = "Downloading";
+                downloading_count++;
+                break;
+            case DECODING:
+                break;
+            case FINISHED: 
+                finished_count++;
+                break;
+        }
+    }
+
+    if(num_pieces < max_no)
+        num_pieces = max_no;
+
+    if(finished_count == num_pieces)
+        status = "Finished";
+}
+
 bool PostFile::operator< (const PostFile &b)
 {
     console->log("Comparing " + this->filename + " with " + b.filename);
     return (this->filename < b.filename);
 }
+
