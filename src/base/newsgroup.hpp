@@ -29,7 +29,7 @@ class NewsGroup {
         void save_postsets(void);
         void load_postsets(void);
         static bool compare(const NewsGroup *a, const NewsGroup *b);
-        bool operator< (const NewsGroup& b);
+        bool operator<(const NewsGroup *b);
         void expire_old_postsets(Uint32 low_msg_id);
         Uint32 postset_index(PostSet *set);
 

@@ -80,12 +80,6 @@ void NewsGroup::load_from_file(string filename)
 {
 }
 
-bool NewsGroup::compare(const NewsGroup *a, const NewsGroup *b)
-{
-    console->log("Comparing " + a->name + " with " + b->name);
-    return a < b;
-}
-
 void load_groups_from(string filename)
 {
     StringPattern *pattern = new StringPattern(4);
@@ -219,8 +213,16 @@ NewsGroup *group_for_name(string groupname)
     return news;
 }
 
-bool NewsGroup::operator<(const NewsGroup& b)
+bool NewsGroup::compare(const NewsGroup *a, const NewsGroup *b)
+ {
+    console->log("compare called on " + a->name + " and " + b->name);
+    return a < b;
+}
+
+bool NewsGroup::operator<(const NewsGroup *b)
 {
-    console->log("comparing " + this->name + " with " + b.name);
-    return this->name < b.name;
+    console->log("comparing " + this->name + " with " + b->name);
+//    console->log("comparing " + a.name + " with " + b.name);
+    return strcmp((char*)this->name.c_str(), (char*)b->name.c_str()) < 0;
+//    return strcmp((char*)a.name.c_str(), (char*)b.name.c_str()) < 0;
 }

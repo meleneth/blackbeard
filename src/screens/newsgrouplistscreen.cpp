@@ -9,6 +9,7 @@
 #include<ncurses.h>
 #include<sstream>
 #include<vector>
+#include<algorithm>
 
 using std::stringstream;
 using std::string;
@@ -57,8 +58,8 @@ int NewsGroupListScreen::handle_input(int key)
                     console->log("Getting newsgroup list..");
                     return 0;
                 case 'S':
+                    console->log("sorting list");
                     scroll_list->sort();
-//                    std::sort(scroll_list->all_items.begin(), scroll_list->all_items.end());
                     return 0;
                 default:
                 ;

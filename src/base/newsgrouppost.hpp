@@ -14,6 +14,7 @@ class NewsGroupPost {
         // Public data members go here.
         NewsGroupPost(); // Constructor
         ~NewsGroupPost(); // Destructor
+        static bool compare(const NewsGroupPost *a, const NewsGroupPost *b);
 
         list<string> lines;
     private:

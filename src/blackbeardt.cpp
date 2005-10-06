@@ -42,6 +42,7 @@ void test_download_netjob(void);
 void test_crc32(void);
 void test_simple_x(void);
 void test_dynamic_postsplit(void);
+void test_string_sorting(void);
 
 void generate_subject_line_test(NewsGroup *group, string message_id, string subject);
 
@@ -69,6 +70,7 @@ int main(int argc, char *argv[])
     test_more_string_pattern();
     test_simple_x();
     test_dynamic_postsplit();
+    test_string_sorting();
 	return 0;
 }
 
@@ -310,4 +312,31 @@ void test_dynamic_postsplit(void)
 void shut_down(void)
 {
     printf("Mooooooo!\n");
+}
+
+void test_string_sorting(void)
+{
+    console->log("\n===== Testing string sorting code =====\n");
+    NewsGroup* group1 = new NewsGroup("blaj");
+    NewsGroup* group2 = new NewsGroup("blak");
+    NewsGroup* group3 = new NewsGroup("blai");
+    NewsGroup* group4 = new NewsGroup("blah");
+    vector<NewsGroup *> my_items;
+
+    my_items.push_back(group1);
+    my_items.push_back(group2);
+    my_items.push_back(group3);
+    my_items.push_back(group4);
+
+    assert_strings_eq(my_items[0]->name, "blaj");
+    assert_strings_eq(my_items[1]->name, "blak");
+    assert_strings_eq(my_items[2]->name, "blai");
+    assert_strings_eq(my_items[3]->name, "blah");
+
+    sort(my_items.begin(), my_items.end(), NewsGroup::compare);
+
+    assert_strings_eq(my_items[0]->name, "blah");
+    assert_strings_eq(my_items[1]->name, "blai");
+    assert_strings_eq(my_items[2]->name, "blaj");
+    assert_strings_eq(my_items[3]->name, "blak");
 }

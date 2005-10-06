@@ -4,6 +4,7 @@
 #include"newsgrouplistscreen.hpp"
 #include"activejobsscreen.hpp"
 #include"activenetjobsscreen.hpp"
+#include "textviewerscreen.hpp"
 
 Session::Session()
 {
@@ -11,13 +12,15 @@ Session::Session()
     postsetlist    = new PostSetListScreen();
     postsetdetail  = new PostSetDetailScreen();
     activejobs     = new ActiveJobsScreen();
-    activenetjobs     = new ActiveNetJobsScreen();
+    activenetjobs  = new ActiveNetJobsScreen();
+    textviewerlist = new TextViewerScreen();
     current_screen = newsgrouplist;
 }
 
 Session::~Session()
 {
     current_screen = new ShutDownScreen();
+    delete textviewerlist;
     delete newsgrouplist;
     delete postsetlist;
     delete postsetdetail;

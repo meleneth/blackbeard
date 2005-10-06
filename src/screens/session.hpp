@@ -11,6 +11,7 @@
 #include"postsetdetailscreen.hpp"
 #include"activejobsscreen.hpp"
 #include"activenetjobsscreen.hpp"
+#include"textviewerscreen.hpp"
 #include"shutdownscreen.hpp"
 
 class Session : public Screen{
@@ -30,6 +31,7 @@ class Session : public Screen{
         PostSetDetailScreen *postsetdetail;
         ActiveJobsScreen *activejobs; 
         ActiveNetJobsScreen *activenetjobs; 
+        TextViewerScreen *textviewerlist; 
         Widget *current_screen;
 
     private:

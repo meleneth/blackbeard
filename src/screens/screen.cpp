@@ -75,8 +75,6 @@ int Screen::handle_input(int key)
         case '?':
         case 'H':
             help_visible = !help_visible;
-            break;
-
         case IKEY_TAB:
             if(31337 == active_widget){
                 if(widgets.size()){
@@ -106,6 +104,10 @@ int Screen::handle_input(int key)
 
         case IKEY_F9:
             session->current_screen = session->activenetjobs;
+            break;
+
+        case 'v':
+            session->current_screen = session->textviewerlist;
             break;
 
         default:

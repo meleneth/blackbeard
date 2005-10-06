@@ -3,6 +3,7 @@
 #include"console.hpp"
 #include"netcentral.hpp"
 #include"postfilejob.hpp"
+#include"session.hpp"
 
 #include<sstream>
 #include<ncurses.h>
@@ -108,7 +109,12 @@ int PostSetDetailScreen::handle_input(int key)
                     f = (PostFile *) scroll_list->get_selected_item();
                     netcentral->add_job(new PostfileJob(f));
                     return 0; break;
-                    
+
+//                case 'v':
+//                    f = (PostFile *) scroll_list->get_selected_item();
+//                    session->current_screen = session->textviewerlist;
+//                    return 0; break;
+
                 default:
                     return key;
             }

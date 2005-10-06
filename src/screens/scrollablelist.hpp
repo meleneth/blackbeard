@@ -10,6 +10,7 @@
 
 #include<string>
 #include<sstream>
+#include<algorithm>
 
 #include<ncurses.h>
 
@@ -211,7 +212,6 @@ void ScrollableList<T>::sort(void)
 {
     console->log("ScrollableList::sort() called");
     std::sort(my_items.begin(), my_items.end(), T::compare);
-//    std::sort(my_items.begin(), my_items.end());
 }
 
 #endif
