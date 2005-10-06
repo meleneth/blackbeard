@@ -1,18 +1,24 @@
 known crashes:
-    resize window can die if it happens to hit inside select()
+    * resize window can die if it happens to hit inside select() -> seems to be fixed, wouldn't know how
     crashes on certain postset stats when displayed on postsetlist screen - usually when loading
     crashes on certain postsets when displayed on postsetlist screen
+    net jobs crash when they get cleared sometimes
+    needs to handle net errors due to i.e. message ID not being available - has bad response code
 
 Needs to do:
     * store list of active jobs in file
     * be able to retrieve headers as first thing if postset job doesn't have all the message id's
     keep up to date with headers in subscribed newsgroups, expire old ones and the postsets that had them
         after a postsetjob is done, add a new newsgroupping job
-    make indicators work
+    * make indicators work
     *   k/sec
         gigs downloaded
     * load previous jobs at startup
-    * fix yEnc decoder to be able to download further pieces if one piece missing - fseek problem not going past EOF
+    Save memory by stripping information for postsets we're not particularly interested into postset name, and min/max message_id for easy recreation with a targetted xover
+    have small log window, with scrollback
+    shorten info on post set detail - dont need XX/XX seen pieces
+    be able to view .nfo files
+
     silence logs, info should be user-useful.
     handle more msg ids coming in for a postset we have marked for retrieval -- doesn't this work automagically?  I think it does
     * be able to mark individual files from a postset for retrieval
@@ -22,8 +28,8 @@ Needs to do:
 *   skip PAR2's
     <Cancelled> save file info for postsets, not just postset
     fix displays
-        postset detail doesn't update display of files as they come in
-        *postset detail doesn't show actual status of downloading files
+        * postset detail doesn't update display of files as they come in
+        * postset detail doesn't show actual status of downloading files
 
 Decoders:
     Implement UUDecoder
@@ -31,23 +37,21 @@ Decoders:
     Implement MIME Decoder
     Optimize Decoders
 
-Pattern matching:
-    --
+*Pattern matching:
+*    --
 *    I want to be able to do this:
 *
 *    StringSplitter *splitter = new Stringsplitter();
 *    splitter << "(" << FILE_NUM << ")" << OTHER_TEXT;
 *
 *    and have it be able to handle the parsing from there.
-    --
 
-    load patterns from config file
+*   fix yEnc decoder to be able to download further pieces if one piece missing - fseek problem not going past EOF
 
 Interface:
 *   need to be able to use arrow keys to flip between PostSets
 *   need to be able to mark PostSet for retrieval
 *   show pieces of the file queue instead of the big log
-    have small log window, with scrollback
 *   only allow typing when you're on the log window
 *   typing is sending commands to system, not directly interupting TCP streams
 *   tab to switch panes
@@ -66,8 +70,7 @@ General:
 *   Add resize support (ncurses)
 *   Add net jobs
 *   Add decoder jobs
-    Save memory by stripping information for postsets we're not particularly interested into postset name, and min/max message_id for easy recreation with a targetted xover
     Persistence:
 *       newsgroups
 *       postsets
-        jobs
+*       jobs
