@@ -34,7 +34,6 @@ string last_msg;
 void test_header_scoop(void);
 void test_string_pattern(void);
 void test_strings(void);
-void test_postset_objects(void);
 void test_bit_manipulations(void);
 void test_uudecode(void);
 void test_more_string_pattern(void);
@@ -66,7 +65,6 @@ int main(int argc, char *argv[])
     test_strings();
     test_string_pattern();
     test_header_scoop();
-    test_postset_objects();
     test_bit_manipulations();
     test_more_string_pattern();
     test_simple_x();
@@ -243,31 +241,6 @@ void generate_subject_line_test(NewsGroup *group, string message_id, string subj
     
 }
 
-void test_postset_objects(void)
-{
-    console->log("Test PostSet");
-
-    PostSet *post = new PostSet("brick brothers presents");
-    post->file(1, 2, "info.txt");
-    post->file(2, 2, "checksum.SFV");
-
-    console->log("Objects created");
-
-    list<string> s;
-    s.push_back("info.txt");
-    s.push_back("checksum.SFV");
-    console->log("Calling assert_postset_filenames_eq");
-    assert_postset_filenames_eq(post, s);
-
-    console->log("Second pass..");
-    post = new PostSet("brick brothers presents");
-    post->file(0, 0, "info.txt");
-    post->file(0, 0, "checksum.SFV");
-
-    console->log("Calling assert_postset_filenames_eq");
-    assert_postset_filenames_eq(post, s);
-}
-
 void test_uudecode(void)
 {
     console->log("Test UUdecode");
@@ -315,8 +288,6 @@ void test_download_netjob(void)
     NewsGroup *group = new NewsGroup("fusion.downloads");
     PostSet *post = new PostSet("brick brothers presents");
     post->group = group;
-    post->file(1, 2, "info.txt")    ->part(1, 32, 31337);
-    post->file(2, 2, "checksum.SFV")->part(1, 32, 31338);
 
     PostsetJob *psj = new PostsetJob(post);
     psj->srv = (void *)4096;

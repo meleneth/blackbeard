@@ -224,6 +224,8 @@ void PostFile::update_status_from_pieces(void)
 
     if(finished_count == num_pieces)
         status = "Finished";
+
+    downloaded_pieces = downloading_count;
 }
 
 bool PostFile::operator< (const PostFile &b)

@@ -46,43 +46,6 @@ double PostSet::completed_percent(void)
     return ((double)downloaded_pieces / (double)total_pieces * (double) 100);
 }
 
-PostFile *PostSet::file(Uint32 file_num, Uint32 max_file_num, string file_name)
-{
-    stringstream buf;
-
-    //if(!file_name.compare("")){
-    //   return NULL;
-    //}
-
-    if(max_file_num != 0) {
-        if(!this->_max_num_files){
-            this->_max_num_files = max_file_num;
-            files.resize(_max_num_files + 1);
-            Uint32 i;
-            for(i=0;i<_max_num_files;i++){
-                files[i] = NULL;
-            }
-        }
-
-        if(file_num > _max_num_files){
-            if(config->debug_logging)
-                console->log("Cowardly refusing to do a crashy op");
-            return NULL;
-        }
-
-        if(files[file_num]){
-            return files[file_num];
-        }
-        
-        files[file_num] = new PostFile(this);
-        files[file_num]->filename = file_name;
-        num_files++;
-        return files[file_num];
-    }
-    
-    return file(file_name);
-}
-
 PostFile *PostSet::file(string filename)
 {
     if(_last_file){
