@@ -110,10 +110,15 @@ int PostSetDetailScreen::handle_input(int key)
                     netcentral->add_job(new PostfileJob(f));
                     return 0; break;
 
-//                case 'v':
-//                    f = (PostFile *) scroll_list->get_selected_item();
-//                    session->current_screen = session->textviewerlist;
-//                    return 0; break;
+                case 'v':
+                    console->log("checking for the current file");
+                    f = (PostFile *) scroll_list->get_selected_item();
+                    if (strcasestr(f->filename.c_str(), ".nfo")) {
+                        session->textviewerlist->set_file(f);
+                    }
+
+                    session->current_screen = session->textviewerlist;
+                    return 0; break;
 
                 default:
                     return key;

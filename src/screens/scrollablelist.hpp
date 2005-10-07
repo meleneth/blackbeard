@@ -183,6 +183,7 @@ int ScrollableList<T>::handle_input(int key)
                 
             default:
                 search_string += key;
+                pos_index = 0;
                 return 0; break;
                 
          }

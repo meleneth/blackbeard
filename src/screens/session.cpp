@@ -56,4 +56,3 @@ void Session::switch_shutdown_screen(void)
 {
     current_screen = new ShutDownScreen();
 }
-

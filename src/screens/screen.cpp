@@ -106,10 +106,6 @@ int Screen::handle_input(int key)
             session->current_screen = session->activenetjobs;
             break;
 
-        case 'v':
-            session->current_screen = session->textviewerlist;
-            break;
-
         default:
             return key;
     }

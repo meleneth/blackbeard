@@ -27,7 +27,6 @@ class PostFile {
         void saw_message_id(Uint32 msg_id);
         static bool compare(const PostFile* a, const PostFile* b);
         void update_status_from_pieces();
-        bool operator< (const PostFile &b);
         Uint32 is_par();
         Uint32 piece_no(Uint32 message_id);
         Uint32 max_msg_id(void);

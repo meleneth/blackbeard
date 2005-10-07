@@ -187,7 +187,7 @@ void PostFile::saw_message_id(Uint32 msg_id)
 
 bool PostFile::compare(const PostFile* a, const PostFile* b)
 {
-    return a < b;
+    return (a->filename < b->filename);
 }
 
 void PostFile::update_status_from_pieces(void)
@@ -227,10 +227,3 @@ void PostFile::update_status_from_pieces(void)
 
     downloaded_pieces = downloading_count;
 }
-
-bool PostFile::operator< (const PostFile &b)
-{
-    console->log("Comparing " + this->filename + " with " + b.filename);
-    return (this->filename < b.filename);
-}
-
