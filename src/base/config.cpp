@@ -126,6 +126,8 @@ void Config::read_config_file(void)
                 username = value;
             } else if(0 == cmd.compare("password")){
                 password = value;
+            } else if(0 == cmd.compare("max_net_connections")){
+                max_net_connections = atoi(value.c_str());
             } else {
                 console->log("Unknown line: " + line);
             }
@@ -146,6 +148,7 @@ void Config::setup_files(void)
     out << "#news_port=119" << endl;
     out << "#username=anonymous" << endl;
     out << "#password=guest" << endl;
+    out << "#max_net_connections=4" << endl;
     out.close();
 }
 
