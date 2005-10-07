@@ -89,6 +89,10 @@ int PostSetListScreen::handle_input(int key)
             console->log("Queued header retrieval for postset " + s->subject);
             return 0;
         }
+        if (key == 'S') {
+            scroll_list->sort();
+            scroll_list->pos_index = 0;
+        }
     }
     return Screen::handle_input(key);
 }

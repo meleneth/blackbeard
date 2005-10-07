@@ -58,8 +58,8 @@ int NewsGroupListScreen::handle_input(int key)
                     console->log("Getting newsgroup list..");
                     return 0;
                 case 'S':
-                    console->log("sorting list");
                     scroll_list->sort();
+                    scroll_list->pos_index = 0;
                     return 0;
                 default:
                 ;
