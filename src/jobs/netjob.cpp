@@ -45,6 +45,10 @@ void NetJob::process(void)
         return;
     }
 
+    if(server->last_command_failed){
+        finish();
+    }
+
     while(max_lines-- && server->has_data_waiting()){
         string line = server->get_next_multi_line();
         if(server->is_multiline_reading) {

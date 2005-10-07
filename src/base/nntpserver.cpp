@@ -13,6 +13,8 @@ using std::stringstream;
 
 extern void shut_down(void);
 
+#define NO_SUCH_MESSAGE "423"
+
 // Public data members go here.
 NNTPServer::NNTPServer(string hostname, int port) : TCPConnection(hostname, port) // Constructor
 {
@@ -60,6 +62,8 @@ void NNTPServer::tick(void)
                 console->log("Cmd Rspnse: " + line);
                 string server_response = line.substr(0, 3);
                 _status = NS_CONNECTED;
+                if(0 == server_response.compare(NO_SUCH_MESSAGE))
+                    last_command_failed = 1;
                 if(0 == server_response.compare(AUTH_REQUIRED)){
                     console->log("Server is requesting authentication.  Logging in.");
                     login(config->username, config->password);
@@ -215,6 +219,7 @@ void NNTPServer::read_xover_response()
 
 void NNTPServer::send_command(string command)
 {
+    last_command_failed = 0;
     if(has_data_waiting()){
         console->log("It is an error to try to send a command with the following data ready to be read:");
         console->log(get_line());

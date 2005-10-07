@@ -39,17 +39,21 @@ string BodyRetrieverJob::status_line(void)
 void BodyRetrieverJob::finish()
 {
     file->downloaded_pieces++;
-    switch(file->decoder_type){
-        case DT_YENC:
-            jobqueue->jobs.push_back(new yEncDecoder(post, file));
+    if(post->lines.size()){
+        switch(file->decoder_type){
+            case DT_YENC:
+                jobqueue->jobs.push_back(new yEncDecoder(post, file));
+                break;
+            case DT_UUDECODE:
+                jobqueue->jobs.push_back(new UUDecoder(post, file, msg_id));
+                break;
+            case DT_MIME:
+            case DT_UNKNOWN:
+                console->log("Dunno what to do with this type of encoded material");
             break;
-        case DT_UUDECODE:
-            jobqueue->jobs.push_back(new UUDecoder(post, file, msg_id));
-            break;
-        case DT_MIME:
-        case DT_UNKNOWN:
-            console->log("Dunno what to do with this type of encoded material");
-        break;
+        }
+    }else{
+        delete post;
     }
     NetJob::finish();
 }

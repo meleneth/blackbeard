@@ -54,9 +54,10 @@ class NNTPServer : public TCPConnection {
 	    NNTPServer_Status _status;
         string _username;
         string _password;
-    Uint32 is_connected;
-    Uint32 is_multiline_reading;
-    NewsGroup *newsgroup;
+        Uint32 is_connected;
+        Uint32 is_multiline_reading;
+        NewsGroup *newsgroup;
+        Uint32 last_command_failed;
     private:
         // Private members go here.
     protected:
