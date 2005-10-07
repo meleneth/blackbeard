@@ -1,0 +1,18 @@
+Jobs need:
+ability to create / register sub-jobs <- so PostSetJob can have PostFileJobs that can have BodyRetriever and Decoder jobs
+netcentral / jobqueue split still needed
+jobs get parent, which is their hook back into who owns them
+ability to handle a command that failed -> connections hang currently when a msg id cannot be retrieved
+
+how to handle net connections better:
+postset jobs and file jobs lose their network connections, which leave only bodyretriver and headerretriever jobs that need net connection
+
+how do I put postset / file jobs on the main queue?
+
+newsgroups need live_min_id live_max_id for what ranges we have xover'd in this run.  Individual postset downloads do not affect this, unless they overlap the range
+
+"shake the tree" style - postset queues a file's worth of messages, file queues all message id's for that file..
+
+job priority - interactive jobs should get a connection ASAP
+
+
