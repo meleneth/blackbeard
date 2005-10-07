@@ -12,7 +12,11 @@ how do I put postset / file jobs on the main queue?
 newsgroups need live_min_id live_max_id for what ranges we have xover'd in this run.  Individual postset downloads do not affect this, unless they overlap the range
 
 "shake the tree" style - postset queues a file's worth of messages, file queues all message id's for that file..
+  -- would this be easier with a third job queue?  for the Orchard?  (har)
+  -- header job should queue range jobs 
+  -- new range stuff means postset->has_msg_ids should change to reflect the retrieved headers this session
+  -- since restore file is so small anyways it might make sense to store file info as well
 
-job priority - interactive jobs should get a connection ASAP
+job priority - interactive jobs should get a connection ASAP.  This can be faked by pushing to the front of the list (?)
 
 
