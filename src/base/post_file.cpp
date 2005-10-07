@@ -19,7 +19,7 @@ PostFile::PostFile(PostSet *postset)
     downloaded_pieces = 0;
     post_set = postset;
     decoder_type = DT_UNKNOWN;
-    status = "-ignored-";
+    status = "Ignored";
     piece_size = 0;
 }
     
@@ -94,8 +94,7 @@ string PostFile::status_string(void)
 {
     stringstream mystatus;
     mystatus << filename << " - " << status << " - ";
-    mystatus << seen_pieces << "/" << num_pieces << " pieces seen   " 
-             << downloaded_pieces << "/"  << num_pieces << " pieces downloaded  ";
+    mystatus << downloaded_pieces << "/"  << num_pieces << " pieces downloaded  ";
     if(num_pieces == downloaded_pieces){
         mystatus << "100%";
    }else{

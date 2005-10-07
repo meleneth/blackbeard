@@ -52,9 +52,7 @@ Uint32 NewsGroup::postset_index(PostSet *set)
        if(set == postsets[i])
            return i;
     }
-    Uint32 i=0;
-    i--;
-    return i;
+    return 0;
 }
 
 PostSet *NewsGroup::postset_for_subject(string subject)

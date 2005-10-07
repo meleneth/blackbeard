@@ -46,8 +46,10 @@ int main(int argc, char *argv[])
     }
 
     while(1){
-        jobqueue->process_jobs();
-        netcentral->process_jobs();
+        for(Uint32 process = 0; process < 5; ++process){
+            jobqueue->process_jobs();
+            netcentral->process_jobs();
+        }
 
         int key = getch();
         if(key != ERR){

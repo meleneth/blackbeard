@@ -135,6 +135,12 @@ PSDMSubMatch::~PSDMSubMatch()
 void PSDMSubMatch::process_header(MessageHeader *header)
 {
     if(pattern->match(header->subject)){
+        if(group->last_article_number < header->message_id){
+            group->last_article_number = header->message_id;
+        }
+        if(group->first_article_number == 0)
+            group->first_article_number = header->message_id;
+
         if(filename_index != -1){
 //            console->log("Handling result for '" + pattern->results[filename_index] + "'");
             postset = get_postset(header);

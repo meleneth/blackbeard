@@ -51,6 +51,7 @@ Job* PostfileJob::get_next_job()
                 return new_job;
         }
         if(++piece_no > postfile->num_pieces){
+            postfile->status = "Finished";
             is_finished = 1;
         }
     } else {

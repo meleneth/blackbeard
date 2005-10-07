@@ -2,6 +2,7 @@
 #include"console.hpp"
 #include"nntpserver.hpp"
 
+#define NOT_FOUND_ERROR "423"
 
 NetJob::NetJob()
 {

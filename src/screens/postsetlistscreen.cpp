@@ -16,6 +16,7 @@ PostSetListScreen::PostSetListScreen()
     scroll_list = new ScrollableList<PostSet>;
     scroll_list->screen = this;
     widgets.push_back(scroll_list);
+    newsgroup = NULL;
 }
 
 PostSetListScreen::~PostSetListScreen()
@@ -50,14 +51,15 @@ void PostSetListScreen::render(void)
     scroll_list->width = width -1;
     scroll_list->ypos = ypos + 1;
     
+    string statusline = "PostSetListScreen::render";
     if(group){
         if(scroll_list->known_size != group->postsets.size()){
             scroll_list->all_items = group->postsets;
         }
+        statusline += " + " + group->name;
     }
     Screen::render();
-
-    mvaddnstr(ypos, xpos + 1, "PostSetListScreen::render", -1);
+    mvaddnstr(ypos, xpos + 1, statusline.c_str(), -1);
 }
 
 void PostSetListScreen::render_help(void)

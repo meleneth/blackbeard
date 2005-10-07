@@ -82,6 +82,7 @@ void NetCentral::process_jobs(void)
         }    
     }
     
+    vector<Job *> still_running;
     for(i = 0; i<max_jobid; ++i){
         Job *job = active_jobs[i];
         NNTPServer *connection = (NNTPServer *) job->srv;
@@ -99,15 +100,17 @@ void NetCentral::process_jobs(void)
             if(new_job){
                 new_job->srv = job->srv;
                 active_jobs[i] = new_job;
+                still_running.push_back(new_job);
             }else{
-                //FIXME what happens to srv connection here?
-                active_jobs.erase(active_jobs.begin() + i);
-                max_jobid = active_jobs.size();
-                i--;
+                delete connection;
+                connection = NULL;
             }
-                delete job;
+            delete job;
+        } else {
+            still_running.push_back(job);
         }
     }
+    active_jobs = still_running;
 }
 
 void NetCentral::save_active_list_file(void)
