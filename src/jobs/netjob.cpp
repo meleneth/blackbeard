@@ -65,8 +65,3 @@ void NetJob::process_line(string line)
     console->log("Probably want to override NetJob::process_line");
 }
 
-void NetJob::finish(void)
-{
-    is_finished = 1;
-    console->log("Job finished");
-}

@@ -20,7 +20,6 @@ class NetJob : public Job {
         ~NetJob();
         virtual void process(void);
         virtual void process_line(string line);
-        virtual void finish(void);
 
         list<string> net_cmds;
         NewsGroup *group;
