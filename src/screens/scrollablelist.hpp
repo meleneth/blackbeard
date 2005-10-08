@@ -219,7 +219,6 @@ void *ScrollableList<T>::get_selected_item(void)
 template <class T>
 void ScrollableList<T>::sort(void)
 {
-    console->log("ScrollableList::sort() called");
     std::sort(my_items.begin(), my_items.end(), T::compare);
 }
 

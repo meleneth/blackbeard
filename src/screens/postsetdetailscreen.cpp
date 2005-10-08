@@ -117,7 +117,7 @@ int PostSetDetailScreen::handle_input(int key)
                 case 'v':
                     console->log("checking for the current file");
                     f = (PostFile *) scroll_list->get_selected_item();
-                    if (strstr(strupr((char*)f->filename.c_str()), ".NFO")) {
+                    if (strstr((char*)f->filename.c_str(), ".nfo")) {
                         session->textviewerlist->set_file(f);
                     }
 
