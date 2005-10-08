@@ -22,6 +22,11 @@ PostSet::PostSet(string subject)
     
 PostSet::~PostSet() 
 {
+    Uint32 max_no = files.size();
+    for(Uint32 i=0; i<max_no; ++i){
+        delete files[i];
+    }
+    files.clear();
 }
 
 double PostSet::completed_percent(void)

@@ -9,6 +9,17 @@ JobQueue::JobQueue()
     
 JobQueue::~JobQueue() 
 {
+    Uint32 max_no = active_jobs.size();
+    for(Uint32 i=0; i<max_no; ++i){
+        delete active_jobs[i];
+    }
+    active_jobs.clear();
+
+    max_no = jobs.size();
+    for(Uint32 i=0; i<max_no; ++i){
+        delete jobs[i];
+    }
+    jobs.clear();
 }
 
 void JobQueue::process_jobs(void)

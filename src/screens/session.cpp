@@ -1,9 +1,9 @@
 #include "session.hpp"
-#include"postsetlistscreen.hpp"
-#include"postsetdetailscreen.hpp"
-#include"newsgrouplistscreen.hpp"
-#include"activejobsscreen.hpp"
-#include"activenetjobsscreen.hpp"
+#include "postsetlistscreen.hpp"
+#include "postsetdetailscreen.hpp"
+#include "newsgrouplistscreen.hpp"
+#include "activejobsscreen.hpp"
+#include "activenetjobsscreen.hpp"
 #include "textviewerscreen.hpp"
 
 Session::Session()

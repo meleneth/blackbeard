@@ -11,6 +11,11 @@ PostSetSplitterDynamicMatch::PostSetSplitterDynamicMatch(NewsGroup *group):PostS
 
 PostSetSplitterDynamicMatch::~PostSetSplitterDynamicMatch()
 {
+    Uint32 max_no = active.size();
+    for(Uint32 i=0; i<max_no; ++i){
+        delete active[i];
+    }
+    active.clear();
 }
 
 void PostSetSplitterDynamicMatch::process_header(MessageHeader *header)

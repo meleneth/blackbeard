@@ -14,11 +14,12 @@ using std::setprecision;
 Console::Console() // Constructor
 {
     print_logs = 0;
-    box_log("Console Initialized");
     input = "";
     print_on_delete = 0;
     keep_logs = 1;
     save_to_file = 0;
+
+    box_log("Console Initialized");
 }
 
 Console::~Console() // Destructor

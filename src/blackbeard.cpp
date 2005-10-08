@@ -97,6 +97,14 @@ void do_init(void)
 static void finish(int sig)
 {
     endwin();
+    delete netcentral;
+    delete jobqueue;
+    delete session;
+    Uint32 max_no = newsgroups.size();
+    for(Uint32 i=0; i<max_no; ++i){
+        delete newsgroups[i];
+    }
+    newsgroups.clear();
     delete console;
     printf("Finish called\n");
     printf(last_msg.c_str());

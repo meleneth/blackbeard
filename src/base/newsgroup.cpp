@@ -33,6 +33,12 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     
 NewsGroup::~NewsGroup() // Destructor
 {
+    delete splitter;
+    Uint32 max_no = postsets.size();
+    for(Uint32 i=0; i<max_no; ++i){
+        delete postsets[i];
+    }
+    postsets.clear();
 }
 
 void NewsGroup::header_scoop(string xover_line)
