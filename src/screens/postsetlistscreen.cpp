@@ -6,7 +6,11 @@
 #include"netcentral.hpp"
 #include"postsetjob.hpp"
 #include"headersforgroupjob.hpp"
+#ifdef __WIN32__
+#include<curses.h>
+#else
 #include<ncurses.h>
+#endif
 #include<sstream>
 
 using std::stringstream;
@@ -36,11 +40,11 @@ void PostSetListScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 w
     
     PostSet *set = (PostSet *) postset;
     
-    mvaddnstr(yindex, x, set->subject.c_str(), -1);
+    mvaddnstr(yindex, x, (char*)set->subject.c_str(), -1);
     
     buf << "[" << set->num_files << "/" << set->max_num_files() << "]";
     str = buf.str();
-    mvaddnstr(yindex,  x + width - 3 - str.length(), str.c_str(), -1);
+    mvaddnstr(yindex,  x + width - 3 - str.length(), (char*)str.c_str(), -1);
 }
 
 void PostSetListScreen::render(void)
@@ -59,7 +63,7 @@ void PostSetListScreen::render(void)
         statusline += " + " + group->name;
     }
     Screen::render();
-    mvaddnstr(ypos, xpos + 1, statusline.c_str(), -1);
+    mvaddnstr(ypos, xpos + 1, (char*)statusline.c_str(), -1);
 }
 
 void PostSetListScreen::render_help(void)

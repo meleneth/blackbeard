@@ -37,7 +37,7 @@ void ActiveNetJobsScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32
     Job *current_job = (Job *) job;
     if(current_job){
         //console->log(current_job->status_line().c_str());
-        mvaddnstr(yindex, x, current_job->status_line().c_str(), -1);
+        mvaddnstr(yindex, x, (char*)current_job->status_line().c_str(), -1);
     }
 }
 

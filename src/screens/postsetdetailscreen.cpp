@@ -6,7 +6,11 @@
 #include"session.hpp"
 
 #include<sstream>
+#ifdef __WIN32__
+#include<curses.h>
+#else
 #include<ncurses.h>
+#endif
 
 using std::stringstream;
 
@@ -47,7 +51,7 @@ void PostSetDetailScreen::render(void)
 
     if(newsgroup){
         string groupline = newsgroup->name + " ( " + newsgroup->status + " )";
-        mvaddnstr(1, 1, groupline.c_str(), -1);
+        mvaddnstr(1, 1, (char*)groupline.c_str(), -1);
         
         attron(A_BOLD);
         num_postsets = newsgroup->postsets.size();
@@ -58,12 +62,12 @@ void PostSetDetailScreen::render(void)
 
         if(set){
             scroll_list->all_items = set->files;
-            mvaddnstr(2, 1, set->status().c_str(), -1);
+            mvaddnstr(2, 1, (char*)set->status().c_str(), -1);
 
             stringstream buf;
             buf << "(" << postset_index << "/" << num_postsets << ") postsets";
             string str = buf.str();
-            mvaddnstr(3, COLS - (str.length() + 3), str.c_str(), -1);
+            mvaddnstr(3, COLS - (str.length() + 3), (char*)str.c_str(), -1);
         }
         attroff(A_BOLD);
     }
@@ -76,8 +80,8 @@ void PostSetDetailScreen::render_scrollable_line(Uint32 y, Uint32 x, Uint32 widt
     if(ptr){
         string completed_bar;
         completed_bar = ((PostFile *) ptr)->get_bar();
-        mvaddnstr(y, 1, ((PostFile *) ptr)->status_string().c_str(), -1);
-        mvaddnstr(y, COLS - completed_bar.length() -3, completed_bar.c_str(), -1);
+        mvaddnstr(y, 1, (char*)((PostFile *) ptr)->status_string().c_str(), -1);
+        mvaddnstr(y, COLS - completed_bar.length() -3, (char*)completed_bar.c_str(), -1);
     }
 }
 
@@ -113,7 +117,7 @@ int PostSetDetailScreen::handle_input(int key)
                 case 'v':
                     console->log("checking for the current file");
                     f = (PostFile *) scroll_list->get_selected_item();
-                    if (strcasestr(f->filename.c_str(), ".nfo")) {
+                    if (strstr(strupr((char*)f->filename.c_str()), ".NFO")) {
                         session->textviewerlist->set_file(f);
                     }
 

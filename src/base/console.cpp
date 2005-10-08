@@ -1,5 +1,11 @@
 #include "console.hpp"
+
+#ifdef __WIN32__
+#include <curses.h>
+#else
 #include <ncurses.h>
+#endif
+
 #include<iomanip>
 #include"config.hpp"
 
@@ -53,7 +59,7 @@ void Console::render(Uint32 top, Uint32 bottom)
 
     for(i = loglines.begin() ; (i != loglines.end()) && counter > top; ++i)
     {
-        mvaddnstr(counter, 2,  i->c_str(), -1);
+        mvaddnstr(counter, 2,  (char*)i->c_str(), -1);
         counter--;
     }
 }
@@ -106,8 +112,8 @@ void Console::draw_box(Uint32 x, Uint32 y, Uint32 width, Uint32 height)
     w[0] = '+';
     w[width] = '+';
 
-    mvaddnstr(y, x, w.c_str(), -1);
-    mvaddnstr(y+height, x, w.c_str(), -1);
+    mvaddnstr(y, x, (char*)w.c_str(), -1);
+    mvaddnstr(y+height, x, (char*)w.c_str(), -1);
 
     for(Uint32 yo=1; yo < height; ++yo){
         mvaddnstr(y+yo, x, "|", -1);

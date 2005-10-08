@@ -1,6 +1,10 @@
 #include "shutdownscreen.hpp"
 
+#ifdef __WIN32__
+#include<curses.h>
+#else
 #include<ncurses.h>
+#endif
 
 ShutDownScreen::ShutDownScreen()
 {

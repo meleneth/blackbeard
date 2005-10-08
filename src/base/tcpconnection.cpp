@@ -1,8 +1,6 @@
 #include "tcpconnection.hpp"
 #include "console.hpp"
 
-#include<pthread.h>
-
 // Public data members go here.
 TCPConnection::TCPConnection(string hostname, int port) // Constructor
 {

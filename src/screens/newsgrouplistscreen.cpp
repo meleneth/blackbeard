@@ -6,7 +6,11 @@
 #include"newsgrouplistretrieverjob.hpp"
 #include"headersforgroupjob.hpp"
 #include"console.hpp"
+#ifdef __WIN32__
+#include<curses.h>
+#else
 #include<ncurses.h>
+#endif
 #include<sstream>
 #include<vector>
 #include<algorithm>
@@ -109,7 +113,7 @@ void NewsGroupListScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32
         << ", " << g->last_article_number - g->first_article_number << " possible"; 
     if(g->is_subscribed)
         attron(A_BOLD);
-    mvaddnstr(yindex,  x, buf.str().c_str(), -1);
+    mvaddnstr(yindex,  x, (char*)buf.str().c_str(), -1);
     attroff(A_BOLD);
 }
 

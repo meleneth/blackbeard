@@ -139,8 +139,13 @@ void Config::read_config_file(void)
 
 void Config::setup_files(void)
 {
+#ifdef __WIN32__
+    mkdir(blackbeard_dir.c_str());
+    mkdir(blackbeard_data_dir.c_str());
+#else
     mkdir(blackbeard_dir.c_str(), 01777);
     mkdir(blackbeard_data_dir.c_str(), 01777);
+#endif
 
     ofstream out;
     out.open(config_filename.c_str(), ios::out);

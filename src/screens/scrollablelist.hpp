@@ -12,7 +12,11 @@
 #include<sstream>
 #include<algorithm>
 
+#ifdef __WIN32__
+#include <curses.h>
+#else
 #include<ncurses.h>
+#endif
 
 using std::string;
 using std::stringstream;
@@ -70,7 +74,7 @@ void ScrollableList<T>::render(void)
     if(is_searching){
         buf << "|--> " << search_string << " ";
         str = buf.str();
-        mvaddnstr(height+1, xpos + 1, str.c_str(), -1);
+        mvaddnstr(height+1, xpos + 1, (char*)str.c_str(), -1);
         buf.str("");
         refine_search();
     }
@@ -91,13 +95,17 @@ void ScrollableList<T>::render(void)
     for (Uint32 i = 0; i < max_size; ++i){
 
         if(pos_index == (yindex - ypos + scroll_index)) {
+#ifndef __WIN32__
             color_set(2, NULL);
+#endif
             mvaddnstr(yindex, xpos + 1, "**", -1);
         }
 
         screen->render_scrollable_line(yindex, xpos + 3, width, my_items[scroll_index + i]);
 
+#ifndef __WIN32__
         color_set(1, NULL);
+#endif
         ++yindex;
     }
 }

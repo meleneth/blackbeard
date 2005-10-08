@@ -5,6 +5,9 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <unistd.h>
+#include <iostream>  // I/O 
+#include <fstream>   // file I/O
 
 
 #define DECODER_LINES_PER_SLICE 2000
@@ -63,7 +66,11 @@ void Decoder::open_file(void)
     string dest_dir = config->blackbeard_dir + "/" + safe_dirname(post_file->post_set->subject);
     if(stat(dest_dir.c_str(), &my_stats) == -1){
         console->log("Creating dir for decode");
+#ifdef __WIN32__
+        mkdir(dest_dir.c_str());
+#else
         mkdir(dest_dir.c_str(), 01777);
+#endif
     }else {
         console->log("download dir found");
     }

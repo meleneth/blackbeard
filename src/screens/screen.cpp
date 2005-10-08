@@ -5,7 +5,11 @@
 #include"jobqueue.hpp"
 #include"netcentral.hpp"
 
+#ifdef __WIN32__
+#include<curses.h>
+#else
 #include<ncurses.h>
+#endif
 #include<sstream>
 
 using std::stringstream;
@@ -41,7 +45,7 @@ void Screen::render(void)
 
     stringstream buf;
     buf << netcentral->jobs.size() << " jobs queued " << netcentral->krate() << "k/sec 0G downloaded";
-    mvaddnstr(ypos + height, xpos + 2, buf.str().c_str(), -1);
+    mvaddnstr(ypos + height, xpos + 2, (char*)buf.str().c_str(), -1);
 
 }
 

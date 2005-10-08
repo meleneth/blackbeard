@@ -31,7 +31,7 @@ void TextViewerScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 wi
         console->log("rendering line");
         string is_loading = "Loading file: " + file->filename;
         console->log(is_loading);
-        mvaddnstr(yindex++, xpos + 2, is_loading.c_str(), -1);
+        mvaddnstr(yindex++, xpos + 2, (char*)is_loading.c_str(), -1);
     }
 }
 

@@ -44,7 +44,11 @@ Uint32 NetCentral::krate(void)
 void NetCentral::process_jobs(void)
 {
     if((0 == jobs.size()) && (0 == active_jobs.size())){
+#ifdef __WIN32__
+	Sleep(10);
+#else
         usleep(10);
+#endif
         return;
     }
 

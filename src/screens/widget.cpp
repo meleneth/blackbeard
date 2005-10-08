@@ -4,7 +4,11 @@
 #include"session.hpp"
 #include"keydefs.hpp"
 #include"post_set.hpp"
+#ifdef __WIN32__
+#include<curses.h>
+#else
 #include<ncurses.h>
+#endif
 
 Widget::Widget()
 {

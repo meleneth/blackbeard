@@ -1,7 +1,9 @@
 #include<signal.h>
+#ifdef __WIN32__
+#include<curses.h>
+#else
 #include<ncurses.h>
-
-#include<algorithm>
+#endif
 
 #include"tcpconnection.hpp"
 #include"config.hpp"
@@ -104,7 +106,9 @@ static void finish(int sig)
     for(Uint32 i=0; i<max_no; ++i){
         delete newsgroups[i];
     }
+#ifndef __WIN32__
     newsgroups.clear();
+#endif
     delete console;
     printf("Finish called\n");
     printf(last_msg.c_str());
