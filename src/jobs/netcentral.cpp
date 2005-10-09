@@ -70,7 +70,10 @@ void NetCentral::process_jobs(void)
         }
     }
 
-    if (select(fdmax+1, &read_fds, NULL, NULL, &tv) == -1) {
+    int result;
+    do { result = select(fdmax+1, &read_fds, NULL, NULL, &tv); } 
+    while((result == -1) && (errno == EINTR)); 
+    if(result == -1){
         perror("select");
         exit(1);
     }
