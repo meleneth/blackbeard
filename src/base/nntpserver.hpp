@@ -58,6 +58,7 @@ class NNTPServer : public TCPConnection {
         Uint32 is_multiline_reading;
         NewsGroup *newsgroup;
         Uint32 last_command_failed;
+        vector<string> responses; 
     private:
         // Private members go here.
     protected:

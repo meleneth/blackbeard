@@ -25,6 +25,7 @@ void NetJob::process(void)
                 if(group){
                     if(group != server->newsgroup){
                         string cmd = "group " + group->name;
+                        server->responses.clear();
                         server->send_command(cmd);
                         server->newsgroup = group;
                         return;
