@@ -78,7 +78,11 @@ void ScrollableList<T>::render(void)
         buf.str("");
         refine_search();
     }
-        
+    
+    if(pos_index > my_items.size()){
+        pos_index = 0;
+    }
+
     if(known_size != all_items.size()){
         known_size = all_items.size();
         refine_search();
@@ -154,6 +158,7 @@ int ScrollableList<T>::handle_input(int key)
             my_items = all_items;
             is_searching = 1;
             search_string = "";
+            pos_index = 0;
             return 0; break;
             
         case IKEY_HOME:
