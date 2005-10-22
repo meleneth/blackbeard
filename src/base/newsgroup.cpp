@@ -174,13 +174,15 @@ void NewsGroup::load_postsets(void)
 
 void NewsGroup::expire_old_postsets(Uint32 low_msg_id)
 {
-    vector <PostSet *> delete_me;
+    vector <PostSet *> still_around;
     Uint32 max_no = postsets.size();
     for(Uint32 i=0; i<max_no; i++){
-        if(postsets[i]->min_msg_id() < low_msg_id){
-            delete_me.push_back(postsets[i]);
+        if(postsets[i]->min_msg_id() > low_msg_id){
+            still_around.push_back(postsets[i]);
+
         }
     }
+    postsets = still_around;
 }
 
 void save_subscribed_groups_to(string filename)

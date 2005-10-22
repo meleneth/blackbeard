@@ -11,7 +11,6 @@ class GroupUpdater : public Job {
 
         virtual void process(void);
         NewsGroup *group;
-        Job *sub_job;
 
         Uint32 sent_command;
 

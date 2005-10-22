@@ -236,6 +236,7 @@ void NNTPServer::send_command(string command)
     _current_command = command;
     TCPConnection::send_command(command);
     _status = NS_COMMAND_RESPONSE;
+    responses.clear();
 }
 
 string NNTPServer::get_next_multi_line(void)
