@@ -29,22 +29,17 @@ PostFile::~PostFile()
 
 Uint32 PostFile::is_par()
 {
-    StringPattern *pattern = new StringPattern(2);
+    StringPattern pattern(2);
 
-    pattern->add_breaker(".PAR2");
-    if(pattern->match(filename)){
-        delete pattern;
+    pattern.add_breaker(".PAR2");
+    if(pattern.match(filename)){
         return 1;
     }
-    delete pattern;
-    pattern = new StringPattern(2);
-
-    pattern->add_breaker(".par2");
-    if(pattern->match(filename)){
-        delete pattern;
+    pattern = StringPattern(2);
+    pattern.add_breaker(".par2");
+    if(pattern.match(filename)){
         return 1;
     }
-    delete pattern;
     return 0;
 }
 
