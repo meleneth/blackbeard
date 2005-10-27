@@ -6,6 +6,7 @@ known crashes:
     needs to handle net errors due to i.e. message ID not being available - has bad response code
 
 Needs to do:
+    store a list of previous downloads, browsable and be able to go to the postset detail by hitting enter on the list
     * store list of active jobs in file
     * be able to retrieve headers as first thing if postset job doesn't have all the message id's
     keep up to date with headers in subscribed newsgroups, expire old ones and the postsets that had them
