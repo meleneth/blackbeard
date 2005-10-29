@@ -7,6 +7,7 @@ known crashes:
 
 Needs to do:
     store a list of previous downloads, browsable and be able to go to the postset detail by hitting enter on the list
+    percentages for header retrieval jobs
     * store list of active jobs in file
     * be able to retrieve headers as first thing if postset job doesn't have all the message id's
     keep up to date with headers in subscribed newsgroups, expire old ones and the postsets that had them
@@ -19,6 +20,13 @@ Needs to do:
     have small log window, with scrollback
     shorten info on post set detail - dont need XX/XX seen pieces
     be able to view .nfo files
+    additional status line on post set list screen, showing tags 
+        [nfo] = has .nfo file 
+        [sfv] = has .sfv file
+        [par2] = has .par2 file(s)
+        [broken] = has corrupt pieces
+        [fixable] = has corrupt pieces, and par2's.  will try to grab par files as well
+
 
     silence logs, info should be user-useful.
     handle more msg ids coming in for a postset we have marked for retrieval -- doesn't this work automagically?  I think it does

@@ -52,6 +52,7 @@ PostsetJob::PostsetJob(string filename)
     piece_no = 0;
     job_status_filename = filename;
     load_job_status();
+    job_type = POSTSET_DOWNLOAD;
 }
 
 PostsetJob::~PostsetJob()
@@ -70,7 +71,7 @@ Job* PostsetJob::get_next_job()
         return new_job;
     }
 
-    if(file_no > postset->num_files){
+    if(file_no > (postset->files.size() - 1)){
         is_finished = 1;
         return NULL;
     }

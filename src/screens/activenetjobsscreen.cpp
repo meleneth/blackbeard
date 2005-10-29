@@ -24,8 +24,9 @@ ActiveNetJobsScreen::~ActiveNetJobsScreen()
 void ActiveNetJobsScreen::handle_selection(Uint32 index)
 {
     Job *job = widget_ptr->my_items[index];
-
+    
     if(job->job_type == POSTSET_DOWNLOAD){
+        console->log("Attempting switch..");
         PostsetJob *j = (PostsetJob *)job;
         PostSet *set = j->postset;
         session->switch_postset_detail(set->group, set->group->postset_index(set));

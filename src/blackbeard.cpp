@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     }
 
     while(1){
-        for(Uint32 process = 0; process < 5; ++process){
+        for(Uint32 process = 0; process < 8; ++process){
             jobqueue->process_jobs();
             netcentral->process_jobs();
         }

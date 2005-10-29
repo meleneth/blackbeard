@@ -10,7 +10,7 @@
 #include <fstream>   // file I/O
 
 
-#define DECODER_LINES_PER_SLICE 2000
+#define DECODER_LINES_PER_SLICE 200
 
 // Public data members go here.
 //

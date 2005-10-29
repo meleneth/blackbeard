@@ -101,12 +101,14 @@ int PostSetDetailScreen::handle_input(int key)
                 case IKEY_LEFTARROW:
                     if (postset_index){
                         --postset_index;
+                        scroll_list->pos_index = 0;
                     }
                     return 0; break;
                     
                 case IKEY_RIGHTARROW:
                     if (postset_index < max_size){
                         ++postset_index;
+                        scroll_list->pos_index = 0;
                     }
                     return 0; break;
                 case 'd':
