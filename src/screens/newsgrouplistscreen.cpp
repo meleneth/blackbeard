@@ -1,11 +1,12 @@
 #include "newsgrouplistscreen.hpp"
-#include"keydefs.hpp"
-#include"session.hpp"
-#include"netcentral.hpp"
-#include"jobqueue.hpp"
-#include"newsgrouplistretrieverjob.hpp"
-#include"headersforgroupjob.hpp"
-#include"console.hpp"
+#include "keydefs.hpp"
+#include "session.hpp"
+#include "netcentral.hpp"
+#include "jobqueue.hpp"
+#include "newsgrouplistretrieverjob.hpp"
+#include "headersforgroupjob.hpp"
+#include "groupupdater.hpp"
+#include "console.hpp"
 #ifdef __WIN32__
 #include<curses.h>
 #else
@@ -60,6 +61,13 @@ int NewsGroupListScreen::handle_input(int key)
                 case 'g':
                     netcentral->add_job(new NewsGroupListRetrieverJob());    
                     console->log("Getting newsgroup list..");
+                    return 0;
+                case 'u':
+                    g = (NewsGroup *) scroll_list->get_selected_item();
+                    if(g){
+                        netcentral->add_job(new GroupUpdater(g));
+                        console->log("Made new group updater for ");
+                    }
                     return 0;
                 case 'S':
                     scroll_list->sort();
