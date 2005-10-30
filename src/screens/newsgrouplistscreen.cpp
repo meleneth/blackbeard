@@ -109,6 +109,7 @@ void NewsGroupListScreen::render_help(void)
     mvaddnstr(yindex++, xpos + 2, "[g] fetch list of newsgroups from server", -1);
     mvaddnstr(yindex++, xpos + 2, "[p] grab postsets for selected group", -1);
     mvaddnstr(yindex++, xpos + 2, "[s] subscribe/unsubscribe to group", -1);
+    mvaddnstr(yindex++, xpos + 2, "[u] update newsgroup with newer headers", -1);
 
 }
 

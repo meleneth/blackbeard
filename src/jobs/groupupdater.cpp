@@ -1,6 +1,8 @@
 #include "groupupdater.hpp"
 #include "nntpserver.hpp"
+#include "netcentral.hpp"
 #include "console.hpp"
+#include "headersforgroupjob.hpp"
 
 GroupUpdater::GroupUpdater(NewsGroup *group)
 {
@@ -12,14 +14,12 @@ GroupUpdater::~GroupUpdater()
 {
 }
 
-
 void GroupUpdater::process(void)
 {
     NNTPServer *server = (NNTPServer *) srv;
 
     if(sent_command){
         if(server->_status == NS_CONNECTED){
-            console->log("Update dem groups");
             update_group(server->responses[0]);
             is_finished = 1;
         }
@@ -33,8 +33,15 @@ void GroupUpdater::process(void)
 
 void GroupUpdater::update_group(string line)
 {
-    console->log("Attempting to update with info " + line);
-    StringPattern match(6);
-    match.add_breaker(" ");
-    group->expire_old_postsets(match.get_piecen(0));
+    StringPattern match(4);
+    match.add_breaker(0); match.add_breaker("211 ");
+    match.add_breaker(1); match.add_breaker(" ");
+    match.add_breaker(2); match.add_breaker(" ");
+    match.add_breaker(3); match.add_breaker(" ");
+
+    if(match.match(line)){
+        group->expire_old_postsets(match.get_piecen(2));
+        group->first_article_number = match.get_piecen(2);
+        netcentral->add_job(new HeadersForGroupJob(group, group->last_article_number, 0));
+    }
 }

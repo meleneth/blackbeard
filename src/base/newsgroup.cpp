@@ -179,7 +179,6 @@ void NewsGroup::expire_old_postsets(Uint32 low_msg_id)
     for(Uint32 i=0; i<max_no; i++){
         if(postsets[i]->min_msg_id() > low_msg_id){
             still_around.push_back(postsets[i]);
-
         }
     }
     postsets = still_around;
