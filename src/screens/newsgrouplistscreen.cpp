@@ -118,7 +118,7 @@ void NewsGroupListScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32
     NewsGroup *g = (NewsGroup *) newsgroup;
     stringstream buf;
 
-    buf << g->name << "     " << g->first_article_number << "-" << g->last_article_number
+    buf << "(" << g->postsets.size() << ") " << g->name << "     " << g->first_article_number << "-" << g->last_article_number
         << ", " << g->last_article_number - g->first_article_number << " possible"; 
     if(g->is_subscribed)
         attron(A_BOLD);
