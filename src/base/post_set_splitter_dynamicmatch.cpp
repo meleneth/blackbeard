@@ -155,6 +155,9 @@ void PSDMSubMatch::process_header(MessageHeader *header)
             size_t yEnc_pos = header->subject.find("yEnc", 0);
             if(yEnc_pos != string::npos){
                 file->decoder_type = DT_YENC;
+            } else {
+                // FIXME BADHAX
+                file->decoder_type = DT_UUDECODE;
             }
         } else {
             /* FIXME

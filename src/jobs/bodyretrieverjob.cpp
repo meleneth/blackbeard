@@ -48,6 +48,7 @@ void BodyRetrieverJob::finish()
                 jobqueue->jobs.push_back(new UUDecoder(post, file, msg_id));
                 break;
             case DT_MIME:
+                console->log("MIME detected");
             case DT_UNKNOWN:
                 console->log("Dunno what to do with this type of encoded material");
             break;
