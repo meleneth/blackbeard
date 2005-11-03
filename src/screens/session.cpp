@@ -8,12 +8,14 @@
 
 Session::Session()
 {
-    newsgrouplist  = new NewsGroupListScreen();
-    postsetlist    = new PostSetListScreen();
-    postsetdetail  = new PostSetDetailScreen();
-    activejobs     = new ActiveJobsScreen();
-    activenetjobs  = new ActiveNetJobsScreen();
-    textviewerlist = new TextViewerScreen();
+    newsgrouplist       = new NewsGroupListScreen();
+    postsetlist         = new PostSetListScreen();
+    postsetdetail       = new PostSetDetailScreen();
+    activejobs          = new ActiveJobsScreen();
+    activenetjobs       = new ActiveNetJobsScreen();
+    textviewerlist      = new TextViewerScreen();
+    downloaded_postsets = new DownloadedPostSetsScreen();
+
     current_screen = newsgrouplist;
 }
 
@@ -24,6 +26,7 @@ Session::~Session()
     delete newsgrouplist;
     delete postsetlist;
     delete postsetdetail;
+    delete downloaded_postsets;
     delete current_screen;
     current_screen = NULL;
 }

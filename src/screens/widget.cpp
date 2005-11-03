@@ -34,6 +34,7 @@ int Widget::handle_input(int key)
         case IKEY_ESC:
             session->switch_shutdown_screen();
             save_subscribed_groups_to(config->blackbeard_data_dir + "/subscribed_newsgroups");
+            config->save_downloaded_postsets();
             endwin();
             delete console;
             exit(0);

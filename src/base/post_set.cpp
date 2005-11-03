@@ -7,6 +7,8 @@
 using std::stringstream;
 using std::setprecision;
 
+vector<PostSet *> downloaded_postsets;
+
 PostSet::PostSet(string subject) 
 {
     this->subject = subject;

@@ -73,6 +73,7 @@ Job* PostsetJob::get_next_job()
 
     if(file_no > (postset->files.size() - 1)){
         is_finished = 1;
+        downloaded_postsets.push_back(postset);
         return NULL;
     }
 

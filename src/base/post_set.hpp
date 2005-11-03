@@ -47,5 +47,6 @@ class PostSet {
     protected:
 };
 
+extern vector<PostSet *> downloaded_postsets;
 
 #endif

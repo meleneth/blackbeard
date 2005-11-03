@@ -113,6 +113,9 @@ int Screen::handle_input(int key)
             session->current_screen = session->activenetjobs;
             break;
 
+        case IKEY_F10:
+            session->current_screen = session->downloaded_postsets;
+            break;
         default:
             return key;
     }

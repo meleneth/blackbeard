@@ -69,7 +69,6 @@ int main(int argc, char *argv[])
 
     }
     finish(0);
-
 }
 
 void do_init(void)

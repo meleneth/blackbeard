@@ -16,10 +16,13 @@ class Config {
         void setup_files(void);
         void load_persistant_data(void);
         void setup_test_config();
+        void restore_downloaded_postsets(void);
+        void save_downloaded_postsets(void);
 
         string subscribed_groups_filename();
         string net_jobs_filename();
         string full_job_filename(string job_filename);
+        string downloaded_postsets_filename();
 
         string news_server;
         string home_dir;
