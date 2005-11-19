@@ -33,7 +33,7 @@ void GroupUpdater::process(void)
 
 void GroupUpdater::update_group(string line)
 {
-    StringPattern match(4);
+    StringPattern match(5);
     match.add_breaker(0); match.add_breaker("211 ");
     match.add_breaker(1); match.add_breaker(" ");
     match.add_breaker(2); match.add_breaker(" ");

@@ -20,7 +20,6 @@ NetCentral::NetCentral(void) // Constructor
     FD_ZERO(&master);    // clear the master and temp sets
     fdmax = 0;
     console->log("NetCentral() initialized");
-    restore_saved_jobs();
 }
     
 NetCentral::~NetCentral() // Destructor

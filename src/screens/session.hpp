@@ -13,7 +13,7 @@
 #include "activenetjobsscreen.hpp"
 #include "textviewerscreen.hpp"
 #include "shutdownscreen.hpp"
-#include "downloadedpostsetsscreen.hpp";
+#include "downloadedpostsetsscreen.hpp"
 
 class Session : public Screen {
     public:

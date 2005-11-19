@@ -6,6 +6,7 @@ known crashes:
     needs to handle net errors due to i.e. message ID not being available - has bad response code
 
 Needs to do:
+    investigate not resizing.  Is it only under gdb?
     store a list of previous downloads, browsable and be able to go to the postset detail by hitting enter on the list
     percentages for header retrieval jobs
     * store list of active jobs in file
