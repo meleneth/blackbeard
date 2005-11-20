@@ -1,5 +1,4 @@
 #include "tcpconnection.hpp"
-#include "console.hpp"
 
 // Public data members go here.
 TCPConnection::TCPConnection(string hostname, int port) // Constructor
@@ -101,8 +100,8 @@ void TCPConnection::read_packets(void)
         return;
 
     if ((numbytes=recv(sockfd, buf + buf_end_pos, MAXDATASIZE - buf_end_pos, 0)) == -1) {
-        console->log("Error from recv - disconnecting");
         connected = 0;
+        return;
     }
 
     bytes_since_last_second +=  numbytes;

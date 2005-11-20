@@ -36,6 +36,7 @@ class PostFile {
         Uint32 seen_pieces;
         Uint32 piece_size;
         Uint32 downloaded_pieces;
+        Uint32 is_corrupt;
         
         string filename;
         string status;

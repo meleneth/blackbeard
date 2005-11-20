@@ -18,9 +18,10 @@ PostFile::PostFile(PostSet *postset)
     seen_pieces = 0;
     downloaded_pieces = 0;
     post_set = postset;
-    decoder_type = DT_UNKNOWN;
+    decoder_type = DT_UUDECODE;
     status = "Ignored";
     piece_size = 0;
+    is_corrupt = 0;
 }
     
 PostFile::~PostFile() 

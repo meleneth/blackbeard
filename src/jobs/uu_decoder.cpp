@@ -76,6 +76,12 @@ string UUDecoder::do_the_math(string line)
 
     Uint32 num_encoded_chars = line[0];
 
+    if(num_encoded_chars > 45){
+        return " ";
+        string my_string(45, ' ');
+        post_file->is_corrupt = 1;
+        return my_string;
+    }
     size_t source = 1;
     string output_line(num_encoded_chars, ' ');
 
