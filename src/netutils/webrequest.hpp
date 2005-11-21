@@ -2,13 +2,14 @@
 #define ___webrequest_inc 1
 
 #include "SDL_types.h"
+#include "tcpconnection.hpp"
 
 class WebRequest {
     public:
-        WebRequest(int bar);
+        WebRequest(TCPConnection *client);
         ~WebRequest();
 
-        int Foo(void);
+        TCPConnection *client;
 
     private:
     protected:

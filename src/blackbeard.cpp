@@ -12,7 +12,7 @@
 #include"session.hpp"
 #include"subjectfileloaderjob.hpp"
 #include"netcentral.hpp"
-
+#include"webserver.hpp"
 
 Console *console;
 Config *config;
@@ -20,6 +20,7 @@ vector< NewsGroup * >newsgroups;
 JobQueue *jobqueue;
 Session *session;
 NetCentral *netcentral;
+WebServer *webserver;
 
 void do_init(void);
 static void finish(int sig);
@@ -94,11 +95,13 @@ void do_init(void)
     netcentral = new NetCentral();
     config->load_persistant_data();
     netcentral->restore_saved_jobs();
+    webserver = new WebServer("../html", config->webserver_port);
 }
 
 static void finish(int sig)
 {
     endwin();
+    delete webserver;
     delete netcentral;
     delete jobqueue;
     delete session;

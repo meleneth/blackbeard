@@ -7,7 +7,6 @@
 #endif
 
 #include<iomanip>
-#include"config.hpp"
 
 using std::string;
 using std::stringstream;

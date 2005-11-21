@@ -30,6 +30,7 @@ Config::Config(int argc, char *argv[]) // Constructor
     news_port = 119;
     debug_mode = 0;
     load_file = "";
+    webserver_port = 4242;
     show_groups_screen = 0;
     console->print_on_delete = 0;
     max_net_connections = 4;

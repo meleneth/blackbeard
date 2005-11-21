@@ -34,6 +34,7 @@ class Config {
         string username;
         string password;
         Uint32 news_port;
+        Uint32 webserver_port;
         Uint32 debug_mode;
         Uint32 show_groups_screen;
         Uint32 max_net_connections;

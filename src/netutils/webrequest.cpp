@@ -1,14 +1,11 @@
 #include "webrequest.hpp"
 
-WebRequest::WebRequest(int bar)
+WebRequest::WebRequest(TCPConnection *tcp)
 {
+    client = tcp;
 }
 
 WebRequest::~WebRequest()
-{
-}
-
-int WebRequest::Foo(void)
 {
 }
 

@@ -8,8 +8,6 @@
 
 #include<sstream>
 
-#include"post_set.hpp"
-
 #define MAKE_STRING( msg )  ( ((std::ostringstream&)(std::ostringstream() << msg)).str() )
 
 #include <iostream>  // I/O 
