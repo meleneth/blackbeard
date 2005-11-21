@@ -133,15 +133,15 @@ void NetCentral::process_jobs(void)
         }
     }
 
-    if(FD_ISSET(webserver->listener->sockfd, &read_fds)){
-        console->log("O.o");
-        webserver->handle_new_connection();
-    }
-
     for(c = webserver->connections.begin(); c != webserver->connections.end(); ++c){
         if(FD_ISSET((*c)->sockfd, &read_fds)){
             (*c)->read_packets();
         }
+    }
+
+    if(FD_ISSET(webserver->listener->sockfd, &read_fds)){
+        console->log("O.o");
+        webserver->handle_new_connection();
     }
 
     active_jobs = still_running;

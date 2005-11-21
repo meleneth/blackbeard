@@ -48,7 +48,7 @@ TCPConnection *TCPListener::get_waiting_connection()
     c->connected = 1;
     socklen_t sin_size;
     sin_size = sizeof(c->their_addr);
-    accept(sockfd, (struct sockaddr *)&c->their_addr, &sin_size);
-    return NULL;
+    c->sockfd = accept(sockfd, (struct sockaddr *)&c->their_addr, &sin_size);
+    return c;
 }
 
