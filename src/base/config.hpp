@@ -1,10 +1,14 @@
 #ifndef ___config_inc
 #define ___config_inc 1
 
-#include"SDL_types.h"
-#include<string>
+#include "SDL_types.h"
+#include <string>
 
 using std::string;
+
+// Zen: the Config object should be *driving* the
+// configuration of the objects of the program, and
+// therefore be last instantiated.
 
 class Config {
     public:

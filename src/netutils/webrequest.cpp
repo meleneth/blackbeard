@@ -4,7 +4,11 @@
 WebRequest::WebRequest(TCPConnection *tcp)
 {
     client = tcp;
-    console->log("Got request: " + tcp->get_line());
+    request_string = tcp->get_line();
+    path = "/";
+    filename = "index.html";
+
+    console->log("Got request: " + request_string);
 }
 
 WebRequest::~WebRequest()

@@ -1,12 +1,12 @@
 #ifndef ___newsgrouplistscreen_inc
 #define ___newsgrouplistscreen_inc 1
 
-#include"SDL_types.h"
+#include "SDL_types.h"
 
-#include"screen.hpp"
-#include"newsgroup.hpp"
-#include"scrollablelist.hpp"
-#include<string>
+#include "screen.hpp"
+#include "newsgroup.hpp"
+#include "scrollablelist.hpp"
+#include <string>
 
 using std::string;
 using std::vector;

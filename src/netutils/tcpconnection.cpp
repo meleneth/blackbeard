@@ -1,4 +1,5 @@
 #include "tcpconnection.hpp"
+#include "console.hpp"
 
 // Public data members go here.
 TCPConnection::TCPConnection(string hostname, int port) // Constructor
@@ -95,7 +96,7 @@ void TCPConnection::sendall(string cmd)
 
     while(total < num_bytes) {
         n = send(sockfd, nbuf+total, bytesleft, 0);
-        if (n == -1) { break; }
+        if (n == -1) { console->log("Network error on send?  Oh I'm so scared :/"); break; }
         total += n;
         bytesleft -= n;
     }

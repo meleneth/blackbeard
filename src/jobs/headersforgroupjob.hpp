@@ -1,12 +1,12 @@
 #ifndef ___headersforgroupjob_inc
 #define ___headersforgroupjob_inc 1
 
-#include"SDL_types.h"
-#include"netjob.hpp"
-#include"newsgroup.hpp"
-#include"config.hpp"
+#include "SDL_types.h"
+#include "netjob.hpp"
+#include "newsgroup.hpp"
+#include "config.hpp"
 #include <iostream>  // I/O 
-#include<fstream>
+#include <fstream>
 using std::ofstream;
 
 class HeadersForGroupJob : public NetJob {

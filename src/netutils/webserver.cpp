@@ -1,9 +1,11 @@
 #include "webserver.hpp"
 #include "webrequest.hpp"
+#include "console.hpp"
 
 WebServer::WebServer(string web_root, int port_no)
 {
     listener = new TCPListener(port_no);
+    this->web_root = web_root;
 }
 
 WebServer::~WebServer()
@@ -13,7 +15,7 @@ WebServer::~WebServer()
 
 void WebServer::handle_request(WebRequest *request)
 {
-
+   console->log("Sending file: " + web_root + request->path + request->filename);
 }
 
 void WebServer::tick(void)

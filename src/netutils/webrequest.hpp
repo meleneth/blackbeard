@@ -3,6 +3,9 @@
 
 #include "SDL_types.h"
 #include "tcpconnection.hpp"
+#include <string>
+
+using std::string;
 
 class WebRequest {
     public:
@@ -10,6 +13,9 @@ class WebRequest {
         ~WebRequest();
 
         TCPConnection *client;
+        string request_string;
+        string path;
+        string filename;
 
     private:
     protected:

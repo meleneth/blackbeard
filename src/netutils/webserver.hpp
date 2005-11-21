@@ -10,6 +10,10 @@
 using std::string;
 using std::list;
 
+// This entire webserver is such a non-standard-using
+// non RFC piece of work, that this program shouldn't
+// even be using it.
+
 class WebServer {
     public:
         WebServer(string document_root, int port_no);
@@ -22,6 +26,8 @@ class WebServer {
 
         TCPListener *listener;
         list<TCPConnection *> connections;
+        string web_root;
+
 
     private:
     protected:
