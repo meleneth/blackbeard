@@ -17,6 +17,7 @@ class WebServer {
 
         void log_to_file(string filename);
         void handle_request(WebRequest *request);
+        void handle_new_connection(void);
         void tick(void);
 
         TCPListener *listener;
@@ -25,5 +26,7 @@ class WebServer {
     private:
     protected:
 };
+
+extern WebServer *webserver;
 
 #endif

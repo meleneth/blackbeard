@@ -1,4 +1,5 @@
 #include "tcplistener.hpp"
+#include "console.hpp"
 
 #define BACKLOG 4
 
@@ -32,19 +33,22 @@ TCPListener::TCPListener(int port_num)
         perror("listen");
         exit(1);
     }
+    console->log("Listener listening..");
 }
 
 TCPListener::~TCPListener()
 {
 }
 
-TCPConnection *get_waiting_connection()
+TCPConnection *TCPListener::get_waiting_connection()
 {
+    console->log("get_waiting_connection...");
+    
+    TCPConnection *c = new TCPConnection();
+    c->connected = 1;
+    socklen_t sin_size;
+    sin_size = sizeof(c->their_addr);
+    accept(sockfd, (struct sockaddr *)&c->their_addr, &sin_size);
     return NULL;
-}
-
-int has_connection_waiting()
-{
-    return 0;
 }
 

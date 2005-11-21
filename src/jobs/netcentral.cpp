@@ -1,11 +1,12 @@
-#include"netcentral.hpp"
-#include"console.hpp"
-#include"config.hpp"
-#include<iostream>  // I/O 
-#include<fstream>   // file I/O
-#include<sstream>
-#include"nntpserver.hpp"
-#include"postsetjob.hpp"
+#include "netcentral.hpp"
+#include "console.hpp"
+#include "config.hpp"
+#include <iostream>  // I/O 
+#include <fstream>   // file I/O
+#include <sstream>
+#include "nntpserver.hpp"
+#include "postsetjob.hpp"
+#include "webserver.hpp"
 
 using std::string;
 using std::stringstream;
@@ -60,12 +61,26 @@ void NetCentral::process_jobs(void)
 
     Uint32 max_jobid = active_jobs.size();
     Uint32 i;
+    list<TCPConnection *>::iterator c;
 
     for(i = 0; i<max_jobid; ++i){
         NNTPServer *connection = (NNTPServer *) active_jobs[i]->srv;
         FD_SET(connection->sockfd, &read_fds);
         if(fdmax < connection->sockfd){
             fdmax = connection->sockfd;
+        }
+    }
+
+    FD_SET(webserver->listener->sockfd, &read_fds);
+    if(webserver->listener->sockfd > fdmax){
+        fdmax = webserver->listener->sockfd;
+    }
+
+    for(c = webserver->connections.begin(); c != webserver->connections.end(); ++c){
+        int fd = (*c)->sockfd;
+        FD_SET(fd, &read_fds);
+        if(fdmax < fd){
+            fdmax = fd;
         }
     }
 
@@ -116,6 +131,18 @@ void NetCentral::process_jobs(void)
             still_running.push_back(job);
         }
     }
+
+    if(FD_ISSET(webserver->listener->sockfd, &read_fds)){
+        console->log("O.o");
+        webserver->handle_new_connection();
+    }
+
+    for(c = webserver->connections.begin(); c != webserver->connections.end(); ++c){
+        if(FD_ISSET((*c)->sockfd, &read_fds)){
+            (*c)->read_packets();
+        }
+    }
+
     active_jobs = still_running;
 }
 

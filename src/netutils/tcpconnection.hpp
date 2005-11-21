@@ -32,6 +32,7 @@ class TCPConnection {
     public:
         // Public data members go here.
         TCPConnection(string hostname, int port); // Constructor
+        TCPConnection(); // Constructor
         virtual ~TCPConnection(); // Destructor
 
         int has_data_waiting(void);

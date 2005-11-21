@@ -29,6 +29,14 @@ TCPConnection::TCPConnection(string hostname, int port) // Constructor
     connected = 1;
     last_second = time(NULL);
 }
+
+TCPConnection::TCPConnection()
+{
+    last_second = time(NULL);
+    connected = 0;
+    buf_start_pos = 0;
+    buf_end_pos = 0;
+}
     
 TCPConnection::~TCPConnection() // Destructor
 {

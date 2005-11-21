@@ -34,3 +34,7 @@ void WebServer::log_to_file(string filename)
 {
 }
 
+void WebServer::handle_new_connection(void)
+{
+    connections.push_back(listener->get_waiting_connection());
+}
