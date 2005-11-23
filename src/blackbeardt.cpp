@@ -12,6 +12,7 @@
 #include "headersforgroupjob.hpp"
 #include "postsetjob.hpp"
 #include "post_set_splitter_dynamicmatch.hpp"
+#include "webrequest.hpp"
 
 #include<string>
 #include<sstream>
@@ -44,6 +45,8 @@ void test_simple_x(void);
 void test_dynamic_postsplit(void);
 void test_string_sorting(void);
 
+void test_web_request(void);
+
 void generate_subject_line_test(NewsGroup *group, string message_id, string subject);
 
 void assert_postset_filenames_eq(PostSet *checkme, list<string> against);
@@ -71,6 +74,7 @@ int main(int argc, char *argv[])
     test_simple_x();
     test_dynamic_postsplit();
     test_string_sorting();
+    test_web_request();
 	return 0;
 }
 
@@ -339,4 +343,11 @@ void test_string_sorting(void)
     assert_strings_eq(my_items[1]->name, "blai");
     assert_strings_eq(my_items[2]->name, "blaj");
     assert_strings_eq(my_items[3]->name, "blak");
+}
+
+void test_web_request(void)
+{
+    WebRequest *r = new WebRequest("GET /foo/bar/baz HTTP/1.1");
+    assert(0 == r->path.compare("/foo/bar/"));
+    assert(0 == r->filename.compare("baz"));
 }

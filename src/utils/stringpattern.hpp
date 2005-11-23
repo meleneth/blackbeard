@@ -2,7 +2,6 @@
 #define ___stringpattern_inc 1
 
 #include"SDL_types.h"
-#include"news_constants.hpp"
 #include<string>
 #include<list>
 #include<vector>

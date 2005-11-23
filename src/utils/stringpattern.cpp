@@ -1,7 +1,5 @@
-#include"news_constants.hpp"
 #include"stringpattern.hpp"
 #include"console.hpp"
-#include"config.hpp"
 
 StringPattern::StringPattern(Uint32 max_part_no)
 {
@@ -51,9 +49,6 @@ int StringPattern::match(string target)
         s++;
     }
     results[count] = target;
-
-    if(config->debug_logging)
-        console->log(name + " matched");
 
     return 1;
 }

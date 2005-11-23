@@ -10,12 +10,17 @@ using std::string;
 class WebRequest {
     public:
         WebRequest(TCPConnection *client);
+        WebRequest(string uri);
         ~WebRequest();
+
+        void parse_uri(string uri);
+        void split_request_uri(string uri);
 
         TCPConnection *client;
         string request_string;
         string path;
         string filename;
+        Uint32 http_minor_version;
 
     private:
     protected:
