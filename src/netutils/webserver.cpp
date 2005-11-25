@@ -4,6 +4,7 @@
 #include "file_handle.hpp"
 #include "webfilefetcher.hpp"
 #include "webjoblist.hpp"
+#include "webnewsgroups.hpp"
 
 WebServer::WebServer(string web_root, int port_no)
 {
@@ -22,6 +23,11 @@ void WebServer::handle_request(WebRequest *request)
        if(0 == request->filename.compare("joblist")){
            console->log("Handling joblist request:");
            handlers.push_back(new WebJobList(request));
+           return;
+       }
+       if(0 == request->filename.compare("newsgroups")){
+           console->log("Handling newsgroup request:");
+           handlers.push_back(new WebNewsGroups(request));
            return;
        }
    } 

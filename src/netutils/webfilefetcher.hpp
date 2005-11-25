@@ -10,12 +10,7 @@ using std::string;
 class WebFileFetcher : public WebDataFetcher{
     public:
         WebFileFetcher(WebRequest *request, string filename);
-        ~WebFileFetcher();
-
-        virtual int tick(void);
-
-        char buffer[4096];
-        FILE *file;
+        virtual ~WebFileFetcher();
 
     private:
     protected:

@@ -4,8 +4,10 @@
 #include "SDL_types.h"
 #include "webrequest.hpp"
 #include <string>
+#include <vector>
 
 using std::string;
+using std::vector;
 
 class WebDataFetcher {
     public:
@@ -15,6 +17,10 @@ class WebDataFetcher {
         virtual int tick(void);
 
         WebRequest *request;
+
+        vector<string> output_lines;
+        Uint32 line_no;
+        Uint32 num_lines;
 
     private:
     protected:

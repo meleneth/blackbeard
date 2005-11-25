@@ -13,11 +13,6 @@ class WebJobList : public WebDataFetcher {
     public:
         WebJobList(WebRequest *request);
         virtual ~WebJobList();
-
-        virtual int tick(void);
-        vector<string> job_list;
-        Uint32 job_no;
-        Uint32 num_jobs;
     private:
     protected:
 };
