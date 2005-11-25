@@ -3,6 +3,9 @@
 
 #include "SDL_types.h"
 #include "webrequest.hpp"
+#include <string>
+
+using std::string;
 
 class WebDataFetcher {
     public:

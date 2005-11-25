@@ -1,11 +1,18 @@
 <html>
-<head>
-<title>
-O.o
-</title>
-<link rel="stylesheet" href="blb.css" />
-</head>
-<body>
-hi.  I'm a file sitting in your webserver
-</body>
+  <head>
+    <title>
+      O.o
+    </title>
+    <link rel="stylesheet" href="blb.css" />
+    <script src="blb.js"></script>
+  </head>
+  <body>
+    <ul>
+      <li><a onclick="fetch_data('/joblist')">active jobs</a></li>
+      <li><a onclick="fetch_data('/newsgroups')">newsgroups</a></li>
+    </ul>
+    hi.  I'm a file sitting in your webserver
+    <div id="content">
+    </div>
+  </body>
 </html>

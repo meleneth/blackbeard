@@ -5,14 +5,14 @@
 #include<ncurses.h>
 #endif
 
-#include"tcpconnection.hpp"
-#include"config.hpp"
-#include"console.hpp"
-#include"jobqueue.hpp"
-#include"session.hpp"
-#include"subjectfileloaderjob.hpp"
-#include"netcentral.hpp"
-#include"webserver.hpp"
+#include "tcpconnection.hpp"
+#include "config.hpp"
+#include "console.hpp"
+#include "jobqueue.hpp"
+#include "session.hpp"
+#include "subjectfileloaderjob.hpp"
+#include "netcentral.hpp"
+#include "webserver.hpp"
 
 Console *console;
 Config *config;

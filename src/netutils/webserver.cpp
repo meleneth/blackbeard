@@ -3,6 +3,7 @@
 #include "console.hpp"
 #include "file_handle.hpp"
 #include "webfilefetcher.hpp"
+#include "webjoblist.hpp"
 
 WebServer::WebServer(string web_root, int port_no)
 {
@@ -17,6 +18,13 @@ WebServer::~WebServer()
 
 void WebServer::handle_request(WebRequest *request)
 {
+   if(0 == request->path.compare("/")){
+       if(0 == request->filename.compare("joblist")){
+           console->log("Handling joblist request:");
+           handlers.push_back(new WebJobList(request));
+           return;
+       }
+   } 
    string filename = web_root + request->path + request->filename;
    console->log("Sending file: " + filename);
 
@@ -43,8 +51,8 @@ void WebServer::tick(void)
             list<WebDataFetcher *>::iterator j = h;
             WebDataFetcher *r = (*h);
             --h;
-            handlers.erase(j);
             delete r;
+            handlers.erase(j);
         }
     }
 }

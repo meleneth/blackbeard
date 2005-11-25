@@ -12,7 +12,6 @@ WebFileFetcher::WebFileFetcher(WebRequest *request, string filename) : WebDataFe
 WebFileFetcher::~WebFileFetcher()
 {
     fclose(file);
-    delete request;
 }
 
 int WebFileFetcher::tick()

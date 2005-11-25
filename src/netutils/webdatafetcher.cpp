@@ -7,6 +7,7 @@ WebDataFetcher::WebDataFetcher(WebRequest *r)
 
 WebDataFetcher::~WebDataFetcher()
 {
+    delete request;
 }
 
 int WebDataFetcher::tick(void)

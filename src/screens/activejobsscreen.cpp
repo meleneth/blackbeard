@@ -1,7 +1,7 @@
-#include"activejobsscreen.hpp"
-#include"jobqueue.hpp"
-#include"netcentral.hpp"
-#include"console.hpp"
+#include "activejobsscreen.hpp"
+#include "jobqueue.hpp"
+#include "netcentral.hpp"
+#include "console.hpp"
 
 ActiveJobsScreen::ActiveJobsScreen()
 {
