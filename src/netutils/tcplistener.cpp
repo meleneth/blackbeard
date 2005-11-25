@@ -33,7 +33,6 @@ TCPListener::TCPListener(int port_num)
         perror("listen");
         exit(1);
     }
-    console->log("Listener listening..");
 }
 
 TCPListener::~TCPListener()
@@ -42,8 +41,6 @@ TCPListener::~TCPListener()
 
 TCPConnection *TCPListener::get_waiting_connection()
 {
-    console->log("get_waiting_connection...");
-    
     TCPConnection *c = new TCPConnection();
     c->connected = 1;
     socklen_t sin_size;

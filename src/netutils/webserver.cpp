@@ -1,6 +1,8 @@
 #include "webserver.hpp"
 #include "webrequest.hpp"
 #include "console.hpp"
+#include "file_handle.hpp"
+#include "webfilefetcher.hpp"
 
 WebServer::WebServer(string web_root, int port_no)
 {
@@ -15,7 +17,10 @@ WebServer::~WebServer()
 
 void WebServer::handle_request(WebRequest *request)
 {
-   console->log("Sending file: " + web_root + request->path + request->filename);
+   string filename = web_root + request->path + request->filename;
+   console->log("Sending file: " + filename);
+
+   handlers.push_back(new WebFileFetcher(request, filename));
 }
 
 void WebServer::tick(void)
@@ -28,6 +33,18 @@ void WebServer::tick(void)
             list <TCPConnection *>::iterator p = i;
             --i;
             connections.erase(p);
+        }
+    }
+
+    list<WebDataFetcher *>::iterator h;
+
+    for(h = handlers.begin(); h != handlers.end() ; ++h) {
+        if (!(*h)->tick()) {
+            list<WebDataFetcher *>::iterator j = h;
+            WebDataFetcher *r = (*h);
+            --h;
+            handlers.erase(j);
+            delete r;
         }
     }
 }

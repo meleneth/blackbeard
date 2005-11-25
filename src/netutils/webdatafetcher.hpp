@@ -2,13 +2,16 @@
 #define ___webdatafetcher_inc 1
 
 #include "SDL_types.h"
+#include "webrequest.hpp"
 
 class WebDataFetcher {
     public:
-        WebDataFetcher(int bar);
-        ~WebDataFetcher();
+        WebDataFetcher(WebRequest *request);
+        virtual ~WebDataFetcher();
 
-        int Foo(void);
+        virtual int tick(void);
+
+        WebRequest *request;
 
     private:
     protected:

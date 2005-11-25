@@ -41,6 +41,7 @@ class TCPConnection {
         void read_packets(void);
         virtual void send_command(string command);
         void sendall(string cmd);
+        void close_connection(void);
         std::string get_line(void);
 
         int sockfd, numbytes;  

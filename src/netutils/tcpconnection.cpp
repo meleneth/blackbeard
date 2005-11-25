@@ -41,7 +41,7 @@ TCPConnection::TCPConnection()
     
 TCPConnection::~TCPConnection() // Destructor
 {
-    close(sockfd);
+    close_connection();
 }
 
 int TCPConnection::has_data_waiting(void)
@@ -137,6 +137,15 @@ string TCPConnection::get_line(void)
     lines.pop_front();
     
     return line;
+}
+
+void TCPConnection::close_connection(void)
+{
+    if(!connected)
+        return;
+    connected = 0;
+
+    close(sockfd);
 }
 
 // Private members go here.

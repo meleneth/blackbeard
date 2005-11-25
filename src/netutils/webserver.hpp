@@ -6,6 +6,7 @@
 #include <list>
 #include "tcplistener.hpp"
 #include "webrequest.hpp"
+#include "webdatafetcher.hpp"
 
 using std::string;
 using std::list;
@@ -26,6 +27,7 @@ class WebServer {
 
         TCPListener *listener;
         list<TCPConnection *> connections;
+        list<WebDataFetcher *> handlers;
         string web_root;
 
 

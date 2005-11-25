@@ -347,7 +347,13 @@ void test_string_sorting(void)
 
 void test_web_request(void)
 {
-    WebRequest *r = new WebRequest("GET /foo/bar/baz HTTP/1.1");
+    console->log("Testing webserver..");
+    WebRequest *r = new WebRequest("GET /foo/bar/baz HTTP1.1");
     assert(0 == r->path.compare("/foo/bar/"));
     assert(0 == r->filename.compare("baz"));
+    delete r;
+    r = new WebRequest("get /jack.css");
+    assert(0 == r->path.compare("/"));
+    assert(0 == r->filename.compare("jack.css"));
+
 }
