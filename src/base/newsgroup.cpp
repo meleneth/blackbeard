@@ -80,6 +80,17 @@ int NewsGroup::status_code()
 	return return_code;
 }
 
+string NewsGroup::status_string()
+{
+    stringstream buf;
+
+    buf << "(" << postsets.size() << ") " << name << "     " 
+        << first_article_number << "-" << last_article_number
+        << ", " << last_article_number - first_article_number << " possible"; 
+
+    return buf.str();
+}
+
 void NewsGroup::load_from_file(string filename)
 {
 }

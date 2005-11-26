@@ -6,6 +6,7 @@
 #include "webjoblist.hpp"
 #include "webnewsgroups.hpp"
 #include "webpostsets.hpp"
+#include "webpostfiles.hpp"
 
 WebServer::WebServer(string web_root, int port_no)
 {
@@ -35,6 +36,11 @@ void WebServer::handle_request(WebRequest *request)
    if(0 == request->path.compare("/postsets/")) {
        console->log("Handling postsets request:");
        handlers.push_back(new WebPostSets(request));
+       return;
+   }
+   if(0 == request->path.compare("/postfiles/")) {
+       console->log("Handling postfiles request:");
+       handlers.push_back(new WebPostFiles(request));
        return;
    }
 

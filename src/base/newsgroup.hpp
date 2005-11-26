@@ -35,6 +35,7 @@ class NewsGroup {
         PostSet *postset_for_subject(string subject);
         
         int status_code();
+        string status_string();
 
         list< NewsGroupPost * > messages;
         vector< PostSet * > postsets;
