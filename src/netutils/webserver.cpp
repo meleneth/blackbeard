@@ -5,6 +5,7 @@
 #include "webfilefetcher.hpp"
 #include "webjoblist.hpp"
 #include "webnewsgroups.hpp"
+#include "webpostsets.hpp"
 
 WebServer::WebServer(string web_root, int port_no)
 {
@@ -19,7 +20,7 @@ WebServer::~WebServer()
 
 void WebServer::handle_request(WebRequest *request)
 {
-   if(0 == request->path.compare("/")){
+   if(0 == request->path.compare("/")) {
        if(0 == request->filename.compare("joblist")){
            console->log("Handling joblist request:");
            handlers.push_back(new WebJobList(request));
@@ -31,6 +32,12 @@ void WebServer::handle_request(WebRequest *request)
            return;
        }
    } 
+   if(0 == request->path.compare("/postsets/")) {
+       console->log("Handling postsets request:");
+       handlers.push_back(new WebPostSets(request));
+       return;
+   }
+
    string filename = web_root + request->path + request->filename;
    console->log("Sending file: " + filename);
 
@@ -41,7 +48,7 @@ void WebServer::tick(void)
 {
     list <TCPConnection *>::iterator i;
 
-    for(i = connections.begin(); i != connections.end(); ++i){
+    for(i = connections.begin(); i != connections.end(); ++i) {
         if((*i)->has_data_waiting()){
             handle_request(new WebRequest(*i));
             list <TCPConnection *>::iterator p = i;
