@@ -1,13 +1,29 @@
+var last_data_fetch;
+var refresh_timer;
+
 function fetch_data(from_where)
 {
+    if(refresh_timer){
+       clearTimeout(refresh_timer);
+    }
+   get_data(from_where);
+}
+
+function get_data(from_where) {
   if(http_busy){
       return false;
   }
+  last_data_fetch = from_where;
   http.open("GET", from_where, true);
   http.onreadystatechange = handleHttpResponse;
   http.send(null);
   http_busy = 1;
   return false;
+    
+}
+
+function RequeueFetch() {
+    get_data(last_data_fetch);
 }
 
 function handleHttpResponse() {
@@ -36,8 +52,10 @@ function handleHttpResponse() {
         } 
       }
       thediv.replaceChild(l, thediv.firstChild);
+      refresh_timer = setTimeout('RequeueFetch()', 5000);
     }
   }
+  
 }
 
 function getHTTPObject() {
@@ -68,3 +86,4 @@ function getHTTPObject() {
 
 var http = getHTTPObject(); // We create the HTTP Object
 var http_busy = 0;
+

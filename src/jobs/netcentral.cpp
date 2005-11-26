@@ -140,7 +140,6 @@ void NetCentral::process_jobs(void)
     }
 
     if(FD_ISSET(webserver->listener->sockfd, &read_fds)){
-        console->log("O.o");
         webserver->handle_new_connection();
     }
 

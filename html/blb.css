@@ -2,3 +2,13 @@ body {
     background-color: black;
     color: white;
 }
+
+#header { 
+    background-color: #888888;
+}
+
+#content {
+    height: 400px;
+    overflow: scroll;
+    background-color: #555555;
+}
