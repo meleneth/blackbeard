@@ -18,6 +18,12 @@ function update_meters(jobs, krate)
     id.replaceChild(document.createTextNode(krate), id.firstChild);
 }
 
+function update_heading(new_heading)
+{
+  var h = document.getElementById('heading');
+  h.replaceChild(document.createTextNode(new_heading), h.firstChild);
+}
+
 function get_data(from_where) {
   if(http_busy){
       return false;

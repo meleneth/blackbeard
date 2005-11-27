@@ -15,12 +15,14 @@ class WebDataFetcher {
         virtual ~WebDataFetcher();
 
         virtual int tick(void);
+        virtual string info_update_string(void);
 
         WebRequest *request;
 
         vector<string> output_lines;
         Uint32 line_no;
         Uint32 num_lines;
+        string title;
 
     private:
     protected:

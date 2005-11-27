@@ -4,6 +4,7 @@
 
 WebNewsGroups::WebNewsGroups(WebRequest *request) : WebDataFetcher(request)
 {
+    output_lines.push_back(info_update_string());
     output_lines.push_back("fetch_data('/postsets/%s')");
     num_lines = newsgroups.size();
     for(Uint32 i=0; i<num_lines; ++i) {

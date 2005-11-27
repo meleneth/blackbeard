@@ -10,8 +10,16 @@ WebDataFetcher::WebDataFetcher(WebRequest *r)
     this->request = r;
     line_no = 0;
     num_lines = 0;
-    stringstream update_cmd;
+}
 
+WebDataFetcher::~WebDataFetcher()
+{
+    delete request;
+}
+
+string WebDataFetcher::info_update_string(void)
+{
+    stringstream update_cmd;
     update_cmd << "update_meters('(" 
                << netcentral->jobs.size() 
                << "/" 
@@ -19,13 +27,7 @@ WebDataFetcher::WebDataFetcher(WebRequest *r)
                << ")', '" 
                << netcentral->krate()
                << "');";
-
-    output_lines.push_back(update_cmd.str());
-}
-
-WebDataFetcher::~WebDataFetcher()
-{
-    delete request;
+    return update_cmd.str();
 }
 
 int WebDataFetcher::tick(void)

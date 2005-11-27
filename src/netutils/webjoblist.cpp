@@ -10,6 +10,7 @@ using std::stringstream;
 
 WebJobList::WebJobList(WebRequest *request) : WebDataFetcher(request)
 {
+    output_lines.push_back(info_update_string());
     output_lines.push_back("%s");
     num_lines = netcentral->active_jobs.size();
 

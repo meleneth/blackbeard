@@ -3,6 +3,8 @@
 
 #include "SDL_types.h"
 #include "webdatafetcher.hpp"
+#include "post_set.hpp"
+
 #include <string>
 #include <vector>
 
@@ -13,6 +15,10 @@ class WebPostFiles : public WebDataFetcher {
     public:
         WebPostFiles(WebRequest *request);
         virtual ~WebPostFiles();
+
+        virtual string info_update_string(void);
+
+        PostSet *set;
     private:
     protected:
 };
