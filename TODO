@@ -1,3 +1,17 @@
+Much excitement over new web interface.
+
+Needs to handle par2's inline. <- important
+
+tag removal in subjects (too much of a mess still) strip () [] and scan postsets within groups
+    for tags.  Store known tags for a group on the newsgroup, and modify the sanitize function to remove them
+    when looking up postsets.
+
+Web enhancements:
+    Ability to queue
+    Abillity to download
+    Hover-view: when mouseover a postset line, grab info from server and display in mini-div
+    auto-grab postset range when user clicks on postset if we don't have the whole range already
+
 known crashes:
     * resize window can die if it happens to hit inside select() -> seems to be fixed, wouldn't know how
     crashes on certain postset stats when displayed on postsetlist screen - usually when loading

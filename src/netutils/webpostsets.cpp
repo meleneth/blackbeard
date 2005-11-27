@@ -8,8 +8,8 @@ using std::stringstream;
 
 WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 {
+    group = group_for_name(request->filename);
     output_lines.push_back(info_update_string());
-    NewsGroup *group = group_for_name(request->filename);
     output_lines.push_back("fetch_data('/postfiles/%s')");
     
     num_lines = group->postsets.size();
@@ -23,5 +23,11 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 
 WebPostSets::~WebPostSets()
 {
+}
+
+string WebPostSets::info_update_string(void)
+{
+    string meters = WebDataFetcher::info_update_string();
+    return meters + " update_heading('" + group->name + "');";
 }
 
