@@ -8,6 +8,10 @@
   </head>
   <body>
   <div id="header">
+    <div id="ratebox">
+      Jobs: <span id="jobs_rate">0/0</span> <br />
+      k/sec: <span id="k_rate">0k/sec</span>
+    </div>
     <ul class="menu">
       <li><a onclick="fetch_data('/joblist')">active jobs</a></li>
       <li><a onclick="fetch_data('/newsgroups')">newsgroups</a></li>

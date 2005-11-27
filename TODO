@@ -5,6 +5,12 @@ known crashes:
     net jobs crash when they get cleared sometimes
     needs to handle net errors due to i.e. message ID not being available - has bad response code
 
+Web API:
+    /joblist
+    /newsgroups
+    /postsets/news.group.name
+    /postfiles/news.group.name,post_set_index
+
 Needs to do:
     investigate not resizing.  Is it only under gdb?
     store a list of previous downloads, browsable and be able to go to the postset detail by hitting enter on the list

@@ -4,6 +4,7 @@
 
 WebFileFetcher::WebFileFetcher(WebRequest *request, string filename) : WebDataFetcher(request)
 {
+    output_lines.clear();
 
     //   request->client->send_command("200 file returned");
     FILE *file;

@@ -3,6 +3,7 @@
 
 #include "SDL_types.h"
 #include "webdatafetcher.hpp"
+#include "job.hpp"
 #include <string>
 #include <vector>
 
@@ -13,6 +14,8 @@ class WebJobList : public WebDataFetcher {
     public:
         WebJobList(WebRequest *request);
         virtual ~WebJobList();
+        string line_for_job(Job *job);
+
     private:
     protected:
 };

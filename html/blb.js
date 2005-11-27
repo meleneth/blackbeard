@@ -9,6 +9,15 @@ function fetch_data(from_where)
    get_data(from_where);
 }
 
+function update_meters(jobs, krate)
+{
+    id = document.getElementById('jobs_rate');
+    id.replaceChild(document.createTextNode(jobs), id.firstChild);
+
+    id = document.getElementById('k_rate');
+    id.replaceChild(document.createTextNode(krate), id.firstChild);
+}
+
 function get_data(from_where) {
   if(http_busy){
       return false;
@@ -31,14 +40,15 @@ function handleHttpResponse() {
     if (http.readyState == 4) {
       // Split the comma delimited response into an array
       results = http.responseText.split("\n");
-      onclick_format = results[0];
+      eval(results[0]);
+      onclick_format = results[1];
       onclick_regex = /%s/;
 
       thediv = document.getElementById('content');
       http_busy = 0;
 
       l = document.createElement('ul');
-      for(var i = 1; i < results.length; i++){
+      for(var i = 2; i < results.length; i++){
         if(results[i]){
           myresults = results[i].split("|");
           item = document.createElement('li');

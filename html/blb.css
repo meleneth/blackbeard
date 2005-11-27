@@ -12,3 +12,10 @@ body {
     overflow: scroll;
     background-color: #555555;
 }
+
+#ratebox {
+    width: 150px;
+    background-color: #666666;
+    border: 1px solid black;
+    float: right;
+}
