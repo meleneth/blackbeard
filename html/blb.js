@@ -11,7 +11,7 @@ function fetch_data(from_where)
 
 function update_meters(jobs, krate)
 {
-    id = document.getElementById('jobs_rate');
+    var id = document.getElementById('jobs_rate');
     id.replaceChild(document.createTextNode(jobs), id.firstChild);
 
     id = document.getElementById('k_rate');
@@ -39,33 +39,42 @@ function handleHttpResponse() {
   if(http_busy) {
     if (http.readyState == 4) {
       // Split the comma delimited response into an array
-      results = http.responseText.split("\n");
-      eval(results[0]);
-      onclick_format = results[1];
-      onclick_regex = /%s/;
+      var results = http.responseText.split("\n");
+      var run_me = results.shift();
+      eval(run_me);
+
+      var onclick_format = results.shift();
+      var onclick_regex = /%s/;
 
       thediv = document.getElementById('content');
-      http_busy = 0;
 
-      l = document.createElement('ul');
-      for(var i = 2; i < results.length; i++){
-        if(results[i]){
-          myresults = results[i].split("|");
-          item = document.createElement('li');
-          link = document.createElement('a');
-          x = document.createTextNode(myresults[1]);
-          link.appendChild(x);
-          my_func_text = "function() { " + onclick_format + "; return false; };";
-          link.onclick = eval(my_func_text.replace(onclick_regex, myresults[0]));
-          item.appendChild(link);
-          l.appendChild(item);
-        } 
-      }
-      thediv.replaceChild(l, thediv.firstChild);
+      thediv.replaceChild(getResponseUl(onclick_format, onclick_regex, results), thediv.firstChild);
       refresh_timer = setTimeout('RequeueFetch()', 5000);
+      http_busy = 0;
     }
   }
   
+}
+
+function getResponseUl(onclick_format, onclick_regex, data) 
+{
+  var my_ul = document.createElement('ul');
+  for(var i = 0; i < data.length; i++){
+    if(data[i]){
+      var myresults = data[i].split("|");
+      var list_item = document.createElement('li');
+      var a = document.createElement('a');
+      a.appendChild(document.createTextNode(myresults[1]));
+
+      var my_func_text = "function() { " + onclick_format + "; return false; };";
+      my_func_text = my_func_text.replace(onclick_regex, myresults[0]);
+      a.onclick = eval(my_func_text);
+
+      list_item.appendChild(a);
+      my_ul.appendChild(list_item);
+    } 
+  }
+  return my_ul;
 }
 
 function getHTTPObject() {
