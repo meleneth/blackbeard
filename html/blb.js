@@ -66,9 +66,9 @@ function getResponseUl(onclick_format, onclick_regex, data)
       var a = document.createElement('a');
       a.appendChild(document.createTextNode(myresults[1]));
 
-      var my_func_text = "function() { " + onclick_format + "; return false; };";
+      var my_func_text = onclick_format;
       my_func_text = my_func_text.replace(onclick_regex, myresults[0]);
-      a.onclick = eval(my_func_text);
+      a.onclick = new Function(my_func_text);
 
       list_item.appendChild(a);
       my_ul.appendChild(list_item);
