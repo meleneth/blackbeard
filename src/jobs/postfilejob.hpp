@@ -1,5 +1,5 @@
-#ifndef ___postsetjob_inc
-#define ___postsetjob_inc 1
+#ifndef ___postfilejob_inc
+#define ___postfilejob_inc 1
 
 #include"SDL_types.h"
 #include"job.hpp"

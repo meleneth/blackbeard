@@ -42,7 +42,9 @@ void Job::notify_child_finished(Job *job)
 
     Uint32 max_no = children.size();
     for(Uint32 i=0; i<max_no; ++i){
-        still_running.push_back(children[i]);
+        if(!children[i]->is_finished){
+            still_running.push_back(children[i]);
+        }
     }
     children = still_running;
 }

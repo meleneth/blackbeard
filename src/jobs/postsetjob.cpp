@@ -18,6 +18,8 @@ using std::endl;
 #include "config.hpp"
 #include "console.hpp"
 #include "session.hpp"
+#include "netcentral.hpp"
+#include "postfilejob.hpp"
 
 PostsetJob::PostsetJob(PostSet* post_set)
 {
@@ -26,7 +28,19 @@ PostsetJob::PostsetJob(PostSet* post_set)
     file_no = 0;
     piece_no = 0;
     job_status_filename = get_crc_32(post_set->subject);
+    get_headers = NULL;
+    job_type = POSTSET_DOWNLOAD;
 
+    if(!postset->has_msg_ids){
+        get_headers = new HeadersForGroupJob(postset->group, postset->_min_msg_id, postset->_max_msg_id);
+        add_child_job(get_headers);
+    } else { 
+        make_downloader_children();
+    }
+}
+
+void PostsetJob::make_downloader_children(void)
+{
     Uint32 max_file_no = postset->files.size();
 
     for(Uint32 i=0; i < max_file_no ; i++)
@@ -36,12 +50,11 @@ PostsetJob::PostsetJob(PostSet* post_set)
             if(f->is_par()){
                 f->status = "Skipped";
             }else{
-                f->status = "Queued";
+                netcentral->add_job(new PostfileJob(f));
             }
         }
     }
 
-    job_type = POSTSET_DOWNLOAD;
 }
 
 
@@ -59,56 +72,14 @@ PostsetJob::~PostsetJob()
 {
 }
 
-Job* PostsetJob::get_next_job()
+void PostsetJob::notify_child_finished(Job *job)
 {
-    if(is_finished){
-        return NULL;
-    }
-
-    if(!postset->has_msg_ids){
-        HeadersForGroupJob *new_job = new HeadersForGroupJob(postset->group, postset->_min_msg_id, postset->_max_msg_id);
-        new_job->srv = srv;
-        return new_job;
-    }
-
-    if(file_no > (postset->files.size() - 1)){
-        is_finished = 1;
-        downloaded_postsets.push_back(postset);
-        return NULL;
-    }
-
-    PostFile *file = postset->files[file_no];
-    if(file){
-        if(file->is_par()){
-            file->status = "Skipped";
-            ++file_no;
-            return NULL;
-        }
-        PIECE_STATUS s = file->piece_status[piece_no];
-        switch(s){
-            case MISSING:
-            case DOWNLOADING:
-            case DECODING:
-            case FINISHED:
-                break;
-            case SEEN:
-                file->piece_status[piece_no] = DOWNLOADING;
-                file->update_status_from_pieces();
-                BodyRetrieverJob *new_job = new BodyRetrieverJob(file, file->pieces[piece_no]);
-                new_job->srv = srv;
-                return new_job;
-        }
-        if(++piece_no > file->num_pieces){
-            piece_no = 0;
-            ++file_no;
-        }
+    if(job == get_headers) {
+        make_downloader_children();
     } else {
-        piece_no = 0;
-        ++file_no;
+        is_finished = 1;
     }
-
-
-    return NULL;
+    Job::notify_child_finished(job);
 }
 
 Uint32 PostsetJob::pieces_left_to_download()
@@ -118,18 +89,6 @@ Uint32 PostsetJob::pieces_left_to_download()
 
 void PostsetJob::process()
 {
-    if(job){
-        job->process();
-        if(job->is_finished){
-            delete job;
-            job = NULL;
-            save_job_status();
-        }
-    }
-
-    if(!job){
-        job = get_next_job();
-    }
 }
 
 string PostsetJob::status_line(void)
@@ -220,5 +179,7 @@ void PostsetJob::load_job_status(void)
     } else {
         console->log("File open failed!");
     }
+
+    make_downloader_children();
 }
 

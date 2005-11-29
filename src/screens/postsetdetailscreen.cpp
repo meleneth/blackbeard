@@ -35,11 +35,19 @@ void PostSetDetailScreen::render_help(void)
 
 void PostSetDetailScreen::render(void)
 {
+    Uint32 num_postsets = 0;
+
+    if(newsgroup) {
+        num_postsets = newsgroup->postsets.size();
+        if(postset_index > num_postsets){
+            postset_index = 0;
+        }
+    }
+    
     Screen::render();
     if(help_visible)
         return;
     
-    Uint32 num_postsets = 0;
     Uint32 three_quarters = (height * 3) / 4;
 
     scroll_list->width = width -1;
@@ -54,7 +62,6 @@ void PostSetDetailScreen::render(void)
         mvaddnstr(1, 1, (char*)groupline.c_str(), -1);
         
         attron(A_BOLD);
-        num_postsets = newsgroup->postsets.size();
         PostSet *set = NULL;
         if(num_postsets){
             set = newsgroup->postsets[postset_index];

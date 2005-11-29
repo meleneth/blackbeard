@@ -1,7 +1,8 @@
 #include "webjoblist.hpp"
 #include "netcentral.hpp"
 #include "console.hpp"
-#include "postsetjob.hpp"
+#include "postfilejob.hpp"
+#include "post_set.hpp"
 #include <sstream>
 #include <string>
 
@@ -29,10 +30,11 @@ string WebJobList::line_for_job(Job *job)
 {
     string command = "return false";
 
-    if(job->job_type == POSTSET_DOWNLOAD) {
+    if(job->job_type == POSTFILE_DOWNLOAD) {
         stringstream s;
-        PostsetJob *j = (PostsetJob *)job;
-        PostSet *set = j->postset;
+        PostfileJob *j = (PostfileJob *)job;
+        PostFile *file = j->postfile;
+        PostSet *set = file->post_set;
 
         s << "fetch_data('/postfiles/" << set->group->name << "," << set->group->postset_index(set) << "')";
         command = s.str();

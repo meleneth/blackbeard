@@ -13,6 +13,7 @@
 #include "postsetjob.hpp"
 #include "post_set_splitter_dynamicmatch.hpp"
 #include "webrequest.hpp"
+#include "netcentral.hpp"
 
 #include<string>
 #include<sstream>
@@ -30,6 +31,7 @@ JobQueue *jobqueue;
 Config *config;
 Session *session;
 string last_msg;
+NetCentral *netcentral;
 
 
 void test_header_scoop(void);

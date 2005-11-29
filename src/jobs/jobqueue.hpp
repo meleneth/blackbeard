@@ -26,5 +26,6 @@ class JobQueue {
 };
 
 extern JobQueue *jobqueue;
+extern JobQueue *metajobs;
 
 #endif

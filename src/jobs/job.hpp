@@ -8,7 +8,7 @@
 using std::string;
 using std::vector;
 
-typedef enum { MISC, POSTSET_DOWNLOAD, BODY_DOWNLOAD } JobType;
+typedef enum { MISC, POSTSET_DOWNLOAD, POSTFILE_DOWNLOAD, BODY_DOWNLOAD } JobType;
 
 class Job;
 class Job {

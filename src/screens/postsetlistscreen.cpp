@@ -49,18 +49,16 @@ void PostSetListScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 w
 
 void PostSetListScreen::render(void)
 {
-    NewsGroup *group = newsgroup;
-
     scroll_list->height = height - 2;
     scroll_list->width = width -1;
     scroll_list->ypos = ypos + 1;
     
     string statusline = "PostSetListScreen::render";
-    if(group){
-        if(scroll_list->known_size != group->postsets.size()){
-            scroll_list->all_items = group->postsets;
+    if(newsgroup){
+        if(scroll_list->known_size != newsgroup->postsets.size()){
+            scroll_list->all_items = newsgroup->postsets;
         }
-        statusline += " + " + group->name;
+        statusline += " + " + newsgroup->name;
     }
     Screen::render();
     mvaddnstr(ypos, xpos + 1, (char*)statusline.c_str(), -1);
@@ -85,7 +83,7 @@ int PostSetListScreen::handle_input(int key)
     if(scroll_list->handle_input(key)){
         if(key == 'd'){
             PostSet *s = (PostSet *) scroll_list->get_selected_item();
-            netcentral->add_job(new PostsetJob(s));
+            metajobs->add_job(new PostsetJob(s));
             console->log("Queued download job for " + s->subject);
             return 0;
         }
@@ -102,3 +100,5 @@ int PostSetListScreen::handle_input(int key)
     }
     return Screen::handle_input(key);
 }
+
+

@@ -1,3 +1,7 @@
+What to Do Next:
+make PostsetJob queue jobs for all of it's non par files
+have it trigger when done
+
 Much excitement over new web interface.
 
 Needs to handle par2's inline. <- important

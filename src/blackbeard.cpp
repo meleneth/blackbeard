@@ -18,6 +18,7 @@ Console *console;
 Config *config;
 vector< NewsGroup * >newsgroups;
 JobQueue *jobqueue;
+JobQueue *metajobs;
 Session *session;
 NetCentral *netcentral;
 WebServer *webserver;
@@ -92,6 +93,7 @@ void do_init(void)
     
     // global objects
     jobqueue = new JobQueue();
+    metajobs = new JobQueue();
     session = new Session();
     netcentral = new NetCentral();
     config->load_persistant_data();
@@ -105,6 +107,7 @@ static void finish(int sig)
     delete webserver;
     delete netcentral;
     delete jobqueue;
+    delete metajobs;
     delete session;
     Uint32 max_no = newsgroups.size();
     for(Uint32 i=0; i<max_no; ++i){

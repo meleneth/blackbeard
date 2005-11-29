@@ -14,14 +14,16 @@ class PostsetJob : public Job {
         PostsetJob(string filename);
         virtual ~PostsetJob();
 
-        Job *get_next_job();
         Uint32 pieces_left_to_download();
         virtual void process();
         virtual string status_line();
+        virtual void notify_child_finished(Job *job);
         void save_job_status();
         void load_job_status();
+        void make_downloader_children();
 
         Job *job;
+        Job *get_headers;
         PostSet *postset;
         Uint32 file_no;
         Uint32 piece_no;

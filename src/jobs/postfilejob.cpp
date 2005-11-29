@@ -24,6 +24,7 @@ PostfileJob::PostfileJob(PostFile* post_file)
     job = NULL;
     piece_no = 0;
     postfile->status = "Queued";
+    job_type = POSTFILE_DOWNLOAD;
 }
 
 PostfileJob::~PostfileJob()
