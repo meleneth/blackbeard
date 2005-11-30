@@ -1,16 +1,31 @@
 body { 
     background-color: black;
     color: white;
+    padding: 0px;
+    margin: 0px;
 }
 
 #header { 
     background-color: #888888;
+padding-left: 0px;
+margin-left: 0px;
 }
 
 #content {
-    height: 400px;
+    height: 500px;
     overflow: scroll;
     background-color: #555555;
+padding: 0px;
+padding-left: 10px;
+margin: 0px;
+}
+
+#header ul {
+list-style-type: none;
+margin-left: 0px;
+margin: 0px;
+padding-left: 10px;
+text-decoration: underline;
 }
 
 #ratebox {
@@ -18,8 +33,27 @@ body {
     background-color: #666666;
     border: 1px solid black;
     float: right;
+padding-left: 10px;
 }
 
 #heading {
     font-size: 1.5em;
+background-color: #777777;
+margin: 0px;
+padding: 0px;
+padding-left: 10px;
+}
+
+table { 
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+td {
+    border: 1px solid #888888;
+    background-color: #666666;
+}
+
+tr :hover {
+    background-color: #777777;
 }

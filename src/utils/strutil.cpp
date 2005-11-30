@@ -114,3 +114,22 @@ string replace_all_substrings(string from_me, string take_me, string for_me)
     return from_me;
 }
 
+string replace_substrings(string from_me, string take_me, string for_me)
+{
+    string result;
+
+    size_t s = from_me.find(take_me);
+    Uint32 t_length = take_me.length();
+    while(s < string::npos){
+        result += (from_me.substr(0, s) + for_me);
+        from_me.replace(0, s + t_length, "");
+        s=from_me.find(take_me);
+    }
+    return result + from_me;
+}
+
+string js_escape(string escape_me)
+{
+    return replace_substrings(replace_substrings(escape_me, "\\", "\\\\"), "'", "\\'");
+}
+

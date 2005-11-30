@@ -46,6 +46,7 @@ void test_crc32(void);
 void test_simple_x(void);
 void test_dynamic_postsplit(void);
 void test_string_sorting(void);
+void test_js_escape(void);
 
 void test_web_request(void);
 
@@ -77,6 +78,7 @@ int main(int argc, char *argv[])
     test_dynamic_postsplit();
     test_string_sorting();
     test_web_request();
+    test_js_escape();
 	return 0;
 }
 
@@ -358,4 +360,10 @@ void test_web_request(void)
     assert(0 == r->path.compare("/"));
     assert(0 == r->filename.compare("jack.css"));
 
+}
+
+void test_js_escape(void)
+{
+    assert(0 == js_escape("'") . compare("\\'"));
+    assert(0 == js_escape("\\'") . compare("\\\\\\'"));
 }

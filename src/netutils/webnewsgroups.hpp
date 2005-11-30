@@ -3,6 +3,7 @@
 
 #include "SDL_types.h"
 #include "webdatafetcher.hpp"
+#include "newsgroup.hpp"
 #include <string>
 #include <vector>
 
@@ -13,6 +14,7 @@ class WebNewsGroups : public WebDataFetcher {
     public:
         WebNewsGroups(WebRequest *request);
         virtual ~WebNewsGroups();
+        string status(NewsGroup *group);
 
     private:
     protected:
