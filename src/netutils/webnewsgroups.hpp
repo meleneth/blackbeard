@@ -16,6 +16,8 @@ class WebNewsGroups : public WebDataFetcher {
         virtual ~WebNewsGroups();
         string status(NewsGroup *group);
 
+        virtual string info_update_string(void);
+
     private:
     protected:
 };
