@@ -7,6 +7,8 @@
 #include "webnewsgroups.hpp"
 #include "webpostsets.hpp"
 #include "webpostfiles.hpp"
+#include "netcentral.hpp"
+#include "headersforgroupjob.hpp"
 
 WebServer::WebServer(string web_root, int port_no)
 {
@@ -32,7 +34,7 @@ void WebServer::handle_request(WebRequest *request)
            handlers.push_back(new WebNewsGroups(request));
            return;
        }
-   } 
+   }
    if(0 == request->path.compare("/postsets/")) {
        console->log("Handling postsets request:");
        handlers.push_back(new WebPostSets(request));
@@ -43,6 +45,24 @@ void WebServer::handle_request(WebRequest *request)
        handlers.push_back(new WebPostFiles(request));
        return;
    }
+
+    if(0 == request->path.compare("/updatepostset/")) {
+        console->log("Handling update postset request");
+        StringPattern splitter = StringPattern(2);
+        splitter.add_breaker(0);
+        splitter.add_breaker(",");
+        splitter.add_breaker(1);
+        if(splitter.match(request->filename)) {
+            console->log("Making job for " + request->filename);
+            NewsGroup *group = group_for_name(splitter.results[0]);
+            PostSet *set = group->postsets[splitter.get_piecen(1)];
+            Job *new_job = new HeadersForGroupJob(set->group, set->_min_msg_id, set->_max_msg_id);
+            high_priority_jobs->add_job(new_job);
+        }
+
+        delete request;
+        return;
+    }
 
    string filename = web_root + request->path + request->filename;
    console->log("Sending file: " + filename);

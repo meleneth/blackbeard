@@ -18,7 +18,7 @@ WebPostFiles::WebPostFiles(WebRequest *request) : WebDataFetcher(request)
     if(splitter.match(request->filename)) {
         NewsGroup *group = group_for_name(splitter.results[0]);
         set = group->postsets[splitter.get_piecen(1)];
-        
+
         num_lines = set->files.size();
         for(Uint32 i=0; i<num_lines; ++i) {
             output_lines.push_back(post_file_line(set->files[i]));

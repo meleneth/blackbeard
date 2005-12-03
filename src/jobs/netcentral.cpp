@@ -93,7 +93,7 @@ void NetCentral::process_jobs(void)
         exit(1);
     }
 
-    if(jobs.size()){
+    if(has_more_jobs()){
         if(active_jobs.size() < config->max_net_connections){
             Job *new_job = get_next_job();
             if(new_job){
@@ -209,6 +209,24 @@ void NetCentral::finish_job(Job *job)
     save_active_list_file();
     JobQueue::finish_job(job);
 }
+
+Job *NetCentral::get_next_job(void)
+{
+    if(high_priority_jobs != this) {
+        if(high_priority_jobs->has_more_jobs()){
+            return high_priority_jobs->get_next_job();
+        }
+    }
+    return JobQueue::get_next_job();
+}
+
+Uint32 NetCentral::has_more_jobs(void)
+{
+    return this == high_priority_jobs
+        ? jobs.size()
+        : jobs.size() + high_priority_jobs->has_more_jobs();
+}
+
 
 // Private members go here.
 // Protected members go here.

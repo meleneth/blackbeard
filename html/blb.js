@@ -35,7 +35,6 @@ function get_data(from_where) {
   http.send(null);
   http_busy = 1;
   return false;
-    
 }
 
 function RequeueFetch() {
@@ -60,10 +59,9 @@ function handleHttpResponse() {
       http_busy = 0;
     }
   }
-  
 }
 
-function getResponseTable(data) 
+function getResponseTable(onclick_format, onclick_regex, data) 
 {
   var my_table = document.createElement('table');
   var my_tbody = document.createElement('tbody');
@@ -72,8 +70,26 @@ function getResponseTable(data)
 
   for(var i = 0; i < data.length; i++){
     if(data[i]){
-      my_tbody.appendChild(getTableRow(data[i]));
-    } 
+      var myresults = data[i].split("||");
+      var row  = document.createElement('tr'); 
+        for(var j=0; j< myresults.length; j++){
+
+          var cell = document.createElement('td');
+          var a    = document.createElement('a'); 
+          
+          var sub_data = myresults[j].split("|");
+          if(sub_data.length == 1) {
+              a.appendChild(document.createTextNode(sub_data[0]));
+          } else {
+              a.appendChild(document.createTextNode(sub_data[1]));
+              var my_func_text = onclick_format;
+              my_func_text = my_func_text.replace(onclick_regex, sub_data[0]);
+              a.onclick = new Function(my_func_text);
+          }
+          cell.appendChild(a); row.appendChild(cell); 
+      }
+      my_tbody.appendChild(row);
+    }
   }
   return my_table;
 }
@@ -136,6 +152,13 @@ function getHTTPObject() {
     }
   }
   return xmlhttp;
+}
+
+function ping_url(url) {
+    /* runs a get on a url, but doesn't do anything with the response*/
+    var req = getHTTPObject();
+    req.open("GET", url, true);
+    req.send(null);
 }
 
 var http = getHTTPObject(); // We create the HTTP Object

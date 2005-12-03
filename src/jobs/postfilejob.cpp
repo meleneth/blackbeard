@@ -10,13 +10,14 @@ using std::ifstream;
 using std::ios;
 using std::endl;
 
-#include"postfilejob.hpp"
-#include"nntpserver.hpp"
-#include"bodyretrieverjob.hpp"
-#include"headersforgroupjob.hpp"
-#include"strutil.hpp"
-#include"config.hpp"
-#include"console.hpp"
+#include "postfilejob.hpp"
+#include "nntpserver.hpp"
+#include "bodyretrieverjob.hpp"
+#include "headersforgroupjob.hpp"
+#include "strutil.hpp"
+#include "config.hpp"
+#include "console.hpp"
+#include "netcentral.hpp"
 
 PostfileJob::PostfileJob(PostFile* post_file)
 {
@@ -37,8 +38,13 @@ Job* PostfileJob::get_next_job()
         return NULL;
     }
 
+    if(high_priority_jobs->jobs.size()){
+        return high_priority_jobs->get_next_job();
+    }
+
     if(postfile){
         PIECE_STATUS s = postfile->piece_status[piece_no];
+        postfile->status = "Downloading";
         switch(s){
             case MISSING:
             case DOWNLOADING:

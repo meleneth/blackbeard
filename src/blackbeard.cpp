@@ -21,6 +21,7 @@ JobQueue *jobqueue;
 JobQueue *metajobs;
 Session *session;
 NetCentral *netcentral;
+NetCentral *high_priority_jobs;
 WebServer *webserver;
 
 void do_init(void);
@@ -94,6 +95,7 @@ void do_init(void)
     // global objects
     jobqueue = new JobQueue();
     metajobs = new JobQueue();
+    high_priority_jobs = new NetCentral();
     session = new Session();
     netcentral = new NetCentral();
     config->load_persistant_data();
@@ -108,6 +110,7 @@ static void finish(int sig)
     delete netcentral;
     delete jobqueue;
     delete metajobs;
+    delete high_priority_jobs;
     delete session;
     Uint32 max_no = newsgroups.size();
     for(Uint32 i=0; i<max_no; ++i){

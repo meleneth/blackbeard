@@ -55,6 +55,7 @@ void JobQueue::process_jobs(void)
 
 Job *JobQueue::get_next_job(void)
 {
+
     if(jobs.size()){
         Job * job = *jobs.begin();
         jobs.erase(jobs.begin());

@@ -9,7 +9,7 @@ using std::setprecision;
 
 vector<PostSet *> downloaded_postsets;
 
-PostSet::PostSet(string subject) 
+PostSet::PostSet(string subject)
 {
     this->subject = subject;
     num_files = 0;
@@ -21,8 +21,8 @@ PostSet::PostSet(string subject)
     group = NULL;
     _last_file = NULL;
 }
-    
-PostSet::~PostSet() 
+
+PostSet::~PostSet()
 {
     Uint32 max_no = files.size();
     for(Uint32 i=0; i<max_no; ++i){

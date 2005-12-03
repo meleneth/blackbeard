@@ -32,6 +32,7 @@ Config *config;
 Session *session;
 string last_msg;
 NetCentral *netcentral;
+NetCentral *high_priority_jobs;
 
 
 void test_header_scoop(void);

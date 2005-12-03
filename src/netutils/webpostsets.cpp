@@ -12,7 +12,7 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 {
     group = group_for_name(request->filename);
     output_lines.push_back(info_update_string());
-    output_lines.push_back("fetch_data('/postfiles/%s')");
+    output_lines.push_back("%s");
 
     num_lines = group->postsets.size();
     for(Uint32 i=0; i<num_lines; ++i) {
@@ -28,14 +28,16 @@ WebPostSets::~WebPostSets()
 string WebPostSets::status(PostSet *set, Uint32 index)
 {
     stringstream s;
-    s   << set->group->name << "," << index << "|"
-        << set->num_files << "/" << set->_max_num_files
-        << "||"
-        << set->group->name << "," << index << "|"
-        << js_escape(set->subject)
-        << "||"
-        << set->group->name << "," << index << "|"
-        << setprecision(3) << set->completed_percent() << "%";
+    s   << "fetch_data('/postfiles/" << set->group->name << "," << index << "')|"
+            << set->num_files << "/" << set->_max_num_files << "||";
+    if(1 == 1){
+        s << "ping_url('/updatepostset/" << set->group->name << "," << index << "');|"
+            << "Update||";
+    }
+    s   << "fetch_data('/postfiles/" << set->group->name << "," << index << "')|"
+            << js_escape(set->subject) << "||"
+        << "fetch_data('/postfiles/" << set->group->name << "," << index << "')|"
+            << setprecision(3) << set->completed_percent() << "%";
     return s.str();
 }
 
