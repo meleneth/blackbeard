@@ -161,3 +161,14 @@ bool PostSet::compare(const PostSet* a, const PostSet* b)
 {
     return (a->subject < b->subject);
 }
+
+Uint32 PostSet::file_index(PostFile *file)
+{
+    Uint32 max_no = files.size();
+    for(Uint32 i=0; i<max_no; ++i) {
+        if(file == files[i]) {
+            return i;
+        }
+    }
+    return 0;
+}
