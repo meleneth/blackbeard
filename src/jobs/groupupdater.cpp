@@ -42,6 +42,6 @@ void GroupUpdater::update_group(string line)
     if(match.match(line)){
         group->expire_old_postsets(match.get_piecen(2));
         group->first_article_number = match.get_piecen(2);
-        netcentral->add_job(new HeadersForGroupJob(group, group->last_article_number, 0));
+        high_priority_jobs->add_job(new HeadersForGroupJob(group, group->last_article_number, 0));
     }
 }

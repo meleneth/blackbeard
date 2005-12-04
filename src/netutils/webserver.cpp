@@ -9,6 +9,7 @@
 #include "webpostfiles.hpp"
 #include "netcentral.hpp"
 #include "headersforgroupjob.hpp"
+#include "groupupdater.hpp"
 
 WebServer::WebServer(string web_root, int port_no)
 {
@@ -59,6 +60,16 @@ void WebServer::handle_request(WebRequest *request)
             Job *new_job = new HeadersForGroupJob(set->group, set->_min_msg_id, set->_max_msg_id);
             high_priority_jobs->add_job(new_job);
         }
+
+        delete request;
+        return;
+    }
+    if(0 == request->path.compare("/update_newsgroup/")) {
+        console->log("Handling update newsgroup request");
+        console->log("Making job for " + request->filename);
+        NewsGroup *group = group_for_name(request->filename);
+        Job *new_job = new GroupUpdater(group);
+        high_priority_jobs->add_job(new_job);
 
         delete request;
         return;

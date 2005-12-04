@@ -48,6 +48,7 @@ void test_simple_x(void);
 void test_dynamic_postsplit(void);
 void test_string_sorting(void);
 void test_js_escape(void);
+void test_mem_stringpattern(void);
 
 void test_web_request(void);
 
@@ -66,6 +67,7 @@ int main(int argc, char *argv[])
     config = new Config(0, NULL);
     newsgroup = new NewsGroup("misc.test");
     config->setup_test_config();
+    test_mem_stringpattern();
     test_crc32(); 
     test_download_netjob();
     test_generated_subject_line_tests();
@@ -155,21 +157,21 @@ void test_more_string_pattern()
     console->log("Test More String Pattern");
 
     string subject = "1997-02-23 The_Fourth_Generation_FULL_CD-FURY \"fry-4g06.zip\" (4/4) yEnc";
-    StringPattern *pattern = new StringPattern(SP_LASTPART);
-    pattern->add_breaker(SP_SUBJECT);
-    pattern->add_breaker(" \"");
-    pattern->add_breaker(SP_FILENAME);
-    pattern->add_breaker("\" (");
-    pattern->add_breaker(SP_PARTNO);
-    pattern->add_breaker("/");
-    pattern->add_breaker(SP_MAXPARTNO);
-    pattern->add_breaker(") yEnc");
+    StringPattern pattern(SP_LASTPART);
+    pattern.add_breaker(SP_SUBJECT);
+    pattern.add_breaker(" \"");
+    pattern.add_breaker(SP_FILENAME);
+    pattern.add_breaker("\" (");
+    pattern.add_breaker(SP_PARTNO);
+    pattern.add_breaker("/");
+    pattern.add_breaker(SP_MAXPARTNO);
+    pattern.add_breaker(") yEnc");
 
-    assert(pattern->match(subject));
-    assert_strings_eq(pattern->get_piece(SP_SUBJECT), 
+    assert(pattern.match(subject));
+    assert_strings_eq(pattern.get_piece(SP_SUBJECT), 
                       "1997-02-23 The_Fourth_Generation_FULL_CD-FURY");
 
-    assert(0 == pattern->get_piecen(SP_MAXFILENO));
+    assert(0 == pattern.get_piecen(SP_MAXFILENO));
 }
 
 void test_simple_x(void)
@@ -255,8 +257,8 @@ void generate_subject_line_test(NewsGroup *group, string message_id, string subj
 void test_uudecode(void)
 {
     console->log("Test UUdecode");
-    UUDecoder *decoder = new UUDecoder();
-    string result = decoder->do_the_math("$>6]U\"@``");
+    UUDecoder decoder;
+    string result = decoder.do_the_math("$>6]U\"@``");
     console->log(result);
     assert(result.compare("you\n") == 0);
 }
@@ -296,25 +298,27 @@ void assert_strings_eq(string s1, string s2)
 void test_download_netjob(void)
 {
     console->log("Testing postset download jobs..");
-    NewsGroup *group = new NewsGroup("fusion.downloads");
-    PostSet *post = new PostSet("brick brothers presents");
-    post->group = group;
+    NewsGroup group("fusion.downloads");
+    PostSet post("brick brothers presents");
+    post.group = &group;
 
-    PostsetJob *psj = new PostsetJob(post);
-    psj->srv = (void *)4096;
-    psj->process();
+    PostsetJob psj(&post);
+    psj.srv = (void *)4096;
+    psj.process();
 
 }
 
 void test_dynamic_postsplit(void)
 {
-    NewsGroup *group = new NewsGroup("net.fusion.downloads");
-    PostSetSplitterDynamicMatch *splitter = (PostSetSplitterDynamicMatch *) group->splitter;
+    NewsGroup group("net.fusion.downloads");
+    PostSetSplitterDynamicMatch *splitter = (PostSetSplitterDynamicMatch *) group.splitter;
     console->log("Parsing (Horny Peeps \"hornypeeps.rar\" yEnc (23/59))");
-    splitter->process_header(new MessageHeader(group, 31337, "Horny Peeps \"hornypeeps.rar\" yEnc (23/59)", "jim@bo.com"));
-    assert(0 == group->postsets.size());
-    splitter->process_header(new MessageHeader(group, 31338, "Horny Peeps \"hornypeeps.rar\" yEnc (24/59)", "jim@bo.com"));
-    assert(1 == group->postsets.size());
+    MessageHeader header( &group, 31337, "Horny Peeps \"hornypeeps.rar\" yEnc (23/59)", "jim@bo.com");
+    splitter->process_header(&header);
+    assert(0 == group.postsets.size());
+    MessageHeader header2( &group, 31338, "Horny Peeps \"hornypeeps.rar\" yEnc (24/59)", "jim@bo.com");
+    splitter->process_header(&header2);
+    assert(1 == group.postsets.size());
 
 }
 
@@ -326,16 +330,16 @@ void shut_down(void)
 void test_string_sorting(void)
 {
     console->log("\n===== Testing string sorting code =====\n");
-    NewsGroup* group1 = new NewsGroup("blaj");
-    NewsGroup* group2 = new NewsGroup("blak");
-    NewsGroup* group3 = new NewsGroup("blai");
-    NewsGroup* group4 = new NewsGroup("blah");
+    NewsGroup group1("blaj");
+    NewsGroup group2("blak");
+    NewsGroup group3("blai");
+    NewsGroup group4("blah");
     vector<NewsGroup *> my_items;
 
-    my_items.push_back(group1);
-    my_items.push_back(group2);
-    my_items.push_back(group3);
-    my_items.push_back(group4);
+    my_items.push_back(&group1);
+    my_items.push_back(&group2);
+    my_items.push_back(&group3);
+    my_items.push_back(&group4);
 
     assert_strings_eq(my_items[0]->name, "blaj");
     assert_strings_eq(my_items[1]->name, "blak");
@@ -367,4 +371,18 @@ void test_js_escape(void)
 {
     assert(0 == js_escape("'") . compare("\\'"));
     assert(0 == js_escape("\\'") . compare("\\\\\\'"));
+}
+
+void test_mem_stringpattern(void)
+{
+    StringPattern split(2);
+    /*
+    split.add_breaker(0);
+    split.add_breaker(".");
+    split.add_breaker(1);
+    split.match("1.2");
+
+    assert(1 == split.get_piecen(0));
+    assert(2 == split.get_piecen(1));
+    */
 }

@@ -14,6 +14,7 @@ using std::stringstream;
 
 UUDecoder::UUDecoder()
 {
+    post_file = NULL;
 }
 
 UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, Uint32 message_id) : Decoder(newsgrouppost, file)// Constructor
@@ -34,7 +35,8 @@ UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, Uint32 messag
 
 UUDecoder::~UUDecoder()
 {
-    post_file->piece_size = num_bytes_written;
+    if(post_file)
+        post_file->piece_size = num_bytes_written;
 }
 
 void UUDecoder::open_file(void)

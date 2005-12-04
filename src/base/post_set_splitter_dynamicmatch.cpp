@@ -67,7 +67,7 @@ void PostSetSplitterDynamicMatch::reprocess_unprocessed(void)
                 }
             }
         }
-        if(h){
+        /*if(h){
             h->process_count++;
             if(h->process_count < 1000){
                 remaining.push_back(h);
@@ -76,7 +76,7 @@ void PostSetSplitterDynamicMatch::reprocess_unprocessed(void)
                 h = NULL;
             }
 
-        }
+        }*/
     }
     unprocessed = remaining;
 }

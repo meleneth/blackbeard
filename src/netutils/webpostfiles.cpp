@@ -10,6 +10,7 @@ WebPostFiles::WebPostFiles(WebRequest *request) : WebDataFetcher(request)
 {
     output_lines.push_back("%s");
     output_lines.push_back("return false");
+    output_lines.push_back("||");
     StringPattern splitter = StringPattern(2);
     splitter.add_breaker(0);
     splitter.add_breaker(",");

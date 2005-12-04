@@ -68,6 +68,8 @@ function getResponseTable(onclick_format, onclick_regex, data)
   my_tbody.id = "ResponseTable";
   my_table.appendChild(my_tbody);
 
+  var header_classes = data.shift().split("|");
+
   for(var i = 0; i < data.length; i++){
     if(data[i]){
       var myresults = data[i].split("||");

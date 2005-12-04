@@ -30,11 +30,11 @@ WebRequest::~WebRequest()
 void WebRequest::parse_uri(string uri)
 {
     console->log("URI: " + uri);
-    StringPattern get_with_version(3);
+    StringPattern get_with_version = StringPattern(3);
     get_with_version.add_breaker("GET ");
     get_with_version.add_breaker(" HTTP/");
 
-    StringPattern raw_get(2);
+    StringPattern raw_get = StringPattern(2);
     raw_get.add_breaker("get ");
 
     if(get_with_version.match(uri)){
@@ -42,7 +42,7 @@ void WebRequest::parse_uri(string uri)
         console->log(get_with_version.results[2]);
         split_request_uri(get_with_version.results[1]);
         http_minor_version = 3;
-        StringPattern split(2);
+        StringPattern split = StringPattern(2);
         split.add_breaker(0);
         split.add_breaker(".");
         split.add_breaker(1);

@@ -17,6 +17,8 @@ PostSet::PostSet(string subject)
     num_finished_pieces = 0;
     pattern_name="";
     _max_num_files = 0;
+    _min_msg_id = 0;
+    _max_msg_id = 0;
     has_msg_ids = 0;
     group = NULL;
     _last_file = NULL;

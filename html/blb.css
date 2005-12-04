@@ -42,12 +42,12 @@ padding-left: 10px;
     margin: 0px;
     padding: 0px;
     padding-left: 10px;
-    width: 100%;
 }
 
 table { 
     border-collapse: collapse;
     margin-top: 10px;
+    width: 100%;
 }
 
 td {
@@ -57,4 +57,12 @@ td {
 
 tr :hover {
     background-color: #777777;
+}
+
+.num { 
+    text-align: right;
+}
+
+.full {
+    width: 100%;
 }

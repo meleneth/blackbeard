@@ -3,11 +3,11 @@
 
 StringPattern::StringPattern(Uint32 max_part_no)
 {
-    part_order.resize(max_part_no +2);
+/*    part_order.resize(max_part_no);
     results.resize(max_part_no);
-    for(Uint32 i=0; i<max_part_no; i++){
-        part_order[i] = 31337;
-        results[i] = "";
+*/    for(Uint32 i=0; i<max_part_no+2; i++){
+        part_order.push_back(31337);
+        results.push_back("");
     }
     this->max_part_no = max_part_no;
     name="";
@@ -15,6 +15,10 @@ StringPattern::StringPattern(Uint32 max_part_no)
     
 StringPattern::~StringPattern() 
 {
+/*    console->log("Fine in death so far..");
+    part_order.clear();
+    results.clear();
+*/
 }
 
 void StringPattern::add_breaker(string target)
