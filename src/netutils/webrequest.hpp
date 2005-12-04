@@ -14,6 +14,7 @@ class WebRequest {
         ~WebRequest();
 
         void parse_uri(string uri);
+        void parse_headers(void);
         void split_request_uri(string uri);
 
         TCPConnection *client;
@@ -21,6 +22,7 @@ class WebRequest {
         string path;
         string filename;
         Uint32 http_minor_version;
+        Uint32 http_major_version;
 
     private:
     protected:

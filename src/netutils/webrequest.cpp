@@ -30,24 +30,33 @@ WebRequest::~WebRequest()
 void WebRequest::parse_uri(string uri)
 {
     console->log("URI: " + uri);
-    StringPattern *get_with_version = new StringPattern(3);
-    get_with_version->add_breaker("GET ");
-    get_with_version->add_breaker(" HTTP");
+    StringPattern get_with_version(3);
+    get_with_version.add_breaker("GET ");
+    get_with_version.add_breaker(" HTTP/");
 
-    StringPattern *raw_get = new StringPattern(2);
-    raw_get->add_breaker("get ");
+    StringPattern raw_get(2);
+    raw_get.add_breaker("get ");
 
-    if(get_with_version->match(uri)){
-        split_request_uri(get_with_version->results[1]);
+    if(get_with_version.match(uri)){
+        console->log("Examine");
+        console->log(get_with_version.results[2]);
+        split_request_uri(get_with_version.results[1]);
         http_minor_version = 3;
-    } else if(raw_get->match(uri)){
+        StringPattern split(2);
+        split.add_breaker(0);
+        split.add_breaker(".");
+        split.add_breaker(1);
+        if(split.match(get_with_version.results[2])){
+            http_major_version = split.get_piecen(0);
+            http_minor_version = split.get_piecen(1);
+            if((http_minor_version == 1) && (http_minor_version == 1)){
+                parse_headers();
+            }
+        }
+    } else if(raw_get.match(uri)){
         http_minor_version = 0;
-        split_request_uri(raw_get->results[1]);
+        split_request_uri(raw_get.results[1]);
     }
-
-    delete get_with_version;
-    delete raw_get;
-
 }
 
 void WebRequest::split_request_uri(string uri)
@@ -66,6 +75,15 @@ void WebRequest::split_request_uri(string uri)
         filename = uri.substr(last_slash + 1, uri_length);
     } else { 
         filename = "index.html";
+    }
+}
+
+void WebRequest::parse_headers()
+{
+    string line = client->get_line();
+    while(line.compare("")){
+        console->log("Saw header: " + line);
+        line = client->get_line();
     }
 }
 

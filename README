@@ -1,0 +1,13 @@
+HTTP stuff:
+get / HTTP/1.1
+Host: fortress
+
+HTTP/1.1 200 OK
+Date: Sun, 04 Dec 2005 04:24:29 GMT
+Server: Apache/1.3.33 (Unix) PHP/4.3.10 mod_perl/1.29
+Set-Cookie: AF_SID=e7276d38015c6aa68f438f5057fa9215; path=/
+Transfer-Encoding: chunked
+Content-Type: text/html
+
+637
+
