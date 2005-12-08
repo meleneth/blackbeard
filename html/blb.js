@@ -1,5 +1,6 @@
 var last_data_fetch;
 var refresh_timer;
+var last_tick;
 
 function fetch_data(from_where)
 {
@@ -53,7 +54,7 @@ function handleHttpResponse() {
       var onclick_regex = /%s/;
 
       thediv = document.getElementById('content');
-      thediv.replaceChild(getResponseTable(onclick_format, onclick_regex, results), thediv.firstChild);
+      thediv.replaceChild(getResponseTable(results), thediv.firstChild);
 
       refresh_timer = setTimeout('RequeueFetch()', 5000);
       http_busy = 0;
@@ -62,57 +63,53 @@ function handleHttpResponse() {
   
 }
 
-function getResponseTable(onclick_format, onclick_regex, data) 
+function getResponseTable(data) 
 {
   var my_table = document.createElement('table');
   var my_tbody = document.createElement('tbody');
+  my_tbody.id = "ResponseTable";
   my_table.appendChild(my_tbody);
 
   for(var i = 0; i < data.length; i++){
     if(data[i]){
-      var myresults = data[i].split("||");
-      var row  = document.createElement('tr'); 
-        for(var j=0; j< myresults.length; j++){
-
-          var cell = document.createElement('td');
-          var a    = document.createElement('a'); 
-          
-          var sub_data = myresults[j].split("|");
-          if(sub_data.length == 1) {
-              a.appendChild(document.createTextNode(sub_data[0]));
-          } else {
-              a.appendChild(document.createTextNode(sub_data[1]));
-              var my_func_text = onclick_format;
-              my_func_text = my_func_text.replace(onclick_regex, sub_data[0]);
-              a.onclick = new Function(my_func_text);
-          }
-          cell.appendChild(a); row.appendChild(cell); 
-      }
-      my_tbody.appendChild(row);
+      my_tbody.appendChild(getTableRow(data[i]));
     } 
   }
   return my_table;
 }
 
-function getResponseUl(onclick_format, onclick_regex, data) 
+function updateResponseTable(data)
 {
-  var my_ul = document.createElement('ul');
+  var my_tbody = document.getElementById('ResponseTable');
   for(var i = 0; i < data.length; i++){
     if(data[i]){
-      var myresults = data[i].split("|");
-      var list_item = document.createElement('li');
-      var a = document.createElement('a');
-      a.appendChild(document.createTextNode(myresults[1]));
-
-      var my_func_text = onclick_format;
-      my_func_text = my_func_text.replace(onclick_regex, myresults[0]);
-      a.onclick = new Function(my_func_text);
-
-      list_item.appendChild(a);
-      my_ul.appendChild(list_item);
+        var row = getTableRow(data[i]);
+        var old_row = document.getElementById(row.id);
+        my_tbody.replaceChild(row, old_row);
     } 
   }
-  return my_ul;
+}
+
+function getTableRow(data) 
+{
+  var results = data[i].split("||");
+  var row  = document.createElement('tr'); 
+  row.id = results.shift();
+  for(var j=0; j< results.length; j++){
+    var cell = document.createElement('td');
+    var a    = document.createElement('a'); 
+    var sub_data = results[j].split("|");
+    if(sub_data.length == 1) {
+        a.appendChild(document.createTextNode(sub_data[0]));
+    } else {
+        a.appendChild(document.createTextNode(sub_data[1]));
+        var my_func_text = onclick_format;
+        my_func_text = my_func_text.replace(onclick_regex, sub_data[0]);
+        a.onclick = new Function(my_func_text);
+    }
+    cell.appendChild(a); row.appendChild(cell); 
+  }
+  return row;
 }
 
 function getHTTPObject() {
