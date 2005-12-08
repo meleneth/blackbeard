@@ -97,12 +97,12 @@ void NewsGroup::load_from_file(string filename)
 
 void load_groups_from(string filename)
 {
-    StringPattern *pattern = new StringPattern(4);
-    pattern->add_breaker(0);
-    pattern->add_breaker(" ");
-    pattern->add_breaker(1);
-    pattern->add_breaker(" ");
-    pattern->add_breaker(2);
+    StringPattern pattern = StringPattern(3);
+    pattern.add_breaker(0);
+    pattern.add_breaker(" ");
+    pattern.add_breaker(1);
+    pattern.add_breaker(" ");
+    pattern.add_breaker(2);
     
     char linebuffer[1024];
     ifstream in;
@@ -113,16 +113,17 @@ void load_groups_from(string filename)
 
         while(!in.eof()){
             if(strlen(linebuffer)){
-                if(pattern->match(linebuffer)){
-                    NewsGroup *group = group_for_name(pattern->results[2]);
-                    group->first_article_number = pattern->get_piecen(0);
-                    group->last_article_number = pattern->get_piecen(1);
+                if(pattern.match(linebuffer)){
+                    NewsGroup *group = group_for_name(pattern.results[2]);
+                    group->first_article_number = pattern.get_piecen(0);
+                    group->last_article_number = pattern.get_piecen(1);
                 }else{
                     group_for_name(linebuffer);
                 }
             }
             in.getline(linebuffer, 1024);
         }
+        in.close();
     }
 }
 
@@ -147,10 +148,12 @@ void NewsGroup::save_postsets(void)
     }
 }
 
+#define NG_PSL_BUFFER_SIZE 40000
+
 void NewsGroup::load_postsets(void)
 {
     ifstream in;
-    char linebuffer[1024];
+    char linebuffer[NG_PSL_BUFFER_SIZE];
 
     StringPattern *pattern = new StringPattern(4);
     pattern->add_breaker(0);
@@ -166,7 +169,7 @@ void NewsGroup::load_postsets(void)
     in.open(filename.c_str(), ios::in);
 
     if(in.is_open()){
-        in.getline(linebuffer, 1024);
+        in.getline(linebuffer, NG_PSL_BUFFER_SIZE);
         while(!in.eof()){
             if(strlen(linebuffer)) {
                 if(pattern->match(linebuffer)){
@@ -178,7 +181,7 @@ void NewsGroup::load_postsets(void)
                     set->group = this;
                 }
             }
-            in.getline(linebuffer, 1024);
+            in.getline(linebuffer, NG_PSL_BUFFER_SIZE);
         }
     }
 }

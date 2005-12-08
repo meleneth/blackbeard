@@ -45,6 +45,8 @@ class Config {
         Uint32 debug_logging;
         Uint32 dump_subject_file;
 
+        Uint32 tick;
+
     private:
         // Private members go here.
     protected:

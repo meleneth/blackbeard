@@ -313,11 +313,11 @@ void test_dynamic_postsplit(void)
     NewsGroup group("net.fusion.downloads");
     PostSetSplitterDynamicMatch *splitter = (PostSetSplitterDynamicMatch *) group.splitter;
     console->log("Parsing (Horny Peeps \"hornypeeps.rar\" yEnc (23/59))");
-    MessageHeader header( &group, 31337, "Horny Peeps \"hornypeeps.rar\" yEnc (23/59)", "jim@bo.com");
-    splitter->process_header(&header);
+    MessageHeader *header = new MessageHeader( &group, 31337, "Horny Peeps \"hornypeeps.rar\" yEnc (23/59)", "jim@bo.com");
+    splitter->process_header(header);
     assert(0 == group.postsets.size());
-    MessageHeader header2( &group, 31338, "Horny Peeps \"hornypeeps.rar\" yEnc (24/59)", "jim@bo.com");
-    splitter->process_header(&header2);
+    header = new MessageHeader( &group, 31338, "Horny Peeps \"hornypeeps.rar\" yEnc (24/59)", "jim@bo.com");
+    splitter->process_header(header);
     assert(1 == group.postsets.size());
 
 }
@@ -357,7 +357,8 @@ void test_string_sorting(void)
 void test_web_request(void)
 {
     console->log("Testing webserver..");
-    WebRequest *r = new WebRequest("GET /foo/bar/baz HTTP1.1");
+    WebRequest *r = new WebRequest("GET /foo/bar/baz HTTP/1.1");
+    console->log(r->path);
     assert(0 == r->path.compare("/foo/bar/"));
     assert(0 == r->filename.compare("baz"));
     delete r;
@@ -375,8 +376,8 @@ void test_js_escape(void)
 
 void test_mem_stringpattern(void)
 {
+    console->log("Test mem stringpattern..");
     StringPattern split(2);
-    /*
     split.add_breaker(0);
     split.add_breaker(".");
     split.add_breaker(1);
@@ -384,5 +385,4 @@ void test_mem_stringpattern(void)
 
     assert(1 == split.get_piecen(0));
     assert(2 == split.get_piecen(1));
-    */
 }

@@ -49,9 +49,6 @@ function handleHttpResponse() {
       var run_me = results.shift();
       eval(run_me);
 
-      var onclick_format = results.shift();
-      var onclick_regex = /%s/;
-
       thediv = document.getElementById('content');
       thediv.replaceChild(getResponseTable(results), thediv.firstChild);
 
@@ -72,7 +69,7 @@ function getResponseTable(data)
 
   for(var i = 0; i < data.length; i++){
     if(data[i]){
-      my_tbody.appendChild(getTableRow(data[i]));
+      my_tbody.appendChild(getTableRow(data[i], header_classes));
     }
   }
   return my_table;
@@ -81,18 +78,19 @@ function getResponseTable(data)
 function updateResponseTable(data)
 {
   var my_tbody = document.getElementById('ResponseTable');
+  var header_classes = data.shift().split("|");
   for(var i = 0; i < data.length; i++){
     if(data[i]){
-        var row = getTableRow(data[i]);
+        var row = getTableRow(data[i], header_classes);
         var old_row = document.getElementById(row.id);
         my_tbody.replaceChild(row, old_row);
     } 
   }
 }
 
-function getTableRow(data) 
+function getTableRow(data, header_classes) 
 {
-  var results = data[i].split("||");
+  var results = data.split("||");
   var row  = document.createElement('tr'); 
   row.id = results.shift();
   for(var j=0; j< results.length; j++){
@@ -103,9 +101,7 @@ function getTableRow(data)
         a.appendChild(document.createTextNode(sub_data[0]));
     } else {
         a.appendChild(document.createTextNode(sub_data[1]));
-        var my_func_text = onclick_format;
-        my_func_text = my_func_text.replace(onclick_regex, sub_data[0]);
-        a.onclick = new Function(my_func_text);
+        a.onclick = new Function(sub_data[0]);
     }
     cell.appendChild(a); row.appendChild(cell); 
   }

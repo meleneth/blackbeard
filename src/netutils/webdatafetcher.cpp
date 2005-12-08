@@ -1,5 +1,6 @@
 #include "webdatafetcher.hpp"
 #include "netcentral.hpp"
+#include "config.hpp"
 
 #include <sstream>
 
@@ -20,7 +21,9 @@ WebDataFetcher::~WebDataFetcher()
 string WebDataFetcher::info_update_string(void)
 {
     stringstream update_cmd;
-    update_cmd << "update_meters('(" 
+    update_cmd << "last_data_fetch = "
+               << config->tick 
+               << "; update_meters('(" 
                << netcentral->jobs.size() 
                << "/" 
                << netcentral->active_jobs.size()

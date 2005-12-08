@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
             jobqueue->process_jobs();
             netcentral->process_jobs();
             webserver->tick();
+            config->tick++;
         }
 
         int key = getch();

@@ -3,15 +3,16 @@
 #include "console.hpp"
 
 #include<sstream>
+#include<iomanip>
 
 using std::stringstream;
+using std::setprecision;
 
 WebPostFiles::WebPostFiles(WebRequest *request) : WebDataFetcher(request)
 {
-    output_lines.push_back("%s");
-    output_lines.push_back("return false");
-    output_lines.push_back("||");
-    StringPattern splitter = StringPattern(2);
+    output_lines.push_back("|full|cmd|num|num");
+
+    StringPattern splitter(2);
     splitter.add_breaker(0);
     splitter.add_breaker(",");
     splitter.add_breaker(1);
@@ -41,11 +42,27 @@ string WebPostFiles::info_update_string(void)
 
 string WebPostFiles::post_file_line(PostFile *file)
 {
+    stringstream file_line;
+    file_line << file->post_set->group->postset_index(file->post_set)
+              << "," << file->post_set->file_index(file);
+
     stringstream s;
-    s << "ping_url('/download_file/" << file->post_set->group->name
-    << "," << file->post_set->group->postset_index(file->post_set) 
-    << "," << file->post_set->file_index(file) <<"')|Download||"
-    << " |" << file->status_string();
+    s << file->filename 
+    << "||ping_url('/download_file/" << file->post_set->group->name
+    << "," << file_line.str() <<"')|Download"
+    << "|| |" << file->filename
+    << "|| |" << file->status
+    << "|| |" << file->downloaded_pieces << "/"  << file->num_pieces
+    << "|| |";
+
+    if(file->num_pieces == file->downloaded_pieces){
+        s << "100%";
+   }else{
+        if(file->num_pieces > 0)
+           s << setprecision(3)
+             << ((double)file->downloaded_pieces / (double)file->num_pieces) * (double) 100
+             << "%";
+    }
     return s.str();
 }
 

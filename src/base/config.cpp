@@ -36,6 +36,7 @@ Config::Config(int argc, char *argv[]) // Constructor
     max_net_connections = 4;
     debug_logging = 0;
     dump_subject_file = 0;
+    tick = 0;
 
     int ac=1;
     string debug = "-d";
