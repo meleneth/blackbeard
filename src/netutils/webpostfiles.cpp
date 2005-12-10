@@ -10,7 +10,8 @@ using std::setprecision;
 
 WebPostFiles::WebPostFiles(WebRequest *request) : WebDataFetcher(request)
 {
-    output_lines.push_back(info_update_string());
+    
+    output_lines.push_back("");
     output_lines.push_back("|full|cmd|num|num");
 
     NewsGroup *group = group_for_name(request->param("name"));
