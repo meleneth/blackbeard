@@ -1,24 +1,21 @@
 #include "webrequest.hpp"
 #include "console.hpp"
 #include "stringpattern.hpp"
+#include "strutil.hpp"
 
 WebRequest::WebRequest(TCPConnection *tcp)
 {
     client = tcp;
     request_string = tcp->get_line();
-    path = "/";
-    filename = "index.html";
-    http_minor_version = 0;
-
+    defaults();
     parse_uri(request_string);
 }
 
 WebRequest::WebRequest(string uri)
 {
     request_string = uri;
-    path = "/";
-    filename = "index.html";
-    http_minor_version = 0;
+    client = NULL;
+    defaults();
     parse_uri(uri);
 }
 
@@ -26,6 +23,15 @@ WebRequest::~WebRequest()
 {
     delete client;
 }
+
+void WebRequest::defaults()
+{
+    path = "/";
+    filename = "index.html";
+    http_minor_version = 0;
+    has_cgi_params = 0;
+}
+
 
 void WebRequest::parse_uri(string uri)
 {
@@ -50,7 +56,9 @@ void WebRequest::parse_uri(string uri)
             http_major_version = split.get_piecen(0);
             http_minor_version = split.get_piecen(1);
             if((http_minor_version == 1) && (http_minor_version == 1)){
-                parse_headers();
+                if(client){
+                    parse_headers();
+                }
             }
         }
     } else if(raw_get.match(uri)){
@@ -76,6 +84,30 @@ void WebRequest::split_request_uri(string uri)
     } else { 
         filename = "index.html";
     }
+
+    // split CGI params off of the request
+    string::size_type pos = filename.find_first_of("?");
+    if(pos != string::npos){
+        string params = filename.substr(pos + 1, filename.length());
+        filename = filename.substr(0, pos);
+        has_cgi_params = 1;
+
+        vector<string> all_params;
+        Tokenize(params, all_params, ";");
+
+        Uint32 max_param_no = all_params.size();
+        StringPattern splitter = StringPattern(2);
+        splitter.add_breaker(0);
+        splitter.add_breaker("=");
+        splitter.add_breaker(1);
+
+        for(Uint32 i=0; i<max_param_no; ++i){
+            splitter.match(all_params[i]);
+            param_names.push_back(splitter.get_piece(0));
+            param_values.push_back(splitter.get_piece(1));
+        }
+    }
+
 }
 
 void WebRequest::parse_headers()
@@ -85,5 +117,18 @@ void WebRequest::parse_headers()
         console->log("Saw header: " + line);
         line = client->get_line();
     }
+}
+
+string WebRequest::param(string name)
+{
+    Uint32 max_no = param_names.size();
+
+    for(Uint32 i=0; i<max_no; ++i){
+        if(0 == param_names[i].compare(name)){
+            return param_values[i];
+        }
+    }
+
+    return "";
 }
 

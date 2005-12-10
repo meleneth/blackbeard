@@ -3,9 +3,7 @@
 
 StringPattern::StringPattern(Uint32 max_part_no)
 {
-/*    part_order.resize(max_part_no);
-    results.resize(max_part_no);
-*/    for(Uint32 i=0; i<max_part_no+2; i++){
+    for(Uint32 i=0; i<max_part_no+2; i++){
         part_order.push_back(31337);
         results.push_back("");
     }
@@ -15,10 +13,6 @@ StringPattern::StringPattern(Uint32 max_part_no)
     
 StringPattern::~StringPattern() 
 {
-/*    console->log("Fine in death so far..");
-    part_order.clear();
-    results.clear();
-*/
 }
 
 void StringPattern::add_breaker(string target)

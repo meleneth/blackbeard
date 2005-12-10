@@ -2,7 +2,7 @@
 
 #include <iostream>  // I/O 
 #include <fstream>   // file I/O
-#include<sstream>
+#include <sstream>
 
 using std::string;
 using std::stringstream;

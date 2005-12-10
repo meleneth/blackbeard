@@ -356,15 +356,23 @@ void test_string_sorting(void)
 
 void test_web_request(void)
 {
-    console->log("Testing webserver..");
-    WebRequest *r = new WebRequest("GET /foo/bar/baz HTTP/1.1");
-    console->log(r->path);
-    assert(0 == r->path.compare("/foo/bar/"));
-    assert(0 == r->filename.compare("baz"));
-    delete r;
-    r = new WebRequest("get /jack.css");
-    assert(0 == r->path.compare("/"));
-    assert(0 == r->filename.compare("jack.css"));
+    console->log("Testing webrequest..");
+    WebRequest r = WebRequest("GET /foo/bar/baz HTTP/1.1");
+    console->log(r.path);
+    assert(0 == r.path.compare("/foo/bar/"));
+    assert(0 == r.filename.compare("baz"));
+
+    r = WebRequest("get /jack.css");
+    assert(0 == r.path.compare("/"));
+    assert(0 == r.filename.compare("jack.css"));
+
+    r = WebRequest("get /jack.html?foo=bar;baz=bam");
+    assert(0 == r.path.compare("/"));
+    console->log(r.filename);
+    assert(0 == r.filename.compare("jack.html"));
+    assert(1 == r.has_cgi_params);
+    assert(0 == r.param("foo").compare("bar"));
+    assert(0 == r.param("baz").compare("bam"));
 
 }
 
