@@ -35,45 +35,36 @@ void WebServer::handle_request(WebRequest *request)
            handlers.push_back(new WebNewsGroups(request));
            return;
        }
+       if(0 == request->filename.compare("postsets")) {
+           console->log("Handling postsets request:");
+           handlers.push_back(new WebPostSets(request));
+           return;
+       }
+       if(0 == request->filename.compare("postfiles")) {
+           console->log("Handling postfiles request:");
+           handlers.push_back(new WebPostFiles(request));
+           return;
+       }
+       if(0 == request->filename.compare("updatepostset")) {
+           console->log("Handling update postset request");
+           console->log("Making job for " + request->filename);
+           NewsGroup *group = group_for_name(request->param("name"));
+           PostSet *set = group->postsets[request->paramn("index")];
+           Job *new_job = new HeadersForGroupJob(set->group, set->_min_msg_id, set->_max_msg_id);
+           high_priority_jobs->add_job(new_job);
+           delete request;
+           return;
+       }
+       if(0 == request->filename.compare("update_newsgroup")) {
+           console->log("Handling update newsgroup request");
+           console->log("Making job for " + request->param("name"));
+           NewsGroup *group = group_for_name(request->param("name"));
+           Job *new_job = new GroupUpdater(group);
+           high_priority_jobs->add_job(new_job);
+           delete request;
+           return;
+       }
    }
-   if(0 == request->path.compare("/postsets/")) {
-       console->log("Handling postsets request:");
-       handlers.push_back(new WebPostSets(request));
-       return;
-   }
-   if(0 == request->path.compare("/postfiles/")) {
-       console->log("Handling postfiles request:");
-       handlers.push_back(new WebPostFiles(request));
-       return;
-   }
-
-    if(0 == request->path.compare("/updatepostset/")) {
-        console->log("Handling update postset request");
-        StringPattern splitter = StringPattern(2);
-        splitter.add_breaker(0);
-        splitter.add_breaker(",");
-        splitter.add_breaker(1);
-        if(splitter.match(request->filename)) {
-            console->log("Making job for " + request->filename);
-            NewsGroup *group = group_for_name(splitter.results[0]);
-            PostSet *set = group->postsets[splitter.get_piecen(1)];
-            Job *new_job = new HeadersForGroupJob(set->group, set->_min_msg_id, set->_max_msg_id);
-            high_priority_jobs->add_job(new_job);
-        }
-
-        delete request;
-        return;
-    }
-    if(0 == request->path.compare("/update_newsgroup/")) {
-        console->log("Handling update newsgroup request");
-        console->log("Making job for " + request->filename);
-        NewsGroup *group = group_for_name(request->filename);
-        Job *new_job = new GroupUpdater(group);
-        high_priority_jobs->add_job(new_job);
-
-        delete request;
-        return;
-    }
 
    string filename = web_root + request->path + request->filename;
    console->log("Sending file: " + filename);

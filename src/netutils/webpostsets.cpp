@@ -10,7 +10,7 @@ using std::setprecision;
 
 WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 {
-    group = group_for_name(request->filename);
+    group = group_for_name(request->param("name"));
 
     output_lines.push_back(info_update_string());
     output_lines.push_back("num|||num");
@@ -30,15 +30,15 @@ string WebPostSets::status(PostSet *set, Uint32 index)
 {
     stringstream s;
     s   << index 
-        << "||fetch_data('/postfiles/" << set->group->name << "," << index << "')|"
+        << "||fetch_data('/postfiles?name=" << set->group->name << ";index=" << index << "')|"
             << set->num_files << "/" << set->_max_num_files;
     if(1 == 1){
-        s << "||ping_url('/updatepostset/" << set->group->name << "," << index << "');|"
+        s << "||ping_url('/updatepostset?name=" << set->group->name << ";index=" << index << "');|"
             << "Update";
     }
-    s   << "||fetch_data('/postfiles/" << set->group->name << "," << index << "')|"
+    s   << "||fetch_data('/postfiles?name=" << set->group->name << ";index=" << index << "')|"
             << js_escape(set->subject) 
-        << "||fetch_data('/postfiles/" << set->group->name << "," << index << "')|"
+        << "||fetch_data('/postfiles?name=" << set->group->name << ";index=" << index << "')|"
             << setprecision(3) << set->completed_percent() << "%";
     return s.str();
 }

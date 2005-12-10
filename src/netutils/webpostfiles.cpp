@@ -10,23 +10,18 @@ using std::setprecision;
 
 WebPostFiles::WebPostFiles(WebRequest *request) : WebDataFetcher(request)
 {
+    output_lines.push_back(info_update_string());
     output_lines.push_back("|full|cmd|num|num");
 
-    StringPattern splitter(2);
-    splitter.add_breaker(0);
-    splitter.add_breaker(",");
-    splitter.add_breaker(1);
+    NewsGroup *group = group_for_name(request->param("name"));
+    set = group->postsets[request->paramn("index")];
 
-    if(splitter.match(request->filename)) {
-        NewsGroup *group = group_for_name(splitter.results[0]);
-        set = group->postsets[splitter.get_piecen(1)];
-
-        num_lines = set->files.size();
-        for(Uint32 i=0; i<num_lines; ++i) {
-            output_lines.push_back(post_file_line(set->files[i]));
-        }
-        output_lines[0] = info_update_string();
+    num_lines = set->files.size();
+    for(Uint32 i=0; i<num_lines; ++i) {
+        output_lines.push_back(post_file_line(set->files[i]));
     }
+
+    output_lines[0] = info_update_string();
     num_lines = output_lines.size();
 }
 
@@ -48,8 +43,8 @@ string WebPostFiles::post_file_line(PostFile *file)
 
     stringstream s;
     s << file->filename 
-    << "||ping_url('/download_file/" << file->post_set->group->name
-    << "," << file_line.str() <<"')|Download"
+    << "||ping_url('/download_file?name=" << file->post_set->group->name
+    << ";index=" << file_line.str() <<"')|Download"
     << "|| |" << file->filename
     << "|| |" << file->status
     << "|| |" << file->downloaded_pieces << "/"  << file->num_pieces

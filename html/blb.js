@@ -141,6 +141,14 @@ function ping_url(url) {
     req.send(null);
 }
 
+function log_info(info)
+{
+  var el = document.getElementById('jslog');
+  var li = document.createElement('li');
+  li.appendChild(document.createTextNode(info));
+  el.appendChild(li);
+}
+
 var http = getHTTPObject(); // We create the HTTP Object
 var http_busy = 0;
 

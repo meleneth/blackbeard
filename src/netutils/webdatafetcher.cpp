@@ -21,7 +21,7 @@ WebDataFetcher::~WebDataFetcher()
 string WebDataFetcher::info_update_string(void)
 {
     stringstream update_cmd;
-    update_cmd << "last_data_fetch = "
+    update_cmd << "last_tick = "
                << config->tick 
                << "; update_meters('(" 
                << netcentral->jobs.size() 

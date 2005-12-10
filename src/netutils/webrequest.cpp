@@ -132,3 +132,8 @@ string WebRequest::param(string name)
     return "";
 }
 
+Uint32 WebRequest::paramn(string name)
+{
+    return atoi(param(name).c_str());
+}
+

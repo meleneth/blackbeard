@@ -20,6 +20,7 @@ class WebRequest {
         void split_request_uri(string uri);
         void defaults(void);
         string param(string name);
+        Uint32 paramn(string name);
 
         TCPConnection *client;
         string request_string;

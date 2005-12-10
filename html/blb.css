@@ -66,3 +66,13 @@ tr :hover {
 .full {
     width: 100%;
 }
+
+.cmd {
+    color: red;
+    size: 80%;
+}
+
+#jslogdiv {
+  width: 900px;
+  float: right;
+}
