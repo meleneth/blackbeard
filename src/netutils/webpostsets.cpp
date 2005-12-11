@@ -2,6 +2,7 @@
 #include "netcentral.hpp"
 #include "console.hpp"
 #include "strutil.hpp"
+#include "config.hpp"
 
 #include<sstream>
 #include<iomanip>
@@ -13,11 +14,13 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
     group = group_for_name(request->param("name"));
 
     output_lines.push_back(info_update_string());
-    output_lines.push_back("num|||num");
+    output_lines.push_back("num||full|num");
     num_lines = group->postsets.size();
 
     for(Uint32 i=0; i<num_lines; ++i) {
-        output_lines.push_back(status(group->postsets[i], i));
+        if(group->postsets[i]->tick > request->paramn("tick")) {
+            output_lines.push_back(status(group->postsets[i], i));
+        }
     }
     num_lines = output_lines.size();
 }
@@ -45,7 +48,13 @@ string WebPostSets::status(PostSet *set, Uint32 index)
 
 string WebPostSets::info_update_string(void)
 {
-    string meters = WebDataFetcher::info_update_string();
-    return meters + " update_heading('" + group->name + "');";
+    stringstream s;
+    s << "last_data_fetch = \"/postsets?name=" << request->param("name") << ";tick=" << config->tick << "\"; "
+      <<  WebDataFetcher::info_update_string()
+      << "update_heading('" + group->name + "');";
+
+    if(request->paramn("tick"))
+        s << "mode=\"update\";";
+    return s.str();
 }
 

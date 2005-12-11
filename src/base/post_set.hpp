@@ -44,6 +44,7 @@ class PostSet {
         Uint32 _min_msg_id;
         Uint32 _max_msg_id;
         PostFile *_last_file;
+        Uint32 tick;
     private:
     protected:
 };

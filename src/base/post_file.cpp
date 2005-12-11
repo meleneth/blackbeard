@@ -22,6 +22,7 @@ PostFile::PostFile(PostSet *postset)
     status = "Ignored";
     piece_size = 0;
     is_corrupt = 0;
+    tick = 1;
 }
     
 PostFile::~PostFile() 

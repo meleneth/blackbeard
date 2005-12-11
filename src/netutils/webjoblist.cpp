@@ -12,7 +12,7 @@ using std::stringstream;
 WebJobList::WebJobList(WebRequest *request) : WebDataFetcher(request)
 {
     output_lines.push_back(info_update_string());
-    output_lines.push_back("%s");
+    output_lines.push_back("full");
     num_lines = netcentral->active_jobs.size();
 
     for(Uint32 i=0; i<num_lines; ++i) {
@@ -28,17 +28,19 @@ WebJobList::~WebJobList()
 
 string WebJobList::line_for_job(Job *job)
 {
-    string command = "return false";
+    stringstream s;
+    static Uint32 i=0;
 
     if(job->job_type == POSTFILE_DOWNLOAD) {
-        stringstream s;
         PostfileJob *j = (PostfileJob *)job;
         PostFile *file = j->postfile;
         PostSet *set = file->post_set;
 
-        s << "fetch_data('/postfiles/" << set->group->name << "," << set->group->postset_index(set) << "')";
-        command = s.str();
+        s << i << "|| fetch_data('/postfiles?name=" << set->group->name << ";index=" << set->group->postset_index(set) << "')";
+    } else {
+        s << i << "|| return false" << "| " << job->status_line();
     }
-    return command + "|" + job->status_line();
+    i++;
+    return s.str();
 }
 

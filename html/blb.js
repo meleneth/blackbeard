@@ -1,22 +1,24 @@
 var last_data_fetch;
 var refresh_timer;
 var last_tick;
+var mode;
 
 function fetch_data(from_where)
 {
-    if(refresh_timer){
-       clearTimeout(refresh_timer);
-    }
-   get_data(from_where);
+  if(refresh_timer){
+    clearTimeout(refresh_timer);
+  }
+  mode = "replace";
+  get_data(from_where);
 }
 
 function update_meters(jobs, krate)
 {
-    var id = document.getElementById('jobs_rate');
-    id.replaceChild(document.createTextNode(jobs), id.firstChild);
+  var id = document.getElementById('jobs_rate');
+  id.replaceChild(document.createTextNode(jobs), id.firstChild);
 
-    id = document.getElementById('k_rate');
-    id.replaceChild(document.createTextNode(krate), id.firstChild);
+  id = document.getElementById('k_rate');
+  id.replaceChild(document.createTextNode(krate), id.firstChild);
 }
 
 function update_heading(new_heading)
@@ -50,7 +52,11 @@ function handleHttpResponse() {
       eval(run_me);
 
       thediv = document.getElementById('content');
-      thediv.replaceChild(getResponseTable(results), thediv.firstChild);
+      if(mode == "update"){
+        updateResponseTable(results);
+      }else{
+        thediv.replaceChild(getResponseTable(results), thediv.firstChild);
+      }
 
       refresh_timer = setTimeout('RequeueFetch()', 5000);
       http_busy = 0;
@@ -83,7 +89,11 @@ function updateResponseTable(data)
     if(data[i]){
         var row = getTableRow(data[i], header_classes);
         var old_row = document.getElementById(row.id);
-        my_tbody.replaceChild(row, old_row);
+        if(old_row){
+            my_tbody.replaceChild(row, old_row);
+        }else{
+            my_tbody.appendChild(row);
+        }
     } 
   }
 }

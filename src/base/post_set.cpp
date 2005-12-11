@@ -22,6 +22,7 @@ PostSet::PostSet(string subject)
     has_msg_ids = 0;
     group = NULL;
     _last_file = NULL;
+    tick = 1;
 }
 
 PostSet::~PostSet()
@@ -57,6 +58,8 @@ double PostSet::completed_percent(void)
 
 PostFile *PostSet::file(string filename)
 {
+    tick = config->tick;
+
     if(_last_file){
         if(_last_file->filename.compare(filename) == 0){
             return _last_file;

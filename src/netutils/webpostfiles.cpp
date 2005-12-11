@@ -1,6 +1,7 @@
 #include "webpostfiles.hpp"
 #include "netcentral.hpp"
 #include "console.hpp"
+#include "config.hpp"
 
 #include<sstream>
 #include<iomanip>
@@ -19,7 +20,9 @@ WebPostFiles::WebPostFiles(WebRequest *request) : WebDataFetcher(request)
 
     num_lines = set->files.size();
     for(Uint32 i=0; i<num_lines; ++i) {
-        output_lines.push_back(post_file_line(set->files[i]));
+        if(set->files[i]->tick > request->paramn("tick")) {
+            output_lines.push_back(post_file_line(set->files[i]));
+        }
     }
 
     output_lines[0] = info_update_string();
@@ -32,8 +35,14 @@ WebPostFiles::~WebPostFiles()
 
 string WebPostFiles::info_update_string(void)
 {
-    string meters = WebDataFetcher::info_update_string();
-    return meters + " update_heading('" + set->subject + "');";
+    stringstream s;
+    s << "last_data_fetch = \"/postsets?name=" << request->param("name") << ";tick=" << config->tick << "\"; "
+      <<  WebDataFetcher::info_update_string()
+      << "update_heading('" + set->subject + "');";
+
+    if(request->paramn("tick"))
+        s << "mode=\"update\";";
+    return s.str();
 }
 
 string WebPostFiles::post_file_line(PostFile *file)

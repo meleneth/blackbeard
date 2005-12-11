@@ -373,6 +373,7 @@ void test_web_request(void)
     assert(1 == r.has_cgi_params);
     assert(0 == r.param("foo").compare("bar"));
     assert(0 == r.param("baz").compare("bam"));
+    assert(0 == r.paramn("jerry"));
 
 }
 
