@@ -52,7 +52,7 @@ string WebPostFiles::post_file_line(PostFile *file)
               << "," << file->post_set->file_index(file);
 
     stringstream s;
-    s << file->filename 
+    s << table_id(file->filename)
     << "||ping_url('/download_file?name=" << file->post_set->group->name
     << ";index=" << file_line.str() <<"')|Download"
     << "|| |" << file->filename

@@ -1,6 +1,7 @@
 #include "webdatafetcher.hpp"
 #include "netcentral.hpp"
 #include "config.hpp"
+#include "strutil.hpp"
 
 #include <sstream>
 
@@ -40,3 +41,7 @@ int WebDataFetcher::tick(void)
     return ++line_no < num_lines;
 }
 
+string WebDataFetcher::table_id(string id)
+{
+    return replace_substrings(id, " ", "");
+}

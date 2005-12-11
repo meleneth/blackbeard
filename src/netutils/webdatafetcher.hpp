@@ -16,6 +16,7 @@ class WebDataFetcher {
 
         virtual int tick(void);
         virtual string info_update_string(void);
+        string table_id(string id);
 
         WebRequest *request;
 
