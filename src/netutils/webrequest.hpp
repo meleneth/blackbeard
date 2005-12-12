@@ -19,8 +19,12 @@ class WebRequest {
         void parse_headers(void);
         void split_request_uri(string uri);
         void defaults(void);
+        string get_uri(void);
         string param(string name);
         Uint32 paramn(string name);
+        Uint32 param_index(string name);
+        void param(string name, string value);
+        void param(string name, Uint32 value);
 
         TCPConnection *client;
         string request_string;

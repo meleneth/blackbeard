@@ -3,6 +3,10 @@
 #include "stringpattern.hpp"
 #include "strutil.hpp"
 
+#include <sstream>
+
+using std::stringstream;
+
 WebRequest::WebRequest(TCPConnection *tcp)
 {
     client = tcp;
@@ -30,6 +34,8 @@ void WebRequest::defaults()
     filename = "index.html";
     http_minor_version = 0;
     has_cgi_params = 0;
+    param_names.push_back("");
+    param_values.push_back("");
 }
 
 
@@ -78,10 +84,10 @@ void WebRequest::split_request_uri(string uri)
     if(uri[last_slash] == '/') {
         path = uri.substr(0, last_slash + 1);
     }
-    
+
     if(uri_length != (last_slash + 1)){
         filename = uri.substr(last_slash + 1, uri_length);
-    } else { 
+    } else {
         filename = "index.html";
     }
 
@@ -121,19 +127,67 @@ void WebRequest::parse_headers()
 
 string WebRequest::param(string name)
 {
-    Uint32 max_no = param_names.size();
-
-    for(Uint32 i=0; i<max_no; ++i){
-        if(0 == param_names[i].compare(name)){
-            return param_values[i];
-        }
+    Uint32 index = param_index(name);
+    if(index) {
+        return param_values[index];
     }
-
     return "";
 }
 
 Uint32 WebRequest::paramn(string name)
 {
     return atoi(param(name).c_str());
+}
+
+Uint32 WebRequest::param_index(string name)
+{
+    Uint32 max_no = param_names.size();
+
+    for(Uint32 i=1; i<max_no; ++i){
+        if(0 == param_names[i].compare(name)){
+            return i;
+        }
+    }
+    return 0;
+}
+
+void WebRequest::param(string name, string value)
+{
+    Uint32 index = param_index(name);
+    if(index) {
+        param_values[index] = value;
+    } else {
+        param_names.push_back(name);
+        param_values.push_back(value);
+    }
+}
+
+void WebRequest::param(string name, Uint32 value)
+{
+    stringstream s;
+    s << value;
+    param(name, s.str());
+}
+
+
+string WebRequest::get_uri(void)
+{
+    stringstream s;
+    string split_char = "?";
+
+    s << path << filename;
+
+    if (has_cgi_params) {
+        Uint32 max_no = param_names.size();
+        for(Uint32 i = 1; i<max_no; ++i){
+            s << split_char;
+            split_char = ";";
+
+            s << param_names[i]
+              << "="
+              << param_values[i];
+        }
+    }
+    return s.str();
 }
 

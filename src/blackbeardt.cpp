@@ -375,6 +375,8 @@ void test_web_request(void)
     assert(0 == r.param("baz").compare("bam"));
     assert(0 == r.paramn("jerry"));
 
+    assert(0 == r.get_uri().compare("/jack.html?foo=bar;baz=bam"));
+
 }
 
 void test_js_escape(void)

@@ -11,7 +11,7 @@ using std::setprecision;
 
 WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 {
-    group = group_for_name(request->param("name"));
+    group = group_for_name(request->param("groupname"));
 
     output_lines.push_back(info_update_string());
     output_lines.push_back("num||full|num");
@@ -31,31 +31,33 @@ WebPostSets::~WebPostSets()
 
 string WebPostSets::status(PostSet *set, Uint32 index)
 {
+    WebRequest r(request->get_uri());
+
+    r.param("psi", index);
+    r.filename = "postfiles";
+
     stringstream s;
-    s   << index 
-        << "||fetch_data('/postfiles?name=" << set->group->name << ";index=" << index << "')|"
-            << set->num_files << "/" << set->_max_num_files;
+    s   << index
+        << "||fetch_data('" << r.get_uri() << "')|" << set->num_files << "/" << set->_max_num_files;
+
     if(1 == 1){
         s << "||ping_url('/updatepostset?name=" << set->group->name << ";index=" << index << "');|"
             << "Update";
     }
-    if(1 == 1){
-        s << "||ping_url('/downloadpostset?name=" << set->group->name << ";index=" << index << "');|"
-            << "Download";
-    }
-    s   << "||fetch_data('/postfiles?name=" << set->group->name << ";index=" << index << "')|"
-            << js_escape(set->subject) 
-        << "||fetch_data('/postfiles?name=" << set->group->name << ";index=" << index << "')|"
-            << setprecision(3) << set->completed_percent() << "%";
+    r.filename = "postfiles";
+    s   << "||fetch_data('" << r.get_uri() << "')|" << js_escape(set->subject)
+        << "||fetch_data('" << r.get_uri() << "')|" << setprecision(3) << set->completed_percent() << "%";
     return s.str();
 }
 
 string WebPostSets::info_update_string(void)
 {
+    WebRequest r(request->get_uri());
+    r.param("tick", config->tick);
     stringstream s;
-    s << "last_data_fetch = \"/postsets?name=" << request->param("name") << ";tick=" << config->tick << "\"; "
+    s << "last_data_fetch = \"" << r.get_uri() << "\"; "
       <<  WebDataFetcher::info_update_string()
-      << "update_heading('" + group->name + "');";
+      << "update_heading('" << group->name << "');";
 
     if(request->paramn("tick"))
         s << "mode=\"update\";";

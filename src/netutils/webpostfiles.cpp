@@ -11,17 +11,16 @@ using std::setprecision;
 
 WebPostFiles::WebPostFiles(WebRequest *request) : WebDataFetcher(request)
 {
-    
     output_lines.push_back("");
     output_lines.push_back("|full|cmd|num|num");
 
     NewsGroup *group = group_for_name(request->param("name"));
-    set = group->postsets[request->paramn("index")];
+    set = group->postsets[request->paramn("psi")];
 
     num_lines = set->files.size();
     for(Uint32 i=0; i<num_lines; ++i) {
         if(set->files[i]->tick > request->paramn("tick")) {
-            output_lines.push_back(post_file_line(set->files[i]));
+            output_lines.push_back(post_file_line(set->files[i], i));
         }
     }
 
@@ -45,24 +44,28 @@ string WebPostFiles::info_update_string(void)
     return s.str();
 }
 
-string WebPostFiles::post_file_line(PostFile *file)
+string WebPostFiles::post_file_line(PostFile *file, Uint32 file_index)
 {
+    WebRequest r(request->get_uri());
     stringstream file_line;
-    file_line << file->post_set->group->postset_index(file->post_set)
-              << "," << file->post_set->file_index(file);
 
     stringstream s;
+
+    r.param("pfi", file_index);
+    r.filename = "download_file";
+
     s << table_id(file->filename)
-    << "||ping_url('/download_file?name=" << file->post_set->group->name
-    << ";index=" << file_line.str() <<"')|Download"
-    << "|| |" << file->filename
-    << "|| |" << file->status
-    << "|| |" << file->downloaded_pieces << "/"  << file->num_pieces
-    << "|| |";
+      << "||ping_url(" << r.get_uri() << "')|Download";
+
+    r.filename = "viewfile";
+    s << "||view_file('" << r.get_uri() << "')|" << file->filename
+      << "|| |" << file->status
+      << "|| |" << file->downloaded_pieces << "/"  << file->num_pieces
+      << "|| |";
 
     if(file->num_pieces == file->downloaded_pieces){
         s << "100%";
-   }else{
+    }else{
         if(file->num_pieces > 0)
            s << setprecision(3)
              << ((double)file->downloaded_pieces / (double)file->num_pieces) * (double) 100

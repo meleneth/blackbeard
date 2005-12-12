@@ -17,7 +17,7 @@ class WebPostFiles : public WebDataFetcher {
         virtual ~WebPostFiles();
 
         virtual string info_update_string(void);
-        string post_file_line(PostFile *file);
+        string post_file_line(PostFile *file, Uint32 file_index);
 
         PostSet *set;
     private:

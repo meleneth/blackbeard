@@ -24,11 +24,11 @@ string WebNewsGroups::status(NewsGroup *group)
 {
     stringstream buf;
 
-    buf << group->name 
-        << "||fetch_data('/postsets?name=" << group->name << "')|" << group->postsets.size()
-  << "||ping_url('/update_newsgroup?name=" << group->name << "')|" << "Update" 
-        << "||fetch_data('/postsets?name=" << group->name << "')|" << group->name
-        << "||fetch_data('/postsets?name=" << group->name << "')|" << group->last_article_number - group->first_article_number;
+    buf << group->name
+        << "||fetch_data('/postsets?groupname=" << group->name << "')|" << group->postsets.size()
+  << "||ping_url('/update_newsgroup?groupname=" << group->name << "')|" << "Update"
+        << "||fetch_data('/postsets?groupname=" << group->name << "')|" << group->name
+        << "||fetch_data('/postsets?groupname=" << group->name << "')|" << group->last_article_number - group->first_article_number;
 
     return buf.str();
 }
