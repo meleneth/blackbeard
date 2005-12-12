@@ -5,5 +5,5 @@ libscreens_a_SOURCES = newsgrouplistscreen.cpp postsetdetailscreen.cpp postsetli
 	   shutdownscreen.cpp shutdownscreen.hpp activejobsscreen.cpp activejobsscreen.hpp \
 	   activenetjobsscreen.cpp activenetjobsscreen.hpp textviewerscreen.cpp textviewerscreen.hpp \
 	   downloadedpostsetsscreen.cpp downloadedpostsetsscreen.hpp 
-AM_CXXFLAGS = -Wall -D_REENTRANT -I../utils -I../netutils -I../base -I../jobs
+AM_CXXFLAGS = -Wall -D_REENTRANT -I../utils -I../netutils -I../base -I../jobs -I../par2
 

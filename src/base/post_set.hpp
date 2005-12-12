@@ -1,13 +1,14 @@
 #ifndef ___post_set_inc
 #define ___post_set_inc 1
 
-#include"post_file.hpp"
-#include"job.hpp"
-#include"newsgroup.hpp"
+#include "post_file.hpp"
+#include "job.hpp"
+#include "newsgroup.hpp"
+#include "pararchive.hpp"
 
-#include"SDL_types.h"
-#include<string>
-#include<vector>
+#include "SDL_types.h"
+#include <string>
+#include <vector>
 
 using std::string;
 using std::vector;
@@ -45,6 +46,7 @@ class PostSet {
         Uint32 _max_msg_id;
         PostFile *_last_file;
         Uint32 tick;
+        ParArchive *par;
     private:
     protected:
 };

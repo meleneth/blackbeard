@@ -23,6 +23,7 @@ PostSet::PostSet(string subject)
     group = NULL;
     _last_file = NULL;
     tick = 1;
+    par = new ParArchive();
 }
 
 PostSet::~PostSet()

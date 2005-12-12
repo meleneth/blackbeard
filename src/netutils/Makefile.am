@@ -6,5 +6,5 @@ libnetutils_a_SOURCES = tcpconnection.cpp tcpconnection.hpp webserver.cpp webser
 						webjoblist.cpp webjoblist.hpp webnewsgroups.cpp webnewsgroups.hpp \
 						webpostsets.cpp webpostsets.hpp webpostfiles.cpp webpostfiles.hpp
 
-AM_CXXFLAGS = -Wall -D_REENTRANT -I../utils -I../jobs -I../screens -I../base
+AM_CXXFLAGS = -Wall -D_REENTRANT -I../utils -I../jobs -I../screens -I../base -I../par2
 

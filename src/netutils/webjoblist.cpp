@@ -37,7 +37,7 @@ string WebJobList::line_for_job(Job *job)
         PostSet *set = file->post_set;
 
         s << i << "|| fetch_data('/postfiles?name=" << set->group->name << ";index=" << set->group->postset_index(set) << "')" 
-            << file->filename;
+          << "|"  << file->filename;
     } else {
         s << i << "|| return false" << "| " << job->status_line();
     }
