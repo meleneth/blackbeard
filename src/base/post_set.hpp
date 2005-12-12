@@ -13,6 +13,8 @@
 using std::string;
 using std::vector;
 
+typedef enum { VAGUE, DOWNLOADING, QUEUED, KNOWN, CORRUPT } POSTSET_STATUS;
+
 class PostFile;
 class NewsGroup;
 class PostSet {
@@ -46,6 +48,8 @@ class PostSet {
         Uint32 _max_msg_id;
         PostFile *_last_file;
         Uint32 tick;
+
+        POSTSET_STATUS _status;
         ParArchive *par;
     private:
     protected:

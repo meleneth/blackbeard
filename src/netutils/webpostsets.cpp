@@ -39,6 +39,10 @@ string WebPostSets::status(PostSet *set, Uint32 index)
         s << "||ping_url('/updatepostset?name=" << set->group->name << ";index=" << index << "');|"
             << "Update";
     }
+    if(1 == 1){
+        s << "||ping_url('/downloadpostset?name=" << set->group->name << ";index=" << index << "');|"
+            << "Download";
+    }
     s   << "||fetch_data('/postfiles?name=" << set->group->name << ";index=" << index << "')|"
             << js_escape(set->subject) 
         << "||fetch_data('/postfiles?name=" << set->group->name << ";index=" << index << "')|"
