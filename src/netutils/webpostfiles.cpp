@@ -36,7 +36,7 @@ WebPostFiles::~WebPostFiles()
 string WebPostFiles::info_update_string(void)
 {
     stringstream s;
-    s << "last_data_fetch = \"/postsets?name=" << request->param("name") << ";tick=" << config->tick << "\"; "
+    s << "last_data_fetch = \"/postfiles?name=" << request->param("name") << ";tick=" << config->tick << "\"; "
       <<  WebDataFetcher::info_update_string()
       << "update_heading('" + set->subject + "');";
 
