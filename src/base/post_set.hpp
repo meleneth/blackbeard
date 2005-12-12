@@ -13,7 +13,7 @@
 using std::string;
 using std::vector;
 
-typedef enum { VAGUE, DOWNLOADING, QUEUED, KNOWN, CORRUPT } POSTSET_STATUS;
+typedef enum { PS_VAGUE, PS_DOWNLOADING, PS_QUEUED, PS_KNOWN, PS_CORRUPT } POSTSET_STATUS;
 
 class PostFile;
 class NewsGroup;

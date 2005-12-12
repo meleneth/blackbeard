@@ -10,6 +10,7 @@
 #include "netcentral.hpp"
 #include "headersforgroupjob.hpp"
 #include "groupupdater.hpp"
+#include "postsetjob.hpp"
 
 WebServer::WebServer(string web_root, int port_no)
 {
