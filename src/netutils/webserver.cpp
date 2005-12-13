@@ -49,8 +49,8 @@ void WebServer::handle_request(WebRequest *request)
        if(0 == request->filename.compare("updatepostset")) {
            console->log("Handling update postset request");
            console->log("Making job for " + request->filename);
-           NewsGroup *group = group_for_name(request->param("name"));
-           PostSet *set = group->postsets[request->paramn("index")];
+           NewsGroup *group = group_for_name(request->param("groupname"));
+           PostSet *set = group->postsets[request->paramn("psi")];
            Job *new_job = new HeadersForGroupJob(set->group, set->_min_msg_id, set->_max_msg_id);
            high_priority_jobs->add_job(new_job);
            delete request;
@@ -67,8 +67,7 @@ void WebServer::handle_request(WebRequest *request)
        }
        if(0 == request->filename.compare("update_newsgroup")) {
            console->log("Handling update newsgroup request");
-           console->log("Making job for " + request->param("name"));
-           NewsGroup *group = group_for_name(request->param("name"));
+           NewsGroup *group = group_for_name(request->param("groupname"));
            Job *new_job = new GroupUpdater(group);
            high_priority_jobs->add_job(new_job);
            delete request;

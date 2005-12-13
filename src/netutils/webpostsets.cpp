@@ -41,8 +41,8 @@ string WebPostSets::status(PostSet *set, Uint32 index)
         << "||fetch_data('" << r.get_uri() << "')|" << set->num_files << "/" << set->_max_num_files;
 
     if(1 == 1){
-        s << "||ping_url('/updatepostset?name=" << set->group->name << ";index=" << index << "');|"
-            << "Update";
+        r.filename = "updatepostset";
+        s << "||ping_url('" << r.get_uri() << "');|" << "Update";
     }
     r.filename = "postfiles";
     s   << "||fetch_data('" << r.get_uri() << "')|" << js_escape(set->subject)
