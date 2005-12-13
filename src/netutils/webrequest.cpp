@@ -120,7 +120,7 @@ void WebRequest::parse_headers()
 {
     string line = client->get_line();
     while(line.compare("")){
-        console->log("Saw header: " + line);
+        //console->log("Saw header: " + line);
         line = client->get_line();
     }
 }
