@@ -54,7 +54,7 @@ string WebPostFiles::post_file_line(PostFile *file, Uint32 file_index)
     stringstream file_line;
 
     stringstream s;
-
+    r.delete_param("tick");
     r.param("pfi", file_index);
     r.filename = "download_file";
 

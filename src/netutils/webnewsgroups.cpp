@@ -26,6 +26,7 @@ string WebNewsGroups::status(NewsGroup *group, Uint32 index)
     stringstream buf;
     WebRequest r(request->get_uri());
     r.filename = "postsets";
+    r.delete_param("tick");
     r.param("ngi", index);
 
     buf << group->name

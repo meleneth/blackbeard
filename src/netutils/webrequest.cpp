@@ -202,7 +202,7 @@ void WebRequest::delete_param(string name)
     vector<string>::iterator n = param_names.begin();
     vector<string>::iterator v = param_values.begin();
     for(;n != param_names.end();){
-        if((*n).compare(name)){
+        if(0 == (*n).compare(name)){
             vector<string>::iterator p = n;
             --n; param_names.erase(p);
             p = v;

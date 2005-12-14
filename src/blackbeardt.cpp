@@ -388,6 +388,9 @@ void test_web_request(void)
     console->log(b.get_uri());
     assert(0 == b.get_uri().compare("/jack.html?foo=2;baz=bam"));
 
+    b.delete_param("foo");
+    assert(0 == b.get_uri().compare("/jack.html?baz=bam"));
+
 }
 
 void test_js_escape(void)

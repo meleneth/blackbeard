@@ -33,6 +33,7 @@ string WebPostSets::status(PostSet *set, Uint32 index)
 {
     WebRequest r = WebRequest(request->get_uri() + ";psi=bar");
 
+    r.delete_param("tick");
     r.param("psi", index);
     r.filename = "postfiles";
 
