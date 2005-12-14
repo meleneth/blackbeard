@@ -150,6 +150,7 @@ void test_string_pattern(void)
     assert(!s->match("Star Wars Clone Wars \"Clone Wars Chapter 20.mpg\" yEnc (248/258)"));
 
     s->match("Star Wars Clone Wars - File 11 of 11: \"Clone Wars Chapter 20.mpg\" yEnc (248/258)");
+    delete s;
 }
 
 void test_more_string_pattern()
@@ -217,6 +218,7 @@ void test_header_scoop(void)
     generate_subject_line_test(group, "4002", "(OMNI) Gundam Seed Movie [093/105] - \"jspec-gundam.seed.movie.1.vol000+01.PAR2\" yEnc (1/2)");
     generate_subject_line_test(group, "31337", "NVIDIA linux drivers - File 1 of 1: \"NVIDIA-Linux-x86-1.0-4496-pkg2.run\" yEnc (16/25)");
     generate_subject_line_test(group, "31337", "[503]-[#altbin@EFNet]-[FULL/PART]-[Immortel (ad vitam) (2004)]-[01/91] - \"BTV_Immortel.part016.rar\" yEnc (01/65)");
+    delete newsgroup;
 
 }
 
@@ -316,9 +318,11 @@ void test_dynamic_postsplit(void)
     MessageHeader *header = new MessageHeader( &group, 31337, "Horny Peeps \"hornypeeps.rar\" yEnc (23/59)", "jim@bo.com");
     splitter->process_header(header);
     assert(0 == group.postsets.size());
+
     header = new MessageHeader( &group, 31338, "Horny Peeps \"hornypeeps.rar\" yEnc (24/59)", "jim@bo.com");
     splitter->process_header(header);
     assert(1 == group.postsets.size());
+    delete header;
 
 }
 
@@ -376,6 +380,13 @@ void test_web_request(void)
     assert(0 == r.paramn("jerry"));
 
     assert(0 == r.get_uri().compare("/jack.html?foo=bar;baz=bam"));
+
+    r.param("foo", 2);
+    assert(0 == r.get_uri().compare("/jack.html?foo=2;baz=bam"));
+
+    WebRequest b = WebRequest(r.get_uri());
+    console->log(b.get_uri());
+    assert(0 == b.get_uri().compare("/jack.html?foo=2;baz=bam"));
 
 }
 

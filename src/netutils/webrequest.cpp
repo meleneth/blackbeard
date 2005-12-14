@@ -25,7 +25,9 @@ WebRequest::WebRequest(string uri)
 
 WebRequest::~WebRequest()
 {
-    delete client;
+    if(client){
+        delete client;
+    }
 }
 
 void WebRequest::defaults()
@@ -70,6 +72,9 @@ void WebRequest::parse_uri(string uri)
     } else if(raw_get.match(uri)){
         http_minor_version = 0;
         split_request_uri(raw_get.results[1]);
+    } else {
+        // cough hax
+        split_request_uri(uri);
     }
 }
 
@@ -154,6 +159,7 @@ Uint32 WebRequest::param_index(string name)
 void WebRequest::param(string name, string value)
 {
     Uint32 index = param_index(name);
+    has_cgi_params = 1;
     if(index) {
         param_values[index] = value;
     } else {
@@ -190,4 +196,37 @@ string WebRequest::get_uri(void)
     }
     return s.str();
 }
+
+void WebRequest::delete_param(string name)
+{
+    vector<string>::iterator n = param_names.begin();
+    vector<string>::iterator v = param_values.begin();
+    for(;n != param_names.end();){
+        if((*n).compare(name)){
+            vector<string>::iterator p = n;
+            --n; param_names.erase(p);
+            p = v;
+            --v; param_values.erase(p);
+        }
+        ++n;
+        ++v;
+    }
+}
+
+PostSet *WebRequest::postset(void)
+{
+    return newsgroup()->postsets[paramn("psi")];
+}
+
+PostFile *WebRequest::postfile(void)
+{
+    return postset()->files[paramn("pfi")];
+}
+
+NewsGroup *WebRequest::newsgroup(void)
+{
+    return newsgroups[paramn("ngi")];
+}
+
+
 

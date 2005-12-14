@@ -6,6 +6,10 @@
 #include <string>
 #include <vector>
 
+#include "post_set.hpp"
+#include "post_file.hpp"
+#include "newsgroup.hpp"
+
 using std::string;
 using std::vector;
 
@@ -23,8 +27,15 @@ class WebRequest {
         string param(string name);
         Uint32 paramn(string name);
         Uint32 param_index(string name);
+        void delete_param(string name);
         void param(string name, string value);
         void param(string name, Uint32 value);
+
+        // BLB specific methods
+        PostSet   *postset();
+        PostFile  *postfile();
+        NewsGroup *newsgroup();
+        // BLB specific methods END
 
         TCPConnection *client;
         string request_string;

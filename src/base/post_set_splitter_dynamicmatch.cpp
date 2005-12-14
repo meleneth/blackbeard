@@ -135,6 +135,7 @@ PSDMSubMatch::PSDMSubMatch(NewsGroup *group, MessageHeader *h1, MessageHeader *h
 
 PSDMSubMatch::~PSDMSubMatch()
 {
+    delete pattern;
 }
 
 void PSDMSubMatch::process_header(MessageHeader *header)

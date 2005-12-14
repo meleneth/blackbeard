@@ -22,15 +22,10 @@ WebDataFetcher::~WebDataFetcher()
 string WebDataFetcher::info_update_string(void)
 {
     stringstream update_cmd;
-    update_cmd << "last_tick = "
-               << config->tick 
-               << "; update_meters('(" 
-               << netcentral->jobs.size() 
-               << "/" 
-               << netcentral->active_jobs.size()
-               << ")', '" 
-               << netcentral->krate()
-               << "');";
+    update_cmd << "last_tick = " << config->tick << ";"
+               << "update_meters('(" << netcentral->jobs.size()
+               << "/" << netcentral->active_jobs.size()
+               << ")', '" << netcentral->krate() << "');";
     return update_cmd.str();
 }
 

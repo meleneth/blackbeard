@@ -11,7 +11,7 @@ using std::setprecision;
 
 WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 {
-    group = group_for_name(request->param("groupname"));
+    group = request->newsgroup();
 
     output_lines.push_back(info_update_string());
     output_lines.push_back("num||full|num");
@@ -31,7 +31,7 @@ WebPostSets::~WebPostSets()
 
 string WebPostSets::status(PostSet *set, Uint32 index)
 {
-    WebRequest r(request->get_uri());
+    WebRequest r = WebRequest(request->get_uri() + ";psi=bar");
 
     r.param("psi", index);
     r.filename = "postfiles";

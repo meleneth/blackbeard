@@ -2,9 +2,10 @@
 #include "netcentral.hpp"
 #include "console.hpp"
 #include "config.hpp"
+#include "strutil.hpp"
 
-#include<sstream>
-#include<iomanip>
+#include <sstream>
+#include <iomanip>
 
 using std::stringstream;
 using std::setprecision;
@@ -14,8 +15,7 @@ WebPostFiles::WebPostFiles(WebRequest *request) : WebDataFetcher(request)
     output_lines.push_back("");
     output_lines.push_back("|full|cmd|num|num");
 
-    NewsGroup *group = group_for_name(request->param("name"));
-    set = group->postsets[request->paramn("psi")];
+    set = request->postset();
 
     num_lines = set->files.size();
     for(Uint32 i=0; i<num_lines; ++i) {
@@ -34,10 +34,14 @@ WebPostFiles::~WebPostFiles()
 
 string WebPostFiles::info_update_string(void)
 {
+    WebRequest r(request->get_uri());
+
+    r.param("tick", config->tick);
+
     stringstream s;
-    s << "last_data_fetch = \"/postfiles?name=" << request->param("name") << ";tick=" << config->tick << "\"; "
+    s << "last_data_fetch = \"" << r.get_uri() << "\"; "
       <<  WebDataFetcher::info_update_string()
-      << "update_heading('" + set->subject + "');";
+      << "update_heading('" + js_escape(set->subject) + "');";
 
     if(request->paramn("tick"))
         s << "mode=\"update\";";
@@ -55,7 +59,7 @@ string WebPostFiles::post_file_line(PostFile *file, Uint32 file_index)
     r.filename = "download_file";
 
     s << table_id(file->filename)
-      << "||ping_url(" << r.get_uri() << "')|Download";
+      << "||ping_url('" << r.get_uri() << "')|Download";
 
     r.filename = "viewfile";
     s << "||view_file('" << r.get_uri() << "')|" << file->filename

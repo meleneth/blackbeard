@@ -6,6 +6,7 @@
 #include "newsgroup.hpp"
 #include <string>
 #include <vector>
+#include "webrequest.hpp"
 
 using std::string;
 using std::vector;
@@ -14,7 +15,7 @@ class WebNewsGroups : public WebDataFetcher {
     public:
         WebNewsGroups(WebRequest *request);
         virtual ~WebNewsGroups();
-        string status(NewsGroup *group);
+        string status(NewsGroup *group, Uint32 index);
 
         virtual string info_update_string(void);
 
