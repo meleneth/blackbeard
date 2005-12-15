@@ -31,7 +31,7 @@ WebPostSets::~WebPostSets()
 
 string WebPostSets::status(PostSet *set, Uint32 index)
 {
-    WebRequest r = WebRequest(request->get_uri() + ";psi=bar");
+    WebRequest r = WebRequest(request->get_uri());
 
     r.delete_param("tick");
     r.param("psi", index);
@@ -46,7 +46,9 @@ string WebPostSets::status(PostSet *set, Uint32 index)
         s << "||ping_url('" << r.get_uri() << "');|" << "Update";
     }
     r.filename = "postfiles";
-    s   << "||fetch_data('" << r.get_uri() << "')|" << js_escape(set->subject)
+    s   << "||fetch_data('" << r.get_uri() << "')|" << js_escape( replace_substrings(set->subject, "|", "").substr(0, 80));
+    r.filename = "downloadpostset";
+    s   << "|| ping_url('" << r.get_uri() << "')| Download"
         << "|| |" << setprecision(3) << set->completed_percent() << "%";
     return s.str();
 }

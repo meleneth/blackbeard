@@ -11,6 +11,7 @@
 #include "headersforgroupjob.hpp"
 #include "groupupdater.hpp"
 #include "postsetjob.hpp"
+#include "postfilejob.hpp"
 
 WebServer::WebServer(string web_root, int port_no)
 {
@@ -57,8 +58,19 @@ void WebServer::handle_request(WebRequest *request)
        }
        if(0 == request->filename.compare("downloadpostset")) {
            console->log("Handling download postset request");
-           Job *new_job = new PostsetJob(request->postset());
+           PostSet *set = request->postset();
+           set->tick = config->tick;
+           Job *new_job = new PostsetJob(set);
            metajobs->add_job(new_job);
+           delete request;
+           return;
+       }
+       if(0 == request->filename.compare("downloadpostfile")) {
+           console->log("Handling download postfile request");
+           PostFile *file = request->postfile();
+           file->tick = config->tick;
+           Job *new_job = new PostfileJob(file);
+           high_priority_jobs->add_job(new_job);
            delete request;
            return;
        }

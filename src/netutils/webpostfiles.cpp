@@ -56,17 +56,20 @@ string WebPostFiles::post_file_line(PostFile *file, Uint32 file_index)
     stringstream s;
     r.delete_param("tick");
     r.param("pfi", file_index);
-    r.filename = "download_file";
+    r.filename = "downloadpostfile";
 
     s << table_id(file->filename)
       << "||ping_url('" << r.get_uri() << "')|Download"
       << "||";
 
-    if(0){
-        r.filename = "viewfile";
-        s << "view_file('" << r.get_uri() << "')";
-    } 
-    s << " |" << file->filename
+    Uint32 len = file->filename.length();
+    if(len > 4){
+        if(0 == file->filename.substr(len - 4, 4).compare(".nfo")){
+            r.filename = "viewfile";
+            s << "view_file('" << r.get_uri() << "')";
+        }
+    }
+    s << " |" << replace_substrings(file->filename, "|", "").substr(0, 80)
       << "|| |" << file->status
       << "|| |" << file->downloaded_pieces << "/"  << file->num_pieces
       << "|| |";

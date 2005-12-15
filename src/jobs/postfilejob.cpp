@@ -45,6 +45,7 @@ Job* PostfileJob::get_next_job()
     if(postfile){
         PIECE_STATUS s = postfile->piece_status[piece_no];
         postfile->status = "Downloading";
+        postfile->tick = config->tick;
         switch(s){
             case MISSING:
             case DOWNLOADING:

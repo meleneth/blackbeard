@@ -70,6 +70,7 @@ PostFile *PostSet::file(string filename)
     for(f = files.begin(); f!= files.end() ; ++f){
         if(*f){
             if((*f)->filename.compare(filename) == 0){
+                (*f)->tick = tick;
                 _last_file = *f;
                 return *f;
             }
@@ -78,6 +79,7 @@ PostFile *PostSet::file(string filename)
 
     PostFile *postfile = new PostFile(this);
     postfile->filename = filename;
+    postfile->tick = tick;
     files.push_back(postfile);
     num_files++;
     _max_num_files = files.size();

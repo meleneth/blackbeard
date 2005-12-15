@@ -47,6 +47,7 @@ Uint32 PostFile::is_par()
 
 void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
 {
+    tick = config->tick;
     if(num_pieces == 0){
         num_pieces = max_part_no;
         pieces.resize(num_pieces + 1);
