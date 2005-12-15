@@ -55,6 +55,10 @@ td {
     background-color: #666666;
 }
 
+td a {
+    color: #eeeeee;
+}
+
 tr :hover {
     background-color: #777777;
 }

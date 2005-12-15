@@ -30,14 +30,14 @@ string WebNewsGroups::status(NewsGroup *group, Uint32 index)
     r.param("ngi", index);
 
     buf << group->name
-        << "||fetch_data('" << r.get_uri() << "')|" << group->postsets.size();
+        << "|| |" << group->postsets.size();
 
     r.filename = "update_newsgroup";
     buf << "||ping_url('" << r.get_uri() << "')|" << "Update";
     
     r.filename = "postsets";
     buf << "||fetch_data('" << r.get_uri() <<  "')|" << group->name
-        << "||fetch_data('" << r.get_uri() <<  "')|" << group->last_article_number - group->first_article_number;
+        << "|| |" << group->last_article_number - group->first_article_number;
 
     return buf.str();
 }

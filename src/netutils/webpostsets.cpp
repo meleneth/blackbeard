@@ -39,7 +39,7 @@ string WebPostSets::status(PostSet *set, Uint32 index)
 
     stringstream s;
     s   << index
-        << "||fetch_data('" << r.get_uri() << "')|" << set->num_files << "/" << set->_max_num_files;
+        << "|| |" << set->num_files << "/" << set->_max_num_files;
 
     if(1 == 1){
         r.filename = "updatepostset";
@@ -47,7 +47,7 @@ string WebPostSets::status(PostSet *set, Uint32 index)
     }
     r.filename = "postfiles";
     s   << "||fetch_data('" << r.get_uri() << "')|" << js_escape(set->subject)
-        << "||fetch_data('" << r.get_uri() << "')|" << setprecision(3) << set->completed_percent() << "%";
+        << "|| |" << setprecision(3) << set->completed_percent() << "%";
     return s.str();
 }
 

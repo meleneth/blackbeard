@@ -111,7 +111,10 @@ function getTableRow(data, header_classes)
         a.appendChild(document.createTextNode(sub_data[0]));
     } else {
         a.appendChild(document.createTextNode(sub_data[1]));
-        a.onclick = new Function(sub_data[0]);
+        if(sub_data[0] && (sub_data[0] != " ")){
+            //a.onclick = new Function(sub_data[0]);
+            a.href = "javascript: " + sub_data[0];
+        }
     }
     cell.appendChild(a); row.appendChild(cell); 
   }

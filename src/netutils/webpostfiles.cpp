@@ -59,10 +59,14 @@ string WebPostFiles::post_file_line(PostFile *file, Uint32 file_index)
     r.filename = "download_file";
 
     s << table_id(file->filename)
-      << "||ping_url('" << r.get_uri() << "')|Download";
+      << "||ping_url('" << r.get_uri() << "')|Download"
+      << "||";
 
-    r.filename = "viewfile";
-    s << "||view_file('" << r.get_uri() << "')|" << file->filename
+    if(0){
+        r.filename = "viewfile";
+        s << "view_file('" << r.get_uri() << "')";
+    } 
+    s << " |" << file->filename
       << "|| |" << file->status
       << "|| |" << file->downloaded_pieces << "/"  << file->num_pieces
       << "|| |";
