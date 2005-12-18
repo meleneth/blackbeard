@@ -30,11 +30,13 @@ PostSet *current_postset;
 vector< NewsGroup * >newsgroups;
 PostFile *current_postfile;
 JobQueue *jobqueue;
+JobQueue *metajobs;
 Config *config;
 Session *session;
 string last_msg;
 NetCentral *netcentral;
 NetCentral *high_priority_jobs;
+WebServer *webserver;
 
 
 void test_header_scoop(void);
@@ -51,8 +53,8 @@ void test_dynamic_postsplit(void);
 void test_string_sorting(void);
 void test_js_escape(void);
 void test_mem_stringpattern(void);
-
 void test_web_request(void);
+void test_filehandle(void);
 
 void generate_subject_line_test(NewsGroup *group, string message_id, string subject);
 
@@ -65,10 +67,13 @@ using std::stringstream;
 int main(int argc, char *argv[])
 {
     console = new Console();
+    high_priority_jobs = new NetCentral();
     console->print_logs = 1;
     config = new Config(0, NULL);
     newsgroup = new NewsGroup("misc.test");
+
     config->setup_test_config();
+    test_filehandle();
     test_mem_stringpattern();
     test_crc32(); 
     test_download_netjob();
@@ -85,6 +90,22 @@ int main(int argc, char *argv[])
     test_web_request();
     test_js_escape();
 	return 0;
+}
+
+void test_filehandle()
+{
+    FileHandle *fh = new FileHandle("test_file");
+    console->log("Created fh object");
+    assert(fh->still_open);
+    console->log("Assert 1");
+
+    string s = fh->get_line();
+    console->log("fh->get_line()");
+    console->log("\"" + s + "\"");
+    assert(0 == s.compare("this is a test file"));
+    assert(0 == fh->get_line().compare("and this is the second line of the test file"));
+    fh->get_line();
+    assert(!fh->still_open);
 }
 
 void test_crc32(void)
