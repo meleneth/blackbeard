@@ -30,6 +30,7 @@ class PostSet {
         void recalculate_piece_info();
         Uint32 max_num_files(void);
         Uint32 file_index(PostFile *file);
+        Uint32 index();
         static bool compare(const PostSet* a, const PostSet* b);
         bool operator< (const PostSet &b);
 

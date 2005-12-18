@@ -28,6 +28,7 @@ class NewsGroup {
         void load_from_file(string filename);
         void save_postsets(void);
         void load_postsets(void);
+        Uint32 index();
         static bool compare(const NewsGroup *a, const NewsGroup *b);
         void expire_old_postsets(Uint32 low_msg_id);
         Uint32 postset_index(PostSet *set);

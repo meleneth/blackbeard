@@ -236,3 +236,14 @@ bool NewsGroup::compare(const NewsGroup *a, const NewsGroup *b)
  {
     return (a->name < b->name);
 }
+
+Uint32 NewsGroup::index()
+{
+    Uint32 max_no = newsgroups.size();
+    for(Uint32 i=0; i<max_no; ++i){
+        if(newsgroups[i] == this) {
+            return i;
+        }
+    }
+    exit(1);
+}
