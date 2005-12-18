@@ -12,6 +12,7 @@
 #include "groupupdater.hpp"
 #include "postsetjob.hpp"
 #include "postfilejob.hpp"
+#include "webviewfile.hpp"
 
 WebServer::WebServer(string web_root, int port_no)
 {
@@ -45,6 +46,11 @@ void WebServer::handle_request(WebRequest *request)
        if(0 == request->filename.compare("postfiles")) {
            console->log("Handling postfiles request:");
            handlers.push_back(new WebPostFiles(request));
+           return;
+       }
+       if(0 == request->filename.compare("viewfile")) {
+           console->log("Handling viewfile request:");
+           handlers.push_back(new WebViewFile(request));
            return;
        }
        if(0 == request->filename.compare("updatepostset")) {
@@ -81,6 +87,7 @@ void WebServer::handle_request(WebRequest *request)
            delete request;
            return;
        }
+
    }
 
    string filename = web_root + request->path + request->filename;

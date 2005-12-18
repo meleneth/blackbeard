@@ -65,8 +65,10 @@ string WebPostFiles::post_file_line(PostFile *file, Uint32 file_index)
     Uint32 len = file->filename.length();
     if(len > 4){
         if(0 == file->filename.substr(len - 4, 4).compare(".nfo")){
-            r.filename = "viewfile";
-            s << "view_file('" << r.get_uri() << "')";
+            if(0 == file->status.compare("Finished")) {
+                r.filename = "viewfile";
+                s << "view_file('" << r.get_uri() << "')";
+            }
         }
     }
     s << " |" << replace_substrings(file->filename, "|", "").substr(0, 80)

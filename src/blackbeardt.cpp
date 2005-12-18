@@ -67,7 +67,6 @@ using std::stringstream;
 int main(int argc, char *argv[])
 {
     console = new Console();
-    high_priority_jobs = new NetCentral();
     console->print_logs = 1;
     config = new Config(0, NULL);
     newsgroup = new NewsGroup("misc.test");
@@ -325,6 +324,7 @@ void test_download_netjob(void)
     console->log("Testing postset download jobs..");
     NewsGroup group("fusion.downloads");
     PostSet post("brick brothers presents");
+    post.has_msg_ids = 1;
     post.group = &group;
 
     PostsetJob psj(&post);

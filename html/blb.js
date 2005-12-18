@@ -37,7 +37,6 @@ function get_data(from_where) {
   last_data_fetch = from_where;
   http.open("GET", from_where, true);
   http.onreadystatechange = handleHttpResponse;
-  alert("Setting response handler to data_response");
   HTTPResponseHandler = data_response;
   http.send(null);
   return false;
@@ -184,23 +183,19 @@ function view_file(url)
 
   http_busy = 1;
   last_data_fetch = 0;
-  alert("View file: '" + url + "'");
 
   http.open("GET", url, true);
   HTTPResponseHandler = view_file_response;
   http.onreadystatechange = handleHttpResponse;
   http.send(null);
-  return false;
 }
 
 function view_file_response(data)
 {
-    alert ("View File Response");
     var thediv = document.getElementById('content');
     var pre = document.createElement('pre');
-    pre.appendChild(document.createTextNode(http.data));
+    pre.appendChild(document.createTextNode(data));
     thediv.replaceChild(pre, thediv.firstChild);
-    alert("how bout now");
     return false;
 }
 

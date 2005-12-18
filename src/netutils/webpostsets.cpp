@@ -19,7 +19,9 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 
     for(Uint32 i=0; i<num_lines; ++i) {
         if(group->postsets[i]->tick > request->paramn("tick")) {
-            output_lines.push_back(status(group->postsets[i], i));
+            if(group->postsets[i]->max_num_files() > 10) {
+                output_lines.push_back(status(group->postsets[i], i));
+            }
         }
     }
     num_lines = output_lines.size();

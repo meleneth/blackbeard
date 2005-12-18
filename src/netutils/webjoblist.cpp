@@ -35,9 +35,12 @@ string WebJobList::line_for_job(Job *job)
         PostfileJob *j = (PostfileJob *)job;
         PostFile *file = j->postfile;
         PostSet *set = file->post_set;
+        WebRequest r("/postfiles");
+        r.filename = "postfiles";
+        r.param("ngi", set->group->index());
+        r.param("psi", set->index());
 
-        s << i << "|| fetch_data('/postfiles?name=" << set->group->name << ";index=" << set->group->postset_index(set) << "')" 
-          << "|"  << file->filename;
+        s << i << "|| fetch_data('" << r.get_uri() << "')|"  << file->filename;
     } else {
         s << i << "|| return false" << "| " << job->status_line();
     }
