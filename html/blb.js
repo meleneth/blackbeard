@@ -2,6 +2,7 @@ var last_data_fetch;
 var refresh_timer;
 var last_tick;
 var mode;
+var HTTPResponseHandler;
 
 function fetch_data(from_where)
 {
@@ -31,37 +32,46 @@ function get_data(from_where) {
   if(http_busy){
       return false;
   }
+  http_busy = 1;
+
   last_data_fetch = from_where;
   http.open("GET", from_where, true);
   http.onreadystatechange = handleHttpResponse;
+  alert("Setting response handler to data_response");
+  HTTPResponseHandler = data_response;
   http.send(null);
-  http_busy = 1;
   return false;
 }
 
 function RequeueFetch() {
-    get_data(last_data_fetch);
+    if(last_data_fetch){
+        get_data(last_data_fetch);
+    }
 }
 
 function handleHttpResponse() {
   if(http_busy) {
     if (http.readyState == 4) {
-      // Split the comma delimited response into an array
-      var results = http.responseText.split("\n");
-      var run_me = results.shift();
-      eval(run_me);
-
-      thediv = document.getElementById('content');
-      if(mode == "update"){
-        updateResponseTable(results);
-      }else{
-        thediv.replaceChild(getResponseTable(results), thediv.firstChild);
-      }
-
-      refresh_timer = setTimeout('RequeueFetch()', 5000);
-      http_busy = 0;
+        HTTPResponseHandler(http.responseText);
+        http_busy = 0;
     }
   }
+}
+
+function data_response(data)
+{
+  var results = data.split("\n");
+  var run_me = results.shift();
+  eval(run_me);
+
+  if(mode == "update"){
+    updateResponseTable(results);
+  }else{
+    var thediv = document.getElementById('content');
+    thediv.replaceChild(getResponseTable(results), thediv.firstChild);
+  }
+
+  refresh_timer = setTimeout('RequeueFetch()', 5000);
 }
 
 function getResponseTable(data) 
@@ -160,6 +170,38 @@ function log_info(info)
   var li = document.createElement('li');
   li.appendChild(document.createTextNode(info));
   el.appendChild(li);
+}
+
+function view_file(url)
+{
+  if(refresh_timer){
+    clearTimeout(refresh_timer);
+  }
+
+  if(http_busy){
+      return false;
+  }
+
+  http_busy = 1;
+  last_data_fetch = 0;
+  alert("View file: '" + url + "'");
+
+  http.open("GET", url, true);
+  HTTPResponseHandler = view_file_response;
+  http.onreadystatechange = handleHttpResponse;
+  http.send(null);
+  return false;
+}
+
+function view_file_response(data)
+{
+    alert ("View File Response");
+    var thediv = document.getElementById('content');
+    var pre = document.createElement('pre');
+    pre.appendChild(document.createTextNode(http.data));
+    thediv.replaceChild(pre, thediv.firstChild);
+    alert("how bout now");
+    return false;
 }
 
 var http = getHTTPObject(); // We create the HTTP Object
