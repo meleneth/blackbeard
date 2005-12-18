@@ -228,3 +228,22 @@ void PostFile::update_status_from_pieces(void)
 
     downloaded_pieces = downloading_count;
 }
+
+FileHandle *PostFile::open_file()
+{
+    struct stat my_stats;
+    string dest_dir = config->blackbeard_dir + "/" + safe_dirname(post_set->subject);
+    if(stat(dest_dir.c_str(), &my_stats) == -1){
+        console->log("Creating dir for decode");
+#ifdef __WIN32__
+        mkdir(dest_dir.c_str());
+#else
+        mkdir(dest_dir.c_str(), 01777);
+#endif
+    }else {
+        console->log("download dir found");
+    }
+
+    string real_filename = dest_dir + "/" + filename;
+    return open_filehandle(real_filename);
+}

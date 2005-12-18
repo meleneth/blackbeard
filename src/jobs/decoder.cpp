@@ -61,45 +61,8 @@ void Decoder::open_file(void)
 {
     if(file_is_open)
         return;
-    
-    struct stat my_stats;
-    string dest_dir = config->blackbeard_dir + "/" + safe_dirname(post_file->post_set->subject);
-    if(stat(dest_dir.c_str(), &my_stats) == -1){
-        console->log("Creating dir for decode");
-#ifdef __WIN32__
-        mkdir(dest_dir.c_str());
-#else
-        mkdir(dest_dir.c_str(), 01777);
-#endif
-    }else {
-        console->log("download dir found");
-    }
-
-    string real_filename = dest_dir + "/" + filename;
-    file = open_filehandle(real_filename);
+    file = post_file->open_file();
     file_is_open = 1;
-}
-string Decoder::safe_dirname(string unsafe)
-{
-    string s = unsafe;
-    Uint32 max_no = s.length();
-    Uint32 is_unsafe;
-    for(Uint32 i=0; i<max_no; ++i){
-        is_unsafe = 1;
-        if(s[i] >= 'a' && s[i] <= 'z')
-            is_unsafe = 0;
-        if(s[i] >= 'A' && s[i] <= 'Z')
-            is_unsafe = 0;
-        if(is_unsafe)
-            s[i] = '_';
-    }
-
-    size_t x = s.find("__");
-    while(x < string::npos){
-        s.replace(x, 2, "_");
-        x=s.find("__");
-    }
-    return s;
 }
 
 void Decoder::close_file(void)

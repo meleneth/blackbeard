@@ -8,6 +8,8 @@
 using std::string;
 using std::vector;
 
+#define FH_BUFSIZE 32768
+
 class FileHandle {
     public:
         FileHandle(string filename);
@@ -19,9 +21,10 @@ class FileHandle {
 
         string filename;
         Uint32 ref_count;
+        Uint32 still_open;
         Uint32 pos;
         FILE *fh;
-        char line_buffer[4096];
+        char line_buffer[FH_BUFSIZE];
     private:
     protected:
 };

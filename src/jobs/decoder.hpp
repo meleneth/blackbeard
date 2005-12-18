@@ -26,8 +26,6 @@ class Decoder : public Job {
         virtual void open_file();
         virtual void close_file();
 
-        string safe_dirname(string unsafe);
-
         string filename;
 
         PostFile *post_file;

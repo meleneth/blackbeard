@@ -133,3 +133,25 @@ string js_escape(string escape_me)
     return replace_substrings(replace_substrings(escape_me, "\\", "\\\\"), "'", "\\'");
 }
 
+string safe_dirname(string unsafe)
+{
+    string s = unsafe;
+    Uint32 max_no = s.length();
+    Uint32 is_unsafe;
+    for(Uint32 i=0; i<max_no; ++i){
+        is_unsafe = 1;
+        if(s[i] >= 'a' && s[i] <= 'z')
+            is_unsafe = 0;
+        if(s[i] >= 'A' && s[i] <= 'Z')
+            is_unsafe = 0;
+        if(is_unsafe)
+            s[i] = '_';
+    }
+
+    size_t x = s.find("__");
+    while(x < string::npos){
+        s.replace(x, 2, "_");
+        x=s.find("__");
+    }
+    return s;
+}
