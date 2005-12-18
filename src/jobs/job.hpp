@@ -4,6 +4,7 @@
 #include "SDL_types.h"
 #include <string>
 #include <vector>
+#include "jobparent.hpp"
 
 using std::string;
 using std::vector;
@@ -11,17 +12,15 @@ using std::vector;
 typedef enum { MISC, POSTSET_DOWNLOAD, POSTFILE_DOWNLOAD, BODY_DOWNLOAD } JobType;
 
 class Job;
-class Job {
+class Job : public JobParent {
     public:
         Job();
         virtual ~Job();
         virtual void process();
         virtual string status_line();
-        virtual void notify_child_finished(Job *finished_job);
         virtual bool has_more_fruit();
         virtual void shake_tree();
         static bool compare(const Job* a, const Job* b);
-        virtual void add_child_job(Job *job);
         virtual void finish(void);
 
         Uint32 priority;
@@ -30,8 +29,7 @@ class Job {
         string _status;
         JobType job_type;
         string job_status_filename;
-        Job *parent;
-        vector<Job *> children;
+        JobParent *parent;
 
     private:
     protected:

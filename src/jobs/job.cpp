@@ -36,24 +36,6 @@ void Job::shake_tree()
 {
 }
 
-void Job::notify_child_finished(Job *job)
-{
-    vector<Job *> still_running;
-
-    Uint32 max_no = children.size();
-    for(Uint32 i=0; i<max_no; ++i){
-        if(!children[i]->is_finished){
-            still_running.push_back(children[i]);
-        }
-    }
-    children = still_running;
-}
-
-void Job::add_child_job(Job *job)
-{
-    job->parent = this;
-    children.push_back(job);
-}
 
 void Job::finish(void)
 {
