@@ -14,6 +14,8 @@
 #include "post_set_splitter_dynamicmatch.hpp"
 #include "webrequest.hpp"
 #include "netcentral.hpp"
+#include "file_handle.hpp"
+#include "webserver.hpp"
 
 #include<string>
 #include<sstream>

@@ -1,13 +1,14 @@
 #ifndef ___post_file_inc
 #define ___post_file_inc 1
 
-#include<string>
-#include<vector>
-#include"SDL_types.h"
-#include"post_set.hpp"
-#include"decoder.hpp"
-#include"news_constants.hpp"
-#include"newsgrouppost.hpp"
+#include <string>
+#include <vector>
+#include "SDL_types.h"
+#include "post_set.hpp"
+#include "decoder.hpp"
+#include "news_constants.hpp"
+#include "newsgrouppost.hpp"
+#include "file_handle.hpp"
 
 using std::string;
 using std::vector;

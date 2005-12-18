@@ -1,13 +1,17 @@
 #include "post_file.hpp"
 #include "stringpattern.hpp"
-#include"yenc_decoder.hpp"
-#include"uu_decoder.hpp"
-#include"console.hpp"
-#include<math.h>
-#include<config.hpp>
+#include "yenc_decoder.hpp"
+#include "uu_decoder.hpp"
+#include "console.hpp"
+#include "strutil.hpp"
+#include "config.hpp"
 
-#include<sstream>
-#include<iomanip>
+#include <math.h>
+#include <sstream>
+#include <iomanip>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 using std::stringstream;
 using std::setprecision;
