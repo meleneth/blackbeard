@@ -67,7 +67,8 @@ function data_response(data)
     updateResponseTable(results);
   }else{
     var thediv = document.getElementById('content');
-    thediv.replaceChild(getResponseTable(results), thediv.firstChild);
+    var old = thediv.replaceChild(getResponseTable(results), thediv.firstChild);
+    old = undef;
   }
 
   refresh_timer = setTimeout('RequeueFetch()', 5000);
@@ -100,6 +101,7 @@ function updateResponseTable(data)
         var old_row = document.getElementById(row.id);
         if(old_row){
             my_tbody.replaceChild(row, old_row);
+            old_row = undef;
         }else{
             my_tbody.appendChild(row);
         }
@@ -195,7 +197,8 @@ function view_file_response(data)
     var thediv = document.getElementById('content');
     var pre = document.createElement('pre');
     pre.appendChild(document.createTextNode(data));
-    thediv.replaceChild(pre, thediv.firstChild);
+    var old = thediv.replaceChild(pre, thediv.firstChild);
+    old = undef;
     return false;
 }
 

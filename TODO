@@ -3,8 +3,15 @@ make PostsetJob queue jobs for all of it's non par files
 have it trigger when done
 
 remove entire ncurses interface
-make javascript make tables, not lists 
-allow web interface to grab headers / queue downloads
+* make javascript make tables, not lists 
+* allow web interface to grab headers / queue downloads
+
+use SQLite for data store. <- huge change
+    one db file per newsgroup
+    store all message ID's
+    store postsets
+    store files
+    maintain current save strategy, i.e. don't use sqlite except for startup and shutdown
 
 Much excitement over new web interface.
 
@@ -34,12 +41,13 @@ Web API:
     /postfiles/news.group.name,post_set_index
 
 Needs to do:
-    investigate not resizing.  Is it only under gdb?
+    * investigate not resizing.  Is it only under gdb? <- yes, it is.  As far as I can tell.
     store a list of previous downloads, browsable and be able to go to the postset detail by hitting enter on the list
     percentages for header retrieval jobs
     * store list of active jobs in file
     * be able to retrieve headers as first thing if postset job doesn't have all the message id's
     keep up to date with headers in subscribed newsgroups, expire old ones and the postsets that had them
+        - kinda works, but doesn't happen automatically
         after a postsetjob is done, add a new newsgroupping job
     * make indicators work
     *   k/sec
