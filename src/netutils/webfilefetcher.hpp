@@ -7,7 +7,7 @@
 
 using std::string;
 
-class WebFileFetcher : public WebDataFetcher{
+class WebFileFetcher : public WebDataFetcher {
     public:
         WebFileFetcher(WebRequest *request, string filename);
         virtual ~WebFileFetcher();
