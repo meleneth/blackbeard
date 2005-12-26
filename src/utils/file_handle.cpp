@@ -15,6 +15,7 @@ FileHandle::FileHandle(string filename)
         fh = fopen(filename.c_str(), "w");
     } else {
         fh = fopen(filename.c_str(), "r+");
+        size = my_stats.st_size;
     }
     pos = 0;
     this->filename = filename;
@@ -37,6 +38,13 @@ string FileHandle::get_line()
     } else {
         still_open = 0;
     }
+}
+
+char *FileHandle::read_whole_file()
+{
+    char *buf = (char *)malloc(size);
+    fread(buf, size, 1, fh);
+    return buf;
 }
 
 void FileHandle::write_x_bytes_at(Uint32 x, Uint32 at, const char *data)

@@ -35,6 +35,7 @@ class TCPConnection {
         TCPConnection(); // Constructor
         virtual ~TCPConnection(); // Destructor
 
+        void send_data(char *buf, Uint32 size);
         int has_data_waiting(void);
         void send_line(string line);
         void slice_buffer_strings(void);

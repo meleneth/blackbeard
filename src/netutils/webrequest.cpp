@@ -13,6 +13,7 @@ WebRequest::WebRequest(TCPConnection *tcp)
     request_string = tcp->get_line();
     defaults();
     parse_uri(request_string);
+    content_type = "text/html";
 }
 
 WebRequest::WebRequest(string uri)
@@ -21,6 +22,7 @@ WebRequest::WebRequest(string uri)
     client = NULL;
     defaults();
     parse_uri(uri);
+    content_type = "text/html";
 }
 
 WebRequest::~WebRequest()

@@ -102,6 +102,23 @@ void TCPConnection::sendall(string cmd)
     }
 }
 
+void TCPConnection::send_data(char *buf, Uint32 size)
+{
+    if(!connected)
+        return;
+    int total = 0;        // how many bytes we've sent
+    int bytesleft = size; // how many we have left to send
+    int num_bytes = bytesleft;
+    int n;
+
+    while(total < num_bytes) {
+        n = send(sockfd, buf+total, bytesleft, 0);
+        if (n == -1) { console->log("Network error on send?  Oh I'm so scared :/"); break; }
+        total += n;
+        bytesleft -= n;
+    }
+}
+
 void TCPConnection::read_packets(void)
 {
     // will only be called when we have data waiting

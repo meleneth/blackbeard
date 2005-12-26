@@ -41,6 +41,7 @@ class WebRequest {
         string request_string;
         string path;
         string filename;
+        string content_type;
         Uint32 http_minor_version;
         Uint32 http_major_version;
         Uint32 has_cgi_params;

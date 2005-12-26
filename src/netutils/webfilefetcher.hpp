@@ -11,7 +11,11 @@ class WebFileFetcher : public WebDataFetcher{
     public:
         WebFileFetcher(WebRequest *request, string filename);
         virtual ~WebFileFetcher();
+        virtual int tick(void);
 
+        char *buf;
+        Uint32 size;
+        Uint32 index;
     private:
     protected:
 };

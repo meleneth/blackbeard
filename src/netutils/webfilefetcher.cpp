@@ -1,28 +1,24 @@
 #include "webfilefetcher.hpp"
+#include "file_handle.hpp"
 
 #define WEB_FILEBUFFERSIZE 16000
 
 WebFileFetcher::WebFileFetcher(WebRequest *request, string filename) : WebDataFetcher(request)
 {
     //   request->client->send_command("200 file returned");
-    FILE *file;
-    file = fopen(filename.c_str(), "r");
-    if(file) {
-        fseek(file, 0, SEEK_SET);
-        char buffer[WEB_FILEBUFFERSIZE];
-        while (fgets(buffer, WEB_FILEBUFFERSIZE, file)) {
-            buffer[strlen(buffer) -1] = '\0';
-            output_lines.push_back(buffer);
-        } 
-        fclose(file);
-    } else {
-        output_lines.push_back("404 not found");
-    }
-    num_lines = output_lines.size();
+    FileHandle file(filename);
+    size = file.size;
+    buf = file.read_whole_file();
+    file.close();
 }
 
 WebFileFetcher::~WebFileFetcher()
 {
 }
 
-
+int WebFileFetcher::tick()
+{
+    request->client->send_command("Content-type: " + request->content_type);
+    request->client->send_data(buf, size);
+    return 0;
+}
