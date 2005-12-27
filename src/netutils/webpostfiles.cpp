@@ -62,15 +62,13 @@ string WebPostFiles::post_file_line(PostFile *file, Uint32 file_index)
       << "||ping_url('" << r.get_uri() << "')|Download"
       << "||";
 
-    Uint32 len = file->filename.length();
-    if(len > 4){
-        if(0 == file->filename.substr(len - 4, 4).compare(".nfo")){
-            if(0 == file->status.compare("Finished")) {
-                r.filename = "viewfile";
-                s << "view_file('" << r.get_uri() << "')";
-            }
+    if(file_is_viewable(file->filename)){
+        if(0 == file->status.compare("Finished")) {
+            r.filename = "viewfile";
+            s << "view_file('" << r.get_uri() << "')";
         }
     }
+
     s << " |" << replace_substrings(file->filename, "|", "").substr(0, 80)
       << "|| |" << file->status
       << "|| |" << file->downloaded_pieces << "/"  << file->num_pieces
@@ -85,5 +83,22 @@ string WebPostFiles::post_file_line(PostFile *file, Uint32 file_index)
              << "%";
     }
     return s.str();
+}
+
+Uint32 WebPostFiles::file_is_viewable(string filename)
+{
+    Uint32 len = filename.length();
+    if(len > 4){
+        string extension = filename.substr(len-4, 4);
+        if(0 == extension.compare(".nfo"))
+            return 1;
+        if(0 == extension.compare(".jpg"))
+            return 1;
+        if(0 == extension.compare(".gif"))
+            return 1;
+        if(0 == extension.compare(".png"))
+            return 1;
+    }
+    return 0;
 }
 
