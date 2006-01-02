@@ -9,6 +9,7 @@
 #include "SDL_types.h"
 #include <string>
 #include <vector>
+#include <sqlite3.h>
 
 using std::string;
 using std::vector;
@@ -33,6 +34,8 @@ class PostSet {
         Uint32 index();
         static bool compare(const PostSet* a, const PostSet* b);
         bool operator< (const PostSet &b);
+
+        void save_postsets(sqlite3* db); 
 
         string subject;
         vector<PostFile *> files;

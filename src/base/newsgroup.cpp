@@ -146,6 +146,37 @@ void NewsGroup::save_postsets(void)
         }
         out.close();
     }
+    save_postsets_to_db();
+}
+
+void NewsGroup::save_postsets_to_db(void)
+{
+    string filename = config->blackbeard_data_dir + "/" + name + ".db";
+    int rc;
+    sqlite3* db;
+
+    rc = sqlite3_open(filename.c_str(), &db);
+    setup_newsgroup_tables(db);
+    Uint32 max_no = postsets.size();
+    for(Uint32 i=0; i<max_no; i++)
+    {
+        postsets[i]->save_postsets(db);
+    }
+}
+
+void NewsGroup::setup_newsgroup_tables(sqlite3 *db)
+{
+    vector<string> queries;
+    queries.push_back("CREATE TABLE post_files (postfile_no INTEGER, postset_no INTEGER, name VARCHAR)");
+    queries.push_back("CREATE TABLE post_sets (postset_no INTEGER, name VARCHAR)");
+    queries.push_back("CREATE TABLE file_pieces (file_piece_no INTEGER, postfile_no INTEGER, status VARCHAR)");
+    Uint32 max_no = queries.size();
+    for(Uint32 i=0; i<max_no; ++i) {
+        int rc = sqlite3_exec(db, queries[i].c_str(), NULL, NULL, NULL);
+        if(rc){
+            console->log("Death :/");
+        }
+    }
 }
 
 #define NG_PSL_BUFFER_SIZE 40000
