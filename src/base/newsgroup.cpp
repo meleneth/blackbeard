@@ -162,6 +162,7 @@ void NewsGroup::save_postsets_to_db(void)
     {
         postsets[i]->save_postsets(db);
     }
+    sqlite3_close(db);
 }
 
 void NewsGroup::setup_newsgroup_tables(sqlite3 *db)
