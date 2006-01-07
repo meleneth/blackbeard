@@ -38,6 +38,7 @@ string FileHandle::get_line()
     } else {
         still_open = 0;
     }
+    return "";
 }
 
 char *FileHandle::read_whole_file()

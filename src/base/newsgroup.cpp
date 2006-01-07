@@ -168,8 +168,9 @@ void NewsGroup::save_postsets_to_db(void)
 void NewsGroup::setup_newsgroup_tables(sqlite3 *db)
 {
     vector<string> queries;
+    queries.push_back("CREATE TABLE newsgroups (newsgroup_no INTEGER, name VARCHAR)");
     queries.push_back("CREATE TABLE post_files (postfile_no INTEGER, postset_no INTEGER, name VARCHAR)");
-    queries.push_back("CREATE TABLE post_sets (postset_no INTEGER, name VARCHAR)");
+    queries.push_back("CREATE TABLE post_sets (postset_no INTEGER, newsgroup_no INTEGER, name VARCHAR)");
     queries.push_back("CREATE TABLE file_pieces (file_piece_no INTEGER, postfile_no INTEGER, status VARCHAR)");
     Uint32 max_no = queries.size();
     for(Uint32 i=0; i<max_no; ++i) {
