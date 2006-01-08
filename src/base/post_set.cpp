@@ -192,6 +192,27 @@ Uint32 PostSet::index()
     exit(1);
 }
 
-void PostSet::save_postfiles(sqlite3 *db)
+void PostSet::save_postfiles(sqlite3 *db, Uint32 newsgroup_no)
 {
+    sqlite3_stmt *pf;
+    string pf_stmt = "INSERT INTO postfiles VALUES(?, ?, ?)";
+    sqlite3_prepare(db, pf_stmt.c_str(), pf_stmt.length(), &s, 0);
+
+    sqlite3_stmt *fp;
+    string fp_stmt = "INSERT INTO file_pieces VALUES(?, ?, ?)";
+    sqlite3_prepare(db, pf_stmt.c_str(), pf_stmt.length(), &s, 0);
+
+    Uint32 max_no = newsgroups.size();
+    for(Uint32 i=0; i<max_no; i++){
+        PostSet *group = newsgroups[i];
+        if(group->is_subscribed){
+            sqlite3_bind_int(s, 1, i); 
+            sqlite3_bind_text(s, 2, group->name.c_str(), group->name.length(), NULL);
+            sqlite3_step(s);
+            sqlite3_reset(s);
+            group->save_postsets_to_db(db, i);
+        }
+    }
+    sqlite3_finalize(s);
+    console->log("Finalize..");
 }
