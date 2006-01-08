@@ -192,7 +192,6 @@ Uint32 PostSet::index()
     exit(1);
 }
 
-void PostSet::save_postsets(sqlite3 *db)
+void PostSet::save_postfiles(sqlite3 *db)
 {
-
 }

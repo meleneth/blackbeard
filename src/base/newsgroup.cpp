@@ -8,6 +8,7 @@
 #include <iostream>  // I/O 
 #include <fstream>   // file I/O
 #include <sstream>
+#include <sqlite3.h>
 
 
 using std::string;
@@ -127,45 +128,17 @@ void load_groups_from(string filename)
     }
 }
 
-void NewsGroup::save_postsets(void)
+void NewsGroup::save_postsets_to_db(sqlite3 *db)
 {
-    ofstream out;
-    string filename = config->blackbeard_data_dir + "/postsets." + name;
-
-    out.open(filename.c_str(), ios::out);
-
-    if(out.is_open()){
-        Uint32 max_no = postsets.size();
-        for(Uint32 i=0; i<max_no; i++)
-        {
-            PostSet *set = postsets[i];
-            out << set->min_msg_id()    << " " 
-                << set->max_msg_id()    << " " 
-                << set->max_num_files() << " "
-                << set->subject << endl;
-        }
-        out.close();
-    }
-    save_postsets_to_db();
-}
-
-void NewsGroup::save_postsets_to_db(void)
-{
-    string filename = config->blackbeard_data_dir + "/" + name + ".db";
-    int rc;
-    sqlite3* db;
-
-    rc = sqlite3_open(filename.c_str(), &db);
-    setup_newsgroup_tables(db);
     Uint32 max_no = postsets.size();
     for(Uint32 i=0; i<max_no; i++)
     {
-        postsets[i]->save_postsets(db);
+        postsets[i]->save_postfiles(db);
     }
     sqlite3_close(db);
 }
 
-void NewsGroup::setup_newsgroup_tables(sqlite3 *db)
+void setup_newsgroup_tables(sqlite3 *db)
 {
     vector<string> queries;
     queries.push_back("CREATE TABLE newsgroups (newsgroup_no INTEGER, name VARCHAR)");
@@ -174,9 +147,12 @@ void NewsGroup::setup_newsgroup_tables(sqlite3 *db)
     queries.push_back("CREATE TABLE file_pieces (file_piece_no INTEGER, postfile_no INTEGER, status VARCHAR)");
     Uint32 max_no = queries.size();
     for(Uint32 i=0; i<max_no; ++i) {
+
         int rc = sqlite3_exec(db, queries[i].c_str(), NULL, NULL, NULL);
-        if(rc){
-            console->log("Death :/");
+        if(rc != SQLITE_OK){
+            stringstream s;
+            s << "Death - " << rc << " - :(";
+            console->log(s.str());
         }
     }
 }
@@ -231,23 +207,30 @@ void NewsGroup::expire_old_postsets(Uint32 low_msg_id)
     postsets = still_around;
 }
 
-void save_subscribed_groups_to(string filename)
+void save_subscribed_groups_to_db(sqlite3* db)
 {
-    ofstream out;
+    sqlite3_stmt *s;
+    string stmt = "INSERT INTO newsgroups VALUES(?, ?)";
+    sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
+    console->log("Prepare..");
 
-    out.open(filename.c_str(), ios::out);
-
-    if(out.is_open()){
-        Uint32 max_no = newsgroups.size();
-        for(Uint32 i=0; i<max_no; i++)
-        {
-            NewsGroup *group = newsgroups[i];
-            if(newsgroups[i]->is_subscribed){
-                out << group->first_article_number << " " << group->last_article_number << " " << group->name << endl;
-                newsgroups[i]->save_postsets();
-            }
+    char *endPtr;
+    Uint32 max_no = newsgroups.size();
+    for(Uint32 i=0; i<max_no; i++){
+        NewsGroup *group = newsgroups[i];
+        if(group->is_subscribed){
+            sqlite3_bind_int(s, 1, i); 
+            sqlite3_bind_text(s, 2, group->name.c_str(), group->name.length(), NULL);
+            console->log("Bind..");
+            sqlite3_step(s);
+            console->log("Step..");
+            sqlite3_reset(s);
+            console->log("Reset..");
+            //group->save_postsets_to_db(db);
         }
     }
+    sqlite3_finalize(s);
+    console->log("Finalize..");
 }
 
 NewsGroup *group_for_name(string groupname)

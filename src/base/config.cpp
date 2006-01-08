@@ -188,6 +188,21 @@ void Config::save_downloaded_postsets(void)
     }
 }
 
+void Config::save_persistent_data(void)
+{
+    string filename = blackbeard_data_dir + "/blackbeard.db";
+    int rc;
+    sqlite3* db;
+
+    rc = sqlite3_open(filename.c_str(), &db);
+    console->log("Database file: " + filename);
+    if(rc != SQLITE_OK){
+        console->log("Could not create database " + filename);
+    }
+    setup_newsgroup_tables(db);
+    save_subscribed_groups_to_db(db);
+}
+
 void Config::restore_downloaded_postsets(void)
 {
     char linebuffer[1024];

@@ -54,6 +54,6 @@ void HeadersForGroupJob::process_line(string line)
 
 void HeadersForGroupJob::finish(void)
 {
-    group->save_postsets();
+    //group->save_postsets();
     NetJob::finish();
 }

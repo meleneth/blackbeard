@@ -22,6 +22,7 @@ class Config {
         void setup_test_config();
         void restore_downloaded_postsets(void);
         void save_downloaded_postsets(void);
+        void save_persistent_data(void);
 
         string subscribed_groups_filename();
         string net_jobs_filename();

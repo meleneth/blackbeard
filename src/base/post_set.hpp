@@ -35,7 +35,7 @@ class PostSet {
         static bool compare(const PostSet* a, const PostSet* b);
         bool operator< (const PostSet &b);
 
-        void save_postsets(sqlite3* db); 
+        void save_postfiles(sqlite3* db); 
 
         string subject;
         vector<PostFile *> files;

@@ -27,13 +27,11 @@ class NewsGroup {
         ~NewsGroup(); // Destructor
         void header_scoop(string xover_line);
         void load_from_file(string filename);
-        void save_postsets(void);
         void load_postsets(void);
         Uint32 index();
         static bool compare(const NewsGroup *a, const NewsGroup *b);
         void expire_old_postsets(Uint32 low_msg_id);
-        void save_postsets_to_db(void);
-        void setup_newsgroup_tables(sqlite3 *db);
+        void save_postsets_to_db(sqlite3 *db);
         Uint32 postset_index(PostSet *set);
 
         PostSet *postset_for_subject(string subject);
@@ -60,7 +58,8 @@ class NewsGroup {
 };
 
 void load_groups_from(string filename);
-void save_subscribed_groups_to(string filename);
+void save_subscribed_groups_to_db(sqlite3* db);
+void setup_newsgroup_tables(sqlite3 *db);
 
 NewsGroup *group_for_name(string groupname);
 
