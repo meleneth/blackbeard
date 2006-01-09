@@ -31,7 +31,6 @@ class NewsGroup {
         Uint32 index();
         static bool compare(const NewsGroup *a, const NewsGroup *b);
         void expire_old_postsets(Uint32 low_msg_id);
-        void save_postsets_to_db(sqlite3 *db, Uint32 newsgroup_no);
         Uint32 postset_index(PostSet *set);
 
         PostSet *postset_for_subject(string subject);
@@ -57,9 +56,6 @@ class NewsGroup {
     protected:
 };
 
-void load_groups_from(string filename);
-void save_subscribed_groups_to_db(sqlite3* db);
-void setup_newsgroup_tables(sqlite3 *db);
 
 NewsGroup *group_for_name(string groupname);
 

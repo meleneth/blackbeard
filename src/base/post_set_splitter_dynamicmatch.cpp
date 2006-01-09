@@ -92,9 +92,9 @@ string simple_x(string eatme)
 
     eatme = replace_all_substrings(eatme, "\t\t", "\t");
 
-    Uint32 first_quote = eatme.find("\"", 0);
+    size_t first_quote = eatme.find("\"", 0);
     if(first_quote != string::npos){
-        Uint32 second_quote = eatme.find("\"", first_quote + 1);
+        size_t second_quote = eatme.find("\"", first_quote + 1);
         if(second_quote != string::npos){
             eatme.replace(first_quote +1, second_quote - first_quote -1, "\t");
         }
@@ -200,9 +200,9 @@ string PSDMSubMatch::super_simple(string eatme)
 
     eatme = replace_all_substrings(eatme, "  ", " ");
 
-    Uint32 first_quote = eatme.find("\"", 0);
+    size_t first_quote = eatme.find("\"", 0);
     if(first_quote != string::npos){
-        Uint32 second_quote = eatme.find("\"", first_quote + 1);
+        size_t second_quote = eatme.find("\"", first_quote + 1);
         if(second_quote != string::npos){
             eatme.replace(first_quote +1, second_quote - first_quote -1, " ");
         }

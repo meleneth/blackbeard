@@ -20,8 +20,6 @@ class Config {
         void setup_files(void);
         void load_persistant_data(void);
         void setup_test_config();
-        void restore_downloaded_postsets(void);
-        void save_downloaded_postsets(void);
         void save_persistent_data(void);
 
         string subscribed_groups_filename();

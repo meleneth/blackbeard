@@ -192,20 +192,3 @@ Uint32 PostSet::index()
     exit(1);
 }
 
-void PostSet::save_postfiles(sqlite3 *db, Uint32 postset_no)
-{
-    sqlite3_stmt *pf;
-    string pf_stmt = "INSERT INTO post_files VALUES(?, ?, ?)";
-    sqlite3_prepare(db, pf_stmt.c_str(), pf_stmt.length(), &pf, 0);
-    Uint32 max_no = files.size();
-    for(Uint32 i=0; i<max_no; i++){
-        PostFile *file = files[i];
-        sqlite3_bind_int(pf, 1, i); 
-        sqlite3_bind_int(pf, 2, postset_no); 
-        sqlite3_bind_text(pf, 3, file->filename.c_str(), file->filename.length(), NULL);
-        sqlite3_step(pf);
-        sqlite3_reset(pf);
-        file->save_ids_to_db(db, i);
-    }
-    sqlite3_finalize(pf);
-}

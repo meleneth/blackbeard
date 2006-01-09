@@ -146,48 +146,10 @@ void NetCentral::process_jobs(void)
     active_jobs = still_running;
 }
 
-void NetCentral::save_active_list_file(void)
-{
-    string filename = config->net_jobs_filename();
-    ofstream out;
-
-    out.open(filename.c_str(), ios::out);
-
-    if(out.is_open()){
-        Uint32 max_no = job_filenames.size();
-        for(Uint32 i=0; i<max_no; i++)
-        {
-            out << job_filenames[i] << endl;
-        }
-        out.close();
-    }
-}
-
-void NetCentral::restore_saved_jobs(void)
-{
-    ifstream in;
-    char linebuffer[1024];
-    
-    in.open(config->net_jobs_filename().c_str());
-    if(in.is_open()){
-        in.getline(linebuffer, 1024);
-
-        while(!in.eof()){
-            if(strlen(linebuffer)){
-                string msg = "Restoring ";
-                console->log(msg + linebuffer);
-                jobs.push_back(new PostsetJob(linebuffer));
-            }
-            in.getline(linebuffer, 1024);
-        }
-    }
-}
-
 void NetCentral::add_job(Job *job)
 {
     if(job->job_status_filename.compare("")){
         job_filenames.push_back(job->job_status_filename);
-        save_active_list_file();
     }
     JobQueue::add_job(job);
 }
@@ -206,7 +168,6 @@ void NetCentral::finish_job(Job *job)
         }
         job_filenames = new_filename_list;
     }
-    save_active_list_file();
     JobQueue::finish_job(job);
 }
 

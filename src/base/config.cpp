@@ -8,6 +8,7 @@
 #include "console.hpp"
 #include "newsgroup.hpp"
 #include "netcentral.hpp"
+#include "database.hpp"
 
 #define CONFIGFILENAME "/.blackbeardrc"
 
@@ -161,71 +162,12 @@ void Config::setup_files(void)
 
 void Config::load_persistant_data(void)
 {
-    console->log("restoring persistent data..");
-    load_groups_from(subscribed_groups_filename());
-    Uint32 max_int = newsgroups.size();
-    for(Uint32 i = 0 ; i < max_int ; i++)
-    {
-       newsgroups[i]->is_subscribed = 1;
-       newsgroups[i]->load_postsets();
-    }
-
-    restore_downloaded_postsets();
-    console->log("finshed restoring persistent data");
-}
-
-void Config::save_downloaded_postsets(void)
-{
-    ofstream file;
-    file.open(downloaded_postsets_filename().c_str(), ios::out);
-    if(file.is_open()){
-        Uint32 max_no = downloaded_postsets.size();
-        for(Uint32 i=0; i<max_no; ++i){
-            PostSet *set = downloaded_postsets[i];
-            file <<  set->group->name <<  " " << set->subject << endl;
-        }
-        file.close();
-    }
+    restore_db_data();
 }
 
 void Config::save_persistent_data(void)
 {
-    string filename = blackbeard_data_dir + "/blackbeard.db";
-    int rc;
-    sqlite3* db;
-
-    rc = sqlite3_open(filename.c_str(), &db);
-    console->log("Database file: " + filename);
-    if(rc != SQLITE_OK){
-        console->log("Could not create database " + filename);
-    }
-    setup_newsgroup_tables(db);
-    sqlite3_exec(db, "BEGIN TRANSACTION", NULL, NULL, NULL);
-    save_subscribed_groups_to_db(db);
-    sqlite3_exec(db, "COMMIT TRANSACTION", NULL, NULL, NULL);
-}
-
-void Config::restore_downloaded_postsets(void)
-{
-    char linebuffer[1024];
-
-    ifstream in;
-    StringPattern *splitter = new StringPattern(2);
-    splitter->add_breaker(0);
-    splitter->add_breaker(" ");
-    splitter->add_breaker(1);
-
-    in.open(downloaded_postsets_filename().c_str(), ios::in);
-    if(in.is_open()){
-        in.getline(linebuffer, 1024);
-        while(!in.eof()){
-            if(splitter->match(linebuffer)){
-                NewsGroup *group = group_for_name(splitter->get_piece(0));
-                downloaded_postsets.push_back(group->postset_for_subject(splitter->get_piece(1)));
-            }
-            in.getline(linebuffer, 1024);
-        }
-    }
+    save_db_data();
 }
 
 void Config::setup_test_config(void)
@@ -235,16 +177,6 @@ void Config::setup_test_config(void)
 string Config::subscribed_groups_filename()
 {
     return blackbeard_data_dir + "/subscribed_newsgroups";
-}
-
-string Config::net_jobs_filename()
-{
-    return blackbeard_data_dir + "/net_jobs";
-}
-
-string Config::downloaded_postsets_filename()
-{
-    return blackbeard_data_dir + "/downloaded_postsets";
 }
 
 string Config::full_job_filename(string job_filename)

@@ -100,7 +100,6 @@ void do_init(void)
     session = new Session();
     netcentral = new NetCentral();
     config->load_persistant_data();
-    netcentral->restore_saved_jobs();
     webserver = new WebServer("../html", config->webserver_port);
 }
 
