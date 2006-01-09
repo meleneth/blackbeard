@@ -9,6 +9,7 @@
 #include "news_constants.hpp"
 #include "newsgrouppost.hpp"
 #include "file_handle.hpp"
+#include <sqlite3.h>
 
 using std::string;
 using std::vector;
@@ -27,6 +28,7 @@ class PostFile {
         string get_bar(void);
         void saw_message_id(Uint32 msg_id);
         static bool compare(const PostFile* a, const PostFile* b);
+        void save_ids_to_db(sqlite3* db, Uint32 postfile_no);
         void update_status_from_pieces();
         FileHandle *open_file();
         Uint32 is_par();

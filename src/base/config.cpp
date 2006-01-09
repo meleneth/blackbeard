@@ -200,7 +200,9 @@ void Config::save_persistent_data(void)
         console->log("Could not create database " + filename);
     }
     setup_newsgroup_tables(db);
+    sqlite3_exec(db, "BEGIN TRANSACTION", NULL, NULL, NULL);
     save_subscribed_groups_to_db(db);
+    sqlite3_exec(db, "COMMIT TRANSACTION", NULL, NULL, NULL);
 }
 
 void Config::restore_downloaded_postsets(void)

@@ -247,3 +247,20 @@ FileHandle *PostFile::open_file()
     string real_filename = dest_dir + "/" + filename;
     return open_filehandle(real_filename);
 }
+
+void PostFile::save_ids_to_db(sqlite3* db, Uint32 postfile_no)
+{
+    sqlite3_stmt *fp;
+    string fp_stmt = "INSERT INTO file_pieces VALUES(?, ?, ?, ?)";
+    sqlite3_prepare(db, fp_stmt.c_str(), fp_stmt.length(), &fp, 0);
+    Uint32 max_no = pieces.size();
+    for(Uint32 i=0; i<max_no; ++i){
+        sqlite3_bind_int(fp, 1, i); 
+        sqlite3_bind_int(fp, 2, postfile_no); 
+        sqlite3_bind_int(fp, 3, piece_status[i]); 
+        sqlite3_bind_int(fp, 4, pieces[i]); 
+        sqlite3_step(fp);
+        sqlite3_reset(fp);
+    }
+    sqlite3_finalize(fp);
+}

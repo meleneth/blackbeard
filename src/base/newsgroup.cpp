@@ -128,22 +128,22 @@ void load_groups_from(string filename)
     }
 }
 
-void NewsGroup::save_postsets_to_db(sqlite3 *db)
+void NewsGroup::save_postsets_to_db(sqlite3 *db, Uint32 newsgroup_no)
 {
     sqlite3_stmt *s;
-    string stmt = "INSERT INTO postsets VALUES(?, ?, ?)";
+    string stmt = "INSERT INTO post_sets VALUES(?, ?, ?)";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
 
     Uint32 max_no = postsets.size();
     for(Uint32 i=0; i<max_no; i++){
         PostSet *set = postsets[i];
         sqlite3_bind_int(s, 1, i); 
-        sqlite3_bind_int(s, 2, i); 
-        sqlite3_bind_text(s, 3, set->name.c_str(), set->name.length(), NULL);
+        sqlite3_bind_int(s, 2, newsgroup_no); 
+        sqlite3_bind_text(s, 3, set->subject.c_str(), set->subject.length(), NULL);
         sqlite3_step(s);
         sqlite3_reset(s);
 
-        set[i]->save_postfiles(db);
+        set->save_postfiles(db, i);
     }
     sqlite3_finalize(s);
 }
@@ -154,11 +154,12 @@ void setup_newsgroup_tables(sqlite3 *db)
     queries.push_back("CREATE TABLE newsgroups (newsgroup_no INTEGER, name VARCHAR)");
     queries.push_back("CREATE TABLE post_files (postfile_no INTEGER, postset_no INTEGER, name VARCHAR)");
     queries.push_back("CREATE TABLE post_sets (postset_no INTEGER, newsgroup_no INTEGER, name VARCHAR)");
-    queries.push_back("CREATE TABLE file_pieces (file_piece_no INTEGER, postfile_no INTEGER, status VARCHAR)");
+    queries.push_back("CREATE TABLE file_pieces (file_piece_no INTEGER, postfile_no INTEGER, status INTEGER, msg_id INTEGER)");
     Uint32 max_no = queries.size();
     for(Uint32 i=0; i<max_no; ++i) {
 
-        int rc = sqlite3_exec(db, queries[i].c_str(), NULL, NULL, NULL);
+       // int rc = 
+        sqlite3_exec(db, queries[i].c_str(), NULL, NULL, NULL);
         /*if(rc != SQLITE_OK){
             stringstream s;
             s << "Death - " << rc << " - :(";
