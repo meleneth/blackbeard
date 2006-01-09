@@ -13,6 +13,6 @@ void save_postsets_to_db(sqlite3 *db, NewsGroup *group);
 void save_subscribed_groups_to_db(sqlite3* db);
 void setup_newsgroup_tables(sqlite3 *db);
 void save_postfiles(sqlite3* db, PostSet *set); 
-
+void save_ids_to_db(sqlite3* db, PostFile *file);
 
 #endif

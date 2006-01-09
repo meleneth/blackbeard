@@ -97,7 +97,25 @@ void save_postfiles(sqlite3 *db, PostSet *set)
         sqlite3_bind_text(pf, 3, file->filename.c_str(), file->filename.length(), NULL);
         sqlite3_step(pf);
         sqlite3_reset(pf);
-        file->save_ids_to_db(db, i);
+        save_ids_to_db(db, file);
     }
     sqlite3_finalize(pf);
 }
+
+void save_ids_to_db(sqlite3* db, PostFile *file)
+{
+    sqlite3_stmt *fp;
+    string fp_stmt = "INSERT INTO file_pieces VALUES(?, ?, ?, ?)";
+    sqlite3_prepare(db, fp_stmt.c_str(), fp_stmt.length(), &fp, 0);
+    Uint32 max_no = file->pieces.size();
+    for(Uint32 i=0; i<max_no; ++i){
+        sqlite3_bind_int(fp, 1, i); 
+        sqlite3_bind_int(fp, 2, file->index()); 
+        sqlite3_bind_int(fp, 3, file->piece_status[i]); 
+        sqlite3_bind_int(fp, 4, file->pieces[i]); 
+        sqlite3_step(fp);
+        sqlite3_reset(fp);
+    }
+    sqlite3_finalize(fp);
+}
+

@@ -229,6 +229,17 @@ void PostFile::update_status_from_pieces(void)
     downloaded_pieces = downloading_count;
 }
 
+Uint32 PostFile::index()
+{
+    Uint32 max_no = post_set->files.size();
+    for(Uint32 i=0; i<max_no; ++i) {
+        if(post_set->files[i] == this){
+            return i;
+        }
+    }
+    exit(1);
+}
+
 FileHandle *PostFile::open_file()
 {
     struct stat my_stats;
@@ -248,19 +259,3 @@ FileHandle *PostFile::open_file()
     return open_filehandle(real_filename);
 }
 
-void PostFile::save_ids_to_db(sqlite3* db, Uint32 postfile_no)
-{
-    sqlite3_stmt *fp;
-    string fp_stmt = "INSERT INTO file_pieces VALUES(?, ?, ?, ?)";
-    sqlite3_prepare(db, fp_stmt.c_str(), fp_stmt.length(), &fp, 0);
-    Uint32 max_no = pieces.size();
-    for(Uint32 i=0; i<max_no; ++i){
-        sqlite3_bind_int(fp, 1, i); 
-        sqlite3_bind_int(fp, 2, postfile_no); 
-        sqlite3_bind_int(fp, 3, piece_status[i]); 
-        sqlite3_bind_int(fp, 4, pieces[i]); 
-        sqlite3_step(fp);
-        sqlite3_reset(fp);
-    }
-    sqlite3_finalize(fp);
-}
