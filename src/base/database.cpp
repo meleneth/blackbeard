@@ -21,9 +21,68 @@ void save_db_data()
 
 void restore_db_data()
 {
-    console->log("Restoring.. but no code written");
+    string filename = config->blackbeard_data_dir + "/blackbeard.db";
+    int rc;
+    sqlite3* db;
+
+    rc = sqlite3_open(filename.c_str(), &db);
+    console->log("Database file: " + filename);
+    if(rc != SQLITE_OK){
+        console->log("Could not open database " + filename);
+    }
 }
 
+void restore_newsgroups_from_db(sqlite3 *db)
+{
+    sqlite3_stmt *s;
+    string stmt = "SELECT newsgroup_no, name FROM newsgroups";
+    sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
+    while (SQLITE_ROW == sqlite3_step(s)){
+        NewsGroup *group = group_for_name((char *)sqlite3_column_text(s, 1));
+        restore_postsets_from_db(db, group, sqlite3_column_int(s, 0));
+    }
+    sqlite3_finalize(s);
+}
+
+void restore_postsets_from_db(sqlite3 *db, NewsGroup *group, Uint32 group_index)
+{
+    sqlite3_stmt *s;
+    string stmt = "SELECT postset_no, name FROM post_sets WHERE newsgroup_no = ?";
+    sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
+    sqlite3_bind_int(s, 1, group_index); 
+    while (SQLITE_ROW == sqlite3_step(s)){
+        PostSet *set = group->postset_for_subject((char *)sqlite3_column_text(s, 1));
+        restore_postfiles_from_db(db, set, sqlite3_column_int(s, 0));
+    }
+    sqlite3_finalize(s);
+}
+
+void restore_postfiles_from_db(sqlite3 *db, PostSet *set, Uint32 postset_index)
+{
+    sqlite3_stmt *s;
+    string stmt = "SELECT postfile_no, name FROM post_sets WHERE postset_no = ?";
+    sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
+    sqlite3_bind_int(s, 1, postset_index); 
+    while (SQLITE_ROW == sqlite3_step(s)){
+        PostFile *file = set->file((char *)sqlite3_column_text(s, 1));
+        restore_ids_from_db(db, file, sqlite3_column_int(s, 0));
+    }
+    sqlite3_finalize(s);
+}
+        
+void restore_ids_from_db(sqlite3 *db, PostFile *file, Uint32 postfile_index)
+{
+    sqlite3_stmt *s;
+    string stmt = "SELECT msg_id, status FROM file_pieces WHERE postfile_no = ? ORDER BY file_piece_no";
+    sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
+    sqlite3_bind_int(s, 1, postfile_index); 
+    while (SQLITE_ROW == sqlite3_step(s)){
+        file->pieces.push_back(sqlite3_column_int(s, 1));
+        file->piece_status.push_back((PIECE_STATUS) sqlite3_column_int(s, 2));
+    }
+    sqlite3_finalize(s);
+}
+    
 void save_postsets_to_db(sqlite3 *db, NewsGroup *group)
 {
     sqlite3_stmt *s;
@@ -48,19 +107,12 @@ void setup_newsgroup_tables(sqlite3 *db)
 {
     vector<string> queries;
     queries.push_back("CREATE TABLE newsgroups (newsgroup_no INTEGER, name VARCHAR)");
-    queries.push_back("CREATE TABLE post_files (postfile_no INTEGER, postset_no INTEGER, name VARCHAR)");
     queries.push_back("CREATE TABLE post_sets (postset_no INTEGER, newsgroup_no INTEGER, name VARCHAR)");
+    queries.push_back("CREATE TABLE post_files (postfile_no INTEGER, postset_no INTEGER, name VARCHAR)");
     queries.push_back("CREATE TABLE file_pieces (file_piece_no INTEGER, postfile_no INTEGER, status INTEGER, msg_id INTEGER)");
     Uint32 max_no = queries.size();
     for(Uint32 i=0; i<max_no; ++i) {
-
-       // int rc = 
         sqlite3_exec(db, queries[i].c_str(), NULL, NULL, NULL);
-        /*if(rc != SQLITE_OK){
-            stringstream s;
-            s << "Death - " << rc << " - :(";
-            console->log(s.str());
-        }*/
     }
 }
 
