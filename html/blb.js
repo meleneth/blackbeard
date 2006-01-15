@@ -68,7 +68,7 @@ function data_response(data)
   }else{
     var thediv = document.getElementById('content');
     var old = thediv.replaceChild(getResponseTable(results), thediv.firstChild);
-    old = undef;
+    old = null;
   }
 
   refresh_timer = setTimeout('RequeueFetch()', 5000);
