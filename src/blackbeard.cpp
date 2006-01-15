@@ -57,9 +57,6 @@ int main(int argc, char *argv[])
 
         int key = getch();
         if(key != ERR){
-          //  stringstream buf;
-          //  buf << "Recieved key: " << (int) key;
-          //  console->log(buf.str());
             session->handle_input(key);
         }
 
