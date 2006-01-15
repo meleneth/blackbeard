@@ -161,11 +161,13 @@ void Config::setup_files(void)
 
 void Config::load_persistant_data(void)
 {
+    console->log("loading persistant data..");
     restore_db_data();
 }
 
 void Config::save_persistent_data(void)
 {
+    console->log("saving persistant data..");
     save_db_data();
 }
 

@@ -1,6 +1,7 @@
 #include "database.hpp"
 #include "config.hpp"
 #include "console.hpp"
+#include "unistd.h"
 
 void save_db_data()
 {
@@ -8,6 +9,7 @@ void save_db_data()
     int rc;
     sqlite3* db;
 
+    unlink(filename.c_str());
     rc = sqlite3_open(filename.c_str(), &db);
     console->log("Database file: " + filename);
     if(rc != SQLITE_OK){
@@ -17,6 +19,7 @@ void save_db_data()
     sqlite3_exec(db, "BEGIN TRANSACTION", NULL, NULL, NULL);
     save_subscribed_groups_to_db(db);
     sqlite3_exec(db, "COMMIT TRANSACTION", NULL, NULL, NULL);
+    sqlite3_close(db);
 }
 
 void restore_db_data()
@@ -30,6 +33,9 @@ void restore_db_data()
     if(rc != SQLITE_OK){
         console->log("Could not open database " + filename);
     }
+    restore_newsgroups_from_db(db);
+    sqlite3_close(db);
+
 }
 
 void restore_newsgroups_from_db(sqlite3 *db)
@@ -60,7 +66,7 @@ void restore_postsets_from_db(sqlite3 *db, NewsGroup *group, Uint32 group_index)
 void restore_postfiles_from_db(sqlite3 *db, PostSet *set, Uint32 postset_index)
 {
     sqlite3_stmt *s;
-    string stmt = "SELECT postfile_no, name FROM post_sets WHERE postset_no = ?";
+    string stmt = "SELECT postfile_no, name FROM post_files WHERE postset_no = ?";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
     sqlite3_bind_int(s, 1, postset_index); 
     while (SQLITE_ROW == sqlite3_step(s)){
