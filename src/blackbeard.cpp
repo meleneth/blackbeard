@@ -45,9 +45,6 @@ int main(int argc, char *argv[])
     string input("");
     if(0 != config->load_file.compare("")){
         jobqueue->jobs.push_back(new SubjectFileLoaderJob(config->load_file));
-    }else if(0 != config->load_group.compare("")){
-//        console->log("Loading groups from " + config->load_group);
-//        load_groups_from(config->load_group);  Job-ify me FIXME
     }
 
     while(1){

@@ -76,7 +76,6 @@ Config::Config(int argc, char *argv[]) // Constructor
             console->log("blb [-d] [-l filename] [-g filename] [-G] [-f] [-h]");
             console->log(" -d debug mode.  No ncurses, dumps log to STDOUT");
             console->log(" -l load full headers from filename, one per line");
-            console->log(" -g load newsgroups from filename, one per line");
             console->log(" -G activate newsgroup browser mode");
             console->log(" -f save console logs to console.log");
             console->log(" -s save full headers to headers.log instead of processing");
