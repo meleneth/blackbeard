@@ -89,22 +89,21 @@ void restore_ids_from_db(sqlite3 *db, PostFile *file, Uint32 postfile_index)
     sqlite3_finalize(s);
 }
     
-void save_postsets_to_db(sqlite3 *db, NewsGroup *group)
+void save_postsets_to_db(sqlite3 *db, NewsGroup *group, Uint32 group_index)
 {
     sqlite3_stmt *s;
-    string stmt = "INSERT INTO post_sets VALUES(?, ?, ?)";
+    string stmt = "INSERT INTO post_sets VALUES(NULL, ?, ?)";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
 
     Uint32 max_no = group->postsets.size();
     for(Uint32 i=0; i<max_no; i++){
         PostSet *set = group->postsets[i];
-        sqlite3_bind_int(s, 1, i); 
-        sqlite3_bind_int(s, 2, group->index()); 
-        sqlite3_bind_text(s, 3, set->subject.c_str(), set->subject.length(), NULL);
+        sqlite3_bind_int(s, 1, group_index);
+        sqlite3_bind_text(s, 2, set->subject.c_str(), set->subject.length(), NULL);
         sqlite3_step(s);
         sqlite3_reset(s);
 
-        save_postfiles(db, set);
+        save_postfiles(db, set, sqlite3_last_insert_rowid(db));
     }
     sqlite3_finalize(s);
 }
@@ -112,10 +111,10 @@ void save_postsets_to_db(sqlite3 *db, NewsGroup *group)
 void setup_newsgroup_tables(sqlite3 *db)
 {
     vector<string> queries;
-    queries.push_back("CREATE TABLE newsgroups (newsgroup_no INTEGER, name VARCHAR)");
-    queries.push_back("CREATE TABLE post_sets (postset_no INTEGER, newsgroup_no INTEGER, name VARCHAR)");
-    queries.push_back("CREATE TABLE post_files (postfile_no INTEGER, postset_no INTEGER, name VARCHAR)");
-    queries.push_back("CREATE TABLE file_pieces (file_piece_no INTEGER, postfile_no INTEGER, status INTEGER, msg_id INTEGER)");
+    queries.push_back("CREATE TABLE newsgroups  (newsgroup_no  INTEGER PRIMARY KEY, name VARCHAR)");
+    queries.push_back("CREATE TABLE post_sets   (postset_no    INTEGER PRIMARY KEY, newsgroup_no INTEGER, name VARCHAR)");
+    queries.push_back("CREATE TABLE post_files  (postfile_no   INTEGER PRIMARY KEY, postset_no INTEGER, name VARCHAR)");
+    queries.push_back("CREATE TABLE file_pieces (file_piece_no INTEGER PRIMARY KEY, postfile_no INTEGER, status INTEGER, msg_id INTEGER)");
     Uint32 max_no = queries.size();
     for(Uint32 i=0; i<max_no; ++i) {
         sqlite3_exec(db, queries[i].c_str(), NULL, NULL, NULL);
@@ -125,52 +124,49 @@ void setup_newsgroup_tables(sqlite3 *db)
 void save_subscribed_groups_to_db(sqlite3* db)
 {
     sqlite3_stmt *s;
-    string stmt = "INSERT INTO newsgroups VALUES(?, ?)";
+    string stmt = "INSERT INTO newsgroups VALUES(NULL, ?)";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
 
     Uint32 max_no = newsgroups.size();
     for(Uint32 i=0; i<max_no; i++){
         NewsGroup *group = newsgroups[i];
         if(group->is_subscribed){
-            sqlite3_bind_int(s, 1, i); 
-            sqlite3_bind_text(s, 2, group->name.c_str(), group->name.length(), NULL);
+            sqlite3_bind_text(s, 1, group->name.c_str(), group->name.length(), NULL);
             sqlite3_step(s);
             sqlite3_reset(s);
-            save_postsets_to_db(db, group);
+            save_postsets_to_db(db, group, sqlite3_last_insert_rowid(db));
         }
     }
     sqlite3_finalize(s);
 }
 
-void save_postfiles(sqlite3 *db, PostSet *set)
+void save_postfiles(sqlite3 *db, PostSet *set, Uint32 set_index)
 {
     sqlite3_stmt *pf;
-    string pf_stmt = "INSERT INTO post_files VALUES(?, ?, ?)";
+    string pf_stmt = "INSERT INTO post_files VALUES(NULL, ?, ?)";
     sqlite3_prepare(db, pf_stmt.c_str(), pf_stmt.length(), &pf, 0);
     Uint32 max_no = set->files.size();
     for(Uint32 i=0; i<max_no; i++){
         PostFile *file = set->files[i];
-        sqlite3_bind_int(pf, 1, i); 
-        sqlite3_bind_int(pf, 2, set->index()); 
-        sqlite3_bind_text(pf, 3, file->filename.c_str(), file->filename.length(), NULL);
+        sqlite3_bind_int(pf, 1, set_index); 
+        sqlite3_bind_text(pf, 2, file->filename.c_str(), file->filename.length(), NULL);
         sqlite3_step(pf);
         sqlite3_reset(pf);
-        save_ids_to_db(db, file);
+        save_ids_to_db(db, file, sqlite3_last_insert_rowid(db));
     }
     sqlite3_finalize(pf);
 }
 
-void save_ids_to_db(sqlite3* db, PostFile *file)
+void save_ids_to_db(sqlite3* db, PostFile *file, Uint32 file_index)
 {
     sqlite3_stmt *fp;
-    string fp_stmt = "INSERT INTO file_pieces VALUES(?, ?, ?, ?)";
+    string fp_stmt = "INSERT INTO file_pieces VALUES(NULL, ?, ?, ?)";
     sqlite3_prepare(db, fp_stmt.c_str(), fp_stmt.length(), &fp, 0);
     Uint32 max_no = file->pieces.size();
     for(Uint32 i=0; i<max_no; ++i){
-        sqlite3_bind_int(fp, 1, i); 
-        sqlite3_bind_int(fp, 2, file->index()); 
-        sqlite3_bind_int(fp, 3, file->piece_status[i]); 
-        sqlite3_bind_int(fp, 4, file->pieces[i]); 
+        sqlite3_bind_int(fp, 1, file_index); 
+        sqlite3_bind_int(fp, 2, file->piece_status[i]); 
+        sqlite3_bind_int(fp, 3, file->pieces[i]); 
         sqlite3_step(fp);
         sqlite3_reset(fp);
     }
