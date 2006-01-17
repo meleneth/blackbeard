@@ -46,6 +46,7 @@ void restore_newsgroups_from_db(sqlite3 *db)
     while (SQLITE_ROW == sqlite3_step(s)){
         NewsGroup *group = group_for_name((char *)sqlite3_column_text(s, 1));
         restore_postsets_from_db(db, group, sqlite3_column_int(s, 0));
+        group->is_subscribed = 1;
     }
     sqlite3_finalize(s);
 }
@@ -59,6 +60,7 @@ void restore_postsets_from_db(sqlite3 *db, NewsGroup *group, Uint32 group_index)
     while (SQLITE_ROW == sqlite3_step(s)){
         PostSet *set = group->postset_for_subject((char *)sqlite3_column_text(s, 1));
         restore_postfiles_from_db(db, set, sqlite3_column_int(s, 0));
+        set->has_msg_ids = 1;
     }
     sqlite3_finalize(s);
 }
@@ -71,7 +73,9 @@ void restore_postfiles_from_db(sqlite3 *db, PostSet *set, Uint32 postset_index)
     sqlite3_bind_int(s, 1, postset_index); 
     while (SQLITE_ROW == sqlite3_step(s)){
         PostFile *file = set->file((char *)sqlite3_column_text(s, 1));
+        console->log("Restoring pieces for" + file->filename);
         restore_ids_from_db(db, file, sqlite3_column_int(s, 0));
+    //    file->update_status_from_pieces();
     }
     sqlite3_finalize(s);
 }

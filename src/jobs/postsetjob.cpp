@@ -113,7 +113,7 @@ void PostsetJob::save_job_status(void)
         {
             PostFile *file = postset->files[i]; 
             if(file){
-                out << "FILE: " << file->num_pieces << " " << file->filename << endl;
+                out << "FILE: " << file->pieces.size() << " " << file->filename << endl;
                 Uint32 max_piece_no = file->pieces.size();
                 for(Uint32 j=0 ; j<max_piece_no ; j++){
                     out << file->piece_status[j] << " " << file->pieces[j] << endl;

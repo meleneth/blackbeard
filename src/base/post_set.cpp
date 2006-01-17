@@ -46,8 +46,8 @@ double PostSet::completed_percent(void)
 
     for (v = files.begin(); v != files.end(); ++v){
         if(*v){
-            total_pieces += (*v)->num_pieces;
-            downloaded_pieces += (*v)->downloaded_pieces;
+            total_pieces += (*v)->pieces.size();
+            downloaded_pieces += (*v)->num_downloaded_pieces();
         }
     }
 
@@ -97,8 +97,8 @@ void PostSet::recalculate_piece_info()
         PostFile *file = files[i];
         if(file){
             tnum_files++;
-            tnum_pieces += file->num_pieces;
-            tnum_finished_pieces += file->downloaded_pieces;
+            tnum_pieces += file->pieces.size();
+            tnum_finished_pieces += file->num_downloaded_pieces();
         }
     }
     num_pieces = tnum_pieces;

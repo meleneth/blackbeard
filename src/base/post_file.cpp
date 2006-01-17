@@ -18,9 +18,6 @@ using std::setprecision;
 
 PostFile::PostFile(PostSet *postset) 
 {
-    num_pieces = 0;
-    seen_pieces = 0;
-    downloaded_pieces = 0;
     post_set = postset;
     decoder_type = DT_UUDECODE;
     status = "Ignored";
@@ -52,10 +49,9 @@ Uint32 PostFile::is_par()
 void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
 {
     tick = config->tick;
-    if(num_pieces == 0){
-        num_pieces = max_part_no;
-        pieces.resize(num_pieces + 1);
-        piece_status.resize(num_pieces + 1);
+    if(pieces.size() == 0){
+        pieces.resize(max_part_no + 1);
+        piece_status.resize(max_part_no + 1);
 
         pieces[max_part_no] = 0;
         piece_status[max_part_no] = MISSING;
@@ -64,14 +60,13 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
             pieces[max_part_no] = 0;
             piece_status[max_part_no] = MISSING;
         }
-        max_part_no = num_pieces;
     }
 
-    if(max_part_no != num_pieces){
+    if(max_part_no != pieces.size()){
         if(config->debug_logging){
             stringstream buf;
             buf << "Unhandled error: num pieces changed on message.  Was "
-                << max_part_no << " and is now " << num_pieces << " <" << filename << ">";
+                << max_part_no << " and is now " << pieces.size() << " <" << filename << ">";
             console->log(buf.str());
         }
         return;
@@ -85,10 +80,6 @@ void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
     }else{
         pieces[part_no] = message_id;
         piece_status[part_no] = SEEN;
-        seen_pieces++;
-        if(num_pieces < seen_pieces){
-            num_pieces = seen_pieces;
-        }
     }
 }
 
@@ -96,13 +87,13 @@ string PostFile::status_string(void)
 {
     stringstream mystatus;
     mystatus << filename << " - " << status << " - ";
-    mystatus << downloaded_pieces << "/"  << num_pieces << " pieces downloaded  ";
-    if(num_pieces == downloaded_pieces){
+    mystatus << num_downloaded_pieces() << "/"  << pieces.size() << " pieces downloaded  ";
+    if(pieces.size() == num_downloaded_pieces()){
         mystatus << "100%";
    }else{
-        if(num_pieces > 0)
+        if(pieces.size() > 0)
            mystatus << setprecision(3) 
-                  << ((double)downloaded_pieces / (double)num_pieces) * (double) 100
+                  << ((double)num_downloaded_pieces() / (double)pieces.size()) * (double) 100
                   << "%";
     }
     return mystatus.str();
@@ -113,14 +104,14 @@ string PostFile::get_bar(void)
     string bar(24, ' ');
     const char throbber[4] = {'.', 'o', 'O', 'o'};
 
-    if(num_pieces == downloaded_pieces) 
+    if(pieces.size() == num_downloaded_pieces())
         return "Completed";
-    if(num_pieces > 0) {
-        int spaces = (int)floor(((double)downloaded_pieces / (double)num_pieces) * (double)20);
+    if(pieces.size() > 0) {
+        int spaces = (int)floor(((double)num_downloaded_pieces() / (double)pieces.size()) * (double)20);
         bar[spaces+3] = '>' ;
     }
     if(status.compare("Downloading") == 0){
-        bar[0] = throbber[downloaded_pieces % 4];
+        bar[0] = throbber[num_downloaded_pieces() % 4];
     }
     bar[2] = '[';
     bar[23] = ']';
@@ -178,10 +169,6 @@ void PostFile::saw_message_id(Uint32 msg_id)
             return;
         }
     }
-    seen_pieces++;
-    if(num_pieces < seen_pieces){
-        num_pieces = seen_pieces;
-    }
     pieces.push_back(msg_id);
     piece_status.push_back(SEEN);
 }
@@ -220,13 +207,8 @@ void PostFile::update_status_from_pieces(void)
         }
     }
 
-    if(num_pieces < max_no)
-        num_pieces = max_no;
-
-    if(finished_count == num_pieces)
+    if(finished_count == pieces.size())
         status = "Finished";
-
-    downloaded_pieces = downloading_count;
 }
 
 Uint32 PostFile::index()
@@ -259,3 +241,16 @@ FileHandle *PostFile::open_file()
     return open_filehandle(real_filename);
 }
 
+Uint32 PostFile::num_downloaded_pieces()
+{
+    Uint32 num = 0;
+
+    Uint32 max_no = piece_status.size();
+    for(Uint32 i=0; i<max_no; ++i) {
+
+        if(piece_status[i] == FINISHED){
+            num++;
+        }
+    }
+    return num;
+}

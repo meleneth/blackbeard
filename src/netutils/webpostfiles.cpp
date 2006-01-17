@@ -71,15 +71,15 @@ string WebPostFiles::post_file_line(PostFile *file, Uint32 file_index)
 
     s << " |" << replace_substrings(file->filename, "|", "").substr(0, 80)
       << "|| |" << file->status
-      << "|| |" << file->downloaded_pieces << "/"  << file->num_pieces
+      << "|| |" << file->num_downloaded_pieces() << "/"  << file->pieces.size()
       << "|| |";
 
-    if(file->num_pieces == file->downloaded_pieces){
+    if(file->pieces.size() == file->num_downloaded_pieces()){
         s << "100%";
     }else{
-        if(file->num_pieces > 0)
+        if(file->pieces.size() > 0)
            s << setprecision(3)
-             << ((double)file->downloaded_pieces / (double)file->num_pieces) * (double) 100
+             << ((double)file->num_downloaded_pieces() / (double)file->pieces.size()) * (double) 100
              << "%";
     }
     return s.str();

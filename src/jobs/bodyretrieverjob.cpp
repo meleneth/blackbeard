@@ -38,7 +38,6 @@ string BodyRetrieverJob::status_line(void)
 
 void BodyRetrieverJob::finish()
 {
-    file->downloaded_pieces++;
     if(post->lines.size()){
         switch(file->decoder_type){
             case DT_YENC:

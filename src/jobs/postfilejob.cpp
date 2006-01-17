@@ -58,7 +58,7 @@ Job* PostfileJob::get_next_job()
                 new_job->srv = srv;
                 return new_job;
         }
-        if(++piece_no > postfile->num_pieces){
+        if(++piece_no > postfile->pieces.size()){
             postfile->status = "Finished";
             finish();
         }
