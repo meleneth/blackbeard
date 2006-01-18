@@ -193,3 +193,7 @@ Uint32 PostSet::index()
     exit(1);
 }
 
+
+void PostSet::expire(void)
+{
+}

@@ -26,8 +26,6 @@ class NewsGroup {
         NewsGroup(string group_name); // Constructor
         ~NewsGroup(); // Destructor
         void header_scoop(string xover_line);
-        void load_from_file(string filename);
-        void load_postsets(void);
         Uint32 index();
         static bool compare(const NewsGroup *a, const NewsGroup *b);
         void expire_old_postsets(Uint32 low_msg_id);

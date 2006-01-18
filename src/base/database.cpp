@@ -119,9 +119,20 @@ void setup_newsgroup_tables(sqlite3 *db)
 {
     vector<string> queries;
     queries.push_back("CREATE TABLE newsgroups  (newsgroup_no  INTEGER PRIMARY KEY, name VARCHAR)");
-    queries.push_back("CREATE TABLE post_sets   (postset_no    INTEGER PRIMARY KEY, newsgroup_no INTEGER, name VARCHAR)");
+    run_queries(db, queries);
+}
+
+void setup_postset_tables(sqlite3 *db)
+{
+    vector<string> queries;
+    queries.push_back("CREATE TABLE post_sets   (postset_no    INTEGER PRIMARY KEY, name VARCHAR)");
     queries.push_back("CREATE TABLE post_files  (postfile_no   INTEGER PRIMARY KEY, postset_no INTEGER, name VARCHAR)");
     queries.push_back("CREATE TABLE file_pieces (file_piece_no INTEGER PRIMARY KEY, postfile_no INTEGER, status INTEGER, msg_id INTEGER)");
+    run_queries(db, queries);
+}
+
+void run_queries(sqlite3 *db, vector<string> queries)
+{
     Uint32 max_no = queries.size();
     for(Uint32 i=0; i<max_no; ++i) {
         sqlite3_exec(db, queries[i].c_str(), NULL, NULL, NULL);
@@ -182,3 +193,14 @@ void save_ids_to_db(sqlite3* db, PostFile *file)
     sqlite3_finalize(fp);
 }
 
+void restore_ids_from_db(PostFile *file)
+{
+    if(!file->db_index)
+        return;
+
+    int rc = sqlite3_open(filename.c_str(), &db);
+    console->log("Database file: " + filename);
+    if(rc != SQLITE_OK){
+        console->log("Could not create database " + filename);
+    }
+}

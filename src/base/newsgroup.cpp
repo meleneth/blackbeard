@@ -93,80 +93,6 @@ string NewsGroup::status_string()
     return buf.str();
 }
 
-void NewsGroup::load_from_file(string filename)
-{
-}
-
-void load_groups_from(string filename)
-{
-    StringPattern pattern = StringPattern(3);
-    pattern.add_breaker(0);
-    pattern.add_breaker(" ");
-    pattern.add_breaker(1);
-    pattern.add_breaker(" ");
-    pattern.add_breaker(2);
-    
-    char linebuffer[1024];
-    ifstream in;
-
-    in.open(filename.c_str(), ios::in);
-    if(in.is_open()){
-        in.getline(linebuffer, 1024);
-
-        while(!in.eof()){
-            if(strlen(linebuffer)){
-                if(pattern.match(linebuffer)){
-                    NewsGroup *group = group_for_name(pattern.results[2]);
-                    group->first_article_number = pattern.get_piecen(0);
-                    group->last_article_number = pattern.get_piecen(1);
-                }else{
-                    group_for_name(linebuffer);
-                }
-            }
-            in.getline(linebuffer, 1024);
-        }
-        in.close();
-    }
-}
-
-#define NG_PSL_BUFFER_SIZE 40000
-
-void NewsGroup::load_postsets(void)
-{
-    ifstream in;
-    char linebuffer[NG_PSL_BUFFER_SIZE];
-
-    StringPattern *pattern = new StringPattern(4);
-    pattern->add_breaker(0);
-    pattern->add_breaker(" ");
-    pattern->add_breaker(1);
-    pattern->add_breaker(" ");
-    pattern->add_breaker(2);
-    pattern->add_breaker(" ");
-    pattern->add_breaker(3);
-
-    string filename = config->blackbeard_data_dir + "/postsets." + name;
-
-    in.open(filename.c_str(), ios::in);
-
-    if(in.is_open()){
-        in.getline(linebuffer, NG_PSL_BUFFER_SIZE);
-        while(!in.eof()){
-            if(strlen(linebuffer)) {
-                if(pattern->match(linebuffer)){
-                    PostSet *set = postset_for_subject(pattern->get_piece(3));
-                    set->_min_msg_id = pattern->get_piecen(0);
-                    set->_max_msg_id = pattern->get_piecen(1);
-                    set->_max_num_files = pattern->get_piecen(2);
-                    set->has_msg_ids = 0;
-                    set->group = this;
-                }
-            }
-            in.getline(linebuffer, NG_PSL_BUFFER_SIZE);
-        }
-    }
-}
-
 void NewsGroup::expire_old_postsets(Uint32 low_msg_id)
 {
     vector <PostSet *> still_around;
@@ -174,6 +100,8 @@ void NewsGroup::expire_old_postsets(Uint32 low_msg_id)
     for(Uint32 i=0; i<max_no; i++){
         if(postsets[i]->min_msg_id() > low_msg_id){
             still_around.push_back(postsets[i]);
+        } else {
+            postsets[i]->expire();
         }
     }
     postsets = still_around;

@@ -23,6 +23,7 @@ PostFile::PostFile(PostSet *postset)
     status = "Ignored";
     piece_size = 0;
     is_corrupt = 0;
+    has_db_pieces = 0;
     tick = 1;
     db_index = 0;
 }
@@ -49,6 +50,9 @@ Uint32 PostFile::is_par()
 
 void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
 {
+    if(!has_db_pieces){
+        restore_ids_from_db(this);
+    }
     tick = config->tick;
     if(pieces.size() == 0){
         pieces.resize(max_part_no + 1);

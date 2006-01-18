@@ -29,6 +29,7 @@ class PostSet {
         Uint32 max_msg_id(void);
         string status(void);
         void recalculate_piece_info();
+        void expire(void);
         Uint32 max_num_files(void);
         Uint32 file_index(PostFile *file);
         Uint32 index();

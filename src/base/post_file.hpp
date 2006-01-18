@@ -41,6 +41,7 @@ class PostFile {
         Uint32 piece_size;
         Uint32 is_corrupt;
         Uint32 tick;
+        Uint32 has_db_pieces;
         
         string filename;
         string status;
