@@ -1,7 +1,10 @@
 #include "database.hpp"
 #include "config.hpp"
 #include "console.hpp"
-#include "unistd.h"
+
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 void save_db_data()
 {
@@ -78,7 +81,6 @@ void restore_postfiles_from_db(sqlite3 *db, PostSet *set)
         console->log("Restoring pieces for" + file->filename);
         file->db_index = sqlite3_column_int(s, 0);
         restore_ids_from_db(db, file);
-    //    file->update_status_from_pieces();
     }
     sqlite3_finalize(s);
 }
@@ -197,10 +199,24 @@ void restore_ids_from_db(PostFile *file)
 {
     if(!file->db_index)
         return;
+    sqlite3 *db;
 
+    string filename = config->blackbeard_data_dir 
+                      + "/" + file->post_set->group->name;
+    
     int rc = sqlite3_open(filename.c_str(), &db);
     console->log("Database file: " + filename);
     if(rc != SQLITE_OK){
         console->log("Could not create database " + filename);
     }
+
+    restore_ids_from_db(db, file);
+    sqlite3_close(db);
 }
+
+Uint32 db_file_exists(string filename)
+{
+    struct stat buf;
+    return !stat(filename.c_str(), &buf);
+}
+

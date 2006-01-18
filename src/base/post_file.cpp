@@ -5,6 +5,7 @@
 #include "console.hpp"
 #include "strutil.hpp"
 #include "config.hpp"
+#include "database.hpp"
 
 #include <math.h>
 #include <sstream>
