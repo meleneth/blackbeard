@@ -24,6 +24,7 @@ PostFile::PostFile(PostSet *postset)
     piece_size = 0;
     is_corrupt = 0;
     tick = 1;
+    db_index = 0;
 }
     
 PostFile::~PostFile() 

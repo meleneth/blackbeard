@@ -45,47 +45,50 @@ void restore_newsgroups_from_db(sqlite3 *db)
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
     while (SQLITE_ROW == sqlite3_step(s)){
         NewsGroup *group = group_for_name((char *)sqlite3_column_text(s, 1));
-        restore_postsets_from_db(db, group, sqlite3_column_int(s, 0));
+        group->db_index = sqlite3_column_int(s, 0);
+        restore_postsets_from_db(db, group);
         group->is_subscribed = 1;
     }
     sqlite3_finalize(s);
 }
 
-void restore_postsets_from_db(sqlite3 *db, NewsGroup *group, Uint32 group_index)
+void restore_postsets_from_db(sqlite3 *db, NewsGroup *group)
 {
     sqlite3_stmt *s;
     string stmt = "SELECT postset_no, name FROM post_sets WHERE newsgroup_no = ?";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
-    sqlite3_bind_int(s, 1, group_index); 
+    sqlite3_bind_int(s, 1, group->db_index); 
     while (SQLITE_ROW == sqlite3_step(s)){
         PostSet *set = group->postset_for_subject((char *)sqlite3_column_text(s, 1));
-        restore_postfiles_from_db(db, set, sqlite3_column_int(s, 0));
+        set->db_index = sqlite3_column_int(s, 0);
+        restore_postfiles_from_db(db, set);
         set->has_msg_ids = 1;
     }
     sqlite3_finalize(s);
 }
 
-void restore_postfiles_from_db(sqlite3 *db, PostSet *set, Uint32 postset_index)
+void restore_postfiles_from_db(sqlite3 *db, PostSet *set)
 {
     sqlite3_stmt *s;
     string stmt = "SELECT postfile_no, name FROM post_files WHERE postset_no = ?";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
-    sqlite3_bind_int(s, 1, postset_index); 
+    sqlite3_bind_int(s, 1, set->db_index); 
     while (SQLITE_ROW == sqlite3_step(s)){
         PostFile *file = set->file((char *)sqlite3_column_text(s, 1));
         console->log("Restoring pieces for" + file->filename);
-        restore_ids_from_db(db, file, sqlite3_column_int(s, 0));
+        file->db_index = sqlite3_column_int(s, 0);
+        restore_ids_from_db(db, file);
     //    file->update_status_from_pieces();
     }
     sqlite3_finalize(s);
 }
         
-void restore_ids_from_db(sqlite3 *db, PostFile *file, Uint32 postfile_index)
+void restore_ids_from_db(sqlite3 *db, PostFile *file)
 {
     sqlite3_stmt *s;
     string stmt = "SELECT msg_id, status FROM file_pieces WHERE postfile_no = ? ORDER BY file_piece_no";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
-    sqlite3_bind_int(s, 1, postfile_index); 
+    sqlite3_bind_int(s, 1, file->db_index); 
     while (SQLITE_ROW == sqlite3_step(s)){
         file->pieces.push_back(sqlite3_column_int(s, 1));
         file->piece_status.push_back((PIECE_STATUS) sqlite3_column_int(s, 2));
@@ -93,7 +96,7 @@ void restore_ids_from_db(sqlite3 *db, PostFile *file, Uint32 postfile_index)
     sqlite3_finalize(s);
 }
     
-void save_postsets_to_db(sqlite3 *db, NewsGroup *group, Uint32 group_index)
+void save_postsets_to_db(sqlite3 *db, NewsGroup *group)
 {
     sqlite3_stmt *s;
     string stmt = "INSERT INTO post_sets VALUES(NULL, ?, ?)";
@@ -102,12 +105,12 @@ void save_postsets_to_db(sqlite3 *db, NewsGroup *group, Uint32 group_index)
     Uint32 max_no = group->postsets.size();
     for(Uint32 i=0; i<max_no; i++){
         PostSet *set = group->postsets[i];
-        sqlite3_bind_int(s, 1, group_index);
+        sqlite3_bind_int(s, 1, group->db_index);
         sqlite3_bind_text(s, 2, set->subject.c_str(), set->subject.length(), NULL);
         sqlite3_step(s);
         sqlite3_reset(s);
-
-        save_postfiles(db, set, sqlite3_last_insert_rowid(db));
+        set->db_index = sqlite3_last_insert_rowid(db);
+        save_postfiles(db, set);
     }
     sqlite3_finalize(s);
 }
@@ -138,13 +141,14 @@ void save_subscribed_groups_to_db(sqlite3* db)
             sqlite3_bind_text(s, 1, group->name.c_str(), group->name.length(), NULL);
             sqlite3_step(s);
             sqlite3_reset(s);
-            save_postsets_to_db(db, group, sqlite3_last_insert_rowid(db));
+            group->db_index = sqlite3_last_insert_rowid(db);
+            save_postsets_to_db(db, group);
         }
     }
     sqlite3_finalize(s);
 }
 
-void save_postfiles(sqlite3 *db, PostSet *set, Uint32 set_index)
+void save_postfiles(sqlite3 *db, PostSet *set)
 {
     sqlite3_stmt *pf;
     string pf_stmt = "INSERT INTO post_files VALUES(NULL, ?, ?)";
@@ -152,23 +156,24 @@ void save_postfiles(sqlite3 *db, PostSet *set, Uint32 set_index)
     Uint32 max_no = set->files.size();
     for(Uint32 i=0; i<max_no; i++){
         PostFile *file = set->files[i];
-        sqlite3_bind_int(pf, 1, set_index); 
+        sqlite3_bind_int(pf, 1, set->db_index); 
         sqlite3_bind_text(pf, 2, file->filename.c_str(), file->filename.length(), NULL);
         sqlite3_step(pf);
         sqlite3_reset(pf);
-        save_ids_to_db(db, file, sqlite3_last_insert_rowid(db));
+        file->db_index = sqlite3_last_insert_rowid(db);
+        save_ids_to_db(db, file);
     }
     sqlite3_finalize(pf);
 }
 
-void save_ids_to_db(sqlite3* db, PostFile *file, Uint32 file_index)
+void save_ids_to_db(sqlite3* db, PostFile *file)
 {
     sqlite3_stmt *fp;
     string fp_stmt = "INSERT INTO file_pieces VALUES(NULL, ?, ?, ?)";
     sqlite3_prepare(db, fp_stmt.c_str(), fp_stmt.length(), &fp, 0);
     Uint32 max_no = file->pieces.size();
     for(Uint32 i=0; i<max_no; ++i){
-        sqlite3_bind_int(fp, 1, file_index); 
+        sqlite3_bind_int(fp, 1, file->db_index); 
         sqlite3_bind_int(fp, 2, file->piece_status[i]); 
         sqlite3_bind_int(fp, 3, file->pieces[i]); 
         sqlite3_step(fp);

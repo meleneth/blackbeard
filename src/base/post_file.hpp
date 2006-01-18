@@ -48,6 +48,8 @@ class PostFile {
         PostSet *post_set;
         DecoderType decoder_type;
 
+        Uint32 db_index;
+
         vector<Uint32> pieces;
         vector<PIECE_STATUS> piece_status;
     private:

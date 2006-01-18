@@ -41,6 +41,7 @@ class PostSet {
         string pattern_name;
 
         NewsGroup *group;
+        Uint32 db_index;
 
         Uint32 num_files;
         Uint32 _max_num_files;

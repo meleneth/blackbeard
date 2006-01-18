@@ -46,6 +46,7 @@ class NewsGroup {
         Uint32 first_article_number;
         Uint32 last_article_number;
         PostSetSplitter *splitter;
+        Uint32 db_index;
     private:
         int return_code;
 

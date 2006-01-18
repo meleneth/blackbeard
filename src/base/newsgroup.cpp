@@ -27,6 +27,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     first_article_number = 0;
     first_article_number--;
     last_article_number = 0;
+    db_index = 0;
 
     splitter = new PostSetSplitterDynamicMatch(this);
 }
