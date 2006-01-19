@@ -1,3 +1,10 @@
+object persistance:
+at end of headerretriever save all postset id's.  Should only need to save postfiles that have db info loaded - no others have changed
+this requires a delete and a insert.  Update will be way too slow. (SQL level, not FS level)
+fileretriever job will need to load id's if they are not already loaded
+unloaded postsets must be shown as status "unknown"
+when on postsetdetail screen, should load all file pieces for the files shown - will this go fast if I use a join?
+
 What to Do Next:
 make PostsetJob queue jobs for all of it's non par files
 have it trigger when done

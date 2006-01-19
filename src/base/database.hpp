@@ -24,4 +24,8 @@ void restore_postfiles_from_db(sqlite3 *db, PostSet *set);
 void restore_ids_from_db(sqlite3 *db, PostFile *file);
 void restore_ids_from_db(PostFile *file);
 
+void remove_postset_info_from_db(PostSet *set);
+
+sqlite3 *db_for_newsgroup(NewsGroup *group);
+
 #endif

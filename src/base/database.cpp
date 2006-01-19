@@ -78,9 +78,7 @@ void restore_postfiles_from_db(sqlite3 *db, PostSet *set)
     sqlite3_bind_int(s, 1, set->db_index); 
     while (SQLITE_ROW == sqlite3_step(s)){
         PostFile *file = set->file((char *)sqlite3_column_text(s, 1));
-        console->log("Restoring pieces for" + file->filename);
         file->db_index = sqlite3_column_int(s, 0);
-        restore_ids_from_db(db, file);
     }
     sqlite3_finalize(s);
 }
@@ -95,6 +93,7 @@ void restore_ids_from_db(sqlite3 *db, PostFile *file)
         file->pieces.push_back(sqlite3_column_int(s, 1));
         file->piece_status.push_back((PIECE_STATUS) sqlite3_column_int(s, 2));
     }
+    file->has_db_pieces = 1;
     sqlite3_finalize(s);
 }
     
@@ -197,18 +196,9 @@ void save_ids_to_db(sqlite3* db, PostFile *file)
 
 void restore_ids_from_db(PostFile *file)
 {
-    if(!file->db_index)
+    if(!file->db_index || file->has_db_pieces)
         return;
-    sqlite3 *db;
-
-    string filename = config->blackbeard_data_dir 
-                      + "/" + file->post_set->group->name;
-    
-    int rc = sqlite3_open(filename.c_str(), &db);
-    console->log("Database file: " + filename);
-    if(rc != SQLITE_OK){
-        console->log("Could not create database " + filename);
-    }
+    sqlite3 *db = db_for_newsgroup(file->post_set->group);
 
     restore_ids_from_db(db, file);
     sqlite3_close(db);
@@ -218,5 +208,29 @@ Uint32 db_file_exists(string filename)
 {
     struct stat buf;
     return !stat(filename.c_str(), &buf);
+}
+
+void remove_postset_info_from_db(PostSet *set)
+{
+}
+
+sqlite3 *db_for_newsgroup(NewsGroup *group)
+{
+    sqlite3 *db;
+    string filename = config->blackbeard_data_dir 
+                      + "/" + group->name;
+    Uint32 existed = db_file_exists(filename);
+
+    int rc = sqlite3_open(filename.c_str(), &db);
+    console->log("Database file: " + filename);
+    if(rc != SQLITE_OK){
+        console->log("Could not create or open database " + filename);
+    }
+
+    if(!existed){
+        console->log("Setting up postset tables for group " + group->name);
+        setup_postset_tables(db);
+    }
+    return db;
 }
 
