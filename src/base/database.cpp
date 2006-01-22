@@ -49,7 +49,9 @@ void restore_newsgroups_from_db(sqlite3 *db)
     while (SQLITE_ROW == sqlite3_step(s)){
         NewsGroup *group = group_for_name((char *)sqlite3_column_text(s, 1));
         group->db_index = sqlite3_column_int(s, 0);
-        restore_postsets_from_db(db, group);
+        sqlite3 *sub_db = db_for_newsgroup(group);
+        restore_postsets_from_db(sub_db, group);
+        sqlite3_close(sub_db);
         group->is_subscribed = 1;
     }
     sqlite3_finalize(s);
@@ -58,7 +60,7 @@ void restore_newsgroups_from_db(sqlite3 *db)
 void restore_postsets_from_db(sqlite3 *db, NewsGroup *group)
 {
     sqlite3_stmt *s;
-    string stmt = "SELECT postset_no, name FROM post_sets WHERE newsgroup_no = ?";
+    string stmt = "SELECT postset_no, name FROM post_sets";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
     sqlite3_bind_int(s, 1, group->db_index); 
     while (SQLITE_ROW == sqlite3_step(s)){
@@ -100,13 +102,13 @@ void restore_ids_from_db(sqlite3 *db, PostFile *file)
 void save_postsets_to_db(sqlite3 *db, NewsGroup *group)
 {
     sqlite3_stmt *s;
-    string stmt = "INSERT INTO post_sets VALUES(NULL, ?, ?)";
+    string stmt = "INSERT INTO post_sets VALUES(?, ?)";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
 
     Uint32 max_no = group->postsets.size();
     for(Uint32 i=0; i<max_no; i++){
         PostSet *set = group->postsets[i];
-        sqlite3_bind_int(s, 1, group->db_index);
+        sqlite3_bind_int(s, 1, i);
         sqlite3_bind_text(s, 2, set->subject.c_str(), set->subject.length(), NULL);
         sqlite3_step(s);
         sqlite3_reset(s);
@@ -154,7 +156,12 @@ void save_subscribed_groups_to_db(sqlite3* db)
             sqlite3_step(s);
             sqlite3_reset(s);
             group->db_index = sqlite3_last_insert_rowid(db);
-            save_postsets_to_db(db, group);
+
+            sqlite3 *sub_db = db_for_newsgroup(group);
+            sqlite3_exec(sub_db, "BEGIN TRANSACTION", NULL, NULL, NULL);
+            save_postsets_to_db(sub_db, group);
+            sqlite3_exec(sub_db, "COMMIT TRANSACTION", NULL, NULL, NULL);
+            sqlite3_close(sub_db);
         }
     }
     sqlite3_finalize(s);
@@ -207,7 +214,7 @@ void restore_ids_from_db(PostFile *file)
 Uint32 db_file_exists(string filename)
 {
     struct stat buf;
-    return !stat(filename.c_str(), &buf);
+    return -1 != stat(filename.c_str(), &buf);
 }
 
 void remove_postset_info_from_db(PostSet *set)
