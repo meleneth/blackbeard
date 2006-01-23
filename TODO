@@ -1,4 +1,5 @@
 Add Job stuff to db. clean out old file based stuff.
+make a object for FilePiece, store msg_id and status info
 
 object persistance:
 at end of headerretriever save all postset id's.  Should only need to save postfiles that have db info loaded - no others have changed
@@ -15,12 +16,11 @@ remove entire ncurses interface
 * make javascript make tables, not lists 
 * allow web interface to grab headers / queue downloads
 
-use SQLite for data store. <- huge change
-    one db file per newsgroup
-    store all message ID's
-    store postsets
-    store files
-    maintain current save strategy, i.e. don't use sqlite except for startup and shutdown
+* use SQLite for data store. <- huge change
+*    one db file per newsgroup
+*    store all message ID's
+*    store postsets
+*    store files
 
 Much excitement over new web interface.
 
@@ -32,7 +32,7 @@ tag removal in subjects (too much of a mess still) strip () [] and scan postsets
 
 Web enhancements:
     Ability to queue
-    Abillity to download
+*    Abillity to download
     Hover-view: when mouseover a postset line, grab info from server and display in mini-div
     auto-grab postset range when user clicks on postset if we don't have the whole range already
 

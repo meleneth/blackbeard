@@ -18,6 +18,7 @@ using std::endl;
 #include "config.hpp"
 #include "console.hpp"
 #include "netcentral.hpp"
+#include "database.hpp"
 
 PostfileJob::PostfileJob(PostFile* post_file)
 {
@@ -26,6 +27,9 @@ PostfileJob::PostfileJob(PostFile* post_file)
     piece_no = 0;
     postfile->status = "Queued";
     job_type = POSTFILE_DOWNLOAD;
+    if(!postfile->has_db_pieces){
+        restore_ids_from_db(postfile);
+    }
 }
 
 PostfileJob::~PostfileJob()
@@ -47,8 +51,9 @@ Job* PostfileJob::get_next_job()
         postfile->status = "Downloading";
         postfile->tick = config->tick;
         switch(s){
-            case MISSING:
             case DOWNLOADING:
+                postfile->piece_status[piece_no] = FINISHED;
+            case MISSING:
             case DECODING:
             case FINISHED:
                 break;

@@ -51,6 +51,15 @@ void restore_newsgroups_from_db(sqlite3 *db)
         group->db_index = sqlite3_column_int(s, 0);
         sqlite3 *sub_db = db_for_newsgroup(group);
         restore_postsets_from_db(sub_db, group);
+        sqlite3_stmt *q;
+        stmt = "select min(msg_id), max(msg_id) from file_pieces where msg_id != 1";
+        sqlite3_prepare(sub_db, stmt.c_str(), stmt.length(), &q, 0);
+        if(SQLITE_ROW == sqlite3_step(q)){
+            group->first_article_number = sqlite3_column_int(q, 0);
+            group->last_article_number = sqlite3_column_int(q, 1);
+        }
+        sqlite3_finalize(q);
+
         sqlite3_close(sub_db);
         group->is_subscribed = 1;
     }
