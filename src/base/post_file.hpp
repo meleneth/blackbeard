@@ -37,6 +37,8 @@ class PostFile {
         Uint32 piece_no(Uint32 message_id);
         Uint32 max_msg_id(void);
         Uint32 min_msg_id(void);
+        Uint32 num_pieces(void);
+
 
         Uint32 piece_size;
         Uint32 is_corrupt;
@@ -50,6 +52,7 @@ class PostFile {
 
         Uint32 db_index;
         Uint32 has_db_pieces;
+        Uint32 _num_file_pieces;
 
         vector<Uint32> pieces;
         vector<PIECE_STATUS> piece_status;

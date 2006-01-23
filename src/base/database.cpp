@@ -75,12 +75,13 @@ void restore_postsets_from_db(sqlite3 *db, NewsGroup *group)
 void restore_postfiles_from_db(sqlite3 *db, PostSet *set)
 {
     sqlite3_stmt *s;
-    string stmt = "SELECT postfile_no, name FROM post_files WHERE postset_no = ?";
+    string stmt = "SELECT postfile_no, num_pieces, name FROM post_files WHERE postset_no = ?";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
     sqlite3_bind_int(s, 1, set->db_index); 
     while (SQLITE_ROW == sqlite3_step(s)){
-        PostFile *file = set->file((char *)sqlite3_column_text(s, 1));
+        PostFile *file = set->file((char *)sqlite3_column_text(s, 2));
         file->db_index = sqlite3_column_int(s, 0);
+        file->_num_file_pieces = sqlite3_column_int(s, 1);
     }
     sqlite3_finalize(s);
 }
@@ -129,7 +130,7 @@ void setup_postset_tables(sqlite3 *db)
 {
     vector<string> queries;
     queries.push_back("CREATE TABLE post_sets   (postset_no    INTEGER PRIMARY KEY, name VARCHAR)");
-    queries.push_back("CREATE TABLE post_files  (postfile_no   INTEGER PRIMARY KEY, postset_no INTEGER, name VARCHAR)");
+    queries.push_back("CREATE TABLE post_files  (postfile_no   INTEGER PRIMARY KEY, postset_no INTEGER, num_pieces INTEGER, name VARCHAR)");
     queries.push_back("CREATE TABLE file_pieces (file_piece_no INTEGER PRIMARY KEY, postfile_no INTEGER, status INTEGER, msg_id INTEGER)");
     run_queries(db, queries);
 }
@@ -170,13 +171,14 @@ void save_subscribed_groups_to_db(sqlite3* db)
 void save_postfiles(sqlite3 *db, PostSet *set)
 {
     sqlite3_stmt *pf;
-    string pf_stmt = "INSERT INTO post_files VALUES(NULL, ?, ?)";
+    string pf_stmt = "INSERT INTO post_files VALUES(NULL, ?, ?, ?)";
     sqlite3_prepare(db, pf_stmt.c_str(), pf_stmt.length(), &pf, 0);
     Uint32 max_no = set->files.size();
     for(Uint32 i=0; i<max_no; i++){
         PostFile *file = set->files[i];
         sqlite3_bind_int(pf, 1, set->db_index); 
-        sqlite3_bind_text(pf, 2, file->filename.c_str(), file->filename.length(), NULL);
+        sqlite3_bind_int(pf, 2, file->num_pieces()); 
+        sqlite3_bind_text(pf, 3, file->filename.c_str(), file->filename.length(), NULL);
         sqlite3_step(pf);
         sqlite3_reset(pf);
         file->db_index = sqlite3_last_insert_rowid(db);
@@ -204,7 +206,10 @@ void save_ids_to_db(sqlite3* db, PostFile *file)
 void restore_ids_from_db(PostFile *file)
 {
     if(!file->db_index || file->has_db_pieces)
+    {
+        file->has_db_pieces = 1;
         return;
+    }
     sqlite3 *db = db_for_newsgroup(file->post_set->group);
 
     restore_ids_from_db(db, file);

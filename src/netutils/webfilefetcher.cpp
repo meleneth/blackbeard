@@ -22,7 +22,7 @@ WebFileFetcher::WebFileFetcher(WebRequest *request, string filename) : WebDataFe
         request->content_type = "image/jpg";
     }
     if(0 == filename.substr(len - 4, 4).compare(".css")){
-        request->content_type = "image/css";
+        request->content_type = "text/css";
     }
 }
 

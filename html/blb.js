@@ -101,7 +101,7 @@ function updateResponseTable(data)
         var old_row = document.getElementById(row.id);
         if(old_row){
             my_tbody.replaceChild(row, old_row);
-            old_row = undef;
+            old_row = null;
         }else{
             my_tbody.appendChild(row);
         }

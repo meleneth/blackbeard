@@ -27,6 +27,7 @@ PostFile::PostFile(PostSet *postset)
     has_db_pieces = 0;
     tick = 1;
     db_index = 0;
+    _num_file_pieces = 0;
 }
     
 PostFile::~PostFile() 
@@ -93,13 +94,13 @@ string PostFile::status_string(void)
 {
     stringstream mystatus;
     mystatus << filename << " - " << status << " - ";
-    mystatus << num_downloaded_pieces() << "/"  << pieces.size() << " pieces downloaded  ";
+    mystatus << num_downloaded_pieces() << "/"  << num_pieces() << " pieces downloaded  ";
     if(pieces.size() == num_downloaded_pieces()){
         mystatus << "100%";
    }else{
         if(pieces.size() > 0)
            mystatus << setprecision(3) 
-                  << ((double)num_downloaded_pieces() / (double)pieces.size()) * (double) 100
+                  << ((double)num_downloaded_pieces() / (double)num_pieces()) * (double) 100
                   << "%";
     }
     return mystatus.str();
@@ -110,17 +111,17 @@ string PostFile::get_bar(void)
     string bar(24, ' ');
     const char throbber[4] = {'.', 'o', 'O', 'o'};
 
-    if(pieces.size() == num_downloaded_pieces())
+    if(num_pieces() == num_downloaded_pieces())
         return "Completed";
-    if(pieces.size() > 0) {
+    if(num_downloaded_pieces() > 0) {
         int spaces = (int)floor(((double)num_downloaded_pieces() / (double)pieces.size()) * (double)20);
         bar[spaces+3] = '>' ;
+        bar[2] = '[';
+        bar[23] = ']';
     }
     if(status.compare("Downloading") == 0){
         bar[0] = throbber[num_downloaded_pieces() % 4];
     }
-    bar[2] = '[';
-    bar[23] = ']';
     return bar;
 }
 
@@ -169,6 +170,9 @@ Uint32 PostFile::max_msg_id(void)
 
 void PostFile::saw_message_id(Uint32 msg_id)
 {
+    if(!has_db_pieces){
+        restore_ids_from_db(this);
+    }
     vector<Uint32>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
         if(*p == msg_id){
@@ -259,4 +263,12 @@ Uint32 PostFile::num_downloaded_pieces()
         }
     }
     return num;
+}
+
+Uint32 PostFile::num_pieces()
+{
+    if(has_db_pieces) {
+        return pieces.size();
+    }
+    return _num_file_pieces;
 }
