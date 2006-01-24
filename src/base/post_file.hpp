@@ -9,21 +9,21 @@
 #include "news_constants.hpp"
 #include "newsgrouppost.hpp"
 #include "file_handle.hpp"
+#include "filepiece.hpp"
 #include <sqlite3.h>
 
 using std::string;
 using std::vector;
 
-typedef enum { MISSING, SEEN, DOWNLOADING, DECODING, FINISHED } PIECE_STATUS;
 
 class PostSet;
 class Decoder;
+class FilePiece;
 class PostFile {
     public:
         PostFile(PostSet *set);
         ~PostFile();
 
-        void part(Uint32 part, Uint32 total_parts, Uint32 message_id);
         string status_string(void);
         string get_bar(void);
         void saw_message_id(Uint32 msg_id);
@@ -54,8 +54,7 @@ class PostFile {
         Uint32 has_db_pieces;
         Uint32 _num_file_pieces;
 
-        vector<Uint32> pieces;
-        vector<PIECE_STATUS> piece_status;
+        vector<FilePiece *> pieces;
     private:
     protected:
 };

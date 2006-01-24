@@ -33,7 +33,7 @@ SubjectFileLoaderJob::SubjectFileLoaderJob(string filename)
     total_bytes = my_stats.st_size;
     bytes_read = 0;
     newsgroup = group_for_name("alt.binaries.dvd.anime");
-    newsgroup->is_subscribed = 1;
+    newsgroup->subscribe();
 
     in.open(filename.c_str(), ios::in);
     in.getline(linebuffer, 1024);

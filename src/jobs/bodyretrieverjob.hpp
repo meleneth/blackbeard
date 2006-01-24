@@ -10,7 +10,7 @@ using std::string;
 
 class BodyRetrieverJob : public NetJob {
     public:
-        BodyRetrieverJob(PostFile *file, Uint32 msg_id);
+        BodyRetrieverJob(PostFile *file, FilePiece *piece);
         virtual ~BodyRetrieverJob();
 
         virtual void process_line(string line);
@@ -19,7 +19,7 @@ class BodyRetrieverJob : public NetJob {
 
         NewsGroupPost *post;
         PostFile *file;
-        Uint32 msg_id;
+        FilePiece *piece;
     private:
     protected:
 };

@@ -9,16 +9,16 @@
 
 using std::stringstream;
 
-BodyRetrieverJob::BodyRetrieverJob(PostFile *file, Uint32 msg_id)
+BodyRetrieverJob::BodyRetrieverJob(PostFile *file, FilePiece *piece)
 {
     stringstream cmd;
-    cmd << "body " << msg_id;
+    cmd << "body " << piece->msg_id;
     group = file->post_set->group;
     net_cmds.push_back(cmd.str());
 
     post = new NewsGroupPost();
     this->file = file;
-    this->msg_id = msg_id;
+    this->piece = piece;
     job_type = BODY_DOWNLOAD;
 }
 
@@ -44,7 +44,7 @@ void BodyRetrieverJob::finish()
                 jobqueue->jobs.push_back(new yEncDecoder(post, file));
                 break;
             case DT_UUDECODE:
-                jobqueue->jobs.push_back(new UUDecoder(post, file, msg_id));
+                jobqueue->jobs.push_back(new UUDecoder(post, file, piece->msg_id));
                 break;
             case DT_MIME:
                 console->log("MIME detected");

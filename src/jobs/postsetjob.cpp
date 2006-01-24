@@ -116,7 +116,7 @@ void PostsetJob::save_job_status(void)
                 out << "FILE: " << file->pieces.size() << " " << file->filename << endl;
                 Uint32 max_piece_no = file->pieces.size();
                 for(Uint32 j=0 ; j<max_piece_no ; j++){
-                    out << file->piece_status[j] << " " << file->pieces[j] << endl;
+                    out << file->pieces[j]->status << " " << file->pieces[j]->msg_id << endl;
                 }
             }
         }
@@ -166,8 +166,8 @@ void PostsetJob::load_job_status(void)
                     postset->files.push_back(file);
                 } else {
                     if(piecepattern->match(linebuffer)){
-                        file->pieces.push_back(piecepattern->get_piecen(1));
-                        file->piece_status.push_back((PIECE_STATUS) piecepattern->get_piecen(0));
+                        FilePiece *piece = new FilePiece( piecepattern->get_piecen(1), (PIECE_STATUS) piecepattern->get_piecen(0), file);
+                        file->pieces.push_back(piece);
                     }
                 }  
             }

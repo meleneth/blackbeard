@@ -30,6 +30,8 @@ class NewsGroup {
         static bool compare(const NewsGroup *a, const NewsGroup *b);
         void expire_old_postsets(Uint32 low_msg_id);
         Uint32 postset_index(PostSet *set);
+        void subscribe(void);
+        void unsubscribe(void);
 
         PostSet *postset_for_subject(string subject);
         

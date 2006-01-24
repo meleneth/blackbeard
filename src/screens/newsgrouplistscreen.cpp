@@ -49,8 +49,13 @@ int NewsGroupListScreen::handle_input(int key)
             switch(key){
                 case 's':
                     g = (NewsGroup *) scroll_list->get_selected_item();
-                    if(g)
-                        g->is_subscribed ^= 1;
+                    if(g) {
+                        if(g->is_subscribed) {
+                            g->unsubscribe();
+                        } else { 
+                            g->subscribe();
+                        }
+                    }
                     console->log("Toggling subscribed on " + g->name);
                     return 0;
                 case 'p':

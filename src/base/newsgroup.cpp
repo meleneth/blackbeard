@@ -137,3 +137,17 @@ Uint32 NewsGroup::index()
     }
     exit(1);
 }
+
+void NewsGroup::subscribe(void)
+{
+    is_subscribed = 1;
+    if(db_index)
+        return;
+
+    //save_newsgroup_to_db(this);
+}
+
+void NewsGroup::unsubscribe(void)
+{
+    is_subscribed = 0;
+}

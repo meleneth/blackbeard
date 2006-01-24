@@ -6,19 +6,27 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-void save_db_data()
+sqlite3 *get_main_db(void)
 {
     string filename = config->blackbeard_data_dir + "/blackbeard.db";
     int rc;
     sqlite3* db;
 
-    unlink(filename.c_str());
+    Uint32 existed = db_file_exists(filename);
     rc = sqlite3_open(filename.c_str(), &db);
     console->log("Database file: " + filename);
     if(rc != SQLITE_OK){
         console->log("Could not create database " + filename);
     }
-    setup_newsgroup_tables(db);
+    if(!existed)
+        setup_newsgroup_tables(db);
+    return db;
+}
+
+void save_db_data()
+{
+    sqlite3* db = get_main_db();
+
     sqlite3_exec(db, "BEGIN TRANSACTION", NULL, NULL, NULL);
     save_subscribed_groups_to_db(db);
     sqlite3_exec(db, "COMMIT TRANSACTION", NULL, NULL, NULL);
@@ -39,6 +47,11 @@ void restore_db_data()
     restore_newsgroups_from_db(db);
     sqlite3_close(db);
 
+}
+
+void save_newsgroup_to_db(NewsGroup *group)
+{
+    
 }
 
 void restore_newsgroups_from_db(sqlite3 *db)
@@ -102,8 +115,7 @@ void restore_ids_from_db(sqlite3 *db, PostFile *file)
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
     sqlite3_bind_int(s, 1, file->db_index); 
     while (SQLITE_ROW == sqlite3_step(s)){
-        file->pieces.push_back(sqlite3_column_int(s, 1));
-        file->piece_status.push_back((PIECE_STATUS) sqlite3_column_int(s, 2));
+        file->pieces.push_back(new FilePiece(sqlite3_column_int(s, 1), (PIECE_STATUS) sqlite3_column_int(s, 2), file));
     }
     file->has_db_pieces = 1;
     sqlite3_finalize(s);
@@ -204,8 +216,8 @@ void save_ids_to_db(sqlite3* db, PostFile *file)
     Uint32 max_no = file->pieces.size();
     for(Uint32 i=0; i<max_no; ++i){
         sqlite3_bind_int(fp, 1, file->db_index); 
-        sqlite3_bind_int(fp, 2, file->piece_status[i]); 
-        sqlite3_bind_int(fp, 3, file->pieces[i]); 
+        sqlite3_bind_int(fp, 2, file->pieces[i]->status); 
+        sqlite3_bind_int(fp, 3, file->pieces[i]->msg_id); 
         sqlite3_step(fp);
         sqlite3_reset(fp);
     }

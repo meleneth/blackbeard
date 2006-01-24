@@ -47,18 +47,18 @@ Job* PostfileJob::get_next_job()
     }
 
     if(postfile){
-        PIECE_STATUS s = postfile->piece_status[piece_no];
+        PIECE_STATUS s = postfile->pieces[piece_no]->status;
         postfile->status = "Downloading";
         postfile->tick = config->tick;
         switch(s){
             case DOWNLOADING:
-                postfile->piece_status[piece_no] = FINISHED;
+                postfile->pieces[piece_no]->status = FINISHED;
             case MISSING:
             case DECODING:
             case FINISHED:
                 break;
             case SEEN:
-                postfile->piece_status[piece_no] = DOWNLOADING;
+                postfile->pieces[piece_no]->status = DOWNLOADING;
                 BodyRetrieverJob *new_job = new BodyRetrieverJob(postfile, postfile->pieces[piece_no]);
                 new_job->srv = srv;
                 return new_job;

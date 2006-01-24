@@ -50,46 +50,6 @@ Uint32 PostFile::is_par()
     return 0;
 }
 
-void PostFile::part(Uint32 part_no, Uint32 max_part_no, Uint32 message_id)
-{
-    if(!has_db_pieces){
-        restore_ids_from_db(this);
-    }
-    tick = config->tick;
-    if(pieces.size() == 0){
-        pieces.resize(max_part_no + 1);
-        piece_status.resize(max_part_no + 1);
-
-        pieces[max_part_no] = 0;
-        piece_status[max_part_no] = MISSING;
-        while(max_part_no){
-            max_part_no--;
-            pieces[max_part_no] = 0;
-            piece_status[max_part_no] = MISSING;
-        }
-    }
-
-    if(max_part_no != pieces.size()){
-        if(config->debug_logging){
-            stringstream buf;
-            buf << "Unhandled error: num pieces changed on message.  Was "
-                << max_part_no << " and is now " << pieces.size() << " <" << filename << ">";
-            console->log(buf.str());
-        }
-        return;
-    }
-
-    if(part_no > max_part_no){
-        // scoop scoop
-        if(config->debug_logging)
-            console->log("Not adding nonsensicle part no");
-
-    }else{
-        pieces[part_no] = message_id;
-        piece_status[part_no] = SEEN;
-    }
-}
-
 string PostFile::status_string(void)
 {
     stringstream mystatus;
@@ -128,9 +88,9 @@ string PostFile::get_bar(void)
 Uint32 PostFile::piece_no(Uint32 message_id)
 {
     Uint32 i=0;
-    vector<Uint32>::iterator p;
+    vector<FilePiece *>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
-        if(*p == message_id){
+        if((*p)->msg_id == message_id){
             return i;
         }
         i++;
@@ -145,7 +105,7 @@ Uint32 PostFile::min_msg_id(void)
 
     Uint32 max = pieces.size();
     for(Uint32 i=0; i<max; ++i) {
-        Uint32 x = pieces[i];
+        Uint32 x = pieces[i]->msg_id;
         if(x){
             if(msg_id > x)
                 msg_id = x;
@@ -160,7 +120,7 @@ Uint32 PostFile::max_msg_id(void)
 
     Uint32 max = pieces.size();
     for(Uint32 i=0; i<max; ++i) {
-        Uint32 x = pieces[i];
+        Uint32 x = pieces[i]->msg_id;
         if(msg_id < x)
             msg_id = x;
     }
@@ -173,14 +133,13 @@ void PostFile::saw_message_id(Uint32 msg_id)
     if(!has_db_pieces){
         restore_ids_from_db(this);
     }
-    vector<Uint32>::iterator p;
+    vector<FilePiece *>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
-        if(*p == msg_id){
+        if((*p)->msg_id == msg_id){
             return;
         }
     }
-    pieces.push_back(msg_id);
-    piece_status.push_back(SEEN);
+    pieces.push_back(new FilePiece(msg_id, SEEN, this));
 }
 
 bool PostFile::compare(const PostFile* a, const PostFile* b)
@@ -197,7 +156,7 @@ void PostFile::update_status_from_pieces(void)
     Uint32 downloading_count = 0;
 
     for(Uint32 i=0; i<max_no; ++i) {
-        switch(piece_status[i]){
+        switch(pieces[i]->status){
             case MISSING:
                 status = "Missing Pieces";
                 return;
@@ -255,10 +214,10 @@ Uint32 PostFile::num_downloaded_pieces()
 {
     Uint32 num = 0;
 
-    Uint32 max_no = piece_status.size();
+    Uint32 max_no = pieces.size();
     for(Uint32 i=0; i<max_no; ++i) {
 
-        if(piece_status[i] == FINISHED){
+        if(pieces[i]->status == FINISHED){
             num++;
         }
     }
