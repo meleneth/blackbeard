@@ -95,10 +95,10 @@ string PostFile::status_string(void)
     stringstream mystatus;
     mystatus << filename << " - " << status << " - ";
     mystatus << num_downloaded_pieces() << "/"  << num_pieces() << " pieces downloaded  ";
-    if(pieces.size() == num_downloaded_pieces()){
+    if(num_pieces() == num_downloaded_pieces()){
         mystatus << "100%";
    }else{
-        if(pieces.size() > 0)
+        if(num_pieces())
            mystatus << setprecision(3) 
                   << ((double)num_downloaded_pieces() / (double)num_pieces()) * (double) 100
                   << "%";
