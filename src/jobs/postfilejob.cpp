@@ -28,7 +28,10 @@ PostfileJob::PostfileJob(PostFile* post_file)
     postfile->status = "Queued";
     job_type = POSTFILE_DOWNLOAD;
     if(!postfile->has_db_pieces){
+        console->log("PostFileJob restoring ids from db");
         restore_ids_from_db(postfile);
+    }else {
+        console->log("Someone has been here before!");
     }
 }
 
@@ -63,7 +66,7 @@ Job* PostfileJob::get_next_job()
                 new_job->srv = srv;
                 return new_job;
         }
-        if(++piece_no > postfile->pieces.size()){
+        if(++piece_no == postfile->pieces.size()){
             postfile->status = "Finished";
             finish();
         }

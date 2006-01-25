@@ -136,6 +136,7 @@ void PostFile::saw_message_id(Uint32 msg_id)
     vector<FilePiece *>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
         if((*p)->msg_id == msg_id){
+            (*p)->status = SEEN;
             return;
         }
     }

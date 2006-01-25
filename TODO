@@ -1,5 +1,13 @@
+Persistance:
+PostFile is having trouble saving / retrieveing file_pieces and the correct status.  Should work like this:
+pf->db_index is set when the postfile is inserted into the db.  It is restored by the restore function.
+pf->has_db_pieces is set when postfile pieces are restored from the db.  If there are no pieces in the db, will still get set.
+saving - 
+if pf->db_index is not set then save the postfile in the database
+if pf->has_db_pieces is set, then save the pieces.  Delete the old ones and save what is active in memory.
+
 Add Job stuff to db. clean out old file based stuff.
-make a object for FilePiece, store msg_id and status info
+*make a object for FilePiece, store msg_id and status info
 
 object persistance:
 at end of headerretriever save all postset id's.  Should only need to save postfiles that have db info loaded - no others have changed
