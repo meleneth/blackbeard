@@ -56,6 +56,7 @@ Job* PostfileJob::get_next_job()
         switch(s){
             case DOWNLOADING:
                 postfile->pieces[piece_no]->status = FINISHED;
+                postfile->_num_downloaded_pieces++;
             case MISSING:
             case DECODING:
             case FINISHED:

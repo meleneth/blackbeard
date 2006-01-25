@@ -28,6 +28,7 @@ PostFile::PostFile(PostSet *postset)
     tick = 1;
     db_index = 0;
     _num_file_pieces = 0;
+    _num_downloaded_pieces = 0;
 }
     
 PostFile::~PostFile() 
@@ -213,6 +214,7 @@ FileHandle *PostFile::open_file()
 
 Uint32 PostFile::num_downloaded_pieces()
 {
+    return _num_downloaded_pieces;
     Uint32 num = 0;
 
     Uint32 max_no = pieces.size();

@@ -8,6 +8,7 @@ NetJob::NetJob()
 {
     is_finished = 0;
     group = NULL;
+    srv = NULL;
 }
 
 NetJob::~NetJob()

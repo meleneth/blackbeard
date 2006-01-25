@@ -53,6 +53,7 @@ class PostFile {
         Uint32 db_index;
         Uint32 has_db_pieces;
         Uint32 _num_file_pieces;
+        Uint32 _num_downloaded_pieces;
 
         vector<FilePiece *> pieces;
     private:
