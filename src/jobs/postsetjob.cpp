@@ -83,11 +83,6 @@ void PostsetJob::notify_child_finished(Job *job)
     Job::notify_child_finished(job);
 }
 
-Uint32 PostsetJob::pieces_left_to_download()
-{
-    return (postset->num_finished_pieces < postset->num_pieces);
-}
-
 void PostsetJob::process()
 {
 }

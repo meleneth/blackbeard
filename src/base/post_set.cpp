@@ -12,11 +12,7 @@ vector<PostSet *> downloaded_postsets;
 PostSet::PostSet(string subject)
 {
     this->subject = subject;
-    num_files = 0;
-    num_pieces = 0;
-    num_finished_pieces = 0;
     pattern_name="";
-    _max_num_files = 0;
     _min_msg_id = 0;
     _max_msg_id = 0;
     has_msg_ids = 0;
@@ -82,44 +78,18 @@ PostFile *PostSet::file(string filename)
     postfile->filename = filename;
     postfile->tick = tick;
     files.push_back(postfile);
-    num_files++;
-    _max_num_files = files.size();
     return postfile;
 }
 
-void PostSet::recalculate_piece_info()
+Uint32 PostSet::num_files(void)
 {
-    Uint32 tnum_pieces = 0;
-    Uint32 tnum_finished_pieces = 0;
-    Uint32 tnum_files = 0;
-
-    Uint32 max_size = files.size();
-    for(Uint32 i = 0; i < max_size; ++i){
-        PostFile *file = files[i];
-        if(file){
-            tnum_files++;
-            tnum_pieces += file->pieces.size();
-            tnum_finished_pieces += file->num_downloaded_pieces();
-        }
-    }
-    num_pieces = tnum_pieces;
-    num_finished_pieces = tnum_finished_pieces;
-    num_files = tnum_files;
-    _max_num_files = files.size();
-}
-
-Uint32 PostSet::max_num_files(void)
-{
-    if(has_msg_ids){
-        recalculate_piece_info();
-    }
-    return _max_num_files;
+    return files.size();
 }
 
 string PostSet::status(void)
 {
     stringstream buf;
-    buf << subject << ", " << num_files << " files. " << setprecision(3) << completed_percent() << "%";
+    buf << subject << ", " << num_files() << " files. " << setprecision(3) << completed_percent() << "%";
     return buf.str();
 }
 

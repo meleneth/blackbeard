@@ -14,7 +14,6 @@ class PostsetJob : public Job {
         PostsetJob(string filename);
         virtual ~PostsetJob();
 
-        Uint32 pieces_left_to_download();
         virtual void process();
         virtual string status_line();
         virtual void notify_child_finished(Job *job);

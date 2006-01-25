@@ -91,6 +91,7 @@ void restore_postsets_from_db(sqlite3 *db, NewsGroup *group)
         set->db_index = sqlite3_column_int(s, 0);
         restore_postfiles_from_db(db, set);
         set->has_msg_ids = 1;
+        set->tick = 1;
     }
     sqlite3_finalize(s);
 }
@@ -106,6 +107,7 @@ void restore_postfiles_from_db(sqlite3 *db, PostSet *set)
         file->db_index = sqlite3_column_int(s, 0);
         file->_num_file_pieces = sqlite3_column_int(s, 1);
         file->decoder_type = (DecoderType)sqlite3_column_int(s, 3);
+        file->tick = 1;
     }
     sqlite3_finalize(s);
 }

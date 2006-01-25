@@ -213,10 +213,10 @@ void assert_postset_filenames_eq(PostSet *checkme, list<string> filenames)
 {
     stringstream buf;
     console->log("Checking size..");
-    buf << checkme->num_files << " <-> " <<  filenames.size();
+    buf << checkme->num_files() << " <-> " <<  filenames.size();
     console->log(buf.str());
     buf.str("");
-    assert(checkme->num_files == filenames.size());
+    assert(checkme->num_files() == filenames.size());
 
     console->log("Checking contents...");
     list<string>::iterator i;

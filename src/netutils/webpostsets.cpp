@@ -19,7 +19,7 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 
     for(Uint32 i=0; i<num_lines; ++i) {
         if(group->postsets[i]->tick > request->paramn("tick")) {
-            if(group->postsets[i]->max_num_files() > 10) {
+            if(group->postsets[i]->num_files() > 10) {
                 output_lines.push_back(status(group->postsets[i], i));
             }
         }
@@ -41,7 +41,7 @@ string WebPostSets::status(PostSet *set, Uint32 index)
 
     stringstream s;
     s   << index
-        << "|| |" << set->num_files << "/" << set->_max_num_files;
+        << "|| |" << set->num_files();
 
     if(1 == 1){
         r.filename = "updatepostset";

@@ -28,11 +28,10 @@ class PostSet {
         Uint32 min_msg_id(void);
         Uint32 max_msg_id(void);
         string status(void);
-        void recalculate_piece_info();
         void expire(void);
-        Uint32 max_num_files(void);
         Uint32 file_index(PostFile *file);
         Uint32 index();
+        Uint32 num_files();
         static bool compare(const PostSet* a, const PostSet* b);
         bool operator< (const PostSet &b);
 
@@ -44,10 +43,6 @@ class PostSet {
         NewsGroup *group;
         Uint32 db_index;
 
-        Uint32 num_files;
-        Uint32 _max_num_files;
-        Uint32 num_pieces;
-        Uint32 num_finished_pieces;
         Uint32 has_msg_ids;
         Uint32 _min_msg_id;
         Uint32 _max_msg_id;

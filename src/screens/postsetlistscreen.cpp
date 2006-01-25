@@ -42,7 +42,7 @@ void PostSetListScreen::render_scrollable_line(Uint32 yindex, Uint32 x, Uint32 w
     
     mvaddnstr(yindex, x, (char*)set->subject.c_str(), -1);
     
-    buf << "[" << set->num_files << "/" << set->max_num_files() << "]";
+    buf << "[" << set->num_files() << "]";
     str = buf.str();
     mvaddnstr(yindex,  x + width - 3 - str.length(), (char*)str.c_str(), -1);
 }
