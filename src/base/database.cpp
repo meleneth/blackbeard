@@ -35,15 +35,7 @@ void save_db_data()
 
 void restore_db_data()
 {
-    string filename = config->blackbeard_data_dir + "/blackbeard.db";
-    int rc;
-    sqlite3* db;
-
-    rc = sqlite3_open(filename.c_str(), &db);
-    console->log("Database file: " + filename);
-    if(rc != SQLITE_OK){
-        console->log("Could not open database " + filename);
-    }
+    sqlite3* db = get_main_db();
     restore_newsgroups_from_db(db);
     sqlite3_close(db);
 
@@ -51,6 +43,12 @@ void restore_db_data()
 
 void save_newsgroup_to_db(NewsGroup *group)
 {
+    sqlite3* db = get_main_db();
+
+    sqlite3_exec(db, "BEGIN TRANSACTION", NULL, NULL, NULL);
+    save_subscribed_groups_to_db(db);
+    sqlite3_exec(db, "COMMIT TRANSACTION", NULL, NULL, NULL);
+    sqlite3_close(db);
     
 }
 
@@ -130,11 +128,13 @@ void save_postsets_to_db(sqlite3 *db, NewsGroup *group)
     Uint32 max_no = group->postsets.size();
     for(Uint32 i=0; i<max_no; i++){
         PostSet *set = group->postsets[i];
-        sqlite3_bind_int(s, 1, i);
-        sqlite3_bind_text(s, 2, set->subject.c_str(), set->subject.length(), NULL);
-        sqlite3_step(s);
-        sqlite3_reset(s);
-        set->db_index = sqlite3_last_insert_rowid(db);
+        if(!set->db_index){
+            sqlite3_bind_int(s, 1, i);
+            sqlite3_bind_text(s, 2, set->subject.c_str(), set->subject.length(), NULL);
+            sqlite3_step(s);
+            sqlite3_reset(s);
+            set->db_index = sqlite3_last_insert_rowid(db);
+        }
         save_postfiles(db, set);
     }
     sqlite3_finalize(s);
@@ -174,10 +174,12 @@ void save_subscribed_groups_to_db(sqlite3* db)
     for(Uint32 i=0; i<max_no; i++){
         NewsGroup *group = newsgroups[i];
         if(group->is_subscribed){
-            sqlite3_bind_text(s, 1, group->name.c_str(), group->name.length(), NULL);
-            sqlite3_step(s);
-            sqlite3_reset(s);
-            group->db_index = sqlite3_last_insert_rowid(db);
+            if(!group->db_index){
+                sqlite3_bind_text(s, 1, group->name.c_str(), group->name.length(), NULL);
+                sqlite3_step(s);
+                sqlite3_reset(s);
+                group->db_index = sqlite3_last_insert_rowid(db);
+            }
 
             sqlite3 *sub_db = db_for_newsgroup(group);
             sqlite3_exec(sub_db, "BEGIN TRANSACTION", NULL, NULL, NULL);
@@ -197,12 +199,14 @@ void save_postfiles(sqlite3 *db, PostSet *set)
     Uint32 max_no = set->files.size();
     for(Uint32 i=0; i<max_no; i++){
         PostFile *file = set->files[i];
-        sqlite3_bind_int(pf, 1, set->db_index); 
-        sqlite3_bind_int(pf, 2, file->num_pieces()); 
-        sqlite3_bind_text(pf, 3, file->filename.c_str(), file->filename.length(), NULL);
-        sqlite3_step(pf);
-        sqlite3_reset(pf);
-        file->db_index = sqlite3_last_insert_rowid(db);
+        if(!file->db_index){
+            sqlite3_bind_int(pf, 1, set->db_index); 
+            sqlite3_bind_int(pf, 2, file->num_pieces()); 
+            sqlite3_bind_text(pf, 3, file->filename.c_str(), file->filename.length(), NULL);
+            sqlite3_step(pf);
+            sqlite3_reset(pf);
+            file->db_index = sqlite3_last_insert_rowid(db);
+        }
         save_ids_to_db(db, file);
     }
     sqlite3_finalize(pf);
@@ -211,6 +215,13 @@ void save_postfiles(sqlite3 *db, PostSet *set)
 void save_ids_to_db(sqlite3* db, PostFile *file)
 {
     sqlite3_stmt *fp;
+    string del_stmt = "DELETE from file_pieces where postfile_no = ?";
+    sqlite3_prepare(db, del_stmt.c_str(), del_stmt.length(), &fp, 0);
+    sqlite3_bind_int(fp, 1, file->db_index); 
+    sqlite3_step(fp);
+    sqlite3_reset(fp);
+    sqlite3_finalize(fp);
+
     string fp_stmt = "INSERT INTO file_pieces VALUES(NULL, ?, ?, ?)";
     sqlite3_prepare(db, fp_stmt.c_str(), fp_stmt.length(), &fp, 0);
     Uint32 max_no = file->pieces.size();
