@@ -12,9 +12,13 @@ class FilePiece {
         FilePiece(Uint32 msg_id, PIECE_STATUS status, PostFile *file);
         ~FilePiece();
 
+        void change_status(PIECE_STATUS new_status);
+
         Uint32 msg_id;
         PIECE_STATUS status;
         PostFile *file;
+        Uint32 _status_changed;
+        Uint32 db_index;
     private:
     protected:
 };

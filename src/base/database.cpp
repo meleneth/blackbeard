@@ -118,11 +118,12 @@ void restore_ids_from_db(sqlite3 *db, PostFile *file)
         return;
 
     sqlite3_stmt *s;
-    string stmt = "SELECT msg_id, status FROM file_pieces WHERE postfile_no = ? ORDER BY file_piece_no";
+    string stmt = "SELECT msg_id, status, file_piece_no FROM file_pieces WHERE postfile_no = ? ORDER BY file_piece_no";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
     sqlite3_bind_int(s, 1, file->db_index); 
     while (SQLITE_ROW == sqlite3_step(s)){
         FilePiece *new_piece = new FilePiece(sqlite3_column_int(s, 0), (PIECE_STATUS) sqlite3_column_int(s, 1), file);
+        new_piece->db_index = sqlite3_column_int(s, 2);
         file->pieces.push_back(new_piece);
         stringstream st;
         st << "Restoring piece " << new_piece->msg_id << " with status " << new_piece->status;
@@ -232,25 +233,33 @@ void save_ids_to_db(sqlite3* db, PostFile *file)
     if(!file->has_db_pieces)
         return;
 
-    sqlite3_stmt *fp;
-    string del_stmt = "DELETE from file_pieces where postfile_no = ?";
-    sqlite3_prepare(db, del_stmt.c_str(), del_stmt.length(), &fp, 0);
-    sqlite3_bind_int(fp, 1, file->db_index); 
-    sqlite3_step(fp);
-    sqlite3_reset(fp);
-    sqlite3_finalize(fp);
+    sqlite3_stmt *update_stmt;
+    string update_string = "UPDATE file_pieces SET status = ? WHERE file_piece_no = ?";
+    sqlite3_prepare(db, update_string.c_str(), update_string.length(), &update_stmt, 0);
 
-    string fp_stmt = "INSERT INTO file_pieces VALUES(NULL, ?, ?, ?)";
-    sqlite3_prepare(db, fp_stmt.c_str(), fp_stmt.length(), &fp, 0);
+    sqlite3_stmt *insert_stmt;
+    string insert_string = "INSERT INTO file_pieces VALUES(NULL, ?, ?, ?)";
+    sqlite3_prepare(db, insert_string.c_str(), insert_string.length(), &insert_stmt, 0);
+
     Uint32 max_no = file->pieces.size();
     for(Uint32 i=0; i<max_no; ++i){
-        sqlite3_bind_int(fp, 1, file->db_index); 
-        sqlite3_bind_int(fp, 2, file->pieces[i]->status); 
-        sqlite3_bind_int(fp, 3, file->pieces[i]->msg_id); 
-        sqlite3_step(fp);
-        sqlite3_reset(fp);
+        FilePiece *piece = file->pieces[i];
+        if(piece->db_index){
+            sqlite3_bind_int(update_stmt, 1, piece->status);
+            sqlite3_bind_int(update_stmt, 2, piece->db_index);
+            sqlite3_step(update_stmt);
+            sqlite3_reset(update_stmt);
+        }else{
+            sqlite3_bind_int(insert_stmt, 1, file->db_index); 
+            sqlite3_bind_int(insert_stmt, 2, file->pieces[i]->status); 
+            sqlite3_bind_int(insert_stmt, 3, file->pieces[i]->msg_id); 
+            sqlite3_step(insert_stmt);
+            sqlite3_reset(insert_stmt);
+            piece->db_index = sqlite3_last_insert_rowid(db);
+        }
     }
-    sqlite3_finalize(fp);
+    sqlite3_finalize(insert_stmt);
+    sqlite3_finalize(update_stmt);
 }
 
 void restore_ids_from_db(PostFile *file)
