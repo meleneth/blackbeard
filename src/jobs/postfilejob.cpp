@@ -27,12 +27,6 @@ PostfileJob::PostfileJob(PostFile* post_file)
     piece_no = 0;
     postfile->status = "Queued";
     job_type = POSTFILE_DOWNLOAD;
-    if(!postfile->has_db_pieces){
-        console->log("PostFileJob restoring ids from db");
-        restore_ids_from_db(postfile);
-    }else {
-        console->log("Someone has been here before!");
-    }
 }
 
 PostfileJob::~PostfileJob()
@@ -41,6 +35,7 @@ PostfileJob::~PostfileJob()
 
 Job* PostfileJob::get_next_job()
 {
+
     if(is_finished){
         return NULL;
     }
@@ -50,6 +45,10 @@ Job* PostfileJob::get_next_job()
     }
 
     if(postfile){
+        if(!postfile->has_db_pieces){
+            console->log("PostFileJob restoring ids from db");
+            restore_ids_from_db(postfile);
+        }
         PIECE_STATUS s = postfile->pieces[piece_no]->status;
         postfile->status = "Downloading";
         postfile->tick = config->tick;
