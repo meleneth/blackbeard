@@ -1,18 +1,31 @@
-Persistance:
-PostFile is having trouble saving / retrieveing file_pieces and the correct status.  Should work like this:
-pf->db_index is set when the postfile is inserted into the db.  It is restored by the restore function.
-pf->has_db_pieces is set when postfile pieces are restored from the db.  If there are no pieces in the db, will still get set.
-saving - 
-if pf->db_index is not set then save the postfile in the database
-if pf->has_db_pieces is set, then save the pieces.  Delete the old ones and save what is active in memory.
+Known crashes:
+active job screen is not a safe place to hang out. (ncurses)
+when you add too many high priority jobs, one seems to flip out and complain about no connection for net job.  This 
+  eventually leads to the process being killed for exhausting memory (I think that's the console, but net jobs shouldn't 
+  be getting that error - they really do need a net connection)
+
+Web Tweaks:
+Remove update buttons except for newsgroup.  Since we store the ids, we dont need to redownload them from the server
+image viewing - use iframe to load in images / nfo files
+make the Back button work
+
+Needs to handle par2's inline. <- important
+
+*Persistance:
+* PostFile is having trouble saving / retrieveing file_pieces and the correct status.  Should work like this:
+* pf->db_index is set when the postfile is inserted into the db.  It is restored by the restore function.
+* pf->has_db_pieces is set when postfile pieces are restored from the db.  If there are no pieces in the db, will still get set.
+* saving - 
+* if pf->db_index is not set then save the postfile in the database
+* if pf->has_db_pieces is set, then save the pieces.  Delete the old ones and save what is active in memory.
 
 Add Job stuff to db. clean out old file based stuff.
-*make a object for FilePiece, store msg_id and status info
+* make a object for FilePiece, store msg_id and status info
 
 object persistance:
-at end of headerretriever save all postset id's.  Should only need to save postfiles that have db info loaded - no others have changed
-this requires a delete and a insert.  Update will be way too slow. (SQL level, not FS level)
-fileretriever job will need to load id's if they are not already loaded
+* at end of headerretriever save all postset id's.  Should only need to save postfiles that have db info loaded - no others have changed
+* this requires a delete and a insert.  Update will be way too slow. (SQL level, not FS level) <- wrong, update was OMG faster
+* fileretriever job will need to load id's if they are not already loaded
 unloaded postsets must be shown as status "unknown"
 when on postsetdetail screen, should load all file pieces for the files shown - will this go fast if I use a join?
 
@@ -20,7 +33,7 @@ What to Do Next:
 make PostsetJob queue jobs for all of it's non par files
 have it trigger when done
 
-remove entire ncurses interface
+remove entire ncurses interface <- ixnay.  Ncurses is sexy.
 * make javascript make tables, not lists 
 * allow web interface to grab headers / queue downloads
 
@@ -32,8 +45,6 @@ remove entire ncurses interface
 
 Much excitement over new web interface.
 
-Needs to handle par2's inline. <- important
-
 tag removal in subjects (too much of a mess still) strip () [] and scan postsets within groups
     for tags.  Store known tags for a group on the newsgroup, and modify the sanitize function to remove them
     when looking up postsets.
@@ -42,7 +53,6 @@ Web enhancements:
     Ability to queue
 *    Abillity to download
     Hover-view: when mouseover a postset line, grab info from server and display in mini-div
-    auto-grab postset range when user clicks on postset if we don't have the whole range already
 
 known crashes:
     * resize window can die if it happens to hit inside select() -> seems to be fixed, wouldn't know how
@@ -51,7 +61,7 @@ known crashes:
     net jobs crash when they get cleared sometimes
     needs to handle net errors due to i.e. message ID not being available - has bad response code
 
-Web API:
+Web API: (obsolete, we have real cgi params now)
     /joblist
     /newsgroups
     /postsets/news.group.name
@@ -80,8 +90,6 @@ Needs to do:
         [par2] = has .par2 file(s)
         [broken] = has corrupt pieces
         [fixable] = has corrupt pieces, and par2's.  will try to grab par files as well
-
-
     silence logs, info should be user-useful.
     handle more msg ids coming in for a postset we have marked for retrieval -- doesn't this work automagically?  I think it does
     * be able to mark individual files from a postset for retrieval
