@@ -1,4 +1,4 @@
-To determine decoder type, look at message contents.  Not all yEnc files have it in the subject :/
+*To determine decoder type, look at message contents.  Not all yEnc files have it in the subject :/
 The new DB save stuff broke old postset expirations.  Should delete old on quit.
 
 Known crashes:
