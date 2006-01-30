@@ -1,11 +1,10 @@
 #include "bodyretrieverjob.hpp"
-#include"nntpserver.hpp"
-#include"console.hpp"
-#include"yenc_decoder.hpp"
-#include"uu_decoder.hpp"
-#include"jobqueue.hpp"
+#include "nntpserver.hpp"
+#include "console.hpp"
+#include "jobqueue.hpp"
+#include "decoderfactory.hpp"
 
-#include<sstream>
+#include <sstream>
 
 using std::stringstream;
 
@@ -39,18 +38,9 @@ string BodyRetrieverJob::status_line(void)
 void BodyRetrieverJob::finish()
 {
     if(post->lines.size()){
-        switch(file->decoder_type){
-            case DT_YENC:
-                jobqueue->jobs.push_back(new yEncDecoder(post, file));
-                break;
-            case DT_UUDECODE:
-                jobqueue->jobs.push_back(new UUDecoder(post, file, piece->msg_id));
-                break;
-            case DT_MIME:
-                console->log("MIME detected");
-            case DT_UNKNOWN:
-                console->log("Dunno what to do with this type of encoded material");
-            break;
+        Decoder *decoder = decoder_for_body(post, file);
+        if(decoder){
+            jobqueue->jobs.push_back(decoder);
         }
     }else{
         delete post;

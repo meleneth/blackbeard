@@ -30,6 +30,7 @@ class PostFile {
         static bool compare(const PostFile* a, const PostFile* b);
         void update_status_from_pieces();
         Uint32 num_downloaded_pieces();
+        Uint32 count_num_downloaded_pieces();
 
         FileHandle *open_file();
         Uint32 is_par();

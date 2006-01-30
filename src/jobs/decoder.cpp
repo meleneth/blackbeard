@@ -29,6 +29,8 @@ Decoder::Decoder(NewsGroupPost *newsgrouppost, PostFile *file) // Constructor
     status = S_MESSAGE;
     num_bytes_written = 0;
     file_is_open = 0;
+    max_line_no = post->lines.size();
+    line_no = 0;
 }
     
 Decoder::~Decoder() // Destructor
@@ -36,25 +38,21 @@ Decoder::~Decoder() // Destructor
     if(file_is_open)
         close_file();
     close_finished_files();
+    delete post;
 }
 
 void Decoder::process()
 {
-    list<string>::iterator s;
     Uint32 ctr = DECODER_LINES_PER_SLICE;
-    Uint32 line_count = post->lines.size();
 
-    if(!line_count){
-        is_finished = 1;
-    }
-
-    while(line_count && ctr) {
-        s = post->lines.begin();
-        decode_line(*s);
-        post->lines.erase(s);
+    while(line_no < max_line_no && ctr) {
+        decode_line(post->lines[line_no]);
         ctr--;
-        line_count--;
+        line_no++;
     }
+
+    if(line_no >= max_line_no)
+        finish();
 }
 
 void Decoder::open_file(void)

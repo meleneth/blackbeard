@@ -7,10 +7,10 @@ NewsGroupPost::NewsGroupPost() // Constructor
     
 NewsGroupPost::~NewsGroupPost() // Destructor
 {
+    lines.clear();
 }
 
-bool
-NewsGroupPost::compare(const NewsGroupPost *a, const NewsGroupPost *b)
+bool NewsGroupPost::compare(const NewsGroupPost *a, const NewsGroupPost *b)
 {
     return false;
 }

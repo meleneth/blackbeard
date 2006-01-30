@@ -14,6 +14,8 @@ using std::string;
 
 class PostFile;
 class Job;
+class NewsGroupPost;
+
 class Decoder : public Job {
     public:
         // Public data members go here.
@@ -41,6 +43,9 @@ class Decoder : public Job {
         StringPattern *footer_pattern;
         FileHandle *file;
         Uint32 file_pos;
+
+        Uint32 line_no;
+        Uint32 max_line_no;
     private:
         // Private members go here.
     protected:

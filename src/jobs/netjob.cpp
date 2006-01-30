@@ -43,6 +43,7 @@ void NetJob::process(void)
             }
         }else{
             console->log("No server for net job??");
+            is_finished = 1;
         }
         return;
     }

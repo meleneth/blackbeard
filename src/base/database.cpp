@@ -130,6 +130,7 @@ void restore_ids_from_db(sqlite3 *db, PostFile *file)
         console->log(st.str());
     }
     file->has_db_pieces = 1;
+    file->_num_downloaded_pieces = file->count_num_downloaded_pieces();
     sqlite3_finalize(s);
 }
     

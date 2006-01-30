@@ -43,11 +43,6 @@ Uint32 PostFile::is_par()
     if(pattern.match(filename)){
         return 1;
     }
-    pattern = StringPattern(2);
-    pattern.add_breaker(".par2");
-    if(pattern.match(filename)){
-        return 1;
-    }
     return 0;
 }
 
@@ -215,6 +210,10 @@ FileHandle *PostFile::open_file()
 Uint32 PostFile::num_downloaded_pieces()
 {
     return _num_downloaded_pieces;
+}
+
+Uint32 PostFile::count_num_downloaded_pieces()
+{
     Uint32 num = 0;
 
     Uint32 max_no = pieces.size();

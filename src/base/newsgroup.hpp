@@ -20,6 +20,7 @@ using std::string;
 class PostFile;
 class PostSet;
 class PostSetSplitter;
+class NewsGroupPost;
 class NewsGroup {
     public:
         // Public data members go here.
