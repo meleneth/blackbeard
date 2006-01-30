@@ -40,7 +40,8 @@ Job* PostfileJob::get_next_job()
         return NULL;
     }
 
-    if(high_priority_jobs->jobs.size()){
+    if(high_priority_jobs->has_more_jobs()){
+        console->log("Triggered high_priority_job in PostfileJob::get_next_job()");
         return high_priority_jobs->get_next_job();
     }
 

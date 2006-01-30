@@ -56,8 +56,8 @@ void JobQueue::process_jobs(void)
 Job *JobQueue::get_next_job(void)
 {
 
-    if(jobs.size()){
-        Job * job = *jobs.begin();
+    if(has_more_jobs()){
+        Job *job = *jobs.begin();
         jobs.erase(jobs.begin());
         return job;
     }
@@ -72,6 +72,11 @@ void JobQueue::add_job(Job *job)
 
 void JobQueue::finish_job(Job *job)
 {
+}
+
+Uint32 JobQueue::has_more_jobs(void)
+{
+    return jobs.size();
 }
 
 

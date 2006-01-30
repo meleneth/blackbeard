@@ -20,7 +20,7 @@ class NetCentral : public JobQueue {
         virtual void add_job(Job *job);
         virtual void finish_job(Job *job);
         virtual Job *get_next_job(void);
-        Uint32 has_more_jobs(void);
+        virtual Uint32 has_more_jobs(void);
 
         int fdmax;
 
@@ -35,6 +35,5 @@ class NetCentral : public JobQueue {
 };
 
 extern NetCentral *netcentral;
-extern NetCentral *high_priority_jobs;
 
 #endif

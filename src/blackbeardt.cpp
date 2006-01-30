@@ -35,7 +35,7 @@ Config *config;
 Session *session;
 string last_msg;
 NetCentral *netcentral;
-NetCentral *high_priority_jobs;
+JobQueue *high_priority_jobs;
 WebServer *webserver;
 
 void test_string_pattern(void);

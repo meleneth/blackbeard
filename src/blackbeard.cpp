@@ -21,7 +21,7 @@ JobQueue *jobqueue;
 JobQueue *metajobs;
 Session *session;
 NetCentral *netcentral;
-NetCentral *high_priority_jobs;
+JobQueue *high_priority_jobs;
 WebServer *webserver;
 
 void do_init(void);
@@ -90,7 +90,7 @@ void do_init(void)
     // global objects
     jobqueue = new JobQueue();
     metajobs = new JobQueue();
-    high_priority_jobs = new NetCentral();
+    high_priority_jobs = new JobQueue();
     session = new Session();
     netcentral = new NetCentral();
     config->load_persistant_data();
