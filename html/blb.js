@@ -3,14 +3,25 @@ var refresh_timer;
 var last_tick;
 var mode;
 var HTTPResponseHandler;
+var previous_urls = new Array();
+previous_urls.push("index.html");
+var old_from_where = 'index.html';
+
+function back_button()
+{
+    alert("would goto " + previous_urls.pop());
+    // fetch_data(previous_urls.pop());
+}
 
 function fetch_data(from_where)
 {
+  previous_urls.push(old_from_where);
   if(refresh_timer){
     clearTimeout(refresh_timer);
   }
   mode = "replace";
   get_data(from_where);
+  old_from_where = from_where;
 }
 
 function update_meters(jobs, krate)
