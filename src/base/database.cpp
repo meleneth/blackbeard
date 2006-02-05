@@ -133,9 +133,33 @@ void restore_ids_from_db(sqlite3 *db, PostFile *file)
     file->_num_downloaded_pieces = file->count_num_downloaded_pieces();
     sqlite3_finalize(s);
 }
+
+void delete_old_postsets(sqlite3 *db, NewsGroup *group)
+{
+    sqlite3_stmt *s;
+    string postset_delete = "DELETE FROM post_sets WHERE postset_no IN (SELECT postset_no FROM post_files WHERE postfile_no IN (SELECT DISTINCT(postfile_no) FROM file_pieces WHERE msg_id < ?))";
+
+    sqlite3_prepare(db, postset_delete.c_str(), postset_delete.length(), &s, 0);
+    sqlite3_bind_int(s, 1, group->first_article_number);
+    sqlite3_step(s);
+    sqlite3_finalize(s);
+
+    string postfile_delete = "DELETE FROM post_files where postfile_no in (SELECT DISTINCT(postfile_no) FROM file_pieces WHERE msg_id < ? )";
+    sqlite3_prepare(db, postfile_delete.c_str(), postfile_delete.length(), &s, 0);
+    sqlite3_bind_int(s, 1, group->first_article_number);
+    sqlite3_step(s);
+    sqlite3_finalize(s);
+
+    string pieces_delete = "DELETE FROM file_pieces WHERE msg_id < ?";
+    sqlite3_prepare(db, pieces_delete.c_str(), pieces_delete.length(), &s, 0);
+    sqlite3_bind_int(s, 1, group->first_article_number);
+    sqlite3_step(s);
+    sqlite3_finalize(s);
+}
     
 void save_postsets_to_db(sqlite3 *db, NewsGroup *group)
 {
+    delete_old_postsets(db, group);
     sqlite3_stmt *s;
     string stmt = "INSERT INTO post_sets VALUES(?, ?)";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
