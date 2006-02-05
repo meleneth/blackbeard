@@ -43,10 +43,6 @@ string WebPostSets::status(PostSet *set, Uint32 index)
     s   << index
         << "|| |" << set->num_files();
 
-    if(1 == 1){
-        r.filename = "updatepostset";
-        s << "||ping_url('" << r.get_uri() << "');|" << "Update";
-    }
     r.filename = "postfiles";
     s   << "||fetch_data('" << r.get_uri() << "')|" << js_escape( replace_substrings(set->subject, "|", "").substr(0, 80));
     r.filename = "downloadpostset";

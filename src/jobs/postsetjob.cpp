@@ -31,13 +31,7 @@ PostsetJob::PostsetJob(PostSet* post_set)
     get_headers = NULL;
     job_type = POSTSET_DOWNLOAD;
 
-    if(!postset->has_msg_ids){
-        get_headers = new HeadersForGroupJob(postset->group, postset->_min_msg_id, postset->_max_msg_id);
-        add_child_job(get_headers);
-        high_priority_jobs->add_job(get_headers);
-    } else { 
-        make_downloader_children();
-    }
+    make_downloader_children();
 }
 
 void PostsetJob::make_downloader_children(void)

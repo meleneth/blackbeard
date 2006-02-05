@@ -1,11 +1,12 @@
 *To determine decoder type, look at message contents.  Not all yEnc files have it in the subject :/
 The new DB save stuff broke old postset expirations.  Should delete old on quit.
+need to be able to redownload stuff you've downloaded before.
 
 Known crashes:
 active job screen is not a safe place to hang out. (ncurses)
 when you add too many high priority jobs, one seems to flip out and complain about no connection for net job.  This 
   eventually leads to the process being killed for exhausting memory (I think that's the console, but net jobs shouldn't 
-  be getting that error - they really do need a net connection)
+  be getting that error - they really do need a net connection, and if it was working correctly they would never be without one)
 
 Web Tweaks:
 Remove update buttons except for newsgroup.  Since we store the ids, we dont need to redownload them from the server

@@ -76,14 +76,16 @@ void WebServer::handle_request(WebRequest *request)
            PostFile *file = request->postfile();
            file->tick = config->tick;
            Job *new_job = new PostfileJob(file);
-           high_priority_jobs->add_job(new_job);
+           //high_priority_jobs->add_job(new_job);
+           netcentral->add_job(new_job);
            delete request;
            return;
        }
        if(0 == request->filename.compare("update_newsgroup")) {
            console->log("Handling update newsgroup request");
            Job *new_job = new GroupUpdater(request->newsgroup());
-           high_priority_jobs->add_job(new_job);
+           //high_priority_jobs->add_job(new_job);
+           netcentral->add_job(new_job);
            delete request;
            return;
        }

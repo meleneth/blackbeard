@@ -22,10 +22,20 @@
       <li><a href="javascript:fetch_data('/joblist')">active jobs</a></li>
       <li><a href="javascript:fetch_data('/newsgroups')">newsgroups</a></li>
     </ul>
-    </div>
     <h1 id="heading">No Screen</h1>
     <div id="content">
     No content has been loaded yet.<br />
+    </div>
+    </div>
+    <div>
+    Known issues:
+    <ul>
+    <li>Downloading individual files fails if there are queued jobs</li>
+    <li>back button sproings a popup and doesnt do anything</li>
+    <li>no user notification of data being fetched</li>
+    <li>No way to subscribe to new group from web interface</li>
+    <li>Old messages are not expiring, meaning postsets at the top of the list are actually unavailable</li>
+    </ul>
     </div>
   </body>
 </html>
