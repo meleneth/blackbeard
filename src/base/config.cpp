@@ -30,6 +30,7 @@ Config::Config(int argc, char *argv[]) // Constructor
     config_filename = home_dir + CONFIGFILENAME;
     news_port = 119;
     debug_mode = 0;
+    max_krate = 400;
     load_file = "";
     webserver_port = 4242;
     show_groups_screen = 0;
@@ -124,6 +125,8 @@ void Config::read_config_file(void)
                 news_server = value;
             } else if(0 == cmd.compare("news_port")){
                 news_port = atoi(value.c_str());
+            } else if(0 == cmd.compare("max_krate")){
+                max_krate = atoi(value.c_str());
             } else if(0 == cmd.compare("username")){
                 username = value;
             } else if(0 == cmd.compare("password")){
@@ -154,6 +157,7 @@ void Config::setup_files(void)
     out << "#news_server=localhost" << endl;
     out << "#news_port=119" << endl;
     out << "#username=anonymous" << endl;
+    out << "#max_krate=400" << endl;
     out << "#password=guest" << endl;
     out << "#max_net_connections=4" << endl;
     out.close();

@@ -110,7 +110,8 @@ void NetCentral::process_jobs(void)
         NNTPServer *connection = (NNTPServer *) job->srv;
 
         if(FD_ISSET(connection->sockfd, &read_fds)){
-            connection->read_packets();
+            if(krate() < config->max_krate)
+                connection->read_packets();
         }
 
         connection->tick();

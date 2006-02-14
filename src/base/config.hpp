@@ -43,6 +43,7 @@ class Config {
         Uint32 max_net_connections;
         Uint32 debug_logging;
         Uint32 dump_subject_file;
+        Uint32 max_krate;
 
         Uint32 tick;
 
