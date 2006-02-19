@@ -68,9 +68,9 @@ string WebPostFiles::post_file_line(PostFile *file, Uint32 file_index)
             s << "view_file('" << r.get_uri() << "')";
         }
     }
-
+    r.filename = "change_file_status";
     s << " |" << replace_substrings(file->filename, "|", "").substr(0, 80)
-      << "|| |" << file->status
+      << "||ping_url('"<< r.get_uri() <<"')|" << file->status
       << "|| |" << file->num_downloaded_pieces() << "/"  << file->pieces.size()
       << "|| |";
 

@@ -2,9 +2,10 @@
 #define ___filepiece_inc 1
 
 #include "SDL_types.h"
-#include "post_file.hpp"
 
 typedef enum { MISSING, SEEN, DOWNLOADING, DECODING, FINISHED } PIECE_STATUS;
+
+#include "post_file.hpp"
 
 class PostFile;
 class FilePiece {

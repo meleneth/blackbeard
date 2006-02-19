@@ -81,6 +81,15 @@ void WebServer::handle_request(WebRequest *request)
            delete request;
            return;
        }
+       if(0 == request->filename.compare("change_file_status")){
+           console->log("Changing file status");
+           PostFile*file = request->postfile();
+           file->tick = config->tick;
+           file->needs_full_info();
+           if(0 == file->status.compare("Finished")){
+               file->switch_seen_statuses(SEEN);
+           }
+       }
        if(0 == request->filename.compare("update_newsgroup")) {
            console->log("Handling update newsgroup request");
            Job *new_job = new GroupUpdater(request->newsgroup());

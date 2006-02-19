@@ -46,6 +46,13 @@ Uint32 PostFile::is_par()
     return 0;
 }
 
+void PostFile::needs_full_info()
+{
+    if(!has_db_pieces){
+        restore_ids_from_db(this);
+    }
+}
+
 string PostFile::status_string(void)
 {
     stringstream mystatus;
@@ -126,9 +133,7 @@ Uint32 PostFile::max_msg_id(void)
 
 void PostFile::saw_message_id(Uint32 msg_id)
 {
-    if(!has_db_pieces){
-        restore_ids_from_db(this);
-    }
+    needs_full_info();
     vector<FilePiece *>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
         if((*p)->msg_id == msg_id){
@@ -142,6 +147,19 @@ void PostFile::saw_message_id(Uint32 msg_id)
 bool PostFile::compare(const PostFile* a, const PostFile* b)
 {
     return (a->filename < b->filename);
+}
+
+void PostFile::switch_seen_statuses(PIECE_STATUS new_status)
+{
+    needs_full_info();
+    vector<FilePiece *>::iterator p;
+    for(p = pieces.begin() ; p != pieces.end() ; ++p){
+        if((*p)->status != MISSING){
+            (*p)->status = new_status;
+            return;
+        }
+    }
+
 }
 
 void PostFile::update_status_from_pieces(void)

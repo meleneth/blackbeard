@@ -32,6 +32,8 @@ class PostFile {
         Uint32 num_downloaded_pieces();
         Uint32 count_num_downloaded_pieces();
 
+        void needs_full_info();
+        void switch_seen_statuses(PIECE_STATUS new_status);
         FileHandle *open_file();
         Uint32 is_par();
         Uint32 index();
