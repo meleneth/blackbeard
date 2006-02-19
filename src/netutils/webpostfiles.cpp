@@ -61,7 +61,7 @@ string WebPostFiles::post_file_line(PostFile *file, Uint32 file_index)
     s << table_id(file->filename)
       << "||ping_url('" << r.get_uri() << "')|Download"
       << "||";
-
+    
     if(file_is_viewable(file->filename)){
         if(0 == file->status.compare("Finished")) {
             r.filename = "viewfile";

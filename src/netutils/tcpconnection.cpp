@@ -131,6 +131,12 @@ void TCPConnection::read_packets(void)
     }
 
     bytes_since_last_second +=  numbytes;
+    buf_end_pos += numbytes;
+    slice_buffer_strings();
+}
+
+Uint32 TCPConnection::get_krate()
+{
     time_t now = time(NULL);
     if(now != last_second){
         if(bytes_since_last_second){
@@ -141,8 +147,7 @@ void TCPConnection::read_packets(void)
         }
         last_second = now;
     }
-    buf_end_pos += numbytes;
-    slice_buffer_strings();
+    return krate;
 }
 
 string TCPConnection::get_line(void)

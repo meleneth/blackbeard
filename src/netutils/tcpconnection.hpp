@@ -43,6 +43,7 @@ class TCPConnection {
         virtual void send_command(string command);
         void sendall(string cmd);
         void close_connection(void);
+        Uint32 get_krate(void);
         std::string get_line(void);
 
         int sockfd, numbytes;  
