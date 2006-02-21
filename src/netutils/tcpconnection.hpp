@@ -17,6 +17,7 @@
 #include <wininet.h>
 #else
 #include <sys/socket.h>
+#include<sys/time.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <netdb.h>
@@ -40,6 +41,7 @@ class TCPConnection {
         void send_line(string line);
         void slice_buffer_strings(void);
         void read_packets(void);
+        Uint32 num_ticks(struct timeval *now);
         virtual void send_command(string command);
         void sendall(string cmd);
         void close_connection(void);
@@ -53,8 +55,8 @@ class TCPConnection {
         struct sockaddr_in their_addr; // connector's address information 
         list<string> lines;
         int connected;
-        time_t last_second;
-        Uint32 bytes_since_last_second;
+        struct timeval last_time;
+        Uint32 bytes_since_last_time;
         Uint32 krate;
     private:
         // Private members go here.

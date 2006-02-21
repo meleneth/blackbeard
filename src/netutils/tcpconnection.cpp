@@ -28,12 +28,12 @@ TCPConnection::TCPConnection(string hostname, int port) // Constructor
         exit(1);
     }
     connected = 1;
-    last_second = time(NULL);
+    gettimeofday(&last_time, NULL);
 }
 
 TCPConnection::TCPConnection()
 {
-    last_second = time(NULL);
+    gettimeofday(&last_time, NULL);
     connected = 0;
     buf_start_pos = 0;
     buf_end_pos = 0;
@@ -129,25 +129,41 @@ void TCPConnection::read_packets(void)
         connected = 0;
         return;
     }
+    bytes_since_last_time +=  numbytes;
 
-    bytes_since_last_second +=  numbytes;
     buf_end_pos += numbytes;
     slice_buffer_strings();
 }
 
 Uint32 TCPConnection::get_krate()
 {
-    time_t now = time(NULL);
-    if(now != last_second){
-        if(bytes_since_last_second){
-            krate = (bytes_since_last_second / (now - last_second))/1024;
-            bytes_since_last_second = 0;
+    struct timeval now;
+    gettimeofday(&now, NULL);
+    Uint32 ticks = num_ticks(&now);
+    // 10 ticks / second for krate
+    if(ticks){
+        if(bytes_since_last_time){
+            krate = (krate + 
+                    ((bytes_since_last_time / ticks)/(1024/10))
+                    )/2 ;
+            bytes_since_last_time = 0;
         }else{
             krate = 0;
         }
-        last_second = now;
+        last_time.tv_usec = now.tv_usec;
+        last_time.tv_sec = now.tv_sec;
     }
+
     return krate;
+}
+
+#define MS_PER_TICK 100000
+
+Uint32 TCPConnection::num_ticks(struct timeval *now)
+{   
+    return ((now->tv_sec - last_time.tv_sec) * 10)
+           + (now->tv_usec / MS_PER_TICK) 
+           - (last_time.tv_usec / MS_PER_TICK);
 }
 
 string TCPConnection::get_line(void)
