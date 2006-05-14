@@ -1,3 +1,13 @@
+File Grouping - for rar files and associated .par2 files, should only show one line in the file list.
+Par2 support - auto fix files, remove droppings
+fix download jobs:
+    - Should have one job that manages the postset, show percent / time remaining / size
+Support NZB -
+    auto-retrieve .nzb files
+    one postset per NZB
+
+-- OLD STUFF BELOW
+
 *To determine decoder type, look at message contents.  Not all yEnc files have it in the subject :/
 The new DB save stuff broke old postset expirations.  Should delete old on quit.
 need to be able to redownload stuff you've downloaded before.
