@@ -33,6 +33,7 @@ void PostSetSplitterDynamicMatch::process_header(MessageHeader *header)
         }
     }
     
+    unprocessed.push_back(header);
     max_no = unprocessed.size();
     for(Uint32 i=0; i<max_no; ++i){
         if(is_close(unprocessed[i], header)){
@@ -41,8 +42,6 @@ void PostSetSplitterDynamicMatch::process_header(MessageHeader *header)
             return;
         }
     }
-
-    unprocessed.push_back(header);
 }
 
 Uint32 PostSetSplitterDynamicMatch::is_close(MessageHeader *h1, MessageHeader *h2)

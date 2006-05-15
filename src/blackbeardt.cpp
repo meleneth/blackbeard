@@ -52,6 +52,7 @@ void test_js_escape(void);
 void test_mem_stringpattern(void);
 void test_web_request(void);
 void test_filehandle(void);
+void test_initial_header_match(void);
 
 void assert_postset_filenames_eq(PostSet *checkme, list<string> against);
 void assert_strings_eq(string s1, string s2);
@@ -67,7 +68,8 @@ int main(int argc, char *argv[])
     newsgroup = new NewsGroup("misc.test");
 
     config->setup_test_config();
-    test_filehandle();
+    //test_filehandle();
+    test_initial_header_match();
     test_mem_stringpattern();
     test_crc32(); 
     test_download_netjob();
@@ -355,4 +357,23 @@ void test_mem_stringpattern(void)
 
     assert(1 == split.get_piecen(0));
     assert(2 == split.get_piecen(1));
+}
+
+void test_initial_header_match(void)
+{
+    string line1 = "35763813	(HERE'S DVD Chobits - The Empty City (Vol 2) * REQ:  MORE RANMA!! [095/112] - \"Chobits (vol 2 - The Empty City) .part092.rar\" yEnc (001/201)	Yenc@power-post.org (Yenc-PP-A&A)	Fri, 29 Jul 2005 19:09:58 GMT	<part1of201.gdBsOLiW6ktktveIiYr0@powerpost2000AA.local>		258660	1985	Xref: number1.nntp.dca.giganews.com alt.binaries.dvd.anime:35763813";
+    string line2 = "35763816	(HERE'S DVD Chobits - The Empty City (Vol 2) * REQ:  MORE RANMA!! [095/112] - \"Chobits (vol 2 - The Empty City) .part092.rar\" yEnc (002/201)	Yenc@power-post.org (Yenc-PP-A&A)	Fri, 29 Jul 2005 19:10:01 GMT	<part2of201.gdBsOLiW6ktktveIiYr0@powerpost2000AA.local>		258473	1985	Xref: number1.nntp.dca.giganews.com alt.binaries.dvd.anime:35763816";
+
+    NewsGroup group("net.fusion.downloads");
+    group.header_scoop(line1);
+    group.header_scoop(line2);
+
+    PostSet *set = *(group.postsets.begin());
+    PostFile *file = *(set->files.begin());
+    printf("%s\n", set->subject.c_str());
+    printf("%s\n", file->filename.c_str());
+    FilePiece *piece = *(file->pieces.begin());
+    printf("%d\n", piece->msg_id);
+    assert(2 == file->pieces.size());
+    assert(2 == file->pieces.size());
 }
