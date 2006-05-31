@@ -57,7 +57,7 @@ void WebServer::handle_request(WebRequest *request)
            console->log("Handling update postset request");
            console->log("Making job for " + request->filename);
            PostSet *set = request->postset();
-           Job *new_job = new HeadersForGroupJob(request->newsgroup(), set->_min_msg_id, set->_max_msg_id);
+           Job *new_job = new HeadersForGroupJob(request->newsgroup(), set->_min_article_no, set->_max_article_no);
            high_priority_jobs->add_job(new_job);
            delete request;
            return;

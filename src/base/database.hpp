@@ -19,13 +19,10 @@ void save_newsgroup_to_db(NewsGroup *group);
 void save_subscribed_groups_to_db(sqlite3* db);
 void save_postsets_to_db(sqlite3 *db, NewsGroup *group);
 void save_postfiles(sqlite3* db, PostSet *set); 
-void save_ids_to_db(sqlite3* db, PostFile *file);
 
 void restore_newsgroups_from_db(sqlite3 *db);
 void restore_postsets_from_db(sqlite3 *db, NewsGroup *group);
 void restore_postfiles_from_db(sqlite3 *db, PostSet *set);
-void restore_ids_from_db(sqlite3 *db, PostFile *file);
-void restore_ids_from_db(PostFile *file);
 
 void remove_postset_info_from_db(PostSet *set);
 

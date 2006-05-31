@@ -1,6 +1,8 @@
 #include "post_set.hpp"
 #include"console.hpp"
 #include"config.hpp"
+#include"strutil.hpp"
+#include"mnzb.hpp"
 
 #include<sstream>
 #include<iomanip>
@@ -13,9 +15,10 @@ PostSet::PostSet(string subject)
 {
     this->subject = subject;
     pattern_name="";
-    _min_msg_id = 0;
-    _max_msg_id = 0;
-    has_msg_ids = 0;
+    _min_article_no = 0;
+    _max_article_no = 0;
+    has_article_nos = 0;
+    has_pieces_loaded = 0;
     group = NULL;
     _last_file = NULL;
     tick = 1;
@@ -94,46 +97,46 @@ string PostSet::status(void)
 }
 
 
-Uint32 PostSet::max_msg_id(void)
+Uint32 PostSet::max_article_no(void)
 {
-    if(!has_msg_ids){
-        return _max_msg_id;
+    if(!has_article_nos){
+        return _max_article_no;
     }
 
-    Uint32 msg_id = 0;
+    Uint32 article_no = 0;
 
     Uint32 max = files.size();
     for(Uint32 i=0; i<max; ++i) {
         if(files[i]){
-            Uint32 x = files[i]->max_msg_id();
-            if(msg_id < x)
-                msg_id = x;
+            Uint32 x = files[i]->max_article_no();
+            if(article_no < x)
+                article_no = x;
         }
     }
 
-    return msg_id;
+    return article_no;
 }
 
-Uint32 PostSet::min_msg_id(void)
+Uint32 PostSet::min_article_no(void)
 {
-    if(!has_msg_ids){
-        return _min_msg_id;
+    if(!has_article_nos){
+        return _min_article_no;
     }
 
-    Uint32 msg_id = 0;
-    msg_id--;
+    Uint32 article_no = 0;
+    article_no--;
 
     Uint32 max = files.size();
     for(Uint32 i=0; i<max; ++i) {
         if(files[i]){
-            Uint32 x = files[i]->min_msg_id();
+            Uint32 x = files[i]->min_article_no();
             if(x){
-                if(msg_id > x)
-                    msg_id = x;
+                if(article_no > x)
+                    article_no = x;
             }
         }
     }
-    return msg_id;
+    return article_no;
 }
 
 bool PostSet::compare(const PostSet* a, const PostSet* b)
@@ -167,3 +170,30 @@ Uint32 PostSet::index()
 void PostSet::expire(void)
 {
 }
+
+
+
+
+string PostSet::info_filename(void)
+{
+    console->log(get_crc_32(subject));
+    return get_crc_32(subject);
+}
+
+void PostSet::save_info()
+{
+}
+
+void PostSet::restore_saved_info()
+{
+}
+
+void PostSet::needs_full_info()
+{
+    if(!has_pieces_loaded){
+        mNZB nzb;
+        nzb.load_postset(this);
+        has_pieces_loaded = 1;
+    }
+}
+

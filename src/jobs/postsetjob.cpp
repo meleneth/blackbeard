@@ -105,7 +105,7 @@ void PostsetJob::save_job_status(void)
                 out << "FILE: " << file->pieces.size() << " " << file->filename << endl;
                 Uint32 max_piece_no = file->pieces.size();
                 for(Uint32 j=0 ; j<max_piece_no ; j++){
-                    out << file->pieces[j]->status << " " << file->pieces[j]->msg_id << endl;
+                    out << file->pieces[j]->status << " " << file->pieces[j]->article_no << endl;
                 }
             }
         }
@@ -140,7 +140,7 @@ void PostsetJob::load_job_status(void)
     if(in.is_open()){
         in.getline(linebuffer, 1024);
         postset = new PostSet(linebuffer);
-        postset->has_msg_ids = 1;
+        postset->has_article_nos = 1;
         in.getline(linebuffer, 1024);
         postset->group = group_for_name(linebuffer);
         postset->group->postsets.push_back(postset);
@@ -155,8 +155,8 @@ void PostsetJob::load_job_status(void)
                     postset->files.push_back(file);
                 } else {
                     if(piecepattern->match(linebuffer)){
-                        FilePiece *piece = new FilePiece( piecepattern->get_piecen(1), (PIECE_STATUS) piecepattern->get_piecen(0), file);
-                        file->pieces.push_back(piece);
+                        // FIXME FilePiece *piece = new FilePiece( piecepattern->get_piecen(1), (PIECE_STATUS) piecepattern->get_piecen(0), file);
+                        // FIXME file->pieces.push_back(piece);
                     }
                 }  
             }

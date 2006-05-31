@@ -1,9 +1,10 @@
-#include"screen.hpp"
-#include"session.hpp"
-#include"console.hpp"
-#include"keydefs.hpp"
-#include"jobqueue.hpp"
-#include"netcentral.hpp"
+#include "screen.hpp"
+#include "session.hpp"
+#include "console.hpp"
+#include "keydefs.hpp"
+#include "jobqueue.hpp"
+#include "netcentral.hpp"
+#include "strutil.hpp"
 
 #ifdef __WIN32__
 #include<curses.h>
@@ -48,7 +49,7 @@ void Screen::render(void)
         << netcentral->active_jobs.size() << " - " 
         << jobqueue->jobs.size() << "/"
         << jobqueue->active_jobs.size()
-        << ") jobs " << netcentral->krate() << "k/sec 0G downloaded";
+        << ") jobs " << netcentral->krate() << "k/sec "<< human_readable_bytes(netcentral->num_read_bytes) << " downloaded";
     mvaddnstr(ypos + height, xpos + 2, (char*)buf.str().c_str(), -1);
 }
 

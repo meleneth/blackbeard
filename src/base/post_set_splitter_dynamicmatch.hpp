@@ -32,7 +32,7 @@ class PSDMSubMatch {
         Sint32 file_no_index;
         Sint32 max_file_no_index;
         NewsGroup *group;
-        Uint32 last_seen_msg_id;
+        Uint32 last_seen_article_no;
 
         Uint32 is_active;
     private:

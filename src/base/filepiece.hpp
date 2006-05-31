@@ -10,12 +10,14 @@ typedef enum { MISSING, SEEN, DOWNLOADING, DECODING, FINISHED } PIECE_STATUS;
 class PostFile;
 class FilePiece {
     public:
-        FilePiece(Uint32 msg_id, PIECE_STATUS status, PostFile *file);
+        FilePiece(Uint32 article_no, string msg_id, PIECE_STATUS status, PostFile *file);
         ~FilePiece();
 
         void change_status(PIECE_STATUS new_status);
 
-        Uint32 msg_id;
+        Uint32 article_no;
+        string msg_id;
+        
         PIECE_STATUS status;
         PostFile *file;
         Uint32 _status_changed;

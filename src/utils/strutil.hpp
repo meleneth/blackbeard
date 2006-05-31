@@ -21,5 +21,6 @@ string replace_substrings(string from_me, string take_me, string for_me);
 
 string js_escape(string escape_me);
 string safe_dirname(string unsafe);
+string human_readable_bytes(double num_bytes);
 
 #endif

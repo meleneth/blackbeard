@@ -29,7 +29,7 @@ class NewsGroup {
         void header_scoop(string xover_line);
         Uint32 index();
         static bool compare(const NewsGroup *a, const NewsGroup *b);
-        void expire_old_postsets(Uint32 low_msg_id);
+        void expire_old_postsets(Uint32 low_article_no);
         Uint32 postset_index(PostSet *set);
         void subscribe(void);
         void unsubscribe(void);

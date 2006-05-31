@@ -119,20 +119,21 @@ void TCPConnection::send_data(char *buf, Uint32 size)
     }
 }
 
-void TCPConnection::read_packets(void)
+Uint32 TCPConnection::read_packets(void)
 {
     // will only be called when we have data waiting
     if(!connected)
-        return;
+        return 0;
 
     if ((numbytes=recv(sockfd, buf + buf_end_pos, MAXDATASIZE - buf_end_pos, 0)) == -1) {
         connected = 0;
-        return;
+        return 0;
     }
     bytes_since_last_time +=  numbytes;
 
     buf_end_pos += numbytes;
     slice_buffer_strings();
+    return numbytes;
 }
 
 Uint32 TCPConnection::get_krate()

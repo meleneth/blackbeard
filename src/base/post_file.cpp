@@ -24,7 +24,6 @@ PostFile::PostFile(PostSet *postset)
     status = "Ignored";
     piece_size = 0;
     is_corrupt = 0;
-    has_db_pieces = 0;
     tick = 1;
     db_index = 0;
     _num_file_pieces = 0;
@@ -48,9 +47,8 @@ Uint32 PostFile::is_par()
 
 void PostFile::needs_full_info()
 {
-    if(!has_db_pieces){
-        restore_ids_from_db(this);
-    }
+    if(post_set)
+        post_set->needs_full_info();
 }
 
 string PostFile::status_string(void)
@@ -93,7 +91,7 @@ Uint32 PostFile::piece_no(Uint32 message_id)
     Uint32 i=0;
     vector<FilePiece *>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
-        if((*p)->msg_id == message_id){
+        if((*p)->article_no == message_id){
             return i;
         }
         i++;
@@ -101,47 +99,47 @@ Uint32 PostFile::piece_no(Uint32 message_id)
     return 0;
 }
 
-Uint32 PostFile::min_msg_id(void)
+Uint32 PostFile::min_article_no(void)
 {
-    Uint32 msg_id = 0;
-    msg_id--;
+    Uint32 article_no = 0;
+    article_no--;
 
     Uint32 max = pieces.size();
     for(Uint32 i=0; i<max; ++i) {
-        Uint32 x = pieces[i]->msg_id;
+        Uint32 x = pieces[i]->article_no;
         if(x){
-            if(msg_id > x)
-                msg_id = x;
+            if(article_no > x)
+                article_no = x;
         }
     }
-    return msg_id;
+    return article_no;
 }
 
-Uint32 PostFile::max_msg_id(void)
+Uint32 PostFile::max_article_no(void)
 {
-    Uint32 msg_id = 0;
+    Uint32 article_no = 0;
 
     Uint32 max = pieces.size();
     for(Uint32 i=0; i<max; ++i) {
-        Uint32 x = pieces[i]->msg_id;
-        if(msg_id < x)
-            msg_id = x;
+        Uint32 x = pieces[i]->article_no;
+        if(article_no < x)
+            article_no = x;
     }
 
-    return msg_id;
+    return article_no;
 }
 
-void PostFile::saw_message_id(Uint32 msg_id)
+void PostFile::saw_message_id(Uint32 article_no, string msg_id)
 {
     needs_full_info();
     vector<FilePiece *>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
-        if((*p)->msg_id == msg_id){
+        if((*p)->article_no == article_no){
             (*p)->status = SEEN;
             return;
         }
     }
-    pieces.push_back(new FilePiece(msg_id, SEEN, this));
+    pieces.push_back(new FilePiece(article_no, msg_id, SEEN, this));
 }
 
 bool PostFile::compare(const PostFile* a, const PostFile* b)
@@ -206,17 +204,29 @@ Uint32 PostFile::index()
     exit(1);
 }
 
+void m_mkdir(string dir)
+{
+#ifdef __WIN32__
+        mkdir(dir.c_str());
+#else
+        mkdir(dir.c_str(), 01777);
+#endif
+}
+
 FileHandle *PostFile::open_file()
 {
     struct stat my_stats;
-    string dest_dir = config->blackbeard_dir + "/" + safe_dirname(post_set->subject);
+
+    string dest_dir = config->blackbeard_dir + "/" + post_set->group->name;
+    if(stat(dest_dir.c_str(), &my_stats) == -1){
+        console->log("Creating dir for newsgroup..");
+        m_mkdir(dest_dir);
+    }else {
+        console->log("download dir found");
+    }
+    dest_dir += "/" + safe_dirname(post_set->subject) ;
     if(stat(dest_dir.c_str(), &my_stats) == -1){
         console->log("Creating dir for decode");
-#ifdef __WIN32__
-        mkdir(dest_dir.c_str());
-#else
-        mkdir(dest_dir.c_str(), 01777);
-#endif
     }else {
         console->log("download dir found");
     }
@@ -224,6 +234,8 @@ FileHandle *PostFile::open_file()
     string real_filename = dest_dir + "/" + filename;
     return open_filehandle(real_filename);
 }
+
+
 
 Uint32 PostFile::num_downloaded_pieces()
 {
@@ -246,8 +258,6 @@ Uint32 PostFile::count_num_downloaded_pieces()
 
 Uint32 PostFile::num_pieces()
 {
-    if(has_db_pieces) {
-        return pieces.size();
-    }
-    return _num_file_pieces;
+    return pieces.size();
 }
+

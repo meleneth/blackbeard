@@ -46,10 +46,7 @@ Job* PostfileJob::get_next_job()
     }
 
     if(postfile){
-        if(!postfile->has_db_pieces){
-            console->log("PostFileJob restoring ids from db");
-            restore_ids_from_db(postfile);
-        }
+        postfile->needs_full_info(); 
         PIECE_STATUS s = postfile->pieces[piece_no]->status;
         postfile->status = "Downloading";
         postfile->tick = config->tick;

@@ -1,6 +1,7 @@
 #include "database.hpp"
 #include "config.hpp"
 #include "console.hpp"
+#include "mnzb.hpp"
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -66,7 +67,7 @@ void restore_newsgroups_from_db(sqlite3 *db)
         sqlite3 *sub_db = db_for_newsgroup(group);
         restore_postsets_from_db(sub_db, group);
         sqlite3_stmt *q;
-        stmt = "select min(msg_id), max(msg_id) from file_pieces where msg_id != 1";
+        stmt = "select min(article_no), max(article_no) from file_pieces where article_no != 1";
         sqlite3_prepare(sub_db, stmt.c_str(), stmt.length(), &q, 0);
         if(SQLITE_ROW == sqlite3_step(q)){
             group->first_article_number = sqlite3_column_int(q, 0);
@@ -90,7 +91,7 @@ void restore_postsets_from_db(sqlite3 *db, NewsGroup *group)
         PostSet *set = group->postset_for_subject((char *)sqlite3_column_text(s, 1));
         set->db_index = sqlite3_column_int(s, 0);
         restore_postfiles_from_db(db, set);
-        set->has_msg_ids = 1;
+        set->has_article_nos = 1;
         set->tick = 1;
     }
     sqlite3_finalize(s);
@@ -114,11 +115,12 @@ void restore_postfiles_from_db(sqlite3 *db, PostSet *set)
         
 void restore_ids_from_db(sqlite3 *db, PostFile *file)
 {
+    /* FIXME 
     if(!file->db_index)
         return;
 
     sqlite3_stmt *s;
-    string stmt = "SELECT msg_id, status, file_piece_no FROM file_pieces WHERE postfile_no = ? ORDER BY file_piece_no";
+    string stmt = "SELECT article_no, status, file_piece_no FROM file_pieces WHERE postfile_no = ? ORDER BY file_piece_no";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
     sqlite3_bind_int(s, 1, file->db_index); 
     while (SQLITE_ROW == sqlite3_step(s)){
@@ -126,32 +128,21 @@ void restore_ids_from_db(sqlite3 *db, PostFile *file)
         new_piece->db_index = sqlite3_column_int(s, 2);
         file->pieces.push_back(new_piece);
         stringstream st;
-        st << "Restoring piece " << new_piece->msg_id << " with status " << new_piece->status;
+        st << "Restoring piece " << new_piece->article_no << " with status " << new_piece->status;
         console->log(st.str());
     }
     file->has_db_pieces = 1;
     file->_num_downloaded_pieces = file->count_num_downloaded_pieces();
     sqlite3_finalize(s);
+    */
 }
 
 void delete_old_postsets(sqlite3 *db, NewsGroup *group)
 {
     sqlite3_stmt *s;
-    string postset_delete = "DELETE FROM post_sets WHERE postset_no IN (SELECT postset_no FROM post_files WHERE postfile_no IN (SELECT DISTINCT(postfile_no) FROM file_pieces WHERE msg_id < ?))";
+    string postset_delete = "DELETE FROM post_sets WHERE postset_no IN (SELECT postset_no FROM post_files WHERE postfile_no IN (SELECT DISTINCT(postfile_no) FROM file_pieces WHERE article_no < ?))";
 
     sqlite3_prepare(db, postset_delete.c_str(), postset_delete.length(), &s, 0);
-    sqlite3_bind_int(s, 1, group->first_article_number);
-    sqlite3_step(s);
-    sqlite3_finalize(s);
-
-    string postfile_delete = "DELETE FROM post_files where postfile_no in (SELECT DISTINCT(postfile_no) FROM file_pieces WHERE msg_id < ? )";
-    sqlite3_prepare(db, postfile_delete.c_str(), postfile_delete.length(), &s, 0);
-    sqlite3_bind_int(s, 1, group->first_article_number);
-    sqlite3_step(s);
-    sqlite3_finalize(s);
-
-    string pieces_delete = "DELETE FROM file_pieces WHERE msg_id < ?";
-    sqlite3_prepare(db, pieces_delete.c_str(), pieces_delete.length(), &s, 0);
     sqlite3_bind_int(s, 1, group->first_article_number);
     sqlite3_step(s);
     sqlite3_finalize(s);
@@ -174,7 +165,8 @@ void save_postsets_to_db(sqlite3 *db, NewsGroup *group)
             sqlite3_reset(s);
             set->db_index = sqlite3_last_insert_rowid(db);
         }
-        save_postfiles(db, set);
+        mNZB nzb;
+        nzb.save_postset(set);
     }
     sqlite3_finalize(s);
 }
@@ -189,9 +181,7 @@ void setup_newsgroup_tables(sqlite3 *db)
 void setup_postset_tables(sqlite3 *db)
 {
     vector<string> queries;
-    queries.push_back("CREATE TABLE post_sets   (postset_no    INTEGER PRIMARY KEY, name VARCHAR)");
-    queries.push_back("CREATE TABLE post_files  (postfile_no   INTEGER PRIMARY KEY, postset_no INTEGER, num_pieces INTEGER, name VARCHAR, decoder_type INTEGER)");
-    queries.push_back("CREATE TABLE file_pieces (file_piece_no INTEGER PRIMARY KEY, postfile_no INTEGER, status INTEGER, msg_id INTEGER)");
+    queries.push_back("CREATE TABLE post_sets (postset_no INTEGER PRIMARY KEY, num_bytes INTEGER, max_article_no INTEGER, min_article_no INTEGER, name VARCHAR)");
     run_queries(db, queries);
 }
 
@@ -230,78 +220,7 @@ void save_subscribed_groups_to_db(sqlite3* db)
     sqlite3_finalize(s);
 }
 
-void save_postfiles(sqlite3 *db, PostSet *set)
-{
-    sqlite3_stmt *pf;
-    string pf_stmt = "INSERT INTO post_files VALUES(NULL, ?, ?, ?, ?)";
-    sqlite3_prepare(db, pf_stmt.c_str(), pf_stmt.length(), &pf, 0);
-    Uint32 max_no = set->files.size();
-    for(Uint32 i=0; i<max_no; i++){
-        PostFile *file = set->files[i];
-        if(!file->db_index){
-            sqlite3_bind_int(pf, 1, set->db_index); 
-            sqlite3_bind_int(pf, 2, file->num_pieces()); 
-            sqlite3_bind_text(pf, 3, file->filename.c_str(), file->filename.length(), NULL);
-            sqlite3_bind_int(pf, 4, file->decoder_type);
-            sqlite3_step(pf);
-            sqlite3_reset(pf);
-            file->db_index = sqlite3_last_insert_rowid(db);
-        }
-        if(file->has_db_pieces)
-            save_ids_to_db(db, file);
-    }
-    sqlite3_finalize(pf);
-}
 
-void save_ids_to_db(sqlite3* db, PostFile *file)
-{
-    if(!file->has_db_pieces)
-        return;
-
-    sqlite3_stmt *update_stmt;
-    string update_string = "UPDATE file_pieces SET status = ? WHERE file_piece_no = ?";
-    sqlite3_prepare(db, update_string.c_str(), update_string.length(), &update_stmt, 0);
-
-    sqlite3_stmt *insert_stmt;
-    string insert_string = "INSERT INTO file_pieces VALUES(NULL, ?, ?, ?)";
-    sqlite3_prepare(db, insert_string.c_str(), insert_string.length(), &insert_stmt, 0);
-
-    Uint32 max_no = file->pieces.size();
-    for(Uint32 i=0; i<max_no; ++i){
-        FilePiece *piece = file->pieces[i];
-        if(piece->db_index){
-            sqlite3_bind_int(update_stmt, 1, piece->status);
-            sqlite3_bind_int(update_stmt, 2, piece->db_index);
-            sqlite3_step(update_stmt);
-            sqlite3_reset(update_stmt);
-        }else{
-            sqlite3_bind_int(insert_stmt, 1, file->db_index); 
-            sqlite3_bind_int(insert_stmt, 2, file->pieces[i]->status); 
-            sqlite3_bind_int(insert_stmt, 3, file->pieces[i]->msg_id); 
-            sqlite3_step(insert_stmt);
-            sqlite3_reset(insert_stmt);
-            piece->db_index = sqlite3_last_insert_rowid(db);
-        }
-    }
-    sqlite3_finalize(insert_stmt);
-    sqlite3_finalize(update_stmt);
-}
-
-void restore_ids_from_db(PostFile *file)
-{
-    if(!file->db_index){
-        file->has_db_pieces = 1;
-        return;
-    }
-    if(file->has_db_pieces)
-    {
-        return;
-    }
-    sqlite3 *db = db_for_newsgroup(file->post_set->group);
-
-    restore_ids_from_db(db, file);
-    sqlite3_close(db);
-}
 
 Uint32 db_file_exists(string filename)
 {
@@ -316,14 +235,14 @@ void remove_postset_info_from_db(PostSet *set)
 sqlite3 *db_for_newsgroup(NewsGroup *group)
 {
     sqlite3 *db;
-    string filename = config->blackbeard_data_dir 
-                      + "/" + group->name;
-    Uint32 existed = db_file_exists(filename);
+    string dirname = config->blackbeard_data_dir + "/" + group->name;
+    string db_filename = dirname + ".db";
+    Uint32 existed = db_file_exists(db_filename);
 
-    int rc = sqlite3_open(filename.c_str(), &db);
-    console->log("Database file: " + filename);
+    int rc = sqlite3_open(db_filename.c_str(), &db);
+    console->log("Database file: " + db_filename);
     if(rc != SQLITE_OK){
-        console->log("Could not create or open database " + filename);
+        console->log("Could not create or open database " + db_filename);
     }
 
     if(!existed){

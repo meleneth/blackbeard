@@ -26,7 +26,7 @@ class PostFile {
 
         string status_string(void);
         string get_bar(void);
-        void saw_message_id(Uint32 msg_id);
+        void saw_message_id(Uint32 article_no, string msg_id);
         static bool compare(const PostFile* a, const PostFile* b);
         void update_status_from_pieces();
         Uint32 num_downloaded_pieces();
@@ -34,12 +34,13 @@ class PostFile {
 
         void needs_full_info();
         void switch_seen_statuses(PIECE_STATUS new_status);
+
         FileHandle *open_file();
         Uint32 is_par();
         Uint32 index();
         Uint32 piece_no(Uint32 message_id);
-        Uint32 max_msg_id(void);
-        Uint32 min_msg_id(void);
+        Uint32 max_article_no(void);
+        Uint32 min_article_no(void);
         Uint32 num_pieces(void);
 
 
@@ -54,7 +55,6 @@ class PostFile {
         DecoderType decoder_type;
 
         Uint32 db_index;
-        Uint32 has_db_pieces;
         Uint32 _num_file_pieces;
         Uint32 _num_downloaded_pieces;
 

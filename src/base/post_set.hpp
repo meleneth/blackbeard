@@ -25,16 +25,21 @@ class PostSet {
     
         double completed_percent(void);
         PostFile *file(string file_name);
-        Uint32 min_msg_id(void);
-        Uint32 max_msg_id(void);
+        Uint32 min_article_no(void);
+        Uint32 max_article_no(void);
         string status(void);
         void expire(void);
         Uint32 file_index(PostFile *file);
         Uint32 index();
         Uint32 num_files();
+        void needs_full_info();
         static bool compare(const PostSet* a, const PostSet* b);
         bool operator< (const PostSet &b);
 
+        void restore_saved_info();
+        void save_info();
+
+        string info_filename(void);
 
         string subject;
         vector<PostFile *> files;
@@ -43,9 +48,11 @@ class PostSet {
         NewsGroup *group;
         Uint32 db_index;
 
-        Uint32 has_msg_ids;
-        Uint32 _min_msg_id;
-        Uint32 _max_msg_id;
+        Uint32 has_article_nos;
+        Uint32 has_pieces_loaded;
+        Uint32 _num_files;
+        Uint32 _min_article_no;
+        Uint32 _max_article_no;
         PostFile *_last_file;
         Uint32 tick;
 

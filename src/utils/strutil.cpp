@@ -3,9 +3,12 @@
 #include <iostream>  // I/O 
 #include <fstream>   // file I/O
 #include <sstream>
+#include<iomanip>
+#include <math.h>
 
 using std::string;
 using std::stringstream;
+using std::setprecision;
 using std::ofstream;
 using std::hex;
 
@@ -154,4 +157,28 @@ string safe_dirname(string unsafe)
         x=s.find("__");
     }
     return s;
+}
+
+string human_readable_bytes(double num_bytes)
+{
+    stringstream result;
+
+    double Kay  = pow(2, 10);
+    double Mega = pow(2, 20);
+    double Giga = pow(2, 30);
+
+    if(num_bytes < 1)
+        return "0b";
+
+    result << setprecision(2);
+
+    if(num_bytes > Giga) {
+        result << num_bytes / Giga << "GB";
+    } else if (num_bytes > Mega) {
+        result << num_bytes / Mega << "MB";
+    } else {
+        result << num_bytes / Kay << "kB";
+    }
+    
+    return result.str();
 }

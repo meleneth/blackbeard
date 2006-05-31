@@ -89,7 +89,7 @@ int PostSetListScreen::handle_input(int key)
         }
         if(key == 'p'){
             PostSet *s = (PostSet *) scroll_list->get_selected_item();
-            netcentral->add_job(new HeadersForGroupJob(s->group, s->_min_msg_id, s->_max_msg_id));
+            netcentral->add_job(new HeadersForGroupJob(s->group, s->_min_article_no, s->_max_article_no));
             console->log("Queued header retrieval for postset " + s->subject);
             return 0;
         }

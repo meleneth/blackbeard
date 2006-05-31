@@ -40,7 +40,7 @@ class TCPConnection {
         int has_data_waiting(void);
         void send_line(string line);
         void slice_buffer_strings(void);
-        void read_packets(void);
+        Uint32 read_packets(void);
         Uint32 num_ticks(struct timeval *now);
         virtual void send_command(string command);
         void sendall(string cmd);

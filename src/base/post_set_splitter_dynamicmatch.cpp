@@ -26,7 +26,7 @@ void PostSetSplitterDynamicMatch::process_header(MessageHeader *header)
         if (0 == active[i]->posted_by.compare(header->posted_by)){
             if(active[i]->pattern->match(header->subject)){
                 active[i]->process_header(header);
-                active[i]->last_seen_msg_id = header->message_id;
+                active[i]->last_seen_article_no = header->article_no;
                 delete header;
                 return;
             }
@@ -112,7 +112,7 @@ PSDMSubMatch::PSDMSubMatch(NewsGroup *group, MessageHeader *h1, MessageHeader *h
     max_piece_no_index = -1;
     file_no_index      = -1;
     max_file_no_index  = -1;
-    last_seen_msg_id = 0;
+    last_seen_article_no = 0;
     this->group = group;
     postset = NULL;
     posted_by = h1->posted_by;
@@ -140,18 +140,18 @@ PSDMSubMatch::~PSDMSubMatch()
 void PSDMSubMatch::process_header(MessageHeader *header)
 {
     if(pattern->match(header->subject)){
-        if(group->last_article_number < header->message_id){
-            group->last_article_number = header->message_id;
+        if(group->last_article_number < header->article_no){
+            group->last_article_number = header->article_no;
         }
         if(group->first_article_number == 0)
-            group->first_article_number = header->message_id;
+            group->first_article_number = header->article_no;
 
         if(filename_index != -1){
 //            console->log("Handling result for '" + pattern->results[filename_index] + "'");
             postset = get_postset(header);
-            postset->has_msg_ids = 1;
+            postset->has_article_nos = 1;
             PostFile *file = postset->file(pattern->results[filename_index]);
-            file->saw_message_id(header->message_id);
+            file->saw_message_id(header->article_no, header->msg_id);
             size_t yEnc_pos = header->subject.find("yEnc", 0);
             if(yEnc_pos != string::npos){
                 file->decoder_type = DT_YENC;

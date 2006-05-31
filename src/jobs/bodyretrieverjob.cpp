@@ -11,7 +11,7 @@ using std::stringstream;
 BodyRetrieverJob::BodyRetrieverJob(PostFile *file, FilePiece *piece)
 {
     stringstream cmd;
-    cmd << "body " << piece->msg_id;
+    cmd << "body " << piece->article_no;
     group = file->post_set->group;
     net_cmds.push_back(cmd.str());
 

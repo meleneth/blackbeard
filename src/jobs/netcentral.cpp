@@ -20,6 +20,7 @@ NetCentral::NetCentral(void) // Constructor
 {
     FD_ZERO(&master);    // clear the master and temp sets
     fdmax = 0;
+    num_read_bytes = 0;
     console->log("NetCentral() initialized");
 }
     
@@ -111,7 +112,7 @@ void NetCentral::process_jobs(void)
 
         if(FD_ISSET(connection->sockfd, &read_fds)){
 //if(krate() < config->max_krate)
-                connection->read_packets();
+                num_read_bytes += connection->read_packets();
         }
 
         connection->tick();
@@ -136,7 +137,7 @@ void NetCentral::process_jobs(void)
 
     for(c = webserver->connections.begin(); c != webserver->connections.end(); ++c){
         if(FD_ISSET((*c)->sockfd, &read_fds)){
-            (*c)->read_packets();
+            num_read_bytes += (*c)->read_packets();
         }
     }
 
