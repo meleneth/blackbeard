@@ -18,6 +18,7 @@ Decoder::Decoder()
 {
     file_is_open = 0;
     file_pos = 0;
+    post = NULL;
 }
 
 Decoder::Decoder(NewsGroupPost *newsgrouppost, PostFile *file) // Constructor
@@ -38,7 +39,8 @@ Decoder::~Decoder() // Destructor
     if(file_is_open)
         close_file();
     close_finished_files();
-    delete post;
+    if(post)
+        delete post;
 }
 
 void Decoder::process()

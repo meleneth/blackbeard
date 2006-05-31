@@ -5,6 +5,9 @@ fix download jobs:
 Support NZB -
     auto-retrieve .nzb files
     one postset per NZB
+    save postset file piece index values as NZB files - gets them out of database and removes slow queries from the design
+
+Job-ify postset info loading.  Speed it up too, it takes forever and makes being subscribed to big groups painful.  Which is the whole point.
 
 -- OLD STUFF BELOW
 

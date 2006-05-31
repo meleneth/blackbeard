@@ -35,7 +35,7 @@ Config::Config(int argc, char *argv[]) // Constructor
     webserver_port = 4242;
     show_groups_screen = 0;
     console->print_on_delete = 0;
-    max_net_connections = 4;
+    max_net_connections = 2;
     debug_logging = 0;
     dump_subject_file = 0;
     tick = 0;
