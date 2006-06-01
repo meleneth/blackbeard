@@ -55,6 +55,7 @@ void test_web_request(void);
 void test_filehandle(void);
 void test_initial_header_match(void);
 void test_xml_generation(void);
+void test_xml_parse(void);
 
 void assert_postset_filenames_eq(PostSet *checkme, list<string> against);
 void assert_strings_eq(string s1, string s2);
@@ -72,6 +73,7 @@ int main(int argc, char *argv[])
     config->setup_test_config();
     //test_filehandle();
     test_xml_generation();
+    test_xml_parse();
     test_initial_header_match();
     test_mem_stringpattern();
     test_crc32(); 
@@ -388,4 +390,21 @@ void test_xml_generation(void)
     XMLNode node("tag");
     node.value = "stuff";
     assert(0 == node.as_text("").compare("<tag>stuff</tag>"));
+
+    node.set_attr("id", "cheese");
+    assert(0 == node.as_text("").compare("<tag id=\"cheese\">stuff</tag>"));
+
+    XMLNode *new_node = new XMLNode("bar");
+    new_node->value="baz";
+
+    node.value="";
+    node.addChild(new_node);
+    printf("[%s]\n\n\n", node.as_text("").c_str());
+    assert(0 == node.as_text("").compare("<tag id=\"cheese\">\n  <bar>baz</bar>\n</tag>"));
 }
+
+void test_xml_parse(void)
+{
+    //XMLNode *node = parse_xml_doc();
+}
+

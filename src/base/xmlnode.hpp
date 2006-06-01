@@ -21,6 +21,8 @@ class XMLNode {
         string get_attr(string id);
         XMLNode *set_attr(string id, string value);
         XMLNode *addChild(XMLNode *node);
+        string start_tag();
+        string end_tag();
         string as_text(string prefix);
         void find_for_tag_name(vector<XMLNode *>& result, string tag_name);
     private:
