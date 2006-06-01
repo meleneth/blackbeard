@@ -16,6 +16,7 @@
 #include "netcentral.hpp"
 #include "file_handle.hpp"
 #include "webserver.hpp"
+#include"xmlnode.hpp"
 
 #include<string>
 #include<sstream>
@@ -53,6 +54,7 @@ void test_mem_stringpattern(void);
 void test_web_request(void);
 void test_filehandle(void);
 void test_initial_header_match(void);
+void test_xml_generation(void);
 
 void assert_postset_filenames_eq(PostSet *checkme, list<string> against);
 void assert_strings_eq(string s1, string s2);
@@ -69,6 +71,7 @@ int main(int argc, char *argv[])
 
     config->setup_test_config();
     //test_filehandle();
+    test_xml_generation();
     test_initial_header_match();
     test_mem_stringpattern();
     test_crc32(); 
@@ -378,4 +381,11 @@ void test_initial_header_match(void)
     printf("%d\n", piece->article_no);
     assert(2 == file->pieces.size());
     assert(2 == file->pieces.size());
+}
+
+void test_xml_generation(void)
+{
+    XMLNode node("tag");
+    node.value = "stuff";
+    assert(0 == node.as_text("").compare("<tag>stuff</tag>"));
 }
