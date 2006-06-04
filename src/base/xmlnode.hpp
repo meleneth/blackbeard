@@ -13,7 +13,7 @@ class XMLNode {
         ~XMLNode();
         
         string name;
-        string value;
+        string content;
         vector<string> attr_name;
         vector<string> attr_value;
         vector<XMLNode *> children;
@@ -24,6 +24,7 @@ class XMLNode {
         string start_tag();
         string end_tag();
         string as_text(string prefix);
+        void parse_fragment(string fragment);
         void find_for_tag_name(vector<XMLNode *>& result, string tag_name);
     private:
     protected:
