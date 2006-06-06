@@ -35,16 +35,14 @@ UUDecoder::UUDecoder(NewsGroupPost *newsgrouppost, PostFile *file, Uint32 messag
 
 UUDecoder::~UUDecoder()
 {
-    if(post_file)
-        post_file->piece_size = num_bytes_written;
 }
 
 void UUDecoder::open_file(void)
 {
     Decoder::open_file();
 
-    size_t seek_offset =  post_file->piece_size * (piece_no - 1);
-    file_pos = seek_offset;
+    // FIXME size_t seek_offset =  post_file->piece_size * (piece_no - 1);
+    // FIXME file_pos = seek_offset;
 }
 
 void UUDecoder::decode_line(string line)

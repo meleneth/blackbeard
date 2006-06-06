@@ -3,6 +3,7 @@
 #include "config.hpp"
 #include "post_file.hpp"
 #include "file_handle.hpp"
+#include "xmlparser.hpp"
 
 mNZB::mNZB()
 {
@@ -82,5 +83,49 @@ XMLNode *mNZB::postfile_node(PostFile *file)
 void mNZB::load_postset(PostSet *set)
 {
     this->set = set;
+    string dest_dir = config->blackbeard_data_dir + "/" + set->group->name;
+    string full_filename = dest_dir + "/" + nzb_filename();
+
+    FileHandle *nzb_handle = open_filehandle(full_filename);
+    string xmlfile;
+    while(nzb_handle->still_open) {
+        xmlfile += nzb_handle->get_line();
+    }
+
+    XMLNode *parsed = parse_xml_doc(xmlfile);
+    vector<XMLNode *> files;
+
+    parsed->find_for_tag_name(files, "file");
+    vector<XMLNode *>::iterator i;
+    
+    for(i = files.begin(); i != files.end(); ++i) {
+        restore_file(set, *i);
+    }
 }
+
+void mNZB::restore_file(PostSet *set, XMLNode *file_node)
+{
+    vector<XMLNode *> pieces;
+    file_node->find_for_tag_name(pieces, "segment");
+    string message_id = file_node->content;
+
+    PostFile *file = new PostFile(set);
+    file->filename = file_node->get_attr("subject");
+
+    // If we are restoring, there are no pieces or anything already
+    // so we can just slam info in there
+    
+    vector<XMLNode *>::iterator i;
+    for(i = pieces.begin(); i!=pieces.end(); ++i){
+        XMLNode *node = *i;
+        FilePiece *new_piece = new FilePiece(node->get_attr_num("article_no"), 
+                                             node->content, 
+                                             (PIECE_STATUS)node->get_attr_num("status"), 
+                                             file, 
+                                             node->get_attr_num("num_bytes"));
+        file->pieces.push_back(new_piece);
+    }
+    file->_num_file_pieces = file->pieces.size();
+}
+
 

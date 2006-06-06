@@ -44,7 +44,6 @@ class PostFile {
         Uint32 num_pieces(void);
 
 
-        Uint32 piece_size;
         Uint32 is_corrupt;
         Uint32 tick;
         

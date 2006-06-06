@@ -17,6 +17,7 @@ class mNZB {
         string nzb_filename(void);
 
         XMLNode *postfile_node(PostFile *file); 
+        void restore_file(PostSet *set, XMLNode *file_node);
         PostSet *set;
 
     private:

@@ -22,7 +22,6 @@ PostFile::PostFile(PostSet *postset)
     post_set = postset;
     decoder_type = DT_UUDECODE;
     status = "Ignored";
-    piece_size = 0;
     is_corrupt = 0;
     tick = 1;
     db_index = 0;
