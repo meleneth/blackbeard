@@ -254,7 +254,7 @@ void test_download_netjob(void)
     console->log("Testing postset download jobs..");
     NewsGroup group("fusion.downloads");
     PostSet post("brick brothers presents");
-    post.has_article_nos = 1;
+    post.has_pieces_loaded = 1;
     post.group = &group;
 
     PostsetJob psj(&post);

@@ -5,6 +5,9 @@
 #include "file_handle.hpp"
 #include "xmlparser.hpp"
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 mNZB::mNZB()
 {
 }
@@ -80,11 +83,21 @@ XMLNode *mNZB::postfile_node(PostFile *file)
     return node;
 }
 
+Uint32 _file_exists(string filename)
+{
+    struct stat buf;
+    return -1 != stat(filename.c_str(), &buf);
+}
+
 void mNZB::load_postset(PostSet *set)
 {
     this->set = set;
     string dest_dir = config->blackbeard_data_dir + "/" + set->group->name;
     string full_filename = dest_dir + "/" + nzb_filename();
+
+    if(!_file_exists(full_filename)) {
+        return;
+    }
 
     FileHandle *nzb_handle = open_filehandle(full_filename);
     string xmlfile;
@@ -102,6 +115,7 @@ void mNZB::load_postset(PostSet *set)
         restore_file(set, *i);
     }
 }
+
 
 void mNZB::restore_file(PostSet *set, XMLNode *file_node)
 {
@@ -126,6 +140,7 @@ void mNZB::restore_file(PostSet *set, XMLNode *file_node)
         file->pieces.push_back(new_piece);
     }
     file->_num_file_pieces = file->pieces.size();
+    set->has_pieces_loaded = 1;
 }
 
 

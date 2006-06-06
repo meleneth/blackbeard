@@ -91,7 +91,7 @@ void restore_postsets_from_db(sqlite3 *db, NewsGroup *group)
         PostSet *set = group->postset_for_subject((char *)sqlite3_column_text(s, 1));
         set->db_index = sqlite3_column_int(s, 0);
         restore_postfiles_from_db(db, set);
-        set->has_article_nos = 1;
+        set->has_pieces_loaded = 1;
         set->tick = 1;
     }
     sqlite3_finalize(s);
@@ -152,7 +152,7 @@ void save_postsets_to_db(sqlite3 *db, NewsGroup *group)
 {
     delete_old_postsets(db, group);
     sqlite3_stmt *s;
-    string stmt = "INSERT INTO post_sets VALUES(?, ?)";
+    string stmt = "INSERT INTO post_sets VALUES(?, ?, ?, ?, ?";
     sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
 
     Uint32 max_no = group->postsets.size();
@@ -160,7 +160,10 @@ void save_postsets_to_db(sqlite3 *db, NewsGroup *group)
         PostSet *set = group->postsets[i];
         if(!set->db_index){
             sqlite3_bind_int(s, 1, i);
-            sqlite3_bind_text(s, 2, set->subject.c_str(), set->subject.length(), NULL);
+            sqlite3_bind_int(s, 2, set->num_bytes);
+            sqlite3_bind_int(s, 3, set->max_article_no());
+            sqlite3_bind_int(s, 4, set->min_article_no());
+            sqlite3_bind_text(s, 5, set->subject.c_str(), set->subject.length(), NULL);
             sqlite3_step(s);
             sqlite3_reset(s);
             set->db_index = sqlite3_last_insert_rowid(db);

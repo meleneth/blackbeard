@@ -50,11 +50,11 @@ class PostSet {
         NewsGroup *group;
         Uint32 db_index;
 
-        Uint32 has_article_nos;
         Uint32 has_pieces_loaded;
         Uint32 _num_files;
         Uint32 _min_article_no;
         Uint32 _max_article_no;
+        Uint32 num_bytes;
         PostFile *_last_file;
         Uint32 tick;
         Uint32 date;

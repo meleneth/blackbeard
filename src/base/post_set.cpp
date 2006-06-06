@@ -17,7 +17,6 @@ PostSet::PostSet(string subject)
     pattern_name="";
     _min_article_no = 0;
     _max_article_no = 0;
-    has_article_nos = 0;
     has_pieces_loaded = 0;
     group = NULL;
     _last_file = NULL;
@@ -99,7 +98,7 @@ string PostSet::status(void)
 
 Uint32 PostSet::max_article_no(void)
 {
-    if(!has_article_nos){
+    if(!has_pieces_loaded){
         return _max_article_no;
     }
 
@@ -119,7 +118,7 @@ Uint32 PostSet::max_article_no(void)
 
 Uint32 PostSet::min_article_no(void)
 {
-    if(!has_article_nos){
+    if(!has_pieces_loaded){
         return _min_article_no;
     }
 

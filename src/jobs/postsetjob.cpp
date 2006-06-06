@@ -140,7 +140,7 @@ void PostsetJob::load_job_status(void)
     if(in.is_open()){
         in.getline(linebuffer, 1024);
         postset = new PostSet(linebuffer);
-        postset->has_article_nos = 1;
+        postset->has_pieces_loaded = 1;
         in.getline(linebuffer, 1024);
         postset->group = group_for_name(linebuffer);
         postset->group->postsets.push_back(postset);
