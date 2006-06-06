@@ -82,36 +82,12 @@ string XMLNode::end_tag()
     return "</" + name + ">";
 }
 
-void XMLNode::parse_fragment(string fragment)
-{
-    string blanks = " \t\n";
-    string openangle = "<";
-    string equals = "=";
-    string quote = "\"";
-
-    string::size_type pos = fragment.find_first_not_of(blanks, 0);
-    while(string::npos != pos){
-        // this is either the start of a block or the start of our content
-        if(fragment[pos] == '<'){
-        } else {
-            string::size_type pos2 = fragment.find_first_of("<", pos);
-            if(string::npos == pos2) {
-                content = fragment;
-            } else {
-                content = fragment.substr(pos, pos2);
-            }
-        }
-        pos = fragment.find_first_not_of(blanks, pos+1);
-    }
-}
-
-XMLNode *parse_xml_doc(string content)
-{
-    XMLNode *document = new XMLNode("document");
-    document->parse_fragment(content);
-    return document;
-}
-
 void XMLNode::find_for_tag_name(vector<XMLNode *>& result, string tag_name)
 {
+    if(0 == name.compare(tag_name))
+        result.push_back(this);
+
+    for(vector<XMLNode *>::iterator i = children.begin(); i != children.end(); ++i) {
+        (*i)->find_for_tag_name(result, tag_name);
+    }
 }

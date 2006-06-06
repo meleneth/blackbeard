@@ -24,12 +24,10 @@ class XMLNode {
         string start_tag();
         string end_tag();
         string as_text(string prefix);
-        void parse_fragment(string fragment);
         void find_for_tag_name(vector<XMLNode *>& result, string tag_name);
     private:
     protected:
 };
 
-XMLNode *parse_xml_doc(string filename);
 
 #endif

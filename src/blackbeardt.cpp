@@ -16,7 +16,8 @@
 #include "netcentral.hpp"
 #include "file_handle.hpp"
 #include "webserver.hpp"
-#include"xmlnode.hpp"
+#include "xmlnode.hpp"
+#include "xmlparser.hpp"
 
 #include<string>
 #include<sstream>
@@ -387,6 +388,7 @@ void test_initial_header_match(void)
 
 void test_xml_generation(void)
 {
+    console->log("Test XML Generation");
     XMLNode node("tag");
     node.content = "stuff";
     assert(0 == node.as_text("").compare("<tag>stuff</tag>"));
@@ -399,15 +401,33 @@ void test_xml_generation(void)
 
     node.content="";
     node.addChild(new_node);
-    printf("[%s]\n\n\n", node.as_text("").c_str());
     assert(0 == node.as_text("").compare("<tag id=\"cheese\">\n  <bar>baz</bar>\n</tag>"));
+    
+    XMLNode other_node("document");
+    XMLNode foo_node("foo");
+    other_node.addChild(&foo_node);
+    foo_node.content = "halud";
+    printf("%s\n", (other_node.as_text("").c_str()));
+    assert(0 == other_node.as_text("").compare("<document>\n  <foo>halud</foo>\n</document>"));
 }
 
 void test_xml_parse(void)
 {
-    printf( "hrml\n\n");
+    console->log("Test XML Parse");
     XMLNode *node = parse_xml_doc("halud");
     assert(0 == node->as_text("").compare("<document>halud</document>"));
+
+    node = parse_xml_doc("<foo>halud</foo>");
+    printf("%s\n", (node->as_text("").c_str()));
+
+    assert(0 == node->as_text("").compare("<document>\n  <foo>halud</foo>\n</document>"));
+
+    node = parse_xml_doc("<foo id=\"bar\" name=\"zoo\">halberd</foo>");
+
+    vector<XMLNode *> results;
+    node->find_for_tag_name(results, "foo");
+    assert(0 == (*results[0]).get_attr("id").compare("bar"));
+    assert(0 == (*results[0]).get_attr("name").compare("zoo"));
 
 }
 
