@@ -42,6 +42,8 @@ class PostSet {
         string info_filename(void);
 
         string subject;
+        string poster;
+
         vector<PostFile *> files;
         string pattern_name;
 
@@ -55,6 +57,7 @@ class PostSet {
         Uint32 _max_article_no;
         PostFile *_last_file;
         Uint32 tick;
+        Uint32 date;
 
         POSTSET_STATUS _status;
         ParArchive *par;

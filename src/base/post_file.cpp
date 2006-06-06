@@ -129,7 +129,7 @@ Uint32 PostFile::max_article_no(void)
     return article_no;
 }
 
-void PostFile::saw_message_id(Uint32 article_no, string msg_id)
+void PostFile::saw_message_id(Uint32 article_no, string msg_id, Uint32 num_bytes)
 {
     needs_full_info();
     vector<FilePiece *>::iterator p;
@@ -139,7 +139,7 @@ void PostFile::saw_message_id(Uint32 article_no, string msg_id)
             return;
         }
     }
-    pieces.push_back(new FilePiece(article_no, msg_id, SEEN, this));
+    pieces.push_back(new FilePiece(article_no, msg_id, SEEN, this, num_bytes));
 }
 
 bool PostFile::compare(const PostFile* a, const PostFile* b)

@@ -151,7 +151,7 @@ void PSDMSubMatch::process_header(MessageHeader *header)
             postset = get_postset(header);
             postset->has_article_nos = 1;
             PostFile *file = postset->file(pattern->results[filename_index]);
-            file->saw_message_id(header->article_no, header->msg_id);
+            file->saw_message_id(header->article_no, header->msg_id, header->num_bytes);
             size_t yEnc_pos = header->subject.find("yEnc", 0);
             if(yEnc_pos != string::npos){
                 file->decoder_type = DT_YENC;
@@ -183,6 +183,7 @@ PostSet *PSDMSubMatch::get_postset(MessageHeader *header)
     }
 
     PostSet *p = new PostSet(simple);
+    p->poster = header->posted_by;
     p->group = group;
     group->postsets.push_back(p);
     return p;

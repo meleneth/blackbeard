@@ -26,7 +26,7 @@ class PostFile {
 
         string status_string(void);
         string get_bar(void);
-        void saw_message_id(Uint32 article_no, string msg_id);
+        void saw_message_id(Uint32 article_no, string msg_id, Uint32 num_bytes);
         static bool compare(const PostFile* a, const PostFile* b);
         void update_status_from_pieces();
         Uint32 num_downloaded_pieces();
@@ -62,5 +62,7 @@ class PostFile {
     private:
     protected:
 };
+
+void m_mkdir(string dirname);
 
 #endif

@@ -20,6 +20,10 @@ class XMLNode {
 
         string get_attr(string id);
         XMLNode *set_attr(string id, string value);
+
+        Uint32 get_attr_num(string id);
+        XMLNode *set_attr(string id, Uint32 value);
+
         XMLNode *addChild(XMLNode *node);
         string start_tag();
         string end_tag();

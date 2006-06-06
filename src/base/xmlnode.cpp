@@ -24,6 +24,12 @@ string XMLNode::get_attr(string id)
     return "";
 }
 
+Uint32 XMLNode::get_attr_num(string id)
+{
+    string value = get_attr(id);
+    return atoi(value.c_str());
+}
+
 XMLNode *XMLNode::set_attr(string id, string value)
 {
     int max_length = attr_name.size();
@@ -36,6 +42,13 @@ XMLNode *XMLNode::set_attr(string id, string value)
     attr_name.push_back(id);
     attr_value.push_back(value);
     return this;
+}
+
+XMLNode *XMLNode::set_attr(string id, Uint32 value)
+{
+    stringstream s;
+    s << value;
+    return set_attr(id, s.str());
 }
 
 XMLNode *XMLNode::addChild(XMLNode *node)
