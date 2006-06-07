@@ -51,7 +51,6 @@ class PostFile {
         string status;
 
         PostSet *post_set;
-        DecoderType decoder_type;
 
         Uint32 db_index;
         Uint32 _num_file_pieces;

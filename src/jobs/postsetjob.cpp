@@ -151,7 +151,6 @@ void PostsetJob::load_job_status(void)
                 if(filepattern->match(linebuffer)){
                     file = new PostFile(postset);
                     file->filename = filepattern->get_piece(2);
-                    file->decoder_type = DT_YENC;
                     postset->files.push_back(file);
                 } else {
                     if(piecepattern->match(linebuffer)){

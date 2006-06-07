@@ -149,16 +149,8 @@ void PSDMSubMatch::process_header(MessageHeader *header)
         if(filename_index != -1){
 //            console->log("Handling result for '" + pattern->results[filename_index] + "'");
             postset = get_postset(header);
-            postset->has_pieces_loaded = 1;
             PostFile *file = postset->file(pattern->results[filename_index]);
             file->saw_message_id(header->article_no, header->msg_id, header->num_bytes);
-            size_t yEnc_pos = header->subject.find("yEnc", 0);
-            if(yEnc_pos != string::npos){
-                file->decoder_type = DT_YENC;
-            } else {
-                // FIXME BADHAX
-                file->decoder_type = DT_UUDECODE;
-            }
         } else {
             /* FIXME
             console->log("no file name found error");

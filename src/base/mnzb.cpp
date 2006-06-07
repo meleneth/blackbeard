@@ -4,6 +4,7 @@
 #include "post_file.hpp"
 #include "file_handle.hpp"
 #include "xmlparser.hpp"
+#include "console.hpp"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -96,6 +97,7 @@ void mNZB::load_postset(PostSet *set)
     string full_filename = dest_dir + "/" + nzb_filename();
 
     if(!_file_exists(full_filename)) {
+        console->log("Ouch! " + full_filename + " does not exist - could NOT load NZB");
         return;
     }
 
@@ -114,6 +116,8 @@ void mNZB::load_postset(PostSet *set)
     for(i = files.begin(); i != files.end(); ++i) {
         restore_file(set, *i);
     }
+
+    set->has_pieces_loaded = 1;
 }
 
 
@@ -140,7 +144,6 @@ void mNZB::restore_file(PostSet *set, XMLNode *file_node)
         file->pieces.push_back(new_piece);
     }
     file->_num_file_pieces = file->pieces.size();
-    set->has_pieces_loaded = 1;
 }
 
 

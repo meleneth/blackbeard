@@ -90,52 +90,17 @@ void restore_postsets_from_db(sqlite3 *db, NewsGroup *group)
     while (SQLITE_ROW == sqlite3_step(s)){
         PostSet *set = group->postset_for_subject((char *)sqlite3_column_text(s, 1));
         set->db_index = sqlite3_column_int(s, 0);
-        restore_postfiles_from_db(db, set);
-        set->has_pieces_loaded = 1;
         set->tick = 1;
     }
     sqlite3_finalize(s);
 }
 
-void restore_postfiles_from_db(sqlite3 *db, PostSet *set)
+void restore_postfiles(PostSet *set)
 {
-    sqlite3_stmt *s;
-    string stmt = "SELECT postfile_no, num_pieces, name, decoder_type FROM post_files WHERE postset_no = ?";
-    sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
-    sqlite3_bind_int(s, 1, set->db_index); 
-    while (SQLITE_ROW == sqlite3_step(s)){
-        PostFile *file = set->file((char *)sqlite3_column_text(s, 2));
-        file->db_index = sqlite3_column_int(s, 0);
-        file->_num_file_pieces = sqlite3_column_int(s, 1);
-        file->decoder_type = (DecoderType)sqlite3_column_int(s, 3);
-        file->tick = 1;
-    }
-    sqlite3_finalize(s);
+        mNZB nzb;
+        nzb.load_postset(set);
 }
         
-void restore_ids_from_db(sqlite3 *db, PostFile *file)
-{
-    /* FIXME 
-    if(!file->db_index)
-        return;
-
-    sqlite3_stmt *s;
-    string stmt = "SELECT article_no, status, file_piece_no FROM file_pieces WHERE postfile_no = ? ORDER BY file_piece_no";
-    sqlite3_prepare(db, stmt.c_str(), stmt.length(), &s, 0);
-    sqlite3_bind_int(s, 1, file->db_index); 
-    while (SQLITE_ROW == sqlite3_step(s)){
-        FilePiece *new_piece = new FilePiece(sqlite3_column_int(s, 0), (PIECE_STATUS) sqlite3_column_int(s, 1), file);
-        new_piece->db_index = sqlite3_column_int(s, 2);
-        file->pieces.push_back(new_piece);
-        stringstream st;
-        st << "Restoring piece " << new_piece->article_no << " with status " << new_piece->status;
-        console->log(st.str());
-    }
-    file->has_db_pieces = 1;
-    file->_num_downloaded_pieces = file->count_num_downloaded_pieces();
-    sqlite3_finalize(s);
-    */
-}
 
 void delete_old_postsets(sqlite3 *db, NewsGroup *group)
 {
@@ -159,6 +124,7 @@ void save_postsets_to_db(sqlite3 *db, NewsGroup *group)
     for(Uint32 i=0; i<max_no; i++){
         PostSet *set = group->postsets[i];
         if(!set->db_index){
+            console->log("INSERT INTO POST_SETS");
             sqlite3_bind_int(s, 1, i);
             sqlite3_bind_int(s, 2, set->num_bytes);
             sqlite3_bind_int(s, 3, set->max_article_no());
@@ -167,6 +133,8 @@ void save_postsets_to_db(sqlite3 *db, NewsGroup *group)
             sqlite3_step(s);
             sqlite3_reset(s);
             set->db_index = sqlite3_last_insert_rowid(db);
+        } else {
+            console->log("ALREADY HAD DB_INDEX");
         }
         mNZB nzb;
         nzb.save_postset(set);

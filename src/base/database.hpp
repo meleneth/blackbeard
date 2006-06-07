@@ -22,7 +22,7 @@ void save_postfiles(sqlite3* db, PostSet *set);
 
 void restore_newsgroups_from_db(sqlite3 *db);
 void restore_postsets_from_db(sqlite3 *db, NewsGroup *group);
-void restore_postfiles_from_db(sqlite3 *db, PostSet *set);
+void restore_postfiles(PostSet *set);
 
 void remove_postset_info_from_db(PostSet *set);
 

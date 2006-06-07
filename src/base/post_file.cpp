@@ -20,7 +20,6 @@ using std::setprecision;
 PostFile::PostFile(PostSet *postset) 
 {
     post_set = postset;
-    decoder_type = DT_UUDECODE;
     status = "Ignored";
     is_corrupt = 0;
     tick = 1;
