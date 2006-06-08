@@ -96,3 +96,10 @@ void close_finished_files(void)
 
     open_files = still_open_files;
 }
+
+void FileHandle::overwrite()
+{
+    fclose(fh);
+    fh = fopen(filename.c_str(), "w");
+    size = 0;
+}

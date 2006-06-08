@@ -15,6 +15,7 @@ class FileHandle {
         FileHandle(string filename);
         ~FileHandle();
 
+        void overwrite();
         string get_line();
         void write_x_bytes_at(Uint32 x, Uint32 at, const char *data);
         char *read_whole_file();

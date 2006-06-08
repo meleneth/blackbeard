@@ -117,6 +117,7 @@ void XMLNode::write_to_file(string filename)
 {
     string doc = as_text("");
     FileHandle *handle = open_filehandle(filename);
+    handle->overwrite();
     handle->write_x_bytes_at(doc.size(), 0, doc.c_str());
     handle->close();
     close_finished_files();
