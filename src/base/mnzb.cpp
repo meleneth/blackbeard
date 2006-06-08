@@ -8,6 +8,9 @@
 
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <sstream>
+
+using std::stringstream;
 
 mNZB::mNZB()
 {
@@ -91,6 +94,7 @@ Uint32 _file_exists(string filename)
 
 void mNZB::load_postset(PostSet *set)
 {
+    set->has_pieces_loaded = 1;
     this->set = set;
     string dest_dir = config->blackbeard_data_dir + "/" + set->group->name;
     string full_filename = dest_dir + "/" + nzb_filename();
@@ -99,20 +103,11 @@ void mNZB::load_postset(PostSet *set)
 
     if(!_file_exists(full_filename)) {
         console->log("Ouch! " + full_filename + " does not exist - could NOT load NZB");
+        set->has_pieces_loaded = 1;
         return;
     }
 
-    FileHandle *nzb_handle = open_filehandle(full_filename);
-    string xmlfile;
-    while(nzb_handle->still_open) {
-        string z = nzb_handle->get_line();
-        console->log("READ FROM FILE: " + z);
-        xmlfile += z;
-    }
-    nzb_handle->close();
-    close_finished_files();
-
-    XMLNode *parsed = parse_xml_doc(xmlfile);
+    XMLNode *parsed = parse_xml_file(full_filename);
     vector<XMLNode *> files;
 
     parsed->find_for_tag_name(files, "file");
@@ -122,32 +117,37 @@ void mNZB::load_postset(PostSet *set)
         restore_file(set, *i);
     }
 
-    set->has_pieces_loaded = 1;
 }
 
 
 void mNZB::restore_file(PostSet *set, XMLNode *file_node)
 {
+
     vector<XMLNode *> pieces;
     file_node->find_for_tag_name(pieces, "segment");
     string message_id = file_node->content;
 
-    PostFile *file = new PostFile(set);
-    file->filename = file_node->get_attr("subject");
-
     // If we are restoring, there are no pieces or anything already
     // so we can just slam info in there
-    
+    PostFile *file = set->file(file_node->get_attr("subject"));
+    console->log("Restoring file " + file->filename);
+    Uint32 num_pieces = 0;
+
     vector<XMLNode *>::iterator i;
     for(i = pieces.begin(); i!=pieces.end(); ++i){
+        num_pieces++;
         XMLNode *node = *i;
-        FilePiece *new_piece = new FilePiece(node->get_attr_num("article_no"), 
-                                             node->content, 
-                                             (PIECE_STATUS)node->get_attr_num("status"), 
-                                             file, 
-                                             node->get_attr_num("num_bytes"));
-        file->pieces.push_back(new_piece);
+        Uint32 article_num = node->get_attr_num("article_no");
+        Uint32 num_bytes = node->get_attr_num("num_bytes");
+        FilePiece *piece = file->saw_message_id(article_num, message_id , num_bytes);
+
+        piece->status = (PIECE_STATUS)node->get_attr_num("status");
+        num_pieces++;
     }
+    stringstream s;
+    s << num_pieces << " pieces for file";
+    console->log(s.str());
+    file->update_status_from_pieces();
     file->_num_file_pieces = file->pieces.size();
 }
 

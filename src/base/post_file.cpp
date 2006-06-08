@@ -43,12 +43,6 @@ Uint32 PostFile::is_par()
     return 0;
 }
 
-void PostFile::needs_full_info()
-{
-    if(post_set)
-        post_set->needs_full_info();
-}
-
 string PostFile::status_string(void)
 {
     stringstream mystatus;
@@ -127,17 +121,18 @@ Uint32 PostFile::max_article_no(void)
     return article_no;
 }
 
-void PostFile::saw_message_id(Uint32 article_no, string msg_id, Uint32 num_bytes)
+FilePiece *PostFile::saw_message_id(Uint32 article_no, string msg_id, Uint32 num_bytes)
 {
-    needs_full_info();
     vector<FilePiece *>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
         if((*p)->article_no == article_no){
             (*p)->status = SEEN;
-            return;
+            return *p;
         }
     }
-    pieces.push_back(new FilePiece(article_no, msg_id, SEEN, this, num_bytes));
+    FilePiece *piece = new FilePiece(article_no, msg_id, SEEN, this, num_bytes);
+    pieces.push_back(piece);
+    return piece;
 }
 
 bool PostFile::compare(const PostFile* a, const PostFile* b)
@@ -147,7 +142,6 @@ bool PostFile::compare(const PostFile* a, const PostFile* b)
 
 void PostFile::switch_seen_statuses(PIECE_STATUS new_status)
 {
-    needs_full_info();
     vector<FilePiece *>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
         if((*p)->status != MISSING){

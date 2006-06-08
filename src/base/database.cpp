@@ -38,19 +38,21 @@ void restore_postsets(NewsGroup *group)
     Uint32 max_no = sets.size();
     for(Uint32 i=0; i<max_no; ++i) {
         console->log("Restoring postset: " + sets[i]->content);
-        PostSet *set = new PostSet(sets[i]->content);
-        group->add_postset(set);
+        XMLNode *setinfo = sets[i];
+        PostSet *set = group->postset_for_subject(setinfo->content);
+        set->_num_bytes = atol(setinfo->get_attr("num_bytes").c_str());
+        set->_num_files = setinfo->get_attr_num("num_files");
+        set->_min_article_no = setinfo->get_attr_num("min_article_no");
+        set->_max_article_no = setinfo->get_attr_num("max_article_no");
     }
-
-
 }
 
 void restore_postfiles(PostSet *set)
 {
     console->log("Restore postfiles:");
     console->log("For: " + set->subject);
-        mNZB nzb;
-        nzb.load_postset(set);
+    mNZB nzb;
+    nzb.load_postset(set);
 }
         
 
@@ -77,8 +79,10 @@ void save_postsets(NewsGroup *group)
         setnode->set_attr("num_bytes", set->num_bytes());
 
         document->addChild(setnode);
-        mNZB nzb;
-        nzb.save_postset(set);
+        if(set->has_pieces_loaded) {
+            mNZB nzb;
+            nzb.save_postset(set);
+        }
     }
 
     document->write_to_file(config->newsgroup_postsets_filename() + "/" + group->name + ".xml");

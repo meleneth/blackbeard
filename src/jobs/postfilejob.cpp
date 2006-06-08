@@ -46,7 +46,6 @@ Job* PostfileJob::get_next_job()
     }
 
     if(postfile){
-        postfile->needs_full_info(); 
         PIECE_STATUS s = postfile->pieces[piece_no]->status;
         postfile->status = "Downloading";
         postfile->tick = config->tick;

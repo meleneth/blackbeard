@@ -3,8 +3,9 @@
 #include <iostream>  // I/O 
 #include <fstream>   // file I/O
 #include <sstream>
-#include<iomanip>
+#include <iomanip>
 #include <math.h>
+#include "strutil.hpp"
 
 using std::string;
 using std::stringstream;
@@ -129,6 +130,22 @@ string replace_substrings(string from_me, string take_me, string for_me)
         s=from_me.find(take_me);
     }
     return result + from_me;
+}
+
+string xml_escape(string escape_me)
+{
+    escape_me = replace_substrings(escape_me, "&", "&amp;");
+    escape_me = replace_substrings(escape_me, "\"", "&x22;");
+    escape_me = replace_substrings(escape_me, "<", "&lt;");
+    return replace_substrings(escape_me, ">", "&gt;");
+}
+
+string xml_unescape(string unescape_me)
+{
+    unescape_me = replace_substrings(unescape_me, "&x22;", "\"");
+    unescape_me = replace_substrings(unescape_me, "&gt;", ">");
+    unescape_me = replace_substrings(unescape_me, "&lt;", "<");
+    return replace_substrings(unescape_me, "&amp;", "&");
 }
 
 string js_escape(string escape_me)

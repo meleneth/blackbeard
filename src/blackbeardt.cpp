@@ -57,6 +57,7 @@ void test_filehandle(void);
 void test_initial_header_match(void);
 void test_xml_generation(void);
 void test_xml_parse(void);
+void test_xml_escape(void);
 
 void assert_postset_filenames_eq(PostSet *checkme, list<string> against);
 void assert_strings_eq(string s1, string s2);
@@ -72,6 +73,7 @@ int main(int argc, char *argv[])
     newsgroup = new NewsGroup("misc.test");
 
     config->setup_test_config();
+    test_xml_escape();
     //test_filehandle();
     test_xml_generation();
     test_xml_parse();
@@ -429,5 +431,18 @@ void test_xml_parse(void)
     assert(0 == (*results[0]).get_attr("id").compare("bar"));
     assert(0 == (*results[0]).get_attr("name").compare("zoo"));
 
+}
+
+void test_xml_escape(void)
+{
+    string escaped = xml_escape("\"");
+    console->log("it is " + escaped);
+    console->log("Test XML Parse");
+    XMLNode *node = parse_xml_doc("&x22;halud");
+    assert(0 == node->as_text("").compare("<document>&x22;halud</document>"));
+    assert(0 == node->content.compare("\"halud"));
+
+    node->set_attr("number", "5533011");
+    assert(5533011 == node->get_attr_num("number"));
 }
 

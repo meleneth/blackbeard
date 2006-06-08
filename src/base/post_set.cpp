@@ -61,6 +61,7 @@ double PostSet::completed_percent(void)
 PostFile *PostSet::file(string filename)
 {
     tick = config->tick;
+    needs_full_info();
 
     if(_last_file){
         if(_last_file->filename.compare(filename) == 0){
@@ -87,7 +88,7 @@ PostFile *PostSet::file(string filename)
 
 Uint32 PostSet::num_files(void)
 {
-    return files.size();
+    return has_pieces_loaded ? files.size() : _num_files;
 }
 
 string PostSet::status(void)
@@ -140,7 +141,7 @@ Uint32 PostSet::min_article_no(void)
     return article_no;
 }
 
-Uint32 PostSet::num_bytes(void)
+Uint64 PostSet::num_bytes(void)
 {
     if(!has_pieces_loaded){
         return _num_bytes;
@@ -188,30 +189,19 @@ void PostSet::expire(void)
 {
 }
 
-
-
-
 string PostSet::info_filename(void)
 {
     console->log(get_crc_32(subject));
     return get_crc_32(subject);
 }
 
-void PostSet::save_info()
-{
-}
-
-void PostSet::restore_saved_info()
-{
-}
-
 void PostSet::needs_full_info()
 {
     if(!has_pieces_loaded){
+        has_pieces_loaded = 1;
         console->log("Loading full info for " + subject);
         mNZB nzb;
         nzb.load_postset(this);
-        has_pieces_loaded = 1;
     }
 }
 

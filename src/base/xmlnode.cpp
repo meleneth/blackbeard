@@ -1,6 +1,7 @@
 #include "xmlnode.hpp"
 #include "file_handle.hpp"
 #include "console.hpp"
+#include "strutil.hpp"
 
 #include<sstream>
 using std::stringstream;
@@ -42,12 +43,12 @@ XMLNode *XMLNode::set_attr(string id, string value)
     int max_length = attr_name.size();
     for(int i = 0; i < max_length; ++i) {
         if(0 == attr_name[i].compare(id)) {
-            attr_value[i] = value;
+            attr_value[i] = xml_escape(value);
             return this;
         }
     }
     attr_name.push_back(id);
-    attr_value.push_back(value);
+    attr_value.push_back(xml_escape(value));
     return this;
 }
 
@@ -70,7 +71,7 @@ string XMLNode::as_text(string prefix)
     result << prefix << start_tag();
     // children or content, not both FIXME?
     if(0 == children.size()) {
-        result << content;
+        result << xml_escape(content);
     } else {
         result << "\n";
         int max_length = children.size();
@@ -90,7 +91,7 @@ string XMLNode::start_tag()
 
     int max_length = attr_name.size();
     for(int i = 0; i < max_length; ++i){
-        result << " " << attr_name[i] << "=\"" << attr_value[i] << "\"";
+        result << " " << attr_name[i] << "=\"" << xml_escape(attr_value[i]) << "\"";
     }
 
     result << ">";

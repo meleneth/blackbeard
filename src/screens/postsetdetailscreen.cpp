@@ -68,6 +68,7 @@ void PostSetDetailScreen::render(void)
         }
 
         if(set){
+            set->needs_full_info();
             scroll_list->all_items = set->files;
             mvaddnstr(2, 1, (char*)set->status().c_str(), -1);
 

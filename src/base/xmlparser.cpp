@@ -1,6 +1,7 @@
 #include "xmlparser.hpp"
 #include "console.hpp"
 #include "file_handle.hpp"
+#include "strutil.hpp"
 
 XMLParser::XMLParser()
 {
@@ -55,8 +56,6 @@ void XMLParser::parse_fragment(string fragment)
 
 void XMLParser::handle_start_tag(string tag)
 {
-    console->log("handle_start_tag(" + tag + ")");
-
     XMLNode *new_node;
 
     string::size_type pos = tag.find_first_of(" ");
@@ -65,40 +64,30 @@ void XMLParser::handle_start_tag(string tag)
         tag = tag.substr(0, pos);
         new_node = new XMLNode(tag);
 
-        console->log("Tag  : " + tag);
-        console->log("Attrs: " + attrs);
-        
         pos = attrs.find_first_not_of(" ", 0);
         while(pos != string::npos) { 
             string::size_type pos2 = attrs.find_first_of(" =", pos);
             string attr_name = attrs.substr(pos, pos2 - pos);
-            console->log("Attr name: " + attr_name);
 
             pos = attrs.find_first_of("\"", pos2);
             pos2 = attrs.find_first_of("\"", pos + 1);
             string attr_value = attrs.substr(pos + 1, pos2 - pos - 1);
-            console->log("Attr value: " + attr_value);
 
             new_node->set_attr(attr_name, attr_value);
 
             pos = attrs.find_first_not_of(" ", pos2 + 1);
         }
-        console->log("We should be ready for PHUNKY SHIT");
     } else { 
-        console->log("Got the else :/");
         new_node = new XMLNode(tag);
     }
 
-    console->log("Pushing node..");
     node_stack.push_back(new_node);
     current_node->addChild(new_node);
     current_node = new_node;
-    console->log("Done with this node");
 }
 
 void XMLParser::handle_end_tag(string tag)
 {
-    console->log("handle_end_tag(" + tag + ")");
     vector<XMLNode *>::iterator i = node_stack.end();
     if(i != node_stack.begin()){
         i--;
@@ -111,8 +100,7 @@ void XMLParser::handle_end_tag(string tag)
 
 void XMLParser::handle_content(string content)
 {
-    console->log("handle_content(" + content + ")");
-    current_node->content = content;
+    current_node->content = xml_unescape(content);
 }
 
 XMLNode *parse_xml_doc(string content)
@@ -121,6 +109,7 @@ XMLNode *parse_xml_doc(string content)
     parser->parse_fragment(content);
     XMLNode *head = parser->document_node;
     delete parser;
+    console->log("Finished XML parsing");
     return head;
 }
 
@@ -131,7 +120,6 @@ XMLNode *parse_xml_file(string filename)
     string xmlfile;
     while(xml_handle->still_open) {
         string z = xml_handle->get_line();
-        console->log("READ FROM FILE: " + z);
         xmlfile += z;
     }
     xml_handle->close();
@@ -142,5 +130,6 @@ XMLNode *parse_xml_file(string filename)
     delete parser;
     return head;
 }
+
 
 

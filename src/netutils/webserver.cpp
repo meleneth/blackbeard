@@ -85,7 +85,6 @@ void WebServer::handle_request(WebRequest *request)
            console->log("Changing file status");
            PostFile*file = request->postfile();
            file->tick = config->tick;
-           file->needs_full_info();
            if(0 == file->status.compare("Finished")){
                file->switch_seen_statuses(SEEN);
            }

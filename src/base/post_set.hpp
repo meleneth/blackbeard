@@ -32,7 +32,7 @@ class PostSet {
         Uint32 file_index(PostFile *file);
         Uint32 index();
         Uint32 num_files();
-        Uint32 num_bytes();
+        Uint64 num_bytes();
         void needs_full_info();
         static bool compare(const PostSet* a, const PostSet* b);
         bool operator< (const PostSet &b);
@@ -53,7 +53,7 @@ class PostSet {
 
         Uint32 has_pieces_loaded;
         Uint32 _num_files;
-        Uint32 _num_bytes;
+        Uint64 _num_bytes;
         Uint32 _min_article_no;
         Uint32 _max_article_no;
         PostFile *_last_file;

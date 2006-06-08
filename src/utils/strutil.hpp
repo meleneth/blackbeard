@@ -19,6 +19,8 @@ void generate_crc_table(Uint32 *table);
 string replace_all_substrings(string from_me, string take_me, string for_me);
 string replace_substrings(string from_me, string take_me, string for_me);
 
+string xml_escape(string escape_me);
+string xml_unescape(string unescape_me);
 string js_escape(string escape_me);
 string safe_dirname(string unsafe);
 string human_readable_bytes(double num_bytes);
