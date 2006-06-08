@@ -22,10 +22,13 @@ class Config {
         void setup_test_config();
         void save_persistent_data(void);
 
+        string newsgroups_xml_filename(void);
+
         string subscribed_groups_filename();
         string net_jobs_filename();
         string full_job_filename(string job_filename);
         string downloaded_postsets_filename();
+        string newsgroup_postsets_filename();
 
         string news_server;
         string home_dir;

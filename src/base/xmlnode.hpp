@@ -21,6 +21,8 @@ class XMLNode {
         string get_attr(string id);
         XMLNode *set_attr(string id, string value);
 
+        void write_to_file(string filename);
+
         Uint32 get_attr_num(string id);
         XMLNode *set_attr(string id, Uint32 value);
 

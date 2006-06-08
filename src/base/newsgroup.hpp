@@ -33,6 +33,7 @@ class NewsGroup {
         Uint32 postset_index(PostSet *set);
         void subscribe(void);
         void unsubscribe(void);
+        void add_postset(PostSet *set);
 
         PostSet *postset_for_subject(string subject);
         

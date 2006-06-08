@@ -156,3 +156,10 @@ void NewsGroup::unsubscribe(void)
 {
     is_subscribed = 0;
 }
+
+void NewsGroup::add_postset(PostSet *set)
+{
+    set->group = this;
+    postsets.push_back(set);
+}
+

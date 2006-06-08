@@ -31,12 +31,11 @@ void mNZB::save_postset(PostSet *set)
         }
     }
 
-    string doc = head->as_text("");
     string dest_dir = config->blackbeard_data_dir + "/" + set->group->name;
     m_mkdir(dest_dir);
-    FileHandle *handle = open_filehandle(dest_dir + "/" + nzb_filename());
-    handle->write_x_bytes_at(doc.size(), 0, doc.c_str());
-    handle->close();
+
+    head->write_to_file(dest_dir + "/" + nzb_filename());
+    delete head;
 }
 
 string mNZB::nzb_filename()
@@ -96,6 +95,8 @@ void mNZB::load_postset(PostSet *set)
     string dest_dir = config->blackbeard_data_dir + "/" + set->group->name;
     string full_filename = dest_dir + "/" + nzb_filename();
 
+    console->log("full filename is " + full_filename);
+
     if(!_file_exists(full_filename)) {
         console->log("Ouch! " + full_filename + " does not exist - could NOT load NZB");
         return;
@@ -104,8 +105,12 @@ void mNZB::load_postset(PostSet *set)
     FileHandle *nzb_handle = open_filehandle(full_filename);
     string xmlfile;
     while(nzb_handle->still_open) {
-        xmlfile += nzb_handle->get_line();
+        string z = nzb_handle->get_line();
+        console->log("READ FROM FILE: " + z);
+        xmlfile += z;
     }
+    nzb_handle->close();
+    close_finished_files();
 
     XMLNode *parsed = parse_xml_doc(xmlfile);
     vector<XMLNode *> files;

@@ -26,6 +26,7 @@ class XMLParser {
     protected:
 };
 
-XMLNode *parse_xml_doc(string filename);
+XMLNode *parse_xml_doc(string content);
+XMLNode *parse_xml_file(string filename);
 
 #endif

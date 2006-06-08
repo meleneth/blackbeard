@@ -166,13 +166,13 @@ void Config::setup_files(void)
 void Config::load_persistant_data(void)
 {
     console->log("loading persistant data..");
-    restore_db_data();
+    restore_newsgroups();
 }
 
 void Config::save_persistent_data(void)
 {
     console->log("saving persistant data..");
-    save_db_data();
+    save_subscribed_groups();
 }
 
 void Config::setup_test_config(void)
@@ -188,6 +188,17 @@ string Config::full_job_filename(string job_filename)
 {
     return blackbeard_data_dir + "/" + job_filename;
 }
+
+string Config::newsgroups_xml_filename(void)
+{
+    return blackbeard_data_dir + "/newsgroups.xml";
+}
+
+string Config::newsgroup_postsets_filename()
+{
+    return blackbeard_data_dir;
+}
+
 
 // Private members go here.
 // Protected members go here.

@@ -33,7 +33,9 @@ string FileHandle::get_line()
     char *sb = fgets(line_buffer, FH_BUFSIZE, fh);
     if(sb) {
         string s = sb;
-        s = s.substr(0, s.length() - 1);
+        if('\n' == s[s.length() -1]) {
+            s = s.substr(0, s.length()-1);
+        }
         return s;
     } else {
         still_open = 0;

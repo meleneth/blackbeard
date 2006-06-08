@@ -259,3 +259,28 @@ Uint32 PostFile::num_pieces()
     return pieces.size();
 }
 
+Uint32 PostFile::num_bytes(void)
+{
+    Uint32 num = 0;
+
+    Uint32 max_no = pieces.size();
+    for(Uint32 i=0; i<max_no; ++i) {
+        if(pieces[i]){
+            num+=pieces[i]->num_bytes;
+        }
+    }
+    return num;
+}
+
+Uint32 PostFile::num_downloaded_bytes(void)
+{
+    Uint32 num = 0;
+
+    Uint32 max_no = pieces.size();
+    for(Uint32 i=0; i<max_no; ++i) {
+        if(pieces[i] && (pieces[i]->status == FINISHED)){
+            num+=pieces[i]->num_bytes;
+        }
+    }
+    return num;
+}

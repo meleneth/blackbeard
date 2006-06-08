@@ -17,6 +17,8 @@ PostSet::PostSet(string subject)
     pattern_name="";
     _min_article_no = 0;
     _max_article_no = 0;
+    _num_bytes = 0;
+    _num_files = 0;
     has_pieces_loaded = 0;
     group = NULL;
     _last_file = NULL;
@@ -138,6 +140,22 @@ Uint32 PostSet::min_article_no(void)
     return article_no;
 }
 
+Uint32 PostSet::num_bytes(void)
+{
+    if(!has_pieces_loaded){
+        return _num_bytes;
+    }
+    
+    _num_bytes = 0;
+
+    Uint32 max = files.size();
+    for(Uint32 i=0; i<max; ++i) {
+        if(files[i]){
+            _num_bytes += files[i]->num_bytes();
+        }
+    }
+    return _num_bytes;
+}
 bool PostSet::compare(const PostSet* a, const PostSet* b)
 {
     return (a->subject < b->subject);
@@ -190,6 +208,7 @@ void PostSet::restore_saved_info()
 void PostSet::needs_full_info()
 {
     if(!has_pieces_loaded){
+        console->log("Loading full info for " + subject);
         mNZB nzb;
         nzb.load_postset(this);
         has_pieces_loaded = 1;

@@ -42,6 +42,8 @@ class PostFile {
         Uint32 max_article_no(void);
         Uint32 min_article_no(void);
         Uint32 num_pieces(void);
+        Uint32 num_bytes(void);
+        Uint32 num_downloaded_bytes(void);
 
 
         Uint32 is_corrupt;

@@ -1,5 +1,6 @@
 #include "xmlparser.hpp"
 #include "console.hpp"
+#include "file_handle.hpp"
 
 XMLParser::XMLParser()
 {
@@ -31,6 +32,8 @@ void XMLParser::parse_fragment(string fragment)
                     handle_start_tag(fragment.substr(pos + 1, end_tag_pos - pos - 1));
                 }
                 pos = end_tag_pos + 1;
+                if(pos > fragment.length()) 
+                    pos = string::npos;
             } 
         } else {
             // content starts here - next non content is '<'
@@ -80,14 +83,17 @@ void XMLParser::handle_start_tag(string tag)
 
             pos = attrs.find_first_not_of(" ", pos2 + 1);
         }
+        console->log("We should be ready for PHUNKY SHIT");
     } else { 
+        console->log("Got the else :/");
         new_node = new XMLNode(tag);
     }
 
-
+    console->log("Pushing node..");
     node_stack.push_back(new_node);
     current_node->addChild(new_node);
     current_node = new_node;
+    console->log("Done with this node");
 }
 
 void XMLParser::handle_end_tag(string tag)
@@ -113,6 +119,25 @@ XMLNode *parse_xml_doc(string content)
 {
     XMLParser *parser = new XMLParser();
     parser->parse_fragment(content);
+    XMLNode *head = parser->document_node;
+    delete parser;
+    return head;
+}
+
+
+XMLNode *parse_xml_file(string filename)
+{
+    FileHandle *xml_handle = open_filehandle(filename);
+    string xmlfile;
+    while(xml_handle->still_open) {
+        string z = xml_handle->get_line();
+        console->log("READ FROM FILE: " + z);
+        xmlfile += z;
+    }
+    xml_handle->close();
+    close_finished_files();
+    XMLParser *parser = new XMLParser();
+    parser->parse_fragment(xmlfile);
     XMLNode *head = parser->document_node;
     delete parser;
     return head;

@@ -1,4 +1,6 @@
 #include "xmlnode.hpp"
+#include "file_handle.hpp"
+#include "console.hpp"
 
 #include<sstream>
 using std::stringstream;
@@ -11,6 +13,11 @@ XMLNode::XMLNode(string name)
 
 XMLNode::~XMLNode()
 {
+    int max_length = children.size();
+    for(int i = 0; i < max_length; ++i){
+        XMLNode *child = children[i];
+        delete child;
+    }
 }
 
 string XMLNode::get_attr(string id)
@@ -92,6 +99,7 @@ string XMLNode::start_tag()
 
 string XMLNode::end_tag()
 {
+    console->log("END TAG called");
     return "</" + name + ">";
 }
 
@@ -103,4 +111,13 @@ void XMLNode::find_for_tag_name(vector<XMLNode *>& result, string tag_name)
     for(vector<XMLNode *>::iterator i = children.begin(); i != children.end(); ++i) {
         (*i)->find_for_tag_name(result, tag_name);
     }
+}
+
+void XMLNode::write_to_file(string filename)
+{
+    string doc = as_text("");
+    FileHandle *handle = open_filehandle(filename);
+    handle->write_x_bytes_at(doc.size(), 0, doc.c_str());
+    handle->close();
+    close_finished_files();
 }
