@@ -16,6 +16,7 @@ WebPostFiles::WebPostFiles(WebRequest *request) : WebDataFetcher(request)
     output_lines.push_back("|full|cmd|num|num");
 
     set = request->postset();
+    set->needs_full_info();
 
     num_lines = set->files.size();
     for(Uint32 i=0; i<num_lines; ++i) {
@@ -72,6 +73,7 @@ string WebPostFiles::post_file_line(PostFile *file, Uint32 file_index)
     s << " |" << replace_substrings(file->filename, "|", "").substr(0, 80)
       << "||ping_url('"<< r.get_uri() <<"')|" << file->status
       << "|| |" << file->num_downloaded_pieces() << "/"  << file->pieces.size()
+      << "|| |" << human_readable_bytes(file->num_bytes())
       << "|| |";
 
     if(file->pieces.size() == file->num_downloaded_pieces()){

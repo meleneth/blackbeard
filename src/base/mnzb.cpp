@@ -125,7 +125,6 @@ void mNZB::restore_file(PostSet *set, XMLNode *file_node)
 
     vector<XMLNode *> pieces;
     file_node->find_for_tag_name(pieces, "segment");
-    string message_id = file_node->content;
 
     // If we are restoring, there are no pieces or anything already
     // so we can just slam info in there
@@ -133,19 +132,21 @@ void mNZB::restore_file(PostSet *set, XMLNode *file_node)
     console->log("Restoring file " + file->filename);
     Uint32 num_pieces = 0;
 
-    vector<XMLNode *>::iterator i;
-    for(i = pieces.begin(); i!=pieces.end(); ++i){
+    Uint32 max_piece_no = pieces.size();
+    for(Uint32 i = 0; i<max_piece_no; ++i){
         num_pieces++;
-        XMLNode *node = *i;
+        XMLNode *node = pieces[i];
         Uint32 article_num = node->get_attr_num("article_no");
-        Uint32 num_bytes = node->get_attr_num("num_bytes");
+        Uint32 num_bytes = node->get_attr_num("bytes");
+        string message_id = node->content;
         FilePiece *piece = file->saw_message_id(article_num, message_id , num_bytes);
-
         piece->status = (PIECE_STATUS)node->get_attr_num("status");
-        num_pieces++;
+//        stringstream s;
+//        s << "Loaded piece: bytes(" << num_bytes << ") article_num(" << article_num << ") message_id(" << message_id << ")";
+//        console->log(s.str());
     }
     stringstream s;
-    s << num_pieces << " pieces for file";
+    s << num_pieces << " pieces for file - max piece no " << max_piece_no;
     console->log(s.str());
     file->update_status_from_pieces();
     file->_num_file_pieces = file->pieces.size();
