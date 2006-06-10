@@ -187,14 +187,16 @@ string human_readable_bytes(double num_bytes)
     if(num_bytes < 1)
         return "0b";
 
-    result << setprecision(2);
+    //result << setprecision(2);
 
     if(num_bytes > Giga) {
-        result << num_bytes / Giga << "GB";
+        double bytes = num_bytes/Giga;
+        bytes = trunc(bytes * 10) / 10;
+        result << bytes << "GB";
     } else if (num_bytes > Mega) {
-        result << num_bytes / Mega << "MB";
+        result << trunc(num_bytes / Mega) << "MB";
     } else {
-        result << num_bytes / Kay << "kB";
+        result << trunc(num_bytes / Kay) << "kB";
     }
     
     return result.str();
