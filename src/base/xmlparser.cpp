@@ -81,7 +81,7 @@ void XMLParser::handle_start_tag(string tag)
         new_node = new XMLNode(tag);
     }
 
-    node_stack.push_back(new_node);
+    node_stack.push_back(current_node);
     current_node->addChild(new_node);
     current_node = new_node;
 }

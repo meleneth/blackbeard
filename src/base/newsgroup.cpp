@@ -157,3 +157,15 @@ void NewsGroup::unsubscribe(void)
     is_subscribed = 0;
 }
 
+Uint32 NewsGroup::highest_seen_article_no()
+{
+    Uint32 article_no = 0;
+
+    Uint32 max_no = postsets.size();
+    for(Uint32 i=0; i<max_no; ++i){
+        Uint32 postset_max = postsets[i]->max_article_no();
+        article_no = article_no < postset_max ? postset_max : article_no;
+    }
+    return article_no;
+}
+

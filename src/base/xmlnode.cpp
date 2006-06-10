@@ -100,7 +100,6 @@ string XMLNode::start_tag()
 
 string XMLNode::end_tag()
 {
-    console->log("END TAG called");
     return "</" + name + ">";
 }
 

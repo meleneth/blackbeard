@@ -141,13 +141,7 @@ void mNZB::restore_file(PostSet *set, XMLNode *file_node)
         string message_id = node->content;
         FilePiece *piece = file->saw_message_id(article_num, message_id , num_bytes);
         piece->status = (PIECE_STATUS)node->get_attr_num("status");
-//        stringstream s;
-//        s << "Loaded piece: bytes(" << num_bytes << ") article_num(" << article_num << ") message_id(" << message_id << ")";
-//        console->log(s.str());
     }
-    stringstream s;
-    s << num_pieces << " pieces for file - max piece no " << max_piece_no;
-    console->log(s.str());
     file->update_status_from_pieces();
     file->_num_file_pieces = file->pieces.size();
 }

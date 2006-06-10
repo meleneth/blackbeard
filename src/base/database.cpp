@@ -24,6 +24,8 @@ void restore_newsgroups()
     for(Uint32 i=0; i<max_no; ++i) {
         NewsGroup *group = group_for_name(groups[i]->content);
         group->is_subscribed = 1;
+        group->first_article_number = groups[i]->get_attr_num("min_article_no");
+        group->last_article_number = groups[i]->get_attr_num("max_article_no");
         restore_postsets(group);
     }
 
@@ -99,6 +101,8 @@ void save_subscribed_groups()
         if(group->is_subscribed){
             XMLNode *groupnode = new XMLNode("newsgroup");
             groupnode->content = group->name;
+            groupnode->set_attr("min_article_no", group->first_article_number);
+            groupnode->set_attr("max_article_no", group->last_article_number);
             document->addChild(groupnode);
             console->log("Saving postsets for group " + group->name);
             save_postsets(group);
