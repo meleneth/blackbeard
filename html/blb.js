@@ -107,9 +107,8 @@ function data_response(data)
 
 function getResponseTable(data) 
 {
-  var my_table = document.createElement('table');
-  var my_tbody = document.createElement('tbody');
-  my_tbody.id = "ResponseTable";
+  var my_table = Builder.node('table');
+  var my_tbody = Builder.node('tbody', {id: "ResponseTable"} );
   my_table.appendChild(my_tbody);
 
   var header_classes = data.shift().split("|");
@@ -142,16 +141,15 @@ function updateResponseTable(data)
 function getTableRow(data, header_classes) 
 {
   var results = data.split("||");
-  var row  = document.createElement('tr'); 
-  row.id = results.shift();
+  var row  = Builder.node('tr', {id: results.shift()} ); 
   for(var j=0; j< results.length; j++){
-    var cell = document.createElement('td');
-    var a    = document.createElement('a'); 
+    var cell = Builder.node('td');
+    var a; 
     var sub_data = results[j].split("|");
     if(sub_data.length == 1) {
-        a.appendChild(document.createTextNode(sub_data[0]));
+        a = Builder.node('a', sub_data[0]);
     } else {
-        a.appendChild(document.createTextNode(sub_data[1]));
+        a = Builder.node('a', sub_data[1]);
         if(sub_data[0] && (sub_data[0] != " ")){
             //a.onclick = new Function(sub_data[0]);
             a.href = "javascript: " + sub_data[0];
@@ -198,8 +196,7 @@ function ping_url(url) {
 function log_info(info)
 {
   var el = $('jslog');
-  var li = document.createElement('li');
-  li.appendChild(document.createTextNode(info));
+  var li = Builder.node('li', info);
   el.appendChild(li);
 }
 
@@ -225,8 +222,8 @@ function view_file(url)
 function view_file_response(data)
 {
     var thediv = $('content');
-    var pre = document.createElement('pre');
-    pre.appendChild(document.createTextNode(data));
+    var pre = Builder.node('pre');
+    pre.appendChild(Builder.node(data));
     var old = thediv.replaceChild(pre, thediv.firstChild);
     old = undef;
     return false;
