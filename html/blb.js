@@ -1,20 +1,40 @@
-var TabClass = Class.create();
-TabClass.prototype = { 
+var TabManager = Class.create();
+TabManager.prototype = { 
     initialize: function(){
+        this.tabs = $H({});
+        this.current_tab = $('default_tab');
     },
     finish_switch: function() {
-        new Effect.BlindDown($('content'))
+        new Effect.BlindDown(this.current_tab)
+    },
+    add_tab: function(tab_name) {
+        var new_tab = Builder.node("div", "No Info in Tab");
+        new_tab.hide();
+        this.tabs = this.tabs.merge($H((tab_name, new_tab)));
+        $('tab_body').appendChild(new_tab);
+        return new_tab;
+    },
+    div_for_tab: function(tab_name) {
+        this.tabs.each(function(tab){
+            if(tab_name == tab.name) {
+                return tab.value;
+            }
+        });
+        return this.add_tab(tab_name);
     },
     switch_to: function(screen_name) {
-        var me = this;
-        new Effect.BlindUp($('content'), { afterFinish: function() { me.finish_switch() } })
-        this.active_screen = screen_name;
-    }
-
-
+        if(this.current_tab) {
+          var me = this;
+          new Effect.BlindUp(this.current_tab, { afterFinish: function() { me.finish_switch() } })
+          this.current_tab = this.div_for_tab(screen_name);
+        } else {
+          this.current_tab = this.div_for_tab(screen_name);
+          this.finish_switch();
+        }
+    },
 };
 
-var tabs = new TabClass();
+var tabs = new TabManager();
 
 // Old Stuff
 
@@ -46,11 +66,8 @@ function fetch_data(from_where)
 
 function update_meters(jobs, krate)
 {
-  var id = $('jobs_rate');
-  id.replaceChild(document.createTextNode(jobs), id.firstChild);
-
-  id = $('k_rate');
-  id.replaceChild(document.createTextNode(krate), id.firstChild);
+  $('jobs_rate').replaceChild(document.createTextNode(jobs), $('jobs_rate').firstChild);
+  $('k_rate').replaceChild(document.createTextNode(krate), $('k_rate').firstChild);
 }
 
 function update_heading(new_heading)
@@ -97,7 +114,7 @@ function data_response(data)
   if(mode == "update"){
     updateResponseTable(results);
   }else{
-    var thediv = $('content');
+    var thediv = tabs.div_for_tab('NewsGroups');
     var old = thediv.replaceChild(getResponseTable(results), thediv.firstChild);
     old = null;
   }
