@@ -1,3 +1,23 @@
+var TabClass = Class.create();
+TabClass.prototype = { 
+    initialize: function(){
+    },
+    finish_switch: function() {
+        new Effect.BlindDown($('content'))
+    },
+    switch_to: function(screen_name) {
+        var me = this;
+        new Effect.BlindUp($('content'), { afterFinish: function() { me.finish_switch() } })
+        this.active_screen = screen_name;
+    }
+
+
+};
+
+var tabs = new TabClass();
+
+// Old Stuff
+
 var last_data_fetch;
 var refresh_timer;
 var last_tick;
@@ -26,16 +46,16 @@ function fetch_data(from_where)
 
 function update_meters(jobs, krate)
 {
-  var id = document.getElementById('jobs_rate');
+  var id = $('jobs_rate');
   id.replaceChild(document.createTextNode(jobs), id.firstChild);
 
-  id = document.getElementById('k_rate');
+  id = $('k_rate');
   id.replaceChild(document.createTextNode(krate), id.firstChild);
 }
 
 function update_heading(new_heading)
 {
-  var h = document.getElementById('heading');
+  var h = $('heading');
   h.replaceChild(document.createTextNode(new_heading), h.firstChild);
 }
 
@@ -77,7 +97,7 @@ function data_response(data)
   if(mode == "update"){
     updateResponseTable(results);
   }else{
-    var thediv = document.getElementById('content');
+    var thediv = $('content');
     var old = thediv.replaceChild(getResponseTable(results), thediv.firstChild);
     old = null;
   }
@@ -93,23 +113,22 @@ function getResponseTable(data)
   my_table.appendChild(my_tbody);
 
   var header_classes = data.shift().split("|");
-
-  for(var i = 0; i < data.length; i++){
-    if(data[i]){
-      my_tbody.appendChild(getTableRow(data[i], header_classes));
+  data.each(function(row, index) {
+    if(row){
+      my_tbody.appendChild(getTableRow(row, header_classes));
     }
-  }
+  });
   return my_table;
 }
 
 function updateResponseTable(data)
 {
-  var my_tbody = document.getElementById('ResponseTable');
+  var my_tbody = $('ResponseTable');
   var header_classes = data.shift().split("|");
   for(var i = 0; i < data.length; i++){
     if(data[i]){
         var row = getTableRow(data[i], header_classes);
-        var old_row = document.getElementById(row.id);
+        var old_row = $(row.id);
         if(old_row){
             my_tbody.replaceChild(row, old_row);
             old_row = null;
@@ -178,7 +197,7 @@ function ping_url(url) {
 
 function log_info(info)
 {
-  var el = document.getElementById('jslog');
+  var el = $('jslog');
   var li = document.createElement('li');
   li.appendChild(document.createTextNode(info));
   el.appendChild(li);
@@ -205,7 +224,7 @@ function view_file(url)
 
 function view_file_response(data)
 {
-    var thediv = document.getElementById('content');
+    var thediv = $('content');
     var pre = document.createElement('pre');
     pre.appendChild(document.createTextNode(data));
     var old = thediv.replaceChild(pre, thediv.firstChild);

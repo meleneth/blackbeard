@@ -12,12 +12,12 @@ margin-left: 0px;
 }
 
 #content {
-    height: 500px;
+    height: 90%;
     overflow: scroll;
     background-color: #555555;
-padding: 0px;
-padding-left: 10px;
-margin: 0px;
+    padding: 0px;
+    padding-left: 10px;
+    margin: 0px;
 }
 
 #header ul {
