@@ -4,6 +4,8 @@
       O.o
     </title>
     <link rel="stylesheet" href="blb.css" />
+    <script src="/javascripts/prototype.js" type="text/javascript"></script>
+    <script src="/javascripts/scriptaculous.js" type="text/javascript"></script>
     <script src="blb.js"></script>
   </head>
   <body>
@@ -16,12 +18,15 @@
       k/sec: <span id="k_rate">0k/sec</span>
     </div>
     <div id="jslogdiv">
-    <ul id="jslog"></ul>
+      <ul id="jslog"></ul>
     </div>
     <ul class="menu">
       <li><a href="javascript:fetch_data('/joblist')">active jobs</a></li>
       <li><a href="javascript:fetch_data('/newsgroups')">newsgroups</a></li>
     </ul>
+    <div id="tabs">
+    <a href="javascript: tabs.switch_to('newsgroups')">NewsGroups</a>
+    </div>
     <h1 id="heading">No Screen</h1>
     <div id="content">
     No content has been loaded yet.<br />

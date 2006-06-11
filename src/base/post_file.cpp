@@ -219,6 +219,7 @@ FileHandle *PostFile::open_file()
     dest_dir += "/" + safe_dirname(post_set->subject) ;
     if(stat(dest_dir.c_str(), &my_stats) == -1){
         console->log("Creating dir for decode");
+        m_mkdir(dest_dir);
     }else {
         console->log("download dir found");
     }

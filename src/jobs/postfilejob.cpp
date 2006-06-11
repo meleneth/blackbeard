@@ -49,6 +49,7 @@ Job* PostfileJob::get_next_job()
         PIECE_STATUS s = postfile->pieces[piece_no]->status;
         postfile->status = "Downloading";
         postfile->tick = config->tick;
+        postfile->post_set->tick = config->tick;
         switch(s){
             case DOWNLOADING:
                 postfile->pieces[piece_no]->change_status(FINISHED);

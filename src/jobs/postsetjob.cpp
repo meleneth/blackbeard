@@ -24,6 +24,7 @@ using std::endl;
 PostsetJob::PostsetJob(PostSet* post_set)
 {
     postset = post_set;
+    post_set->needs_full_info();
     job = NULL;
     file_no = 0;
     piece_no = 0;

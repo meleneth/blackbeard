@@ -44,12 +44,13 @@ string WebPostSets::status(PostSet *set, Uint32 index)
         << "|| |" << set->num_files()
         << "|| |" << human_readable_bytes(set->num_bytes());
 
-    r.filename = "postfiles";
-    s   << "||fetch_data('" << r.get_uri() << "')|" << js_escape( replace_substrings(set->subject, "|", "").substr(0, 80));
     r.filename = "downloadpostset";
-
     s   << "|| ping_url('" << r.get_uri() << "')| Download"
         << "|| |" << setprecision(3) << set->completed_percent() << "%";
+
+    r.filename = "postfiles";
+    s   << "||fetch_data('" << r.get_uri() << "')|" << js_escape( replace_substrings(set->subject, "|", "").substr(0, 80));
+
     return s.str();
 }
 
