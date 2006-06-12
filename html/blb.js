@@ -36,6 +36,20 @@ TabManager.prototype = {
 
 var tabs = new TabManager();
 
+var UserInterface = Class.create();
+UserInterface.prototype = {
+    initialize: function(){
+    },
+    show_newsgroups: function(){
+        tabs.switch_to('NewsGroups);
+        var tag = tabs.div_for_tab('NewsGroups');
+       fetch_data('/newsgroups', tag);
+    }
+};
+
+var ui = new UserInterface();
+
+
 // Old Stuff
 
 var last_data_fetch;

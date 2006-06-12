@@ -23,10 +23,11 @@ void PostSetSplitterDynamicMatch::process_header(MessageHeader *header)
     vector <PSDMSubMatch *> still_active;
     Uint32 max_no = active.size();
     for(Uint32 i=0; i<max_no; ++i){
-        if (0 == active[i]->posted_by.compare(header->posted_by)){
-            if(active[i]->pattern->match(header->subject)){
-                active[i]->process_header(header);
-                active[i]->last_seen_article_no = header->article_no;
+        PSDMSubMatch *match = active[i];
+        if (0 == match->posted_by.compare(header->posted_by)){
+            if(match->pattern->match(header->subject)){
+                match->process_header(header);
+                match->last_seen_article_no = header->article_no;
                 delete header;
                 return;
             }
@@ -36,8 +37,9 @@ void PostSetSplitterDynamicMatch::process_header(MessageHeader *header)
     unprocessed.push_back(header);
     max_no = unprocessed.size();
     for(Uint32 i=0; i<max_no; ++i){
-        if(is_close(unprocessed[i], header)){
-            active.push_back(new PSDMSubMatch(group, header, unprocessed[i]));
+        MessageHeader *unproc = unprocessed[i];
+        if(is_close(unproc, header)){
+            active.push_back(new PSDMSubMatch(group, header, unproc));
             reprocess_unprocessed();
             return;
         }
