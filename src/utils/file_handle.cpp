@@ -10,7 +10,6 @@ vector <FileHandle *> open_files;
 FileHandle::FileHandle(string filename)
 {
     struct stat my_stats;
-    console->log("Opening " + filename);
     if(stat(filename.c_str(), &my_stats) == -1){
         fh = fopen(filename.c_str(), "w");
     } else {

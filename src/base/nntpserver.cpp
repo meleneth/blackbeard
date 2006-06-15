@@ -60,7 +60,7 @@ void NNTPServer::tick(void)
             if(has_data_waiting()){
                 string line = get_line();
                 responses.push_back(line);
-                console->log("Cmd Rspnse: " + line);
+                //console->log("Cmd Rspnse: " + line);
                 string server_response = line.substr(0, 3);
                 _status = NS_CONNECTED;
                 if(0 == server_response.compare(NO_SUCH_MESSAGE))
@@ -232,7 +232,7 @@ void NNTPServer::send_command(string command)
         shut_down();
     }
 
-    console->log("Sending command: " + command);
+    //console->log("Sending command: " + command);
     _current_command = command;
     TCPConnection::send_command(command);
     _status = NS_COMMAND_RESPONSE;

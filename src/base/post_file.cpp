@@ -46,7 +46,7 @@ Uint32 PostFile::is_par()
 string PostFile::status_string(void)
 {
     stringstream mystatus;
-    mystatus << filename << " - " << status << " - ";
+    mystatus << human_readable_bytes(num_bytes()) << " " << filename << " - " << status << " - ";
     mystatus << num_downloaded_pieces() << "/"  << num_pieces() << " pieces downloaded  ";
     if(num_pieces() == num_downloaded_pieces()){
         mystatus << "100%";
@@ -214,14 +214,12 @@ FileHandle *PostFile::open_file()
         console->log("Creating dir for newsgroup..");
         m_mkdir(dest_dir);
     }else {
-        console->log("download dir found");
     }
     dest_dir += "/" + safe_dirname(post_set->subject) ;
     if(stat(dest_dir.c_str(), &my_stats) == -1){
         console->log("Creating dir for decode");
         m_mkdir(dest_dir);
     }else {
-        console->log("download dir found");
     }
 
     string real_filename = dest_dir + "/" + filename;

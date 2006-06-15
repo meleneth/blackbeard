@@ -141,6 +141,9 @@ void mNZB::restore_file(PostSet *set, XMLNode *file_node)
         string message_id = node->content;
         FilePiece *piece = file->saw_message_id(article_num, message_id , num_bytes);
         piece->status = (PIECE_STATUS)node->get_attr_num("status");
+        if(piece->status == 4) {
+            file->_num_downloaded_pieces++;
+        }
     }
     file->update_status_from_pieces();
     file->_num_file_pieces = file->pieces.size();
