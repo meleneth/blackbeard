@@ -9,8 +9,6 @@
 void save_db_data();
 void restore_db_data();
 
-void delete_old_postsets(NewsGroup *group);
-
 void save_newsgroup(NewsGroup *group);
 void save_subscribed_groups();
 void save_postsets(NewsGroup *group);
@@ -20,7 +18,7 @@ void restore_newsgroups();
 void restore_postsets(NewsGroup *group);
 void restore_postfiles(PostSet *set);
 
-void remove_postset_info(PostSet *set);
+void remove_postset_file(PostSet *set);
 
 Uint32 file_exists(string filename);
 

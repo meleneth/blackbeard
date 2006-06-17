@@ -4,6 +4,7 @@
 #include "mnzb.hpp"
 #include "xmlnode.hpp"
 #include "xmlparser.hpp"
+#include "strutil.hpp"
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -54,32 +55,29 @@ void restore_postfiles(PostSet *set)
     nzb.load_postset(set);
 }
         
-
-void delete_old_postsets(NewsGroup *group)
-{
-    //string postset_delete = "DELETE FROM post_sets WHERE postset_no IN (SELECT postset_no FROM post_files WHERE postfile_no IN (SELECT DISTINCT(postfile_no) FROM file_pieces WHERE article_no < ?))";
-
-}
     
 void save_postsets(NewsGroup *group)
 {
     XMLNode *document = new XMLNode("postsets");
-    delete_old_postsets(group);
 
     Uint32 max_no = group->postsets.size();
     for(Uint32 i=0; i<max_no; i++){
         PostSet *set = group->postsets[i];
-        XMLNode *setnode = new XMLNode("postset");
-        setnode->content = set->subject;
-        setnode->set_attr("min_article_no", set->min_article_no());
-        setnode->set_attr("max_article_no", set->max_article_no());
-        setnode->set_attr("num_files", set->num_files());
-        setnode->set_attr("num_bytes", set->num_bytes());
+        if(set->min_article_no() > group->first_article_number) {
+            XMLNode *setnode = new XMLNode("postset");
+            setnode->content = set->subject;
+            setnode->set_attr("min_article_no", set->min_article_no());
+            setnode->set_attr("max_article_no", set->max_article_no());
+            setnode->set_attr("num_files", set->num_files());
+            setnode->set_attr("num_bytes", set->num_bytes());
 
-        document->addChild(setnode);
-        if(set->has_pieces_loaded) {
-            mNZB nzb;
-            nzb.save_postset(set);
+            document->addChild(setnode);
+            if(set->has_pieces_loaded) {
+                mNZB nzb;
+                nzb.save_postset(set);
+            }
+        } else {
+            remove_postset_file(set);
         }
     }
 
@@ -116,7 +114,10 @@ Uint32 db_file_exists(string filename)
     return -1 != stat(filename.c_str(), &buf);
 }
 
-void remove_postset_info_from_db(PostSet *set)
+void remove_postset_file(PostSet *set)
 {
+    string filename = config->blackbeard_data_dir + "/" + set->group->name + "/" + get_crc_32(set->subject) + ".nzb";
+
+    unlink(filename.c_str());
 }
 
