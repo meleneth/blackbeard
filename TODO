@@ -1,13 +1,30 @@
+Web interface
+    Needs tabbed interface
+    need to cut down on the max info that we send, can't handle sending megs worth of data in AJAX request in timely fashion
+    don't break the old interface until the new one works, moron
+    need a tab for the console
+    need to be able to flip a file's status, which should change status for all of it's pieces as well.  
+
 File Grouping - for rar files and associated .par2 files, should only show one line in the file list.
 Par2 support - auto fix files, remove droppings
 fix download jobs:
-    - Should have one job that manages the postset, show percent / time remaining / size
+    - Should have one job that manages the postset/file (depending on what was queued), show percent / time remaining / size
 Support NZB -
     auto-retrieve .nzb files
     one postset per NZB
     save postset file piece index values as NZB files - gets them out of database and removes slow queries from the design
+    -- this kinda works now.  by that, I mean we store our data files as NZB-ish files, shouldn't be too hard to add 
+    -- 'actual' NZB support, but it's not integrated into the UI's so that you can download on a .NZB and have it
+    -- retrieve from there.  Just as well, our matching kills anyways ;)
 
-Job-ify postset info loading.  Speed it up too, it takes forever and makes being subscribed to big groups painful.  Which is the whole point.
+Seg Faults
+    Web Server - cancelling a request kills blb.  oops, bad webserver.
+
+Console
+    With the reduced log spam this isn't as much of an issue, but old console messages are never removed.
+
+*Job-ify postset info loading.  Speed it up too, it takes forever and makes being subscribed to big groups painful.  Which is the whole point.
+ -- storing info in XML files instead of the sqlite db seems to have cleared this up
 
 -- OLD STUFF BELOW
 
