@@ -12,6 +12,7 @@ using std::setprecision;
 WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 {
     group = request->newsgroup();
+    group->needs_postsets();
 
     output_lines.push_back(info_update_string());
     output_lines.push_back("num||full|num");

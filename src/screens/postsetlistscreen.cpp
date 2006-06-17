@@ -55,6 +55,7 @@ void PostSetListScreen::render(void)
     
     string statusline = "PostSetListScreen::render";
     if(newsgroup){
+        newsgroup->needs_postsets();
         if(scroll_list->known_size != newsgroup->postsets.size()){
             scroll_list->all_items = newsgroup->postsets;
         }

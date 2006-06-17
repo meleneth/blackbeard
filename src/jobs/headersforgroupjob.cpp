@@ -10,6 +10,7 @@ using std::stringstream;
 HeadersForGroupJob::HeadersForGroupJob(NewsGroup *group)
 {
     this->group = group;
+    group->needs_postsets();
     net_cmds.push_back("group " + group->name);
     net_cmds.push_back("xover 1-");
     if(config->dump_subject_file){

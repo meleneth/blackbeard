@@ -5,6 +5,7 @@
 #include "strutil.hpp"
 #include "post_set_splitter_dynamicmatch.hpp"
 #include "messageheader.hpp"
+#include "database.hpp"
 #include <iostream>  // I/O 
 #include <fstream>   // file I/O
 #include <sstream>
@@ -23,6 +24,8 @@ NewsGroup::NewsGroup(string group_name) // Constructor
 {
     name = group_name;
     is_subscribed = 0;
+    _num_postsets = 0;
+    has_postsets_loaded = 0;
     console->log("Creation of object for " + group_name);
     first_article_number = 0;
     first_article_number--;
@@ -41,6 +44,14 @@ NewsGroup::~NewsGroup() // Destructor
         delete postsets[i];
     }
     postsets.clear();
+}
+
+void NewsGroup::needs_postsets()
+{
+    if(has_postsets_loaded)
+        return;
+    has_postsets_loaded = 1;
+    restore_postsets(this);
 }
 
 void NewsGroup::header_scoop(string xover_line)
@@ -91,7 +102,7 @@ string NewsGroup::status_string()
 {
     stringstream buf;
 
-    buf << "(" << postsets.size() << ") " << name << "     " 
+    buf << "(" << num_postsets() << ") " << name << "     " 
         << first_article_number << "-" << last_article_number
         << ", " << last_article_number - first_article_number << " possible"; 
 
@@ -167,5 +178,14 @@ Uint32 NewsGroup::highest_seen_article_no()
         article_no = article_no < postset_max ? postset_max : article_no;
     }
     return article_no;
+}
+
+Uint32 NewsGroup::num_postsets()
+{
+    if(has_postsets_loaded) {
+        return postsets.size();
+    }
+    return _num_postsets;
+
 }
 

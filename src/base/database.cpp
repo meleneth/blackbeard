@@ -26,7 +26,7 @@ void restore_newsgroups()
         group->is_subscribed = 1;
         group->first_article_number = groups[i]->get_attr_num("min_article_no");
         group->last_article_number = groups[i]->get_attr_num("max_article_no");
-        restore_postsets(group);
+        group->_num_postsets = groups[i]->get_attr_num("num_postsets");
     }
 
 }
@@ -99,6 +99,7 @@ void save_subscribed_groups()
             groupnode->content = group->name;
             groupnode->set_attr("min_article_no", group->first_article_number);
             groupnode->set_attr("max_article_no", group->last_article_number);
+            groupnode->set_attr("num_postsets", group->num_postsets());
             document->addChild(groupnode);
             console->log("Saving postsets for group " + group->name);
             save_postsets(group);

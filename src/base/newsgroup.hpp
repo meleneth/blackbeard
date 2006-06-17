@@ -32,8 +32,11 @@ class NewsGroup {
         void expire_old_postsets(Uint32 low_article_no);
         Uint32 postset_index(PostSet *set);
         Uint32 highest_seen_article_no();
+        Uint32 num_postsets();
         void subscribe(void);
         void unsubscribe(void);
+
+        void needs_postsets();
 
         PostSet *postset_for_subject(string subject);
         
@@ -49,6 +52,8 @@ class NewsGroup {
         Uint32 last_article_number;
         PostSetSplitter *splitter;
         Uint32 db_index;
+        Uint32 has_postsets_loaded;
+        Uint32 _num_postsets;
     private:
         int return_code;
 
