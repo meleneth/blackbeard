@@ -30,7 +30,7 @@ string WebNewsGroups::status(NewsGroup *group, Uint32 index)
     r.param("ngi", index);
 
     buf << group->name
-        << "|| |" << group->postsets.size();
+        << "|| |" << group->num_postsets();
 
     r.filename = "update_newsgroup";
     buf << "||ping_url('" << r.get_uri() << "')|" << "Update";

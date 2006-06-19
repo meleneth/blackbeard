@@ -170,6 +170,7 @@ void NewsGroup::unsubscribe(void)
 
 Uint32 NewsGroup::highest_seen_article_no()
 {
+    needs_postsets();
     Uint32 article_no = 0;
 
     Uint32 max_no = postsets.size();

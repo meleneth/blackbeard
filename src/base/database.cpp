@@ -46,6 +46,9 @@ void restore_postsets(NewsGroup *group)
         set->_num_files = setinfo->get_attr_num("num_files");
         set->_min_article_no = setinfo->get_attr_num("min_article_no");
         set->_max_article_no = setinfo->get_attr_num("max_article_no");
+        if(group->last_article_number < set->_max_article_no) {
+            group->last_article_number = set->_max_article_no;
+        }
     }
 }
 
@@ -99,8 +102,10 @@ void save_subscribed_groups()
             groupnode->set_attr("max_article_no", group->last_article_number);
             groupnode->set_attr("num_postsets", group->num_postsets());
             document->addChild(groupnode);
-            console->log("Saving postsets for group " + group->name);
-            save_postsets(group);
+            if(group->has_postsets_loaded){
+                console->log("Saving postsets for group " + group->name);
+                save_postsets(group);
+            }
         }
     }
     console->log("Writing main newsgroups.xml...");
@@ -116,8 +121,9 @@ Uint32 db_file_exists(string filename)
 
 void remove_postset_file(PostSet *set)
 {
+    console->log("Expiring postset " + set->subject);
     string filename = config->blackbeard_data_dir + "/" + set->group->name + "/" + get_crc_32(set->subject) + ".nzb";
-
+    
     unlink(filename.c_str());
 }
 

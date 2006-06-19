@@ -26,7 +26,7 @@ class NetCentral : public JobQueue {
 
         fd_set master;   // master file descriptor list
         fd_set read_fds; // temp file descriptor list for select()
-        Uint32 num_read_bytes;
+        double num_read_bytes;
   
         vector<string> job_filenames; 
     private:
