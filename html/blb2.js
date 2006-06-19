@@ -1,3 +1,10 @@
+var Tab = Class.create();
+Tab.prototype = {
+    initialize: function() {
+    },
+
+};
+
 var TabManager = Class.create();
 TabManager.prototype = { 
     initialize: function(){
