@@ -1,33 +1,52 @@
+var http_busy = 0;
+
+function debug_log(text) 
+{
+    $("debug_log").appendChild(Builder.node("li", [text]));
+}
+
 var Tab = Class.create();
 Tab.prototype = {
-    initialize: function() {
-    },
+    initialize: function(name) {
+        this.name = name;
+        this.div = Builder.node("div");
+        this.tbody = Builder.node("tbody");
+        var link = "javascript: tabs.switch_to(\"" + name + "\");";
+        this.link = Builder.node("a", [name]);
+        this.link.href = link;
+        $('tabs').appendChild(this.link); 
 
+        this.div.appendChild(Builder.node("table", [this.tbody]));
+        this.div.hide();
+    }
 };
 
 var TabManager = Class.create();
 TabManager.prototype = { 
     initialize: function(){
-        this.tabs = $H({});
-        this.current_tab = $('default_tab');
+        this.tabs = [];
+        this.current_tab = null;
     },
     finish_switch: function() {
         new Effect.BlindDown(this.current_tab)
     },
     add_tab: function(tab_name) {
-        var new_tab = Builder.node("div", "No Info in Tab");
-        new_tab.hide();
-        this.tabs = this.tabs.merge($H((tab_name, new_tab)));
-        $('tab_body').appendChild(new_tab);
+        var new_tab = new Tab(tab_name);
+        this.tabs.push(new_tab);
+        $('tab_body').appendChild(new_tab.div);
         return new_tab;
     },
     div_for_tab: function(tab_name) {
+        var tab_in_question;
         this.tabs.each(function(tab){
             if(tab_name == tab.name) {
-                return tab.value;
+                tab_in_question = tab;
             }
         });
-        return this.add_tab(tab_name);
+        if(tab_in_question){
+            return tab_in_question.div;
+        }
+        return this.add_tab(tab_name).div;
     },
     switch_to: function(screen_name) {
         if(this.current_tab) {
@@ -48,7 +67,7 @@ UserInterface.prototype = {
     initialize: function(){
     },
     show_newsgroups: function(){
-        tabs.switch_to('NewsGroups);
+        tabs.switch_to("NewsGroups");
         var tag = tabs.div_for_tab('NewsGroups');
        fetch_data('/newsgroups', tag);
     }
@@ -104,10 +123,8 @@ function get_data(from_where) {
   http_busy = 1;
 
   last_data_fetch = from_where;
-  http.open("GET", from_where, true);
-  http.onreadystatechange = handleHttpResponse;
-  HTTPResponseHandler = data_response;
-  http.send(null);
+  var req = new Ajax.Request( from_where, { method: 'get', onComplete: data_response });
+  log_info("Queue fetch of " + from_where);
   return false;
 }
 
@@ -117,17 +134,9 @@ function RequeueFetch() {
     }
 }
 
-function handleHttpResponse() {
-  if(http_busy) {
-    if (http.readyState == 4) {
-        HTTPResponseHandler(http.responseText);
-        http_busy = 0;
-    }
-  }
-}
-
 function data_response(data)
 {
+  data = data.responseText;
   var results = data.split("\n");
   var run_me = results.shift();
   eval(run_me);
@@ -140,6 +149,7 @@ function data_response(data)
     old = null;
   }
 
+  http_busy = null;
   refresh_timer = setTimeout('RequeueFetch()', 5000);
 }
 
@@ -198,37 +208,9 @@ function getTableRow(data, header_classes)
   return row;
 }
 
-function getHTTPObject() {
-  var xmlhttp;
-  /*@cc_on
-  @if (@_jscript_version >= 5)
-    try {
-      xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-    } catch (e) {
-      try {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-      } catch (E) {
-        xmlhttp = false;
-      }
-    }
-  @else
-  xmlhttp = false;
-  @end @*/
-  if (!xmlhttp && typeof XMLHttpRequest != 'undefined') {
-    try {
-      xmlhttp = new XMLHttpRequest();
-    } catch (e) {
-      xmlhttp = false;
-    }
-  }
-  return xmlhttp;
-}
-
 function ping_url(url) {
     /* runs a get on a url, but doesn't do anything with the response*/
-    var req = getHTTPObject();
-    req.open("GET", url, true);
-    req.send(null);
+    var pinger = new Ajax.Request( url, { method: 'get'});
 }
 
 function log_info(info)
@@ -236,6 +218,17 @@ function log_info(info)
   var el = $('jslog');
   var li = Builder.node('li', info);
   el.appendChild(li);
+}
+
+function view_file_response(data)
+{
+    data = data.responseText;
+    var thediv = $('content');
+    var pre = Builder.node('pre');
+    pre.appendChild(Builder.node(data));
+    var old = thediv.replaceChild(pre, thediv.firstChild);
+    old = undef;
+    return false;
 }
 
 function view_file(url)
@@ -251,22 +244,8 @@ function view_file(url)
   http_busy = 1;
   last_data_fetch = 0;
 
-  http.open("GET", url, true);
-  HTTPResponseHandler = view_file_response;
-  http.onreadystatechange = handleHttpResponse;
-  http.send(null);
+  var req = new Ajax.Request( url, { method: 'get', onComplete: view_file_response });
 }
 
-function view_file_response(data)
-{
-    var thediv = $('content');
-    var pre = Builder.node('pre');
-    pre.appendChild(Builder.node(data));
-    var old = thediv.replaceChild(pre, thediv.firstChild);
-    old = undef;
-    return false;
-}
 
-var http = getHTTPObject(); // We create the HTTP Object
-var http_busy = 0;
 
