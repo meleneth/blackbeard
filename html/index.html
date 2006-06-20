@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="blb.css" />
     <script src="/javascripts/prototype.js" type="text/javascript"></script>
     <script src="/javascripts/scriptaculous.js" type="text/javascript"></script>
-    <script src="blb.js"></script>
+    <script src="blb2.js"></script>
   </head>
   <body>
   <div>
@@ -22,15 +22,17 @@
     </div>
     <ul class="menu">
       <li><a href="javascript:fetch_data('/joblist')">active jobs</a></li>
-      <li><a href="javascript:fetch_data('/newsgroups')">newsgroups</a></li>
+      <li><a href="javascript:ui.show_newsgroups()">newsgroups</a></li>
     </ul>
     <div id="tabs">
-    <a href="javascript: tabs.switch_to('newsgroups')">NewsGroups</a>
     </div>
+    <div id="tab_body">
     <h1 id="heading">No Screen</h1>
-    <div id="content">
-    No content has been loaded yet.<br />
+    <div id="default_tab">
+      No Tab Loaded
     </div>
     </div>
+    </div>
+    <ul id="debug_log" style="clear: both;"> </ul>
   </body>
 </html>

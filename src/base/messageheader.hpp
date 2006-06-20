@@ -20,6 +20,7 @@ class MessageHeader {
         string posted_by;
         Uint32 process_count;
         Uint32 num_bytes;
+        Uint32 tick;
     private:
     protected:
 };

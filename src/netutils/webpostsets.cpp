@@ -9,23 +9,35 @@
 using std::stringstream;
 using std::setprecision;
 
+#define MAX_PER_REQUEST 20
+
 WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 {
     group = request->newsgroup();
     group->needs_postsets();
 
-    output_lines.push_back(info_update_string());
+    output_lines.push_back("");
     output_lines.push_back("num||full|num");
     num_lines = group->postsets.size();
+    Uint32 request_tick = request->paramn("tick");
+    Uint32 got_num = request->paramn("got_num");
+    Uint32 valid_num = 0;
 
     for(Uint32 i=0; i<num_lines; ++i) {
-        if(group->postsets[i]->tick > request->paramn("tick")) {
-            if(group->postsets[i]->num_files() > 10) {
-                output_lines.push_back(status(group->postsets[i], i));
+        PostSet *set = group->postsets[i];
+        if(set->tick > request_tick) {
+            if(set->num_files() > 10) {
+                valid_num++;
+                if(valid_num > got_num) {
+                    if(valid_num < (got_num + MAX_PER_REQUEST)) {
+                        output_lines.push_back(status(set, i));
+                    }
+                }
             }
         }
     }
     num_lines = output_lines.size();
+    output_lines[0] = info_update_string();
 }
 
 WebPostSets::~WebPostSets()

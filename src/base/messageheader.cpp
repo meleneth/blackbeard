@@ -1,4 +1,5 @@
 #include "messageheader.hpp"
+#include "config.hpp"
 
 MessageHeader::MessageHeader(NewsGroup *group, Uint32 article_no, string msg_id, string subject, string posted_by, Uint32 num_bytes)
 {
@@ -8,6 +9,7 @@ MessageHeader::MessageHeader(NewsGroup *group, Uint32 article_no, string msg_id,
     this->msg_id = msg_id;
     this->article_no = article_no;
     this->num_bytes = num_bytes;
+    this->tick = config->tick;
     process_count = 0;
 }
 

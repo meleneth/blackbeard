@@ -1,28 +1,86 @@
-var TabClass = Class.create();
-TabClass.prototype = { 
-    initialize: function(){
-    },
-    finish_switch: function() {
-        new Effect.BlindDown($('content'))
-    },
-    switch_to: function(screen_name) {
-        var me = this;
-        new Effect.BlindUp($('content'), { afterFinish: function() { me.finish_switch() } })
-        this.active_screen = screen_name;
+var http_busy = 0;
+
+function debug_log(text) 
+{
+    $("debug_log").appendChild(Builder.node("li", [text]));
+}
+
+var Tab = Class.create();
+Tab.prototype = {
+    initialize: function(name) {
+        this.name = name;
+        this.div = Builder.node("div");
+        this.tbody = Builder.node("tbody");
+        var link = "javascript: tabs.switch_to(\"" + name + "\");";
+        this.link = Builder.node("a", [name]);
+        this.link.href = link;
+        $('tabs').appendChild(this.link); 
+
+        this.div.appendChild(Builder.node("table", [this.tbody]));
+        this.div.hide();
     }
-
-
 };
 
-var tabs = new TabClass();
+var TabManager = Class.create();
+TabManager.prototype = { 
+    initialize: function(){
+        this.tabs = [];
+        this.current_tab = null;
+    },
+    finish_switch: function() {
+        new Effect.BlindDown(this.current_tab)
+    },
+    add_tab: function(tab_name) {
+        var new_tab = new Tab(tab_name);
+        this.tabs.push(new_tab);
+        $('tab_body').appendChild(new_tab.div);
+        return new_tab;
+    },
+    div_for_tab: function(tab_name) {
+        var tab_in_question;
+        this.tabs.each(function(tab){
+            if(tab_name == tab.name) {
+                tab_in_question = tab;
+            }
+        });
+        if(tab_in_question){
+            return tab_in_question.div;
+        }
+        return this.add_tab(tab_name).div;
+    },
+    switch_to: function(screen_name) {
+        if(this.current_tab) {
+          var me = this;
+          new Effect.BlindUp(this.current_tab, { afterFinish: function() { me.finish_switch() } })
+          this.current_tab = this.div_for_tab(screen_name);
+        } else {
+          this.current_tab = this.div_for_tab(screen_name);
+          this.finish_switch();
+        }
+    },
+};
+
+var tabs = new TabManager();
+
+var UserInterface = Class.create();
+UserInterface.prototype = {
+    initialize: function(){
+    },
+    show_newsgroups: function(){
+        tabs.switch_to("NewsGroups");
+        var tag = tabs.div_for_tab('NewsGroups');
+       fetch_data('/newsgroups', tag);
+    }
+};
+
+var ui = new UserInterface();
+
 
 // Old Stuff
 
 var last_data_fetch;
 var refresh_timer;
-var last_tick;
 var mode;
-var HTTPResponseHandler;
 var previous_urls = new Array();
 previous_urls.push("index.html");
 var old_from_where = 'index.html';
@@ -33,7 +91,7 @@ function back_button()
     // fetch_data(previous_urls.pop());
 }
 
-function fetch_data(from_where)
+function fetch_data(from_where, to_where)
 {
   previous_urls.push(old_from_where);
   if(refresh_timer){
@@ -46,11 +104,8 @@ function fetch_data(from_where)
 
 function update_meters(jobs, krate)
 {
-  var id = $('jobs_rate');
-  id.replaceChild(document.createTextNode(jobs), id.firstChild);
-
-  id = $('k_rate');
-  id.replaceChild(document.createTextNode(krate), id.firstChild);
+  $('jobs_rate').replaceChild(document.createTextNode(jobs), $('jobs_rate').firstChild);
+  $('k_rate').replaceChild(document.createTextNode(krate), $('k_rate').firstChild);
 }
 
 function update_heading(new_heading)
@@ -66,10 +121,8 @@ function get_data(from_where) {
   http_busy = 1;
 
   last_data_fetch = from_where;
-  http.open("GET", from_where, true);
-  http.onreadystatechange = handleHttpResponse;
-  HTTPResponseHandler = data_response;
-  http.send(null);
+  var req = new Ajax.Request( from_where, { method: 'get', onComplete: data_response });
+  log_info("Queue fetch of " + from_where);
   return false;
 }
 
@@ -79,17 +132,9 @@ function RequeueFetch() {
     }
 }
 
-function handleHttpResponse() {
-  if(http_busy) {
-    if (http.readyState == 4) {
-        HTTPResponseHandler(http.responseText);
-        http_busy = 0;
-    }
-  }
-}
-
 function data_response(data)
 {
+  data = data.responseText;
   var results = data.split("\n");
   var run_me = results.shift();
   eval(run_me);
@@ -97,11 +142,12 @@ function data_response(data)
   if(mode == "update"){
     updateResponseTable(results);
   }else{
-    var thediv = $('content');
+    var thediv = tabs.div_for_tab('NewsGroups');
     var old = thediv.replaceChild(getResponseTable(results), thediv.firstChild);
     old = null;
   }
 
+  http_busy = null;
   refresh_timer = setTimeout('RequeueFetch()', 5000);
 }
 
@@ -160,37 +206,9 @@ function getTableRow(data, header_classes)
   return row;
 }
 
-function getHTTPObject() {
-  var xmlhttp;
-  /*@cc_on
-  @if (@_jscript_version >= 5)
-    try {
-      xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
-    } catch (e) {
-      try {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-      } catch (E) {
-        xmlhttp = false;
-      }
-    }
-  @else
-  xmlhttp = false;
-  @end @*/
-  if (!xmlhttp && typeof XMLHttpRequest != 'undefined') {
-    try {
-      xmlhttp = new XMLHttpRequest();
-    } catch (e) {
-      xmlhttp = false;
-    }
-  }
-  return xmlhttp;
-}
-
 function ping_url(url) {
     /* runs a get on a url, but doesn't do anything with the response*/
-    var req = getHTTPObject();
-    req.open("GET", url, true);
-    req.send(null);
+    var pinger = new Ajax.Request( url, { method: 'get'});
 }
 
 function log_info(info)
@@ -198,6 +216,17 @@ function log_info(info)
   var el = $('jslog');
   var li = Builder.node('li', info);
   el.appendChild(li);
+}
+
+function view_file_response(data)
+{
+    data = data.responseText;
+    var thediv = $('content');
+    var pre = Builder.node('pre');
+    pre.appendChild(Builder.node(data));
+    var old = thediv.replaceChild(pre, thediv.firstChild);
+    old = undef;
+    return false;
 }
 
 function view_file(url)
@@ -213,22 +242,8 @@ function view_file(url)
   http_busy = 1;
   last_data_fetch = 0;
 
-  http.open("GET", url, true);
-  HTTPResponseHandler = view_file_response;
-  http.onreadystatechange = handleHttpResponse;
-  http.send(null);
+  var req = new Ajax.Request( url, { method: 'get', onComplete: view_file_response });
 }
 
-function view_file_response(data)
-{
-    var thediv = $('content');
-    var pre = Builder.node('pre');
-    pre.appendChild(Builder.node(data));
-    var old = thediv.replaceChild(pre, thediv.firstChild);
-    old = undef;
-    return false;
-}
 
-var http = getHTTPObject(); // We create the HTTP Object
-var http_busy = 0;
 
