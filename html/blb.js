@@ -2,23 +2,33 @@ var http_busy = 0;
 
 function debug_log(text) 
 {
-    $("debug_log").appendChild(Builder.node("li", [text]));
+  $("debug_log").appendChild(Builder.node("li", [text]));
 }
 
 var Tab = Class.create();
 Tab.prototype = {
-    initialize: function(name) {
-        this.name = name;
-        this.div = Builder.node("div");
-        this.tbody = Builder.node("tbody");
-        var link = "javascript: tabs.switch_to(\"" + name + "\");";
-        this.link = Builder.node("a", [name]);
-        this.link.href = link;
-        $('tabs').appendChild(this.link); 
+  initialize: function(name) {
+    this.name = name;
+    this.div = Builder.node("div");
+    this.tbody = Builder.node("tbody");
+    var link = "javascript: tabs.switch_to(\"" + name + "\");";
+    this.link = Builder.node("a", [name]);
+    this.link.href = link;
+    this.next_data_fetch="";
+    $('tabs').appendChild(this.link); 
 
-        this.div.appendChild(Builder.node("table", [this.tbody]));
-        this.div.hide();
-    }
+    this.div.appendChild(Builder.node("table", [this.tbody]));
+    this.div.hide();
+  },
+  update_data: function(data) {
+  },
+  update_url_data: function(url) {
+    var req = new Ajax.Request( url, { method: 'get', onComplete: function(data){
+      
+    }});
+    var current_tabname = this.name;
+    
+  }
 };
 
 var TabManager = Class.create();
@@ -36,17 +46,16 @@ TabManager.prototype = {
         $('tab_body').appendChild(new_tab.div);
         return new_tab;
     },
+    tab_for_name: function(tab_name) {
+      for(var i = 0; i < this.tabs.length; i++){
+          if(tab_name == this.tabs[i].name) {
+              return this.tabs[i];
+          }
+      }
+      return this.add_tab(tab_name);
+    },
     div_for_tab: function(tab_name) {
-        var tab_in_question;
-        this.tabs.each(function(tab){
-            if(tab_name == tab.name) {
-                tab_in_question = tab;
-            }
-        });
-        if(tab_in_question){
-            return tab_in_question.div;
-        }
-        return this.add_tab(tab_name).div;
+        return this.tab_for_name(tab_name).div;
     },
     switch_to: function(screen_name) {
         if(this.current_tab) {
@@ -70,6 +79,11 @@ UserInterface.prototype = {
         tabs.switch_to("NewsGroups");
         var tag = tabs.div_for_tab('NewsGroups');
        fetch_data('/newsgroups', tag);
+    },
+    open_tab_with_url_data: function(tab_name, url){
+      var tab = tabs.tab_for_name(tab_name);
+      tab.update_url_data(url);
+      tabs.switch_to(tab_name);
     }
 };
 
@@ -114,24 +128,6 @@ function update_heading(new_heading)
   h.replaceChild(document.createTextNode(new_heading), h.firstChild);
 }
 
-function get_data(from_where) {
-  if(http_busy){
-      return false;
-  }
-  http_busy = 1;
-
-  last_data_fetch = from_where;
-  var req = new Ajax.Request( from_where, { method: 'get', onComplete: data_response });
-  log_info("Queue fetch of " + from_where);
-  return false;
-}
-
-function RequeueFetch() {
-    if(last_data_fetch){
-        get_data(last_data_fetch);
-    }
-}
-
 function data_response(data)
 {
   data = data.responseText;
@@ -149,21 +145,6 @@ function data_response(data)
 
   http_busy = null;
   refresh_timer = setTimeout('RequeueFetch()', 5000);
-}
-
-function getResponseTable(data) 
-{
-  var my_table = Builder.node('table');
-  var my_tbody = Builder.node('tbody', {id: "ResponseTable"} );
-  my_table.appendChild(my_tbody);
-
-  var header_classes = data.shift().split("|");
-  data.each(function(row, index) {
-    if(row){
-      my_tbody.appendChild(getTableRow(row, header_classes));
-    }
-  });
-  return my_table;
 }
 
 function updateResponseTable(data)
@@ -211,12 +192,6 @@ function ping_url(url) {
     var pinger = new Ajax.Request( url, { method: 'get'});
 }
 
-function log_info(info)
-{
-  var el = $('jslog');
-  var li = Builder.node('li', info);
-  el.appendChild(li);
-}
 
 function view_file_response(data)
 {

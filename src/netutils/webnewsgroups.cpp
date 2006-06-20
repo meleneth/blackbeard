@@ -29,7 +29,7 @@ string WebNewsGroups::status(NewsGroup *group, Uint32 index)
     r.delete_param("tick");
     r.param("ngi", index);
 
-    buf << group->name
+    buf << "ng" << index
         << "|| |" << group->num_postsets();
 
     r.filename = "update_newsgroup";

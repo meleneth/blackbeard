@@ -53,7 +53,7 @@ string WebPostSets::status(PostSet *set, Uint32 index)
     r.filename = "postfiles";
 
     stringstream s;
-    s   << index
+    s   << "ps_" << set->group->index() << "_" << index
         << "|| |" << set->num_files()
         << "|| |" << human_readable_bytes(set->num_bytes());
 
