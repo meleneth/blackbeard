@@ -37,23 +37,40 @@ Tab.prototype = {
 
   },
   update_table_row: function(row, headers) {
+      debug_log("hi mom");
+      debug_log(row);
     var cells = row.split("||");
     var rowid = cells.shift();
     var row = this.tbody.children.find(function(row){ return row.id == rowid});
     if(!row) {
-        row = Builder.node("tr", {id: rowid}, [headers.map(function(h, i){Builder.node("td", {class: h}); })]);
+        row = Builder.node("tr", {id: rowid}, 
+                           [ headers.map(
+                             function(h, i){
+                               Builder.node("td", {class: h}, [this.table_cell(cells[i])]); 
+                       })]);
+        return;
     }
     cells.map(function(cell, cell_index){
 
     });
   },
+  ping_pong: function(bang) {
+      debug_log("pIngPong(" + bang + ")");
+  },
   update_url_data: function(url) {
-    var req = new Ajax.Request( url, { method: 'get', onComplete: function(request){
-      var data = request.responseText.split("\n");
-      var run_me = data.shift();
-      eval(run_me);
-      var headers = data.shift().split("|");
-      data.each(function(row) { this.update_table_row(row, headers) });
+    var req = new Ajax.Request( url, { 
+      method: 'get', 
+      onComplete: function(request){
+        var data = request.responseText.split("\n");
+        debug_log(data.join("<br />"));
+        var run_me = data.shift();
+        eval(run_me);
+        var headers = data.shift();
+        headers = headers.split("|");
+        var tab = this;
+        debug_log(data);
+        data.each(function(row) { debug_log("Moo - " + row); this.ping_pong(row); debug_log("broke for sho") });
+        //tab.update_table_row(row, headers) ; 
     }});
     var current_tabname = this.name;
     
