@@ -36,7 +36,7 @@ string WebNewsGroups::status(NewsGroup *group, Uint32 index)
     buf << "||ping_url('" << r.get_uri() << "')|" << "Update";
     
     r.filename = "postsets";
-    buf << "||fetch_data('" << r.get_uri() <<  "')|" << group->name
+    buf << "||ui.open_tab_with_url_data('" << group->name << "', '" << r.get_uri() <<  "')|" << group->name
         << "|| |" << group->last_article_number - group->first_article_number;
 
     return buf.str();

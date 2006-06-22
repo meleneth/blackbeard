@@ -17,7 +17,7 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
     group->needs_postsets();
 
     output_lines.push_back("");
-    output_lines.push_back("num||full|num");
+    output_lines.push_back("num|||num|full");
     num_lines = group->postsets.size();
     Uint32 request_tick = request->paramn("tick");
     Uint32 got_num = request->paramn("got_num");

@@ -7,10 +7,10 @@ function debug_log(text)
 
 var Tab = Class.create();
 Tab.prototype = {
-  div: Builder.node("div", ["This is the tab content area"]),
-  tbody: Builder.node("tbody"),
   next_data_fetch: "",
   initialize: function(name) {
+    this.div = Builder.node("div");
+    this.tbody = Builder.node("tbody");
     this.name = name;
     this.link = Builder.node("a", [name]);
     this.link.href = "javascript: tabs.switch_to('" + name + "')"
@@ -19,11 +19,9 @@ Tab.prototype = {
     this.div.appendChild(Builder.node("table", [this.tbody]));
     this.div.hide();
   },
-  update_data: function(data) {
-  },
   table_cell: function(cell_data) {
     var a; 
-    var sub_data = results[j].split("|");
+    var sub_data = cell_data.split("|");
     if(sub_data.length == 1) {
         a = Builder.node('a', sub_data[0]);
     } else {
@@ -37,40 +35,37 @@ Tab.prototype = {
 
   },
   update_table_row: function(row, headers) {
-      debug_log("hi mom");
-      debug_log(row);
     var cells = row.split("||");
     var rowid = cells.shift();
-    var row = this.tbody.children.find(function(row){ return row.id == rowid});
+    var children = $A(this.tbody.childNodes);
+    var row = children.find(function(row){ return row.id == rowid});
+    var me = this;
     if(!row) {
-        row = Builder.node("tr", {id: rowid}, 
-                           [ headers.map(
-                             function(h, i){
-                               Builder.node("td", {class: h}, [this.table_cell(cells[i])]); 
-                       })]);
+        row = Builder.node("tr", {id: rowid});
+        headers.map( function(h, i){
+          row.appendChild(Builder.node("td", {class: h}, [me.table_cell(cells[i])] ));
+        });
+        this.tbody.appendChild(row);
         return;
     }
+    var row_cells = row.childNodes;
     cells.map(function(cell, cell_index){
-
+        var new_cell = me.table_cell(cell);
+        var old_cell = row_cells[cell_index];
+        old_cell.replaceChild(new_cell, old_cell.firstChild);
     });
   },
-  ping_pong: function(bang) {
-      debug_log("pIngPong(" + bang + ")");
-  },
   update_url_data: function(url) {
+    var tab = this;
     var req = new Ajax.Request( url, { 
       method: 'get', 
       onComplete: function(request){
         var data = request.responseText.split("\n");
-        debug_log(data.join("<br />"));
         var run_me = data.shift();
         eval(run_me);
         var headers = data.shift();
         headers = headers.split("|");
-        var tab = this;
-        debug_log(data);
-        data.each(function(row) { debug_log("Moo - " + row); this.ping_pong(row); debug_log("broke for sho") });
-        //tab.update_table_row(row, headers) ; 
+        data.each(function(row) { if(!row) return; tab.update_table_row(row, headers);});
     }});
     var current_tabname = this.name;
     
