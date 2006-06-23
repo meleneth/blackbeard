@@ -9,7 +9,7 @@
 using std::stringstream;
 using std::setprecision;
 
-#define MAX_PER_REQUEST 20
+#define MAX_PER_REQUEST 100
 
 WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 {
@@ -17,11 +17,13 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
     group->needs_postsets();
 
     output_lines.push_back("");
-    output_lines.push_back("num|||num|full");
+    output_lines.push_back("num|num||num|full");
     num_lines = group->postsets.size();
     Uint32 request_tick = request->paramn("tick");
     Uint32 got_num = request->paramn("got_num");
     Uint32 valid_num = 0;
+    Uint32 next_tick = config->tick;
+    Uint32 last_got_num = 0;
 
     for(Uint32 i=0; i<num_lines; ++i) {
         PostSet *set = group->postsets[i];
@@ -31,13 +33,19 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
                 if(valid_num > got_num) {
                     if(valid_num < (got_num + MAX_PER_REQUEST)) {
                         output_lines.push_back(status(set, i));
+                        last_got_num = valid_num;
+                    } else {
+                        next_tick = request_tick;
+                        i = num_lines;
                     }
                 }
             }
         }
     }
     num_lines = output_lines.size();
-    output_lines[0] = info_update_string();
+    stringstream s;
+    s << "tab.last_retrieve = '/postsets?ngi=" << request->paramn("ngi") << ";tick=" << next_tick << ";got_num=" << last_got_num << ";';" << info_update_string();
+    output_lines[0] = s.str();
 }
 
 WebPostSets::~WebPostSets()
@@ -72,12 +80,9 @@ string WebPostSets::info_update_string(void)
     WebRequest r(request->get_uri());
     r.param("tick", config->tick);
     stringstream s;
-    s << "last_data_fetch = \"" << r.get_uri() << "\"; "
-      <<  WebDataFetcher::info_update_string()
+    s <<  WebDataFetcher::info_update_string()
       << "update_heading('" << group->name << "');";
 
-    if(request->paramn("tick"))
-        s << "mode=\"update\";";
     return s.str();
 }
 

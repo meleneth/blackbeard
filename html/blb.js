@@ -105,6 +105,14 @@ TabManager.prototype = {
           this.finish_switch();
         }
     },
+    update_current_tab: function(){
+        var tab = tabs.current_tab;
+        if(tab){
+            if(tab.last_retrieve) {
+                tab.update_url_data(tab.last_retrieve);
+            }
+        }
+    }
 };
 
 var tabs = new TabManager();
@@ -223,4 +231,5 @@ function view_file(url)
 }
 
 
+new PeriodicalExecuter(function(){ tabs.update_current_tab(); }, 5);
 

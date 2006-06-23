@@ -40,7 +40,7 @@ string WebPostFiles::info_update_string(void)
     r.param("tick", config->tick);
 
     stringstream s;
-    s << "last_data_fetch = \"" << r.get_uri() << "\"; "
+    s << "tab.last_retrieve = \"" << r.get_uri() << "\"; "
       <<  WebDataFetcher::info_update_string()
       << "update_heading('" + js_escape(set->subject) + "');";
 
