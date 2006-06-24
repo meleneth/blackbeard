@@ -15,15 +15,15 @@
       k/sec: <span id="k_rate">0k/sec</span>
     </div>
     <ul class="menu">
-      <li><a href="javascript:fetch_data('/joblist')">active jobs</a></li>
-      <li><a href="javascript:ui.show_newsgroups()">newsgroups</a></li>
+      <li><a href="javascript:ui.open_screen_with_url_data('/joblist')">active jobs</a></li>
+      <li><a href="javascript:ui.open_screen_with_url_data('/newsgroups')">newsgroups</a></li>
     </ul>
-    <div id="tabs">
+  </div>
+  <div id="">
+    <div>
+      <h1 id="heading">No Screen</h1>
     </div>
-    <div id="tab_body">
-    <h1 id="heading">No Screen</h1>
-    </div>
-    </div>
-    <ul id="debug_log" style="clear: both;"> </ul>
+  </div>
+  <ul id="debug_log" style="clear: both;"> </ul>
   </body>
 </html>

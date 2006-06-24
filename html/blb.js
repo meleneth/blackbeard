@@ -5,8 +5,8 @@ function debug_log(text)
   $("debug_log").appendChild(Builder.node("li", [text]));
 }
 
-var Tab = Class.create();
-Tab.prototype = {
+var Screen = Class.create();
+Screen.prototype = {
   next_data_fetch: "",
   initialize: function(name) {
     this.div = Builder.node("div");
@@ -72,8 +72,8 @@ Tab.prototype = {
   }
 };
 
-var TabManager = Class.create();
-TabManager.prototype = { 
+var ScreenManager = Class.create();
+ScreenManager.prototype = { 
     initialize: function(){
         this.tabs = [];
         this.current_tab = null;
@@ -115,22 +115,16 @@ TabManager.prototype = {
     }
 };
 
-var tabs = new TabManager();
 
 var UserInterface = Class.create();
 UserInterface.prototype = {
     initialize: function(){
     },
-    show_newsgroups: function(){
-      tabs.switch_to("NewsGroups");
-      var tab = tabs.tab_for_name("NewsGroups");
-      tab.update_url_data("/newsgroups");
-    },
-    open_tab_with_url_data: function(tab_name, url){
-      var tab = tabs.tab_for_name(tab_name);
-      tab.update_url_data(url);
-      tabs.switch_to(tab_name);
+    open_screen_with_url_data: function(url){
+      var screen = new Screen();
+      screen.update_url_data(url);
     }
+
 };
 
 var ui = new UserInterface();
@@ -216,17 +210,6 @@ function view_file_response(data)
 
 function view_file(url)
 {
-  if(refresh_timer){
-    clearTimeout(refresh_timer);
-  }
-
-  if(http_busy){
-      return false;
-  }
-
-  http_busy = 1;
-  last_data_fetch = 0;
-
   var req = new Ajax.Request( url, { method: 'get', onComplete: view_file_response });
 }
 
