@@ -8,7 +8,7 @@
     <script src="/javascripts/scriptaculous.js" type="text/javascript"></script>
     <script src="blb.js"></script>
   </head>
-  <body>
+  <body onload="process_onload()">
   <div id="header">
     <div id="ratebox">
       Jobs: <span id="jobs_rate">0/0</span> <br />
@@ -19,10 +19,7 @@
       <li><a href="javascript:ui.open_screen_with_url_data('/newsgroups')">newsgroups</a></li>
     </ul>
   </div>
-  <div id="">
-    <div>
-      <h1 id="heading">No Screen</h1>
-    </div>
+  <div id="screen">
   </div>
   <ul id="debug_log" style="clear: both;"> </ul>
   </body>
