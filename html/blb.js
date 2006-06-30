@@ -6,6 +6,14 @@ function debug_log(text)
   $("debug_log").appendChild(Builder.node("li", [text]));
 }
 
+function img_or_text(fragment)
+{
+  if(fragment.match(/^img: (.*)/)) {
+    return Builder.node("img", { src: $1 });
+  }
+  return fragment;
+}
+
 var Screen = Class.create();
 Screen.prototype = {
   next_data_fetch: "",
@@ -19,9 +27,9 @@ Screen.prototype = {
     var link;
     var sub_data = cell_data.split("|");
     if(sub_data.length == 1) {
-        link = Builder.node('a', sub_data[0]);
+        link = Builder.node('a', img_or_text(sub_data[0]));
     } else {
-        link = Builder.node('a', sub_data[1]);
+        link = Builder.node('a', img_or_text(sub_data[1]));
         if(sub_data[0] && (sub_data[0] != " ")){
             link.href = "javascript: " + sub_data[0];
         }
