@@ -23,6 +23,6 @@ string xml_escape(string escape_me);
 string xml_unescape(string unescape_me);
 string js_escape(string escape_me);
 string safe_dirname(string unsafe);
-string human_readable_bytes(double num_bytes);
+string human_readable_bytes(unsigned long long int num_bytes);
 
 #endif

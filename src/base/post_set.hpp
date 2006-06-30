@@ -32,7 +32,7 @@ class PostSet {
         Uint32 file_index(PostFile *file);
         Uint32 index();
         Uint32 num_files();
-        Uint64 num_bytes();
+        unsigned long long int num_bytes();
         void needs_full_info();
         static bool compare(const PostSet* a, const PostSet* b);
         bool operator< (const PostSet &b);

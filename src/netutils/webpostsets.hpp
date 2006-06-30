@@ -17,6 +17,7 @@ class WebPostSets : public WebDataFetcher {
         virtual ~WebPostSets();
         virtual string info_update_string(void);
         string status(PostSet *set, Uint32 index);
+        string image_string(PostSet *set);
 
         NewsGroup *group;
     private:

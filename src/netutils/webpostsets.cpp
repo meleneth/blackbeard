@@ -9,7 +9,7 @@
 using std::stringstream;
 using std::setprecision;
 
-#define MAX_PER_REQUEST 100
+#define MAX_PER_REQUEST 30
 
 WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 {
@@ -17,7 +17,7 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
     group->needs_postsets();
 
     output_lines.push_back("");
-    output_lines.push_back("num|num||num|full");
+    output_lines.push_back("num|num|||num|full");
     num_lines = group->postsets.size();
     Uint32 request_tick = request->paramn("tick");
     Uint32 got_num = request->paramn("got_num");
@@ -63,6 +63,7 @@ string WebPostSets::status(PostSet *set, Uint32 index)
     stringstream s;
     s   << "ps_" << set->group->index() << "_" << index
         << "|| |" << set->num_files()
+        << "|| |" << image_string(set)
         << "|| |" << human_readable_bytes(set->num_bytes());
 
     r.filename = "downloadpostset";
@@ -70,7 +71,7 @@ string WebPostSets::status(PostSet *set, Uint32 index)
         << "|| |" << setprecision(3) << set->completed_percent() << "%";
 
     r.filename = "postfiles";
-    s   << "||ui.open_tab_with_url_data('postset details', '"<< r.get_uri() << "')|" << js_escape( replace_substrings(set->subject, "|", "").substr(0, 80));
+    s   << "||ui.open_screen_with_url_data('"<< r.get_uri() << "')|" << js_escape( replace_substrings(set->subject, "|", "").substr(0, 80));
 
     return s.str();
 }
@@ -84,5 +85,38 @@ string WebPostSets::info_update_string(void)
       << "update_heading('" << group->name << "');";
 
     return s.str();
+}
+
+string WebPostSets::image_string(PostSet *set)
+{
+
+#define CD_BYTES 600000000ULL
+    unsigned long long int num_bytes = set->num_bytes();
+    if(num_bytes <  CD_BYTES)
+        return "";
+
+    if(num_bytes < (2 * CD_BYTES))
+        return "img: one_cd.png";
+
+    if(num_bytes < (3 * CD_BYTES))
+        return "img: two_cds.png";
+
+    if(num_bytes < (4 * CD_BYTES))
+        return "img: three_cds.png";
+
+    if(num_bytes < (5 * CD_BYTES))
+        return "img: four_cds.png";
+
+    if(num_bytes < (6 * CD_BYTES))
+        return "img: five_cds.png";
+
+    if(num_bytes < (12 * CD_BYTES))
+        return "img: one_dvd.png";
+
+    if(num_bytes < (18 * CD_BYTES))
+        return "img: two_dvds.png";
+
+    if(num_bytes < (24 * CD_BYTES))
+        return "img: three_dvds.png";
 }
 

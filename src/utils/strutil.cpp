@@ -176,13 +176,13 @@ string safe_dirname(string unsafe)
     return s;
 }
 
-string human_readable_bytes(double num_bytes)
+string human_readable_bytes(unsigned long long int num_bytes)
 {
     stringstream result;
 
-    double Kay  = pow(2, 10);
-    double Mega = pow(2, 20);
-    double Giga = pow(2, 30);
+    unsigned long long int Kay  = pow(2, 10);
+    unsigned long long int Mega = pow(2, 20);
+    unsigned long long int Giga = pow(2, 30);
 
     if(num_bytes < 1)
         return "0b";

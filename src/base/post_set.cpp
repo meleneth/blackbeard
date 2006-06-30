@@ -141,7 +141,7 @@ Uint32 PostSet::min_article_no(void)
     return article_no;
 }
 
-Uint64 PostSet::num_bytes(void)
+unsigned long long int PostSet::num_bytes(void)
 {
     if(!has_pieces_loaded){
         return _num_bytes;
