@@ -8,8 +8,9 @@ function debug_log(text)
 
 function img_or_text(fragment)
 {
-  if(fragment.match(/^img: (.*)/)) {
-    return Builder.node("img", { src: $1 });
+  var matched = /^img: (.*)/.exec(fragment);
+  if(matched) {
+    return [ Builder.node("img", { src: matched[1] }) ];
   }
   return fragment;
 }
@@ -21,7 +22,7 @@ Screen.prototype = {
     this.div = Builder.node("div");
     this.tbody = Builder.node("tbody");
     if(is_paged) { this.enable_paging(); }
-    this.div.appendChild(Builder.node("table", [this.tbody]));
+    this.div.appendChild(Builder.node("table", {style: 'clear: both'}, [this.tbody]));
   },
   table_cell: function(cell_data) {
     var link;
@@ -72,15 +73,14 @@ Screen.prototype = {
     var prev_link = Builder.node('a', ['<-']);
     var next_link = Builder.node('a', ['->']);
 
-    prev_link.href="javascript: ul.screen.prev_page();";
-    next_link.href="javascript: ul.screen.next_page();";
+    prev_link.href="javascript: ui.screen.prev_page();";
+    next_link.href="javascript: ui.screen.next_page();";
 
     var span = Builder.node('span', {style: "float: right;"});
     span.appendChild(next_link);
     var link_div = Builder.node('div', [ span, prev_link ]);
 
     this.div.appendChild(link_div);
-    this.div.appendChild(Builder.node('br', {style: "clear: both;"}));
   }
 };
 

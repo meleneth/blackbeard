@@ -93,7 +93,7 @@ string WebPostSets::image_string(PostSet *set)
 #define CD_BYTES 600000000ULL
     unsigned long long int num_bytes = set->num_bytes();
     if(num_bytes <  CD_BYTES)
-        return "";
+        return "img: floppy.png";
 
     if(num_bytes < (2 * CD_BYTES))
         return "img: one_cd.png";
