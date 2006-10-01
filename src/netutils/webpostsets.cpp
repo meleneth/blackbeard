@@ -17,13 +17,14 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
     group->needs_postsets();
 
     output_lines.push_back("");
-    output_lines.push_back("num|num|||num|full");
+    output_lines.push_back("num||num||num|full");
     num_lines = group->postsets.size();
     Uint32 request_tick = request->paramn("tick");
     Uint32 got_num = request->paramn("got_num");
     Uint32 valid_num = 0;
     Uint32 next_tick = config->tick;
     Uint32 last_got_num = 0;
+    Uint32 num_matching_items = 0;
 
     for(Uint32 i=0; i<num_lines; ++i) {
         PostSet *set = group->postsets[i];
@@ -36,15 +37,16 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
                         last_got_num = valid_num;
                     } else {
                         next_tick = request_tick;
-                        i = num_lines;
                     }
                 }
             }
         }
     }
+
+    
     num_lines = output_lines.size();
     stringstream s;
-    s << "tab.last_retrieve = '/postsets?ngi=" << request->paramn("ngi") << ";tick=" << next_tick << ";got_num=" << last_got_num << ";';" << info_update_string();
+    s << "new Pager(20, " << got_num << ", " << valid_num << ", '/postsets?ngi=" << request->paramn("ngi") << ";got_num=');" << info_update_string();
     output_lines[0] = s.str();
 }
 

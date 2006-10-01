@@ -48,8 +48,8 @@ class PostSetSplitterDynamicMatch : public PostSetSplitter {
         Uint32 is_close(MessageHeader *h1, MessageHeader *h2);
         void reprocess_unprocessed(void);
 
-        vector <MessageHeader *> unprocessed;
-        vector <PSDMSubMatch *> active;
+        list <MessageHeader *> unprocessed;
+        list <PSDMSubMatch *> active;
     private:
     protected:
 };

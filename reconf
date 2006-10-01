@@ -1,10 +1,10 @@
 #!/bin/sh
-#rm -f config.cache
-#aclocal
-#autoconf
-#autoheader
-#automake -a
-#exit
+rm -f config.cache
+aclocal
+autoconf
+autoheader
+automake -a
+exit
 
-autoreconf -I m4
+#autoreconf -I m4
 

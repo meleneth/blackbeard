@@ -11,19 +11,20 @@ PostSetSplitterDynamicMatch::PostSetSplitterDynamicMatch(NewsGroup *group):PostS
 
 PostSetSplitterDynamicMatch::~PostSetSplitterDynamicMatch()
 {
-    Uint32 max_no = active.size();
-    for(Uint32 i=0; i<max_no; ++i){
-        delete active[i];
+    list<PSDMSubMatch *>::iterator i;
+    for(i = active.begin(); i != active.end(); ++i){
+        delete *i;
     }
     active.clear();
 }
 
 void PostSetSplitterDynamicMatch::process_header(MessageHeader *header)
 {
-    vector <PSDMSubMatch *> still_active;
-    Uint32 max_no = active.size();
-    for(Uint32 i=0; i<max_no; ++i){
-        PSDMSubMatch *match = active[i];
+    list<PSDMSubMatch *>::iterator i;
+    list<MessageHeader *>::iterator j;
+
+    for(i = active.begin(); i!=active.end(); ++i){
+        PSDMSubMatch *match = *i;
         if (0 == match->posted_by.compare(header->posted_by)){
             if(match->pattern->match(header->subject)){
                 match->process_header(header);
@@ -35,9 +36,9 @@ void PostSetSplitterDynamicMatch::process_header(MessageHeader *header)
     }
     
     unprocessed.push_back(header);
-    max_no = unprocessed.size();
-    for(Uint32 i=0; i<max_no; ++i){
-        MessageHeader *unproc = unprocessed[i];
+
+    for(j = unprocessed.begin(); j!=unprocessed.end(); ++j){
+        MessageHeader *unproc = *j;
         if(is_close(unproc, header)){
             active.push_back(new PSDMSubMatch(group, header, unproc));
             reprocess_unprocessed();
@@ -53,33 +54,36 @@ Uint32 PostSetSplitterDynamicMatch::is_close(MessageHeader *h1, MessageHeader *h
 
 void PostSetSplitterDynamicMatch::reprocess_unprocessed(void)
 {
-    Uint32 max_no = unprocessed.size();
-    Uint32 max_active_no = active.size();
-    vector<MessageHeader *> remaining;
+    list<MessageHeader *>::iterator i;
+    list<PSDMSubMatch *>::iterator j;
 
-    for(Uint32 i=0; i<max_no; ++i){
-        MessageHeader *h = unprocessed[i];
-        for(Uint32 j=0; j<max_active_no; ++j){
-            if(h){
-                if(active[j]->pattern->match(h->subject)){
-                    active[j]->process_header(h);
+    for(i = unprocessed.begin(); i != unprocessed.end() ; ++i)
+    {
+        MessageHeader *h = *i;
+
+        for(j = active.begin(); j != active.end(); ++j)
+        {
+            if(h) {
+                if((*j)->pattern->match(h->subject)){
+                    (*j)->process_header(h);
+                    list<MessageHeader *>::iterator p = i;
+                    --i;
+                    unprocessed.erase(p);
                     delete h;
                     h = NULL;
                 }
             }
         }
-        /*if(h){
+        if(h){
             h->process_count++;
-            if(h->process_count < 1000){
-                remaining.push_back(h);
-            } else {
+            if(h->process_count > 1000){
+                list<MessageHeader *>::iterator p = i;
+                --i;
+                unprocessed.erase(p);
                 delete h;
-                h = NULL;
-            }
-
-        }*/
+            } 
+        }
     }
-    unprocessed = remaining;
 }
 
 string simple_x(string eatme)

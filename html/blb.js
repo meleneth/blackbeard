@@ -15,13 +15,39 @@ function img_or_text(fragment)
   return fragment;
 }
 
+var Pager = Class.create();
+Pager.prototype = {
+  initialize: function(page_size, item_no, num_items, url) {
+    this.url = url;
+    this.page_no = Math.floor(item_no / page_size);
+    this.page_size = page_size;
+    this.num_pages = Math.floor(num_items / page_size);
+    this.first_visible = this.page_no * page_size;
+    p = $('pager');
+    p.replaceChild(this.get_pager_ui(), p.firstChild);
+  },
+  get_pager_ui: function() {
+    pp = Builder.node('a', {href: this.get_url(this.page_no - 1)}, ['<-']);
+    np = Builder.node('a', {href: this.get_url(this.page_no + 1)}, ['->']);
+    br = Builder.node('br');
+    first = Builder.node('a', {href: this.get_url(0)}, ['|<']);
+    last = Builder.node('a', {href: this.get_url(this.num_pages)}, ['>|']);
+    page_text = this.page_no + "/" + this.num_pages;
+
+    return Builder.node("div", [pp, page_text, np, br, first, last]);
+  },
+  get_url: function(new_page_no) {
+    item_no = new_page_no * this.page_size;
+    return "javascript: ui.open_screen_with_paged_url_data('" + this.url + item_no + "')";
+  }
+}
+
 var Screen = Class.create();
 Screen.prototype = {
   next_data_fetch: "",
   initialize: function(is_paged) {
     this.div = Builder.node("div");
     this.tbody = Builder.node("tbody");
-    if(is_paged) { this.enable_paging(); }
     this.div.appendChild(Builder.node("table", {style: 'clear: both'}, [this.tbody]));
   },
   table_cell: function(cell_data) {
@@ -35,7 +61,7 @@ Screen.prototype = {
             link.href = "javascript: " + sub_data[0];
         }
     }
-    return Builder.node('td', [ link ]);
+    return link;
   },
   update_table_row: function(row, headers) {
     var cells = row.split("||");
@@ -68,22 +94,8 @@ Screen.prototype = {
         headers = headers.split("|");
         data.each(function(row) { if(!row) return; screen.update_table_row(row, headers);});
     }});
-  },
-  enable_paging: function() {
-    var prev_link = Builder.node('a', ['<-']);
-    var next_link = Builder.node('a', ['->']);
-
-    prev_link.href="javascript: ui.screen.prev_page();";
-    next_link.href="javascript: ui.screen.next_page();";
-
-    var span = Builder.node('span', {style: "float: right;"});
-    span.appendChild(next_link);
-    var link_div = Builder.node('div', [ span, prev_link ]);
-
-    this.div.appendChild(link_div);
   }
 };
-
 
 var UserInterface = Class.create();
 UserInterface.prototype = {
@@ -162,4 +174,5 @@ function view_file(url)
 }
 
 /* new PeriodicalExecuter(function(){ tabs.update_current_tab(); }, 5); */
+
 
