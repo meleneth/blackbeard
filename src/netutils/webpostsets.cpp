@@ -120,5 +120,7 @@ string WebPostSets::image_string(PostSet *set)
 
     if(num_bytes < (24 * CD_BYTES))
         return "img: three_dvds.png";
+
+    return "";
 }
 

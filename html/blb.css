@@ -65,6 +65,7 @@ td {
 
 a {
     color: #eeeeee;
+    white-space: nowrap;
 }
 
 tr :hover {
