@@ -122,7 +122,7 @@ Uint32 db_file_exists(string filename)
 void remove_postset_file(PostSet *set)
 {
     console->log("Expiring postset " + set->subject);
-    string filename = config->blackbeard_data_dir + "/" + set->group->name + "/" + get_crc_32(set->subject) + ".nzb";
+    string filename = config->blackbeard_data_dir + "/" + set->group->name + "/" + get_crc_32(set->subject) + ".nzb.bz2";
     
     unlink(filename.c_str());
 }

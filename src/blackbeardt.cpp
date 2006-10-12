@@ -267,7 +267,7 @@ void test_download_netjob(void)
 
 void test_dynamic_postsplit(void)
 {
-    NewsGroup group("net.fusion.downloads");
+    NewsGroup group("net.fusion2.downloads");
     PostSetSplitterDynamicMatch *splitter = (PostSetSplitterDynamicMatch *) group.splitter;
     console->log("Parsing (Horny Peeps \"hornypeeps.rar\" yEnc (23/59))");
     MessageHeader *header = new MessageHeader( &group, 31337, "xyz2300@yahoo.com", "Horny Peeps \"hornypeeps.rar\" yEnc (23/59)", "jim@bo.com", 500);

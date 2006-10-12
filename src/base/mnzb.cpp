@@ -6,6 +6,8 @@
 #include "xmlparser.hpp"
 #include "console.hpp"
 
+#include <bzlib.h>
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sstream>
@@ -37,7 +39,40 @@ void mNZB::save_postset(PostSet *set)
     string dest_dir = config->blackbeard_data_dir + "/" + set->group->name;
     m_mkdir(dest_dir);
 
-    head->write_to_file(dest_dir + "/" + nzb_filename());
+    string filename = dest_dir + "/" + nzb_filename() + ".bz2";
+    string doc = head->as_text("");
+
+    FILE*   f;
+    BZFILE* b;
+    int     bzerror;
+
+    f = fopen ( filename.c_str(), "wb" );
+    if ( !f ) {
+     /* handle error */
+        console->log("bz2 write error!");
+    }
+    b = BZ2_bzWriteOpen( &bzerror, f, 5, 0, 30);
+    if (bzerror != BZ_OK) {
+     BZ2_bzWriteClose ( &bzerror, b, 0, 0, 0);
+     /* handle error */
+        console->log("bz2 write error!!");
+    }
+
+    /* get data to write into buf, and set nBuf appropriately */
+    char *doc_str = (char *)doc.c_str();
+    BZ2_bzWrite ( &bzerror, b, doc_str, doc.length() );
+    if (bzerror == BZ_IO_ERROR) { 
+      BZ2_bzWriteClose ( &bzerror, b, 0, 0, 0);
+      /* handle error */
+       console->log("bz2 write error!!");
+    }
+
+    BZ2_bzWriteClose( &bzerror, b, 0, 0, 0);
+    if (bzerror == BZ_IO_ERROR) {
+     /* handle error */
+        console->log("bz2 write error!!!");
+    }
+
     delete head;
 }
 
@@ -92,12 +127,14 @@ Uint32 _file_exists(string filename)
     return -1 != stat(filename.c_str(), &buf);
 }
 
+#define MNZB_BUFFER_SIZE 50000
+
 void mNZB::load_postset(PostSet *set)
 {
     set->has_pieces_loaded = 1;
     this->set = set;
     string dest_dir = config->blackbeard_data_dir + "/" + set->group->name;
-    string full_filename = dest_dir + "/" + nzb_filename();
+    string full_filename = dest_dir + "/" + nzb_filename() + ".bz2";
 
     console->log("full filename is " + full_filename);
 
@@ -106,8 +143,63 @@ void mNZB::load_postset(PostSet *set)
         set->has_pieces_loaded = 1;
         return;
     }
+    string compressed_file_contents;
 
-    XMLNode *parsed = parse_xml_file(full_filename);
+    char readbuf[MNZB_BUFFER_SIZE];
+
+    FILE*   f;
+    BZFILE* b;
+    int     nBuf;
+    int     bzerror;
+
+    f = fopen ( full_filename.c_str(), "rb" );
+    if ( !f ) {
+      console->log("bzip2 read errror!");
+      /* handle error */
+    }
+    b = BZ2_bzReadOpen ( &bzerror, f, 0, 0, NULL, 0);
+    if ( bzerror != BZ_OK ) {
+      BZ2_bzReadClose ( &bzerror, b );
+      console->log("bzip2 read errror!");
+      /* handle error */
+    }
+
+    bzerror = BZ_OK;
+    int got_bytes = 0;
+    while ( bzerror == BZ_OK ) {
+      nBuf = BZ2_bzRead ( &bzerror, b, readbuf + got_bytes, MNZB_BUFFER_SIZE - got_bytes);
+      got_bytes += nBuf;
+      if ( bzerror == BZ_OK ) {
+        /* do something with buf[0 .. nBuf-1] */
+        int i=0;
+        int last_string = 0;
+
+        while(i<got_bytes){
+            if(readbuf[i] == '\n') {
+                readbuf[i] = 0;
+                compressed_file_contents.append(readbuf + last_string);
+                last_string = i + 1;
+            }
+            i++;
+        }
+        memmove(readbuf, readbuf + last_string, got_bytes - last_string);
+        got_bytes -= last_string;
+      }
+    }
+    if ( bzerror != BZ_STREAM_END ) {
+       BZ2_bzReadClose ( &bzerror, b );
+      console->log("bzip2 read errror!!!");
+       /* handle error */
+    } else {
+       BZ2_bzReadClose ( &bzerror, b );
+    }
+    
+    XMLParser *parser = new XMLParser();
+    parser->parse_fragment(compressed_file_contents);
+    XMLNode *parsed = parser->document_node;
+    delete parser;
+
+    //XMLNode *parsed = parse_xml_file(full_filename);
     vector<XMLNode *> files;
 
     parsed->find_for_tag_name(files, "file");
