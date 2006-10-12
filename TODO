@@ -7,6 +7,10 @@ Web interface
     Continuous update is broken.
     New pager works, how could it be made better?
 
+MAD IDEA - be able to use blb as a proxy, anything it can match it doesn't show on the passthrough news server.
+    All messages would be retrieveable, and it would proxy the commands for you.
+    Interesting idea.  Hard, useful, would require saving unmatched headers
+
 File Grouping - for rar files and associated .par2 files, should only show one line in the file list.
 Par2 support - auto fix files, remove droppings
 fix download jobs:
@@ -34,6 +38,7 @@ SuperSplitter:
     Uses base par2 file to find additional groups
     Keeps unmatched headers, for future matching / processing (once a .par2 file is processed?)
     downloads base .par2's and .nzb
+        This part is kinda taking over the whole new splitter.  Such is life.
 
 *Job-ify postset info loading.  Speed it up too, it takes forever and makes being subscribed to big groups painful.  Which is the whole point.
  -- storing info in XML files instead of the sqlite db seems to have cleared this up

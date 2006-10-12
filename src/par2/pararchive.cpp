@@ -74,3 +74,23 @@ ParArchive *load_par_file(string filename)
     ParArchive *archive = new ParArchive(filename);
     return archive;
 }
+
+int is_par(string filename)
+{
+    string check = filename.substr(filename.size() - 5, 5);
+    if(0 == check.compare(".par2")) return 1;
+    if(0 == check.compare(".PAR2")) return 1;
+    return 0;
+}
+
+int is_base_par(string filename)
+{
+    return !is_recovery_par(filename);
+}
+
+int is_recovery_par(string filename)
+{
+    size_t index = filename.find(".vol");
+    return index != string::npos;
+}
+
