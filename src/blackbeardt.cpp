@@ -267,20 +267,17 @@ void test_download_netjob(void)
 
 void test_dynamic_postsplit(void)
 {
-    /* FIXME
     NewsGroup group("net.fusion.downloads");
     PostSetSplitterDynamicMatch *splitter = (PostSetSplitterDynamicMatch *) group.splitter;
     console->log("Parsing (Horny Peeps \"hornypeeps.rar\" yEnc (23/59))");
-    MessageHeader *header = new MessageHeader( &group, 31337, "Horny Peeps \"hornypeeps.rar\" yEnc (23/59)", "jim@bo.com");
+    MessageHeader *header = new MessageHeader( &group, 31337, "xyz2300@yahoo.com", "Horny Peeps \"hornypeeps.rar\" yEnc (23/59)", "jim@bo.com", 500);
     splitter->process_header(header);
     assert(0 == group.postsets.size());
 
-    header = new MessageHeader( &group, 31338, "Horny Peeps \"hornypeeps.rar\" yEnc (24/59)", "jim@bo.com");
+    header = new MessageHeader( &group, 31338, "xyz2300@yahoo.com", "Horny Peeps \"hornypeeps.rar\" yEnc (24/59)", "jim@bo.com", 500);
     splitter->process_header(header);
     assert(1 == group.postsets.size());
     delete header;
-    */
-
 }
 
 void shut_down(void)
