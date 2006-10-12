@@ -72,6 +72,7 @@ void mNZB::save_postset(PostSet *set)
      /* handle error */
         console->log("bz2 write error!!!");
     }
+    fclose(f);
 
     delete head;
 }
@@ -193,6 +194,7 @@ void mNZB::load_postset(PostSet *set)
     } else {
        BZ2_bzReadClose ( &bzerror, b );
     }
+    fclose(f);
     
     XMLParser *parser = new XMLParser();
     parser->parse_fragment(compressed_file_contents);

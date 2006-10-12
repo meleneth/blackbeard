@@ -11,6 +11,7 @@ class PostSetSplitterFilenameMatch : public PostSetSplitter {
         ~PostSetSplitterFilenameMatch();
 
         virtual void process_header(MessageHeader *header);
+        void process_par2(PostFile *parfile);
 
         StringPattern *pattern;
         
