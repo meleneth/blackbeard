@@ -10,7 +10,7 @@ using std::vector;
 
 class ParArchive {
     public:
-        ParArchive();
+        ParArchive(string filename);
         ~ParArchive();
 
         void add_parfile(string filename);
@@ -22,5 +22,8 @@ class ParArchive {
     private:
     protected:
 };
+
+
+ParArchive *load_par_file(string filename);
 
 #endif

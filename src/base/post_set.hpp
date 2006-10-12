@@ -61,7 +61,6 @@ class PostSet {
         Uint32 date;
 
         POSTSET_STATUS _status;
-        ParArchive *par;
     private:
     protected:
 };

@@ -4,12 +4,12 @@
 #include "config.hpp"
 #include "strutil.hpp"
 #include "post_set_splitter_dynamicmatch.hpp"
+#include "post_set_splitter_filenamematch.hpp"
 #include "messageheader.hpp"
 #include "database.hpp"
 #include <iostream>  // I/O 
 #include <fstream>   // file I/O
 #include <sstream>
-#include <sqlite3.h>
 
 
 using std::string;
@@ -32,7 +32,7 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     last_article_number = 0;
     db_index = 0;
 
-    splitter = new PostSetSplitterDynamicMatch(this);
+    splitter = config->debug_mode ? (PostSetSplitter *) new PostSetSplitterFilenameMatch(this) : (PostSetSplitter *) new PostSetSplitterDynamicMatch(this);
 }
 
     

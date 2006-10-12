@@ -406,10 +406,11 @@ void test_xml_generation(void)
     assert(0 == node.as_text("").compare("<tag id=\"cheese\">\n  <bar>baz</bar>\n</tag>"));
     
     XMLNode other_node("document");
-    XMLNode foo_node("foo");
-    other_node.addChild(&foo_node);
-    foo_node.content = "halud";
-    printf("%s\n", (other_node.as_text("").c_str()));
+    XMLNode *foo_node = new XMLNode("foo");
+    other_node.addChild(foo_node);
+    foo_node->content = "halud";
+    console->log("hrml");
+    console->log(other_node.as_text(""));
     assert(0 == other_node.as_text("").compare("<document>\n  <foo>halud</foo>\n</document>"));
 }
 

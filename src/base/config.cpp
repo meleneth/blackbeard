@@ -38,6 +38,7 @@ Config::Config(int argc, char *argv[]) // Constructor
     max_net_connections = 2;
     debug_logging = 0;
     dump_subject_file = 0;
+    proceed = 1;
     tick = 0;
 
     int ac=1;

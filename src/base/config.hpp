@@ -49,6 +49,7 @@ class Config {
         Uint32 max_krate;
 
         Uint32 tick;
+        Uint32 proceed;
 
     private:
         // Private members go here.

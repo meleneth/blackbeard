@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
         jobqueue->jobs.push_back(new SubjectFileLoaderJob(config->load_file));
     }
 
-    while(1){
+    while(config->proceed){
         for(Uint32 process = 0; process < 8; ++process){
             jobqueue->process_jobs();
             netcentral->process_jobs();

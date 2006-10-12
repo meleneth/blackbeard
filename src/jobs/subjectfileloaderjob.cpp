@@ -41,6 +41,8 @@ SubjectFileLoaderJob::SubjectFileLoaderJob(string filename)
 
 SubjectFileLoaderJob::~SubjectFileLoaderJob()
 {
+    if(config->debug_mode)
+        config->proceed = 0;
 }
 
 string SubjectFileLoaderJob::status_line(void)
