@@ -9,6 +9,7 @@ using std::stringstream;
 
 ParArchive::ParArchive(string filename)
 {
+    is_corrupt = 0;
     par_header header;
     char *packet_body;
     FileHandle *file = open_filehandle(filename);
@@ -65,7 +66,7 @@ Uint32 ParArchive::exists_in_par(string filename)
 {
 }
 
-Uint32 ParArchive::is_corrupt(string filename)
+Uint32 ParArchive::file_is_corrupt(string filename)
 {
 }
 

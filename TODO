@@ -23,8 +23,8 @@ Support NZB -
     -- 'actual' NZB support, but it's not integrated into the UI's so that you can download on a .NZB and have it
     -- retrieve from there.  Just as well, our matching kills anyways ;)
 
-Support BZIP2:
-    Bziping the files will save a LOT of disk space.  Every 5 gigs counts you know!
+*Support BZIP2:
+*    Bziping the files will save a LOT of disk space.  Every 5 gigs counts you know!
 
 Seg Faults
     Web Server - cancelling a request kills blb.  oops, bad webserver.

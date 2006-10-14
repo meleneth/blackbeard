@@ -80,9 +80,16 @@ PostFile *PostSet::file(string filename)
 
     PostFile *postfile = new PostFile(this);
     postfile->filename = filename;
-    postfile->tick = tick;
-    files.push_back(postfile);
+    add_file(postfile);
     return postfile;
+}
+
+void PostSet::add_file(PostFile *file)
+{
+    file->tick = config->tick;
+    needs_full_info();
+
+    files.push_back(file);
 }
 
 Uint32 PostSet::num_files(void)

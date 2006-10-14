@@ -39,6 +39,7 @@ class PostSet {
 
         void restore_saved_info();
         void save_info();
+        void add_file(PostFile *file);
 
         string info_filename(void);
 

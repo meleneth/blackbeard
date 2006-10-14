@@ -15,9 +15,11 @@ class ParArchive {
 
         void add_parfile(string filename);
         Uint32 exists_in_par(string filename);
-        Uint32 is_corrupt(string filename);
+        Uint32 file_is_corrupt(string filename);
 
         vector<string> par_filenames;
+
+        int is_corrupt;
 
     private:
     protected:
