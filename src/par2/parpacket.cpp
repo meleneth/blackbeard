@@ -10,5 +10,6 @@ ParPacket::~ParPacket()
 
 int ParPacket::Foo(void)
 {
+    return 1;
 }
 

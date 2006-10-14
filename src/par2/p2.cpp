@@ -4,10 +4,10 @@
 Console *console;
 string last_msg = "let the force be with you";
 
-int main(void)
+int main(int argc, char *argv[])
 {
     console = new Console();
     console->print_logs = 1;
     console->log("Par2 development binary");
-    load_par_file("sm4.par2");
+    load_par_file(argv[1]);
 }

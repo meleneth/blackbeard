@@ -3,18 +3,20 @@
 
 #include "SDL_types.h"
 
+typedef char md5[16];
+
 typedef struct {
     char magic_sequence[8];
     unsigned long long int length;
-    char packet_hash[16];
-    char recovery_set_id[16];
+    md5 packet_hash;
+    md5 recovery_set_id;
     char type[16];
 } par_header;
 
 typedef struct {
     char file_id[16];
-    char md5[16];
-    char md516k[16];
+    md5 md5sum;
+    md5 md516k;
     unsigned long long int length;
 } par_filedesc_packet;
 
