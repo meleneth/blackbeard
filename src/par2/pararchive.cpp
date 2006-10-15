@@ -134,12 +134,12 @@ int is_par(string filename)
 
 int is_base_par(string filename)
 {
-    return !is_recovery_par(filename);
+    return is_par(filename) && !is_recovery_par(filename);
 }
 
 int is_recovery_par(string filename)
 {
     size_t index = filename.find(".vol");
-    return index != string::npos;
+    return is_par(filename) && index != string::npos;
 }
 
