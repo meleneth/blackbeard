@@ -66,7 +66,7 @@ Job* PostfileJob::get_next_job()
         }
         if(++piece_no == postfile->pieces.size()){
             postfile->status = "Finished";
-            console->log("Finished getting file " + postfile->filename); 
+            //console->log("Finished getting file " + postfile->filename); 
             finish();
         }
     } else {

@@ -15,7 +15,6 @@ Job::Job()
 
 Job::~Job()
 {
-    close_finished_files();
 }
 
 void Job::process()
@@ -43,6 +42,7 @@ void Job::finish(void)
     if(parent){
         parent->notify_child_finished(this);
     }
+    close_finished_files();
 }
 
 bool Job::compare(const Job* a, const Job* b)

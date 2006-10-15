@@ -24,7 +24,6 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
     Uint32 valid_num = 0;
     Uint32 next_tick = config->tick;
     Uint32 last_got_num = 0;
-    Uint32 num_matching_items = 0;
 
     for(Uint32 i=0; i<num_lines; ++i) {
         PostSet *set = group->postsets[i];

@@ -20,6 +20,7 @@ using std::endl;
 #include "session.hpp"
 #include "netcentral.hpp"
 #include "postfilejob.hpp"
+#include "pararchive.hpp"
 
 PostsetJob::PostsetJob(PostSet* post_set)
 {
@@ -43,7 +44,7 @@ void PostsetJob::make_downloader_children(void)
     {
         PostFile *f = postset->files[i];
         if(f){
-            if(f->is_par()){
+            if(is_par(f->filename)){
                 f->status = "Skipped";
             }else{
                 netcentral->add_job(new PostfileJob(f));

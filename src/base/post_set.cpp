@@ -90,6 +90,7 @@ void PostSet::add_file(PostFile *file)
     needs_full_info();
 
     files.push_back(file);
+    file->post_set = this;
 }
 
 Uint32 PostSet::num_files(void)
@@ -205,7 +206,7 @@ void PostSet::needs_full_info()
 {
     if(!has_pieces_loaded){
         has_pieces_loaded = 1;
-        console->log("Loading full info for " + subject);
+        //console->log("Loading full info for " + subject);
         mNZB nzb;
         nzb.load_postset(this);
     }

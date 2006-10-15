@@ -32,7 +32,9 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     last_article_number = 0;
     db_index = 0;
 
-    splitter = config->debug_mode ? (PostSetSplitter *) new PostSetSplitterFilenameMatch(this) : (PostSetSplitter *) new PostSetSplitterDynamicMatch(this);
+    splitter = config->debug_mode 
+                    ? (PostSetSplitter *) new PostSetSplitterDynamicMatch(this)
+                    : (PostSetSplitter *) new PostSetSplitterFilenameMatch(this);
 }
 
     

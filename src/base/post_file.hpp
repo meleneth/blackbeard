@@ -11,6 +11,7 @@
 #include "file_handle.hpp"
 #include "filepiece.hpp"
 #include <sqlite3.h>
+#include "newsgroup.hpp"
 
 using std::string;
 using std::vector;
@@ -33,9 +34,9 @@ class PostFile {
         Uint32 count_num_downloaded_pieces();
 
         void switch_seen_statuses(PIECE_STATUS new_status);
+        string par_mangled_filename();
 
         FileHandle *open_file();
-        Uint32 is_par();
         Uint32 index();
         Uint32 piece_no(Uint32 message_id);
         Uint32 max_article_no(void);

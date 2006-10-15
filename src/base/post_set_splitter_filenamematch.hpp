@@ -11,6 +11,7 @@ class PSSFMPostFilesbyPoster {
         PSSFMPostFilesbyPoster(string poster);
 
         PostFile *get_postfile(string filename);
+        PostSet  *get_postset(string subject);
 
         string poster;
         vector<PostFile *> postfiles;
@@ -23,7 +24,7 @@ class PostSetSplitterFilenameMatch : public PostSetSplitter {
         ~PostSetSplitterFilenameMatch();
 
         virtual void process_header(MessageHeader *header);
-        void process_par2(PostFile *parfile, MessageHeader *header);
+        void process_par2(PostFile *parfile);
         PSSFMPostFilesbyPoster *get_poster(string poster);
 
         vector<PSSFMPostFilesbyPoster *> posters;
@@ -35,11 +36,10 @@ class PostSetSplitterFilenameMatch : public PostSetSplitter {
 
 class PSSFMParJob : public PostfileJob {
     public: 
-        PSSFMParJob(PostFile* post_file, PostSetSplitterFilenameMatch *splitter, MessageHeader *header);
+        PSSFMParJob(PostFile* post_file, PostSetSplitterFilenameMatch *splitter);
         virtual void finish(void);
 
         PostSetSplitterFilenameMatch *splitter;
-        MessageHeader *header;
 
 };
 

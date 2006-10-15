@@ -6,6 +6,7 @@
 #include "strutil.hpp"
 #include "config.hpp"
 #include "database.hpp"
+#include "pararchive.hpp"
 
 #include <math.h>
 #include <sstream>
@@ -30,17 +31,6 @@ PostFile::PostFile(PostSet *postset)
     
 PostFile::~PostFile() 
 {
-}
-
-Uint32 PostFile::is_par()
-{
-    StringPattern pattern(2);
-
-    pattern.add_breaker(".PAR2");
-    if(pattern.match(filename)){
-        return 1;
-    }
-    return 0;
 }
 
 string PostFile::status_string(void)
@@ -205,25 +195,43 @@ void m_mkdir(string dir)
 #endif
 }
 
-FileHandle *PostFile::open_file()
+void ensure_directory_presence(string dirname, string logmsg) 
 {
     struct stat my_stats;
-
-    string dest_dir = config->blackbeard_dir + "/" + post_set->group->name;
-    if(stat(dest_dir.c_str(), &my_stats) == -1){
-        console->log("Creating dir for newsgroup..");
-        m_mkdir(dest_dir);
-    }else {
+    if(stat(dirname.c_str(), &my_stats) == -1){
+        console->log(logmsg);
+        m_mkdir(dirname);
     }
-    dest_dir += "/" + safe_dirname(post_set->subject) ;
-    if(stat(dest_dir.c_str(), &my_stats) == -1){
-        console->log("Creating dir for decode");
-        m_mkdir(dest_dir);
-    }else {
-    }
+}
 
-    string real_filename = dest_dir + "/" + filename;
-    return open_filehandle(real_filename);
+string PostFile::par_mangled_filename()
+{
+    return config->blackbeard_data_dir + "/" + post_set->group->name + "/par2/" + get_crc_32(post_set->subject) + ".par2"; 
+}
+
+FileHandle *PostFile::open_file()
+{
+    if(is_base_par(filename)) {
+        if(!post_set)
+            return NULL;
+        string dirname = config->blackbeard_data_dir;
+        ensure_directory_presence(dirname, "Creating blackbeard data dir..");
+        dirname += "/" + post_set->group->name;
+        ensure_directory_presence(dirname, "Creating blackbeard data dir for newsgroup..");
+        dirname += "/par2";
+        ensure_directory_presence(dirname, "Creating blackbeard par2 dir..");
+        console->log("Opening " + par_mangled_filename());
+        return open_filehandle(par_mangled_filename());
+    }else {
+        string dest_dir = config->blackbeard_dir + "/" + post_set->group->name;
+        ensure_directory_presence(dest_dir, "Creating dir for newsgroup..");
+        
+        dest_dir += "/" + safe_dirname(post_set->subject) ;
+        ensure_directory_presence(dest_dir, "Creating dir for decode");
+
+        string real_filename = dest_dir + "/" + filename;
+        return open_filehandle(real_filename);
+    }
 }
 
 

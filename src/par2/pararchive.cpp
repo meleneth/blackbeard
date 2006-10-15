@@ -19,22 +19,31 @@ ParArchive::ParArchive(string filename)
     unsigned char digest[16];
     MD5_CTX context;
     FileHandle *file = open_filehandle(filename);
-    console->log("Opened PAR2 file: " + filename);
     stringstream s;
     const char *magic_packet_sequence = "PAR2\0PKT";
     const char *main_packet_sequence = "PAR 2.0\0Main\0\0\0\0"; 
     const char *filedesc_packet_sequence = "PAR 2.0\0FileDesc";
-    int still_reading = 1;
 
     while(fread(&header, sizeof(header), 1, file->fh) && !is_corrupt) {
+        Uint32 packet_size = 0;
 
-        Uint32 packet_size = header.length - sizeof(header);
-        packet_body = (char *)malloc(packet_size);
-
-        if(1 != fread(packet_body, packet_size, 1, file->fh)){
-            console->log("Short read on body.  I have no choice but to turn thee in for a corrupt file!");
+        if(header.length > sizeof(header)) {
+            packet_size = header.length - sizeof(header);
+            packet_body = (char *)malloc(packet_size);
+            memset(packet_body, 0, packet_size);
+        } else { 
             is_corrupt = 1;
+//            console->log("Corrupted out :/");
+            packet_body = (char *)malloc(1);
         }
+
+        if(!is_corrupt) { 
+            if(1 != fread(packet_body, packet_size, 1, file->fh)){
+                console->log("Short read on body.  I have no choice but to turn thee in for a corrupt file!");
+                is_corrupt = 1;
+            }
+        }
+
         if(!is_corrupt) { 
             MD5_Init(&context);
             MD5_Update(&context, header.recovery_set_id, 32);
@@ -43,7 +52,7 @@ ParArchive::ParArchive(string filename)
 
             if(!CMP_MD5(digest, header.packet_hash)){
                 is_corrupt = 1;
-                console->log("MD5 failure :/");
+//                console->log("MD5 failure :/");
             }
         }
         if(!is_corrupt) { 
@@ -57,33 +66,36 @@ ParArchive::ParArchive(string filename)
         }
         if(!is_corrupt) { 
             if(0 == memcmp(header.type, main_packet_sequence, 16)) {
-                console->log("Main sequence matches - this is a Main PAR packet!");
+//                console->log("Main sequence matches - this is a Main PAR packet!");
             }
 
             if(0 == memcmp(header.type, filedesc_packet_sequence, 16)) {
     //            console->log("fileDesc sequence matches - this is a file description PAR packet!");
-                par_filedesc_packet *body = (par_filedesc_packet *)packet_body;
-
-                Uint32 filename_length = header.length - sizeof(header) - sizeof(body);
-                s << "filename length: " << filename_length;
-    //            console->log(s.str());
+                Uint32 filename_length = header.length - sizeof(header) - 56;
+/*                s << "filename length: " << filename_length;
+                console->log(s.str());
                 s.str("");
+  */
                 char *name = (char *)malloc(filename_length +1);
                 memcpy(name, packet_body + 56, filename_length);
-                console->log(name);
+                name[filename_length] = '\0';
+                add_parfile(name);
                 free(name);
             }
         }
+        free(packet_body);
     }
 
     file->close();
     close_finished_files();
 
+/*
     if(is_corrupt) {
         console->log("parfile is corrupt");
     }else {
         console->log("parfile is NOT corrupt");
     }
+    */
 
 }
 
@@ -112,6 +124,8 @@ ParArchive *load_par_file(string filename)
 
 int is_par(string filename)
 {
+    if(filename.length() < 5) 
+        return 0;
     string check = filename.substr(filename.size() - 5, 5);
     if(0 == check.compare(".par2")) return 1;
     if(0 == check.compare(".PAR2")) return 1;

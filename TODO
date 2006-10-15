@@ -7,6 +7,12 @@ Web interface
     Continuous update is broken.
     New pager works, how could it be made better?
 
+Job:
+    have a finish job, that when you're finish you get replaced by.
+    This will allow the decoder to call the par2 splitter after it's written the file, and stop the subclassing madness.
+
+Fix the part where the new splitter doesn't get piece bodies and I think we're good
+
 MAD IDEA - be able to use blb as a proxy, anything it can match it doesn't show on the passthrough news server.
     All messages would be retrieveable, and it would proxy the commands for you.
     Interesting idea.  Hard, useful, would require saving unmatched headers

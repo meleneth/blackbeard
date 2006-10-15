@@ -40,7 +40,12 @@ void BodyRetrieverJob::finish()
     if(post->lines.size()){
         Decoder *decoder = decoder_for_body(post, file);
         if(decoder){
-            jobqueue->jobs.push_back(decoder);
+// Used to play nicely.  Not anymore >.<
+//            jobqueue->jobs.push_back(decoder);
+            while(!decoder->is_finished) {
+                decoder->process();
+            }
+            delete decoder;
         }
     }else{
         delete post;
