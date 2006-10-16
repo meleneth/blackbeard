@@ -33,8 +33,9 @@ int Widget::handle_input(int key)
         case IKEY_Q:
         case IKEY_ESC:
             session->switch_shutdown_screen();
-            config->save_persistent_data();
             endwin();
+            console->print_logs = 1;
+            config->save_persistent_data();
             delete console;
             exit(0);
             break;

@@ -54,6 +54,7 @@ class NewsGroup {
         Uint32 db_index;
         Uint32 has_postsets_loaded;
         Uint32 _num_postsets;
+        Uint32 splitter_type;
     private:
         int return_code;
 

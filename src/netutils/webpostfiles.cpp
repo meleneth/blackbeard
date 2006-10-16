@@ -40,12 +40,13 @@ string WebPostFiles::info_update_string(void)
     r.param("tick", config->tick);
 
     stringstream s;
-    s << "tab.last_retrieve = \"" << r.get_uri() << "\"; "
+    s << "ui.last_url = \"" << r.get_uri() << "\"; "
       <<  WebDataFetcher::info_update_string()
-      << "update_heading('" + js_escape(set->subject) + "');";
-
+      << "ui.update_heading('" + js_escape(set->subject) + "');";
+/*
     if(request->paramn("tick"))
         s << "mode=\"update\";";
+  */
     return s.str();
 }
 

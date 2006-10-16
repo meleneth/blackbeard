@@ -4,7 +4,6 @@
 #include "config.hpp"
 #include "strutil.hpp"
 #include "post_set_splitter_dynamicmatch.hpp"
-#include "post_set_splitter_filenamematch.hpp"
 #include "messageheader.hpp"
 #include "database.hpp"
 #include <iostream>  // I/O 
@@ -32,9 +31,8 @@ NewsGroup::NewsGroup(string group_name) // Constructor
     last_article_number = 0;
     db_index = 0;
 
-    splitter = config->debug_mode 
-                    ? (PostSetSplitter *) new PostSetSplitterDynamicMatch(this)
-                    : (PostSetSplitter *) new PostSetSplitterFilenameMatch(this);
+    splitter = (PostSetSplitter *) new PostSetSplitterDynamicMatch(this);
+    splitter_type = 0;
 }
 
     

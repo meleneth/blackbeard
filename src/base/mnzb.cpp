@@ -137,10 +137,10 @@ void mNZB::load_postset(PostSet *set)
     string dest_dir = config->blackbeard_data_dir + "/" + set->group->name;
     string full_filename = dest_dir + "/" + nzb_filename() + ".bz2";
 
-    console->log("full filename is " + full_filename);
+//    console->log("full filename is " + full_filename);
 
     if(!_file_exists(full_filename)) {
-        console->log("Ouch! " + full_filename + " does not exist - could NOT load NZB");
+//        console->log("Ouch! " + full_filename + " does not exist - could NOT load NZB");
         set->has_pieces_loaded = 1;
         return;
     }
@@ -211,6 +211,7 @@ void mNZB::load_postset(PostSet *set)
         restore_file(set, *i);
     }
 
+    delete parsed;
 }
 
 

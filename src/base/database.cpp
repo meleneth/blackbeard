@@ -5,6 +5,7 @@
 #include "xmlnode.hpp"
 #include "xmlparser.hpp"
 #include "strutil.hpp"
+#include "post_set_splitter_filenamematch.hpp"
 
 #include <unistd.h>
 #include <sys/types.h>
@@ -28,8 +29,13 @@ void restore_newsgroups()
         group->first_article_number = groups[i]->get_attr_num("min_article_no");
         group->last_article_number = groups[i]->get_attr_num("max_article_no");
         group->_num_postsets = groups[i]->get_attr_num("num_postsets");
+        group->splitter_type = groups[i]->get_attr_num("splitter_type");
+        if(group->splitter_type == 1) {
+            delete group->splitter;
+            group->splitter = new PostSetSplitterFilenameMatch(group);
+        }
     }
-
+    delete document;
 }
 
 void restore_postsets(NewsGroup *group)
@@ -44,12 +50,14 @@ void restore_postsets(NewsGroup *group)
         PostSet *set = group->postset_for_subject(setinfo->content);
         set->_num_bytes = atol(setinfo->get_attr("num_bytes").c_str());
         set->_num_files = setinfo->get_attr_num("num_files");
+        set->poster = setinfo->get_attr("poster");
         set->_min_article_no = setinfo->get_attr_num("min_article_no");
         set->_max_article_no = setinfo->get_attr_num("max_article_no");
         if(group->last_article_number < set->_max_article_no) {
             group->last_article_number = set->_max_article_no;
         }
     }
+    delete document;
 }
 
 void restore_postfiles(PostSet *set)
@@ -73,6 +81,7 @@ void save_postsets(NewsGroup *group)
             setnode->set_attr("max_article_no", set->max_article_no());
             setnode->set_attr("num_files", set->num_files());
             setnode->set_attr("num_bytes", set->num_bytes());
+            setnode->set_attr("poster", set->poster);
 
             document->addChild(setnode);
             if(set->has_pieces_loaded) {
@@ -101,6 +110,7 @@ void save_subscribed_groups()
             groupnode->set_attr("min_article_no", group->first_article_number);
             groupnode->set_attr("max_article_no", group->last_article_number);
             groupnode->set_attr("num_postsets", group->num_postsets());
+            groupnode->set_attr("splitter_type", group->splitter_type);
             document->addChild(groupnode);
             if(group->has_postsets_loaded){
                 console->log("Saving postsets for group " + group->name);

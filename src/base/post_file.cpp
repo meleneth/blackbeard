@@ -120,6 +120,9 @@ FilePiece *PostFile::saw_message_id(Uint32 article_no, string msg_id, Uint32 num
             return *p;
         }
     }
+    tick = config->tick;
+    if(post_set)
+        post_set->tick = config->tick;
     FilePiece *piece = new FilePiece(article_no, msg_id, SEEN, this, num_bytes);
     pieces.push_back(piece);
     return piece;
@@ -220,7 +223,6 @@ FileHandle *PostFile::open_file()
         ensure_directory_presence(dirname, "Creating blackbeard data dir for newsgroup..");
         dirname += "/par2";
         ensure_directory_presence(dirname, "Creating blackbeard par2 dir..");
-        console->log("Opening " + par_mangled_filename());
         return open_filehandle(par_mangled_filename());
     }else {
         string dest_dir = config->blackbeard_dir + "/" + post_set->group->name;

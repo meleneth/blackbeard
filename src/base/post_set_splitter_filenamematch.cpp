@@ -75,6 +75,7 @@ void PostSetSplitterFilenameMatch::process_par2(PostFile *parfile)
         PostFile *file = poster->get_postfile(*i);
         parfile->post_set->add_file(file);
     }
+    delete pfile;
 }
 
 PSSFMPostFilesbyPoster::PSSFMPostFilesbyPoster(string poster)

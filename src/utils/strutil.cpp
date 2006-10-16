@@ -180,9 +180,9 @@ string human_readable_bytes(unsigned long long int num_bytes)
 {
     stringstream result;
 
-    unsigned long long int Kay  = pow(2, 10);
-    unsigned long long int Mega = pow(2, 20);
-    unsigned long long int Giga = pow(2, 30);
+    unsigned long long int Kay  = static_cast<unsigned long long int>(pow(2, 10));
+    unsigned long long int Mega = static_cast<unsigned long long int>(pow(2, 20));
+    unsigned long long int Giga = static_cast<unsigned long long int>(pow(2, 30));
 
     if(num_bytes < 1)
         return "0b";

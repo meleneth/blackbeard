@@ -45,7 +45,7 @@ void WebRequest::defaults()
 
 void WebRequest::parse_uri(string uri)
 {
-    console->log("URI: " + uri);
+//    console->log("URI: " + uri);
     StringPattern get_with_version = StringPattern(3);
     get_with_version.add_breaker("GET ");
     get_with_version.add_breaker(" HTTP/");
@@ -54,8 +54,7 @@ void WebRequest::parse_uri(string uri)
     raw_get.add_breaker("get ");
 
     if(get_with_version.match(uri)){
-        console->log("Examine");
-        console->log(get_with_version.results[2]);
+        //console->log(get_with_version.results[2]);
         split_request_uri(get_with_version.results[1]);
         http_minor_version = 3;
         StringPattern split = StringPattern(2);

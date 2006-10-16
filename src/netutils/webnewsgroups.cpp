@@ -46,7 +46,7 @@ string WebNewsGroups::info_update_string(void)
 {
     stringstream out;
     out << WebDataFetcher::info_update_string()
-        << " update_heading('Newsgroups');";
+        << " ui.update_heading('Newsgroups');";
     return out.str();
 }
 

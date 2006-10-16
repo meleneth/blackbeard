@@ -1,3 +1,11 @@
+Short Term TODO:
+    store minimal filename info in main group .xml file (piece info will still be compressed, shouldnt be too big)
+    group the slice par2's with the postset
+    configure splitter via XML - is this needed?
+    fix web updates
+    new splitter needs to be able to continue with group parse, which entails the above and:
+        store posted_by on the postset
+
 Web interface
     Needs tabbed interface
     *need to cut down on the max info that we send, can't handle sending megs worth of data in AJAX request in timely fashion

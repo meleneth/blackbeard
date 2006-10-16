@@ -23,14 +23,15 @@ ParArchive::ParArchive(string filename)
     const char *magic_packet_sequence = "PAR2\0PKT";
     const char *main_packet_sequence = "PAR 2.0\0Main\0\0\0\0"; 
     const char *filedesc_packet_sequence = "PAR 2.0\0FileDesc";
+    console->log("par2 parsing: " + filename);
 
     while(fread(&header, sizeof(header), 1, file->fh) && !is_corrupt) {
         Uint32 packet_size = 0;
 
-        if(header.length > sizeof(header)) {
+        if(header.length > sizeof(header) && (header.length < 1000000)) {
             packet_size = header.length - sizeof(header);
             packet_body = (char *)malloc(packet_size);
-            memset(packet_body, 0, packet_size);
+            //memset(packet_body, 0, packet_size);
         } else { 
             is_corrupt = 1;
 //            console->log("Corrupted out :/");

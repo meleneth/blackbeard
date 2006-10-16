@@ -77,10 +77,15 @@ Screen.prototype = {
         this.tbody.appendChild(row);
         return;
     }
-    cells.map(function(cell, cell_index){
-        var new_cell = me.table_cell(cell);
-        row.replaceChild(new_cell, row.children[cell_index]);
-    });
+    try {
+      cells.map(function(cell, cell_index){
+          var new_cell = Builder.node("td", {class: headers[cell_index]}, [me.table_cell(cell)]);
+          row.replaceChild(new_cell, row.childNodes[cell_index]);
+      });
+    } catch(err) {
+      debug_log("Error Found!!");
+      debug_log(err.description);
+    }
   },
   update_url_data: function(url) {
     var screen = this;
@@ -119,6 +124,27 @@ UserInterface.prototype = {
       }else {
         $('screen').appendChild(new_screen.div);
       }
+    },
+    update_meters: function(jobs, krate){
+      $('jobs_rate').replaceChild(document.createTextNode(jobs), $('jobs_rate').firstChild);
+      $('k_rate').replaceChild(document.createTextNode(krate), $('k_rate').firstChild);
+    },
+    update_heading: function(new_heading){
+      var h = $('heading');
+      h.replaceChild(document.createTextNode(new_heading), h.firstChild);
+    },
+    refresh_data: function(){
+      if(this.last_url) {
+        var url = this.last_url;
+        this.last_url = null;
+        this.screen.update_url_data(url);
+      }
+    },
+    clear_debug_log: function(){
+      var debug_node = $('debug_log');
+      while(debug_node.hasChildNodes()){
+        debug_node.removeChild(debug_node.firstChild);
+      }
     }
 };
 
@@ -137,19 +163,6 @@ var old_from_where = 'index.html';
 function process_onload()
 {
   onload_actions.map(function(f, i){ f() });
-}
-
-
-function update_meters(jobs, krate)
-{
-  $('jobs_rate').replaceChild(document.createTextNode(jobs), $('jobs_rate').firstChild);
-  $('k_rate').replaceChild(document.createTextNode(krate), $('k_rate').firstChild);
-}
-
-function update_heading(new_heading)
-{
-  var h = $('heading');
-  h.replaceChild(document.createTextNode(new_heading), h.firstChild);
 }
 
 function ping_url(url) {
@@ -173,6 +186,6 @@ function view_file(url)
   var req = new Ajax.Request( url, { method: 'get', onComplete: view_file_response });
 }
 
-/* new PeriodicalExecuter(function(){ tabs.update_current_tab(); }, 5); */
+new PeriodicalExecuter(function(){ ui.refresh_data(); }, 5);
 
 

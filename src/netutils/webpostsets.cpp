@@ -27,16 +27,16 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 
     for(Uint32 i=0; i<num_lines; ++i) {
         PostSet *set = group->postsets[i];
-        if(set->tick > request_tick) {
-            if(set->num_files() > 10) {
-                valid_num++;
-                if(valid_num > got_num) {
-                    if(valid_num < (got_num + MAX_PER_REQUEST)) {
+        if(set->num_files() > 10) {
+            valid_num++;
+            if(valid_num > got_num) {
+                if(valid_num < (got_num + MAX_PER_REQUEST)) {
+                    if(set->tick > request_tick) {
                         output_lines.push_back(status(set, i));
                         last_got_num = valid_num;
-                    } else {
-                        next_tick = request_tick;
                     }
+                } else {
+                    next_tick = request_tick;
                 }
             }
         }
@@ -45,6 +45,7 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
     
     num_lines = output_lines.size();
     stringstream s;
+
     s << "new Pager(20, " << got_num << ", " << valid_num << ", '/postsets?ngi=" << request->paramn("ngi") << ";got_num=');" << info_update_string();
     output_lines[0] = s.str();
 }
@@ -81,9 +82,11 @@ string WebPostSets::info_update_string(void)
 {
     WebRequest r(request->get_uri());
     r.param("tick", config->tick);
+
     stringstream s;
-    s <<  WebDataFetcher::info_update_string()
-      << "update_heading('" << group->name << "');";
+    s << "ui.last_url = \"" << r.get_uri() << "\"; "
+      <<  WebDataFetcher::info_update_string()
+      << "ui.update_heading('" << group->name << "');";
 
     return s.str();
 }
