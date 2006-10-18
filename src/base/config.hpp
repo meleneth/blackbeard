@@ -42,6 +42,7 @@ class Config {
         Uint32 news_port;
         Uint32 webserver_port;
         Uint32 debug_mode;
+        Uint32 test_mode;
         Uint32 show_groups_screen;
         Uint32 max_net_connections;
         Uint32 debug_logging;

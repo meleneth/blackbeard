@@ -133,6 +133,10 @@ Uint32 _file_exists(string filename)
 void mNZB::load_postset(PostSet *set)
 {
     set->has_pieces_loaded = 1;
+
+    if(config->test_mode)
+        return;
+
     this->set = set;
     string dest_dir = config->blackbeard_data_dir + "/" + set->group->name;
     string full_filename = dest_dir + "/" + nzb_filename() + ".bz2";

@@ -12,6 +12,8 @@ class PSSFMPostFilesbyPoster {
 
         PostFile *get_postfile(string filename);
         PostSet  *get_postset(string subject);
+        void add_group(NewsGroup *group);
+        void find_stray_slice_files(PostSet *set);
 
         string poster;
         vector<PostFile *> postfiles;

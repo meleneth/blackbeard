@@ -24,6 +24,7 @@ PostSet::PostSet(string subject)
     _last_file = NULL;
     tick = 1;
     db_index = 0;
+    main_par = NULL;
 }
 
 PostSet::~PostSet()

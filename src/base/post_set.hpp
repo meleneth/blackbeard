@@ -58,6 +58,7 @@ class PostSet {
         Uint32 _min_article_no;
         Uint32 _max_article_no;
         PostFile *_last_file;
+        PostFile *main_par;
         Uint32 tick;
         Uint32 date;
 

@@ -144,3 +144,20 @@ int is_recovery_par(string filename)
     return is_par(filename) && index != string::npos;
 }
 
+string base_par_filename(string filename)
+{
+    string mangled = filename.substr(0, filename.length() - 5);
+    string lil_vol = ".vol";
+    size_t index = filename.find(lil_vol);
+    if(index!=string::npos){
+        mangled = mangled.substr(0, index);
+    }
+
+    string big_vol = ".VOL";
+    index = filename.find(big_vol);
+    if(index!=string::npos){
+        mangled = mangled.substr(0, index);
+    }
+    return mangled;
+}
+

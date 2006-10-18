@@ -12,6 +12,7 @@
 #include "headersforgroupjob.hpp"
 #include "postsetjob.hpp"
 #include "post_set_splitter_dynamicmatch.hpp"
+#include "post_set_splitter_filenamematch.hpp"
 #include "webrequest.hpp"
 #include "netcentral.hpp"
 #include "file_handle.hpp"
@@ -49,6 +50,7 @@ void test_download_netjob(void);
 void test_crc32(void);
 void test_simple_x(void);
 void test_dynamic_postsplit(void);
+void test_filename_postsplit(void);
 void test_string_sorting(void);
 void test_js_escape(void);
 void test_mem_stringpattern(void);
@@ -87,6 +89,7 @@ int main(int argc, char *argv[])
     test_bit_manipulations();
     test_more_string_pattern();
     test_simple_x();
+    test_filename_postsplit();
     test_dynamic_postsplit();
     test_string_sorting();
     test_web_request();
@@ -265,9 +268,39 @@ void test_download_netjob(void)
 
 }
 
+void test_filename_postsplit(void)
+{
+    NewsGroup group("net.fusion3.downloads");
+    delete group.splitter;
+    PostSetSplitterFilenameMatch *splitter = new PostSetSplitterFilenameMatch(&group);
+    group.splitter = splitter;
+
+    console->log("Parsing (Horny Peeps \"hornypeeps.rar\" yEnc (23/59))");
+    MessageHeader *header = new MessageHeader( &group, 31337, "xyz2300@yahoo.com", "Horny Peeps \"lodg2-dcn.vol035+31.PAR2\" yEnc (23/59)", "jim@bo.com", 500);
+    assert(0 == splitter->posters.size());
+    splitter->process_header(header);
+    assert(1 == splitter->posters.size());
+    assert(0 == group.postsets.size());
+
+    
+    PostSet set("Horny Peeps \"lodg2-dcn.vol035+31.PAR2\" yEnc (24/59)");
+    PostFile *parfile = new PostFile(&set);
+    set.add_file(parfile);
+    parfile->filename = "lodg2-dcn.par2";
+    set.main_par = parfile;
+    splitter->get_poster("jim@bo.com")->postsets.push_back(&set);
+
+    console->log("Main par2 is set to " + set.main_par->filename);
+    header = new MessageHeader( &group, 31338, "xyz2300@yahoo.com", "Horny Peeps \"lodg2-dcn.vol036+31.PAR2\" yEnc (24/59)", "jim@bo.com", 500);
+    splitter->process_header(header);
+    assert(2 == set.files.size());
+
+
+}
+
 void test_dynamic_postsplit(void)
 {
-    NewsGroup group("net.fusion2.downloads");
+    NewsGroup group("net.fusion9.downloads");
     PostSetSplitterDynamicMatch *splitter = (PostSetSplitterDynamicMatch *) group.splitter;
     console->log("Parsing (Horny Peeps \"hornypeeps.rar\" yEnc (23/59))");
     MessageHeader *header = new MessageHeader( &group, 31337, "xyz2300@yahoo.com", "Horny Peeps \"hornypeeps.rar\" yEnc (23/59)", "jim@bo.com", 500);

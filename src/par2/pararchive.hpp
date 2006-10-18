@@ -30,5 +30,6 @@ ParArchive *load_par_file(string filename);
 int is_par(string filename);
 int is_base_par(string filename);
 int is_recovery_par(string filename);
+string base_par_filename(string filename);
 
 #endif
