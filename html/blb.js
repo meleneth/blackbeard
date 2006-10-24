@@ -80,7 +80,7 @@ Screen.prototype = {
     try {
       cells.map(function(cell, cell_index){
           var new_cell = Builder.node("td", {class: headers[cell_index]}, [me.table_cell(cell)]);
-          row.replaceChild(new_cell, row.childNodes[cell_index]);
+          table_row.replaceChild(new_cell, table_row.childNodes[cell_index]);
       });
     } catch(err) {
       debug_log("Error Found!!");
