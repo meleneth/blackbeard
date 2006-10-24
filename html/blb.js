@@ -67,14 +67,14 @@ Screen.prototype = {
     var cells = row.split("||");
     var rowid = cells.shift();
     var children = $A(this.tbody.childNodes);
-    var row = children.find(function(row){ return row.id == rowid });
+    var table_row = children.find(function(row){ return row.id == rowid });
     var me = this;
-    if(!row) {
-        row = Builder.node("tr", {id: rowid});
+    if(!table_row) {
+        table_row = Builder.node("tr", {id: rowid});
         headers.map( function(h, i){
-          row.appendChild(Builder.node("td", {class: h}, [me.table_cell(cells[i])] ));
+          table_row.appendChild(Builder.node("td", {class: h}, [me.table_cell(cells[i])] ));
         });
-        this.tbody.appendChild(row);
+        this.tbody.appendChild(table_row);
         return;
     }
     try {
@@ -85,6 +85,7 @@ Screen.prototype = {
     } catch(err) {
       debug_log("Error Found!!");
       debug_log(err.description);
+      debug_log(row);
     }
   },
   update_url_data: function(url) {

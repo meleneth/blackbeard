@@ -24,9 +24,9 @@ PostfileJob::PostfileJob(PostFile* post_file)
 {
     postfile = post_file;
     job = NULL;
-    piece_no = 0;
     postfile->status = "Queued";
     job_type = POSTFILE_DOWNLOAD;
+    piece = postfile->pieces.begin();
 }
 
 PostfileJob::~PostfileJob()
@@ -46,25 +46,26 @@ Job* PostfileJob::get_next_job()
     }
 
     if(postfile){
-        PIECE_STATUS s = postfile->pieces[piece_no]->status;
+        PIECE_STATUS s = (*piece)->status;
         postfile->status = "Downloading";
         postfile->tick = config->tick;
         postfile->post_set->tick = config->tick;
         switch(s){
             case DOWNLOADING:
-                postfile->pieces[piece_no]->change_status(FINISHED);
+                (*piece)->change_status(FINISHED);
                 postfile->_num_downloaded_pieces++;
             case MISSING:
             case DECODING:
             case FINISHED:
                 break;
             case SEEN:
-                postfile->pieces[piece_no]->change_status(DOWNLOADING);
-                BodyRetrieverJob *new_job = new BodyRetrieverJob(postfile, postfile->pieces[piece_no]);
+                (*piece)->change_status(DOWNLOADING);
+                BodyRetrieverJob *new_job = new BodyRetrieverJob(postfile, *piece);
                 new_job->srv = srv;
                 return new_job;
         }
-        if(++piece_no == postfile->pieces.size()){
+        ++piece;
+        if(piece == postfile->pieces.end()){
             postfile->status = "Finished";
             //console->log("Finished getting file " + postfile->filename); 
             finish();

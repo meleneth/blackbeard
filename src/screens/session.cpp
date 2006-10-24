@@ -45,6 +45,9 @@ int Session::handle_input(int key)
 void Session::switch_postset_detail(NewsGroup *newsgroup, Uint32 selected_postset_no)
 {
     postsetdetail->newsgroup = newsgroup;
+    if(postsetdetail->postset_index != selected_postset_no) {
+        postsetdetail->scroll_list->pos_index = 0;
+    }
     postsetdetail->postset_index = selected_postset_no;
     current_screen = postsetdetail;
 }

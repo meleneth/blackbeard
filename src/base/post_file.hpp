@@ -34,6 +34,7 @@ class PostFile {
         Uint32 count_num_downloaded_pieces();
 
         void switch_seen_statuses(PIECE_STATUS new_status);
+        void log_info();
         string par_mangled_filename();
 
         FileHandle *open_file();
@@ -55,10 +56,9 @@ class PostFile {
         PostSet *post_set;
 
         Uint32 db_index;
-        Uint32 _num_file_pieces;
         Uint32 _num_downloaded_pieces;
 
-        vector<FilePiece *> pieces;
+        list<FilePiece *> pieces;
     private:
     protected:
 };

@@ -25,7 +25,8 @@ Config::Config(int argc, char *argv[]) // Constructor
     username="anonymous";
     password="guest";
     home_dir = getenv("HOME");
-    blackbeard_dir = home_dir + "/blackbeard";
+    //blackbeard_dir = home_dir + "/blackbeard";
+    blackbeard_dir = "/mnt/blackbeard";
     blackbeard_data_dir = blackbeard_dir + "/.control";
     config_filename = home_dir + CONFIGFILENAME;
     news_port = 119;

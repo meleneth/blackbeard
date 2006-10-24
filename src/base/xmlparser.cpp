@@ -71,7 +71,7 @@ void XMLParser::handle_start_tag(string tag)
 
             pos = attrs.find_first_of("\"", pos2);
             pos2 = attrs.find_first_of("\"", pos + 1);
-            string attr_value = attrs.substr(pos + 1, pos2 - pos - 1);
+            string attr_value = xml_unescape(attrs.substr(pos + 1, pos2 - pos - 1));
 
             new_node->set_attr(attr_name, attr_value);
 

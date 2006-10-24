@@ -14,10 +14,13 @@ class PSSFMPostFilesbyPoster {
         PostSet  *get_postset(string subject);
         void add_group(NewsGroup *group);
         void find_stray_slice_files(PostSet *set);
+        void log_info(void);
 
         string poster;
-        vector<PostFile *> postfiles;
-        vector<PostSet *> postsets;
+        PostFile *_last_postfile;
+        PostSet *_last_postset;
+        list<PostFile *> postfiles;
+        list<PostSet *> postsets;
 };
 
 class PostSetSplitterFilenameMatch : public PostSetSplitter {
@@ -26,6 +29,11 @@ class PostSetSplitterFilenameMatch : public PostSetSplitter {
         ~PostSetSplitterFilenameMatch();
 
         virtual void process_header(MessageHeader *header);
+        virtual void log_info(void);
+
+        void process_base_par_header(string filename, MessageHeader *header);
+        void process_par_header(string filename, MessageHeader *header);
+
         void process_par2(PostFile *parfile);
         PSSFMPostFilesbyPoster *get_poster(string poster);
 

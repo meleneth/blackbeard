@@ -19,7 +19,7 @@ class PostfileJob : public Job {
 
         Job *job;
         PostFile *postfile;
-        Uint32 piece_no;
+        list<FilePiece *>::iterator piece;
         Uint32 max_file_no;
         Uint32 max_piece_no;
     private:

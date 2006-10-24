@@ -102,11 +102,12 @@ XMLNode *mNZB::postfile_node(PostFile *file)
     // custom
     node->set_attr("status", file->status);
 
-    Uint32 max_piece_no = file->pieces.size();
     Uint32 number = 1;
-    for(Uint32 piece_index=0; piece_index<max_piece_no; ++piece_index) {
+
+    list<FilePiece *>::iterator p;    
+    for(p = file->pieces.begin(); p!=file->pieces.end(); ++p) {
         XMLNode *segment = new XMLNode("segment");
-        FilePiece *piece = file->pieces[piece_index];
+        FilePiece *piece = *p;
         // NZB
         segment->set_attr("bytes", piece->num_bytes);
         segment->set_attr("number", number++);
@@ -228,7 +229,7 @@ void mNZB::restore_file(PostSet *set, XMLNode *file_node)
     // If we are restoring, there are no pieces or anything already
     // so we can just slam info in there
     PostFile *file = set->file(file_node->get_attr("subject"));
-    console->log("Restoring file " + file->filename);
+    //console->log("Restoring file " + file->filename);
     Uint32 num_pieces = 0;
 
     Uint32 max_piece_no = pieces.size();
@@ -245,7 +246,6 @@ void mNZB::restore_file(PostSet *set, XMLNode *file_node)
         }
     }
     file->update_status_from_pieces();
-    file->_num_file_pieces = file->pieces.size();
 }
 
 

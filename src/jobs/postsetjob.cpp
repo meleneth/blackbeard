@@ -107,7 +107,8 @@ void PostsetJob::save_job_status(void)
                 out << "FILE: " << file->pieces.size() << " " << file->filename << endl;
                 Uint32 max_piece_no = file->pieces.size();
                 for(Uint32 j=0 ; j<max_piece_no ; j++){
-                    out << file->pieces[j]->status << " " << file->pieces[j]->article_no << endl;
+                    //FIXME
+                    //out << file->pieces[j]->status << " " << file->pieces[j]->article_no << endl;
                 }
             }
         }

@@ -3,6 +3,10 @@
 #include "post_file.hpp"
 #include "netcentral.hpp"
 
+#include <string>
+
+using std::stringstream;
+
 PostSetSplitterFilenameMatch::PostSetSplitterFilenameMatch(NewsGroup *group):PostSetSplitter(group)
 {
     pattern = new StringPattern(3);
@@ -14,78 +18,79 @@ PostSetSplitterFilenameMatch::~PostSetSplitterFilenameMatch()
 {
 }
 
+void PostSetSplitterFilenameMatch::process_base_par_header(string filename, MessageHeader *header)
+{
+    PSSFMPostFilesbyPoster *poster = get_poster(header->posted_by);
+
+    list<PostSet *>::iterator p;
+    for(p = poster->postsets.begin(); p!= poster->postsets.end(); ++p) {
+        if((*p)->main_par){
+            if(0 == (*p)->main_par->filename.compare(filename)){
+                (*p)->main_par->saw_message_id(header->article_no, header->msg_id, header->num_bytes);
+                (*p)->main_par->update_status_from_pieces();
+                netcentral->add_job(new PSSFMParJob((*p)->main_par, this));
+                delete header;
+                return;
+            }
+        }
+    }
+
+    PostSet *set = group->postset_for_subject(header->subject);
+    poster->postsets.push_back(set);
+    set->poster = header->posted_by;
+    PostFile *file = set->file(filename);
+    set->main_par = file;
+
+    file->saw_message_id(header->article_no, header->msg_id, header->num_bytes);
+
+    poster->find_stray_slice_files(set);
+
+    netcentral->add_job(new PSSFMParJob(file, this));
+    delete header;
+
+    return;
+}
+
+void PostSetSplitterFilenameMatch::process_par_header(string filename, MessageHeader *header)
+{
+}
+
 void PostSetSplitterFilenameMatch::process_header(MessageHeader *header)
 {
     if(pattern->match(header->subject)) {
         string filename = pattern->results[1];
-        //        console->log("Filename: " + filename + " -*- " + header->subject);
         // when we get a new base par2 file, fetch it.  The job we make will call us when it is finished downloading.
-        PSSFMPostFilesbyPoster *poster = get_poster(header->posted_by);
-        PostFile *file = poster->get_postfile(filename);
 
+        if(is_par(filename)) {
+            if(is_base_par(filename)) {
+                return process_base_par_header(filename, header);
+            }
+
+        }
+        PSSFMPostFilesbyPoster *poster = get_poster(header->posted_by);
+
+        PostFile *file = poster->get_postfile(filename);
         file->saw_message_id(header->article_no, header->msg_id, header->num_bytes);
         file->update_status_from_pieces();
 
-        if(is_par(filename)) {
-            //            console->log(" * file is PAR2 file");
-            if(is_base_par(filename)) {
-                if(!file->post_set){
-                    PostSet *set = new PostSet(header->subject);
-                    set->poster = header->posted_by;
-                    set->group = group;
-                    group->postsets.push_back(set);
-                    set->add_file(file);
-                    set->main_par = file;
-
-                    string base_par = base_par_filename(filename);
-                    vector<PostFile *>::iterator i;
-                    for(i = poster->postfiles.begin(); i!=poster->postfiles.end();++i){
-                        if(is_par((*i)->filename)){
-                            if(0 == base_par.compare(base_par_filename((*i)->filename))){
-                                PostFile *matching_file = *i;
-                                vector<PostFile *>::iterator d;
-                                d = i;
-                                --i;
-                                poster->postfiles.erase(d);
-                                set->add_file(matching_file);
-                            }
-                        }
-                    }
-
-                }
-                //                console->log(" * is base PAR2 file");
-                //                console->log(" * REQUEST: " + file->filename);
-                netcentral->add_job(new PSSFMParJob(file, this));
-                delete header;
-
-
-                return;
-            }
-            if(!file->post_set) {
-                if(is_recovery_par(filename)) {
-                    vector<PostSet *>::iterator i;
-                    string base_par = base_par_filename(filename);
-                    for(i=poster->postsets.begin(); i!=poster->postsets.end(); ++i){
-                        if((*i)->main_par){
-                            if(0 == base_par_filename((*i)->main_par->filename).compare(base_par)){
-                                // remove this PostFile from postfiles, and add it to the postset.
-                                vector<PostFile *>::iterator pf;
-                                for(pf=poster->postfiles.begin(); pf!=poster->postfiles.end(); ++pf){
-                                    if(*pf == file){
-                                        vector<PostFile *>::iterator d = pf;
-                                        --pf;
-                                        poster->postfiles.erase(d);
-                                    }
-                                }
-                                (*i)->add_file(file);
-                            }
-                        }
-                    }
-                }
-            }
-        }
     }
     delete header;
+}
+
+void PostSetSplitterFilenameMatch::log_info(void)
+{
+    stringstream buf;
+    buf << "Filename PostSetSplitter has " << posters.size() << " posters.  Poster info follows.";
+    console->log(buf.str());
+    buf.str("");
+
+    console->log(" *** start Poster info");
+    vector<PSSFMPostFilesbyPoster *>::iterator i;
+    for(i = posters.begin(); i != posters.end(); ++i) {
+        (*i)->log_info();
+    }
+    console->log(" *** end Poster info");
+
 }
 
 void PostSetSplitterFilenameMatch::process_par2(PostFile *parfile)
@@ -118,10 +123,13 @@ void PostSetSplitterFilenameMatch::process_par2(PostFile *parfile)
     poster->find_stray_slice_files(parfile->post_set);
 }
 
+//----------------------------------------------------------------------
+
 PSSFMPostFilesbyPoster::PSSFMPostFilesbyPoster(string poster)
 {
     this->poster = poster;
-
+    _last_postfile = NULL;
+    _last_postset = NULL;
 }
 
 void PSSFMPostFilesbyPoster::add_group(NewsGroup *group)
@@ -145,20 +153,51 @@ void PSSFMPostFilesbyPoster::add_group(NewsGroup *group)
 
 void PSSFMPostFilesbyPoster::find_stray_slice_files(PostSet *set)
 {
-    vector<PostFile *>::iterator v;
+    list<PostFile *>::iterator v;
     string base_par = base_par_filename(set->main_par->filename);
     for(v=postfiles.begin(); v!=postfiles.end(); ++v){
         if(is_par((*v)->filename)){
             if(0 == base_par.compare(base_par_filename((*v)->filename))){
                 set->add_file(*v);
-                vector<PostFile *>::iterator d = v;
+                list<PostFile *>::iterator d = v;
                 --v;
                 postfiles.erase(d);
             }
         }
     }
+}
+
+void PSSFMPostFilesbyPoster::log_info(void)
+{
+    stringstream buf;
+
+    console->log(" Info for poster: " + poster);
+    buf << " I have " << postfiles.size() << " postfiles and " << postsets.size() << " postsets";
+    console->log(buf.str()); buf.str("");
+    
+    list<PostSet *>::iterator i;
+    vector<PostFile *>::iterator j;
+
+    for(i = postsets.begin(); i!=postsets.end(); ++i){
+        console->log("  PostSet: " + (*i)->subject);
+        if((*i)->main_par)
+            console->log("  MainPar: " + (*i)->main_par->filename);
+        for(j = (*i)->files.begin(); j!=(*i)->files.end(); ++j){
+            console->log("   PostFile:" + (*j)->filename);
+            console->log((*j)->status_string());
+        }
+    }
+
+    list<PostFile *>::iterator k;
+    for(k = postfiles.begin(); k!=postfiles.end(); ++k){
+            console->log("  PostFile:" + (*k)->filename);
+            console->log((*k)->status_string());
+    }
+
 
 }
+
+//---------------------------------------------------------------------------------
 
 PSSFMPostFilesbyPoster *PostSetSplitterFilenameMatch::get_poster(string poster)
 {
@@ -168,7 +207,6 @@ PSSFMPostFilesbyPoster *PostSetSplitterFilenameMatch::get_poster(string poster)
             return *i;
         }
     }
-
     PSSFMPostFilesbyPoster *p = new PSSFMPostFilesbyPoster(poster);
     p->add_group(group);
     posters.push_back(p);
@@ -177,41 +215,66 @@ PSSFMPostFilesbyPoster *PostSetSplitterFilenameMatch::get_poster(string poster)
 
 PostFile *PSSFMPostFilesbyPoster::get_postfile(string filename)
 {
-    vector<PostFile *>::iterator i;
-    for(i = postfiles.begin(); i!=postfiles.end(); ++i){
-        if((*i)->filename == filename) {
-            return *i;
+    if(_last_postfile) {
+        if(0 == _last_postfile->filename.compare(filename)) {
+            return _last_postfile;
         }
     }
-    vector<PostSet *>::iterator j;
-    for(j=postsets.begin(); j!=postsets.end(); ++j){
-        PostSet *set = *j;
-        for(i = set->files.begin(); i!=set->files.end(); ++i){
-            if((*i)->filename == filename) 
+    if(_last_postset) {
+        vector<PostFile *>::iterator i;
+        for(i = _last_postset->files.begin(); i!=_last_postset->files.end(); ++i){
+            if((*i)->filename == filename) {
+                _last_postfile = *i;
                 return *i;
+            }
         }
     }
-    PostFile *file = new PostFile(NULL);
-    file->filename = filename;
+    list<PostSet *>::iterator j;
     if(is_par(filename)) {
         string name = base_par_filename(filename);
         for(j=postsets.begin(); j!=postsets.end(); ++j){
             if((*j)->main_par){
                 string short_comp = base_par_filename((*j)->main_par->filename);
                 if(0 == name.compare(short_comp)){
-                    (*j)->add_file(file);
+                    PostFile *file = (*j)->file(filename);
+                    _last_postfile = file;
+                    _last_postset  = *j;
                     return file;
                 }
              }
         }
     }
+
+    list<PostFile *>::iterator i;
+    for(i = postfiles.begin(); i!=postfiles.end(); ++i){
+        if((*i)->filename == filename) {
+            _last_postfile = *i;
+            return *i;
+        }
+    }
+    vector<PostFile *>::iterator k;
+    for(j=postsets.begin(); j!=postsets.end(); ++j){
+        PostSet *set = *j;
+        for(k = set->files.begin(); k!=set->files.end(); ++k){
+            if(0 == (*k)->filename.compare(filename)) {
+                _last_postfile = *k;
+                _last_postset = set;
+                return *k;
+            }
+        }
+    }
+
+
+    PostFile *file = new PostFile(NULL);
+    file->filename = filename;
     postfiles.push_back(file);
+    _last_postfile = file;
     return file;
 }
 
 PostSet *PSSFMPostFilesbyPoster::get_postset(string subject)
 {
-    vector<PostSet *>::iterator i;
+    list<PostSet *>::iterator i;
     for(i = postsets.begin(); i!=postsets.end(); ++i){
         if((*i)->subject == subject) {
             return *i;
@@ -233,3 +296,4 @@ void PSSFMParJob::finish(void)
     Job::finish();
     splitter->process_par2(postfile);
 }
+

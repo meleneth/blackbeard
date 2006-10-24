@@ -14,6 +14,7 @@ class PostSetSplitter {
         NewsGroup *group;
 
         virtual void process_header(MessageHeader *header);
+        virtual void log_info(void);
 
     private:
     protected:

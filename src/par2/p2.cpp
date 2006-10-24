@@ -15,5 +15,7 @@ int main(int argc, char *argv[])
     console->log("lodg2-dcn.vol035+31.PAR2 -- " + base_par_filename("lodg2-dcn.vol035+31.PAR2"));
     console->log("TrueLiesl.cd1.vol038+34.PAR2 -- " + base_par_filename("TrueLiesl.cd1.vol038+34.PAR2"));
     console->log("lodg2-dcn.vol102+36.PAR2 -- " + base_par_filename("lodg2-dcn.vol102+36.PAR2"));
+    console->log("imts-tbh.vol177+36.PAR2 -- " + base_par_filename("imts-tbh.vol177+36.PAR2"));
+    console->log("imts-tbh.par2 -- " + base_par_filename("imts-tbh.par2"));
     load_par_file(argv[1]);
 }

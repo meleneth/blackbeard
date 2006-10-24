@@ -25,7 +25,6 @@ PostFile::PostFile(PostSet *postset)
     is_corrupt = 0;
     tick = 1;
     db_index = 0;
-    _num_file_pieces = 0;
     _num_downloaded_pieces = 0;
 }
     
@@ -47,6 +46,15 @@ string PostFile::status_string(void)
                   << "%";
     }
     return mystatus.str();
+}
+
+void PostFile::log_info(void)
+{
+    stringstream buf;
+    console->log("File info: " + filename);
+    buf << pieces.size() << " pieces.";
+    console->log(buf.str());
+    buf.str("");
 }
 
 string PostFile::get_bar(void)
@@ -71,7 +79,7 @@ string PostFile::get_bar(void)
 Uint32 PostFile::piece_no(Uint32 message_id)
 {
     Uint32 i=0;
-    vector<FilePiece *>::iterator p;
+    list<FilePiece *>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
         if((*p)->article_no == message_id){
             return i;
@@ -86,9 +94,9 @@ Uint32 PostFile::min_article_no(void)
     Uint32 article_no = 0;
     article_no--;
 
-    Uint32 max = pieces.size();
-    for(Uint32 i=0; i<max; ++i) {
-        Uint32 x = pieces[i]->article_no;
+    list<FilePiece *>::iterator p;
+    for(p = pieces.begin() ; p != pieces.end() ; ++p){
+        Uint32 x = (*p)->article_no;
         if(x){
             if(article_no > x)
                 article_no = x;
@@ -101,9 +109,9 @@ Uint32 PostFile::max_article_no(void)
 {
     Uint32 article_no = 0;
 
-    Uint32 max = pieces.size();
-    for(Uint32 i=0; i<max; ++i) {
-        Uint32 x = pieces[i]->article_no;
+    list<FilePiece *>::iterator p;
+    for(p = pieces.begin() ; p != pieces.end() ; ++p){
+        Uint32 x = (*p)->article_no;
         if(article_no < x)
             article_no = x;
     }
@@ -113,7 +121,7 @@ Uint32 PostFile::max_article_no(void)
 
 FilePiece *PostFile::saw_message_id(Uint32 article_no, string msg_id, Uint32 num_bytes)
 {
-    vector<FilePiece *>::iterator p;
+    list<FilePiece *>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
         if((*p)->article_no == article_no){
             (*p)->status = SEEN;
@@ -135,7 +143,7 @@ bool PostFile::compare(const PostFile* a, const PostFile* b)
 
 void PostFile::switch_seen_statuses(PIECE_STATUS new_status)
 {
-    vector<FilePiece *>::iterator p;
+    list<FilePiece *>::iterator p;
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
         if((*p)->status != MISSING){
             (*p)->status = new_status;
@@ -148,13 +156,13 @@ void PostFile::switch_seen_statuses(PIECE_STATUS new_status)
 void PostFile::update_status_from_pieces(void)
 {
     status = "Ignored";
-    Uint32 max_no = pieces.size();
     Uint32 finished_count = 0;
     Uint32 seen_count = 0;
     Uint32 downloading_count = 0;
 
-    for(Uint32 i=0; i<max_no; ++i) {
-        switch(pieces[i]->status){
+    list<FilePiece *>::iterator p;
+    for(p = pieces.begin() ; p != pieces.end() ; ++p){
+        switch((*p)->status){
             case MISSING:
                 status = "Missing Pieces";
                 return;
@@ -247,10 +255,10 @@ Uint32 PostFile::count_num_downloaded_pieces()
 {
     Uint32 num = 0;
 
-    Uint32 max_no = pieces.size();
-    for(Uint32 i=0; i<max_no; ++i) {
+    list<FilePiece *>::iterator p;
+    for(p = pieces.begin() ; p != pieces.end() ; ++p){
 
-        if(pieces[i]->status == FINISHED){
+        if((*p)->status == FINISHED){
             num++;
         }
     }
@@ -266,11 +274,9 @@ Uint32 PostFile::num_bytes(void)
 {
     Uint32 num = 0;
 
-    Uint32 max_no = pieces.size();
-    for(Uint32 i=0; i<max_no; ++i) {
-        if(pieces[i]){
-            num+=pieces[i]->num_bytes;
-        }
+    list<FilePiece *>::iterator p;
+    for(p = pieces.begin() ; p != pieces.end() ; ++p){
+        num += (*p)->num_bytes;
     }
     return num;
 }
@@ -279,10 +285,10 @@ Uint32 PostFile::num_downloaded_bytes(void)
 {
     Uint32 num = 0;
 
-    Uint32 max_no = pieces.size();
-    for(Uint32 i=0; i<max_no; ++i) {
-        if(pieces[i] && (pieces[i]->status == FINISHED)){
-            num+=pieces[i]->num_bytes;
+    list<FilePiece *>::iterator p;
+    for(p = pieces.begin() ; p != pieces.end() ; ++p){
+        if((*p)->status == FINISHED){
+            num += (*p)->num_bytes;
         }
     }
     return num;

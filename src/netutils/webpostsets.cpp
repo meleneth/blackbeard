@@ -27,7 +27,7 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 
     for(Uint32 i=0; i<num_lines; ++i) {
         PostSet *set = group->postsets[i];
-        if(set->num_files() > 10) {
+        //if(set->num_files() > 10) {
             valid_num++;
             if(valid_num > got_num) {
                 if(valid_num < (got_num + MAX_PER_REQUEST)) {
@@ -39,7 +39,7 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
                     next_tick = request_tick;
                 }
             }
-        }
+        //}
     }
 
     
