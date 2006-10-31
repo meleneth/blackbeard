@@ -94,6 +94,9 @@ int main(int argc, char *argv[])
     test_string_sorting();
     test_web_request();
     test_js_escape();
+    delete newsgroup;
+    delete config;
+    delete console;
 	return 0;
 }
 

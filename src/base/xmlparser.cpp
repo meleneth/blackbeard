@@ -52,6 +52,9 @@ void XMLParser::parse_fragment(string fragment)
             pos = fragment.find_first_not_of(blanks, pos);
         }
     }
+    if(0!=node_stack.size()){
+        console->log("Corrupt XML file");
+    }
 }
 
 void XMLParser::handle_start_tag(string tag)

@@ -84,8 +84,10 @@ void Console::log(string line)
     last_msg = line;
     if(keep_logs)
         loglines.push_front(line);
-    if(print_logs)
+    if(print_logs){
         printf("%s\n", line.c_str());
+        fflush(stdout);
+    }
     if(save_to_file){
         out << line << endl;
     }

@@ -29,33 +29,33 @@ void WebServer::handle_request(WebRequest *request)
 {
    if(0 == request->path.compare("/")) {
        if(0 == request->filename.compare("joblist")){
-           console->log("Handling joblist request:");
+//           console->log("Handling joblist request:");
            handlers.push_back(new WebJobList(request));
            return;
        }
        if(0 == request->filename.compare("newsgroups")){
-           console->log("Handling newsgroup request:");
+//           console->log("Handling newsgroup request:");
            handlers.push_back(new WebNewsGroups(request));
            return;
        }
        if(0 == request->filename.compare("postsets")) {
-           console->log("Handling postsets request:");
+//           console->log("Handling postsets request:");
            handlers.push_back(new WebPostSets(request));
            return;
        }
        if(0 == request->filename.compare("postfiles")) {
-           console->log("Handling postfiles request:");
+//           console->log("Handling postfiles request:");
            handlers.push_back(new WebPostFiles(request));
            return;
        }
        if(0 == request->filename.compare("viewfile")) {
-           console->log("Handling viewfile request:");
+//           console->log("Handling viewfile request:");
            handlers.push_back(new WebViewFile(request));
            return;
        }
        if(0 == request->filename.compare("updatepostset")) {
-           console->log("Handling update postset request");
-           console->log("Making job for " + request->filename);
+//           console->log("Handling update postset request");
+//           console->log("Making job for " + request->filename);
            PostSet *set = request->postset();
            Job *new_job = new HeadersForGroupJob(request->newsgroup(), set->_min_article_no, set->_max_article_no);
            high_priority_jobs->add_job(new_job);
@@ -63,7 +63,7 @@ void WebServer::handle_request(WebRequest *request)
            return;
        }
        if(0 == request->filename.compare("downloadpostset")) {
-           console->log("Handling download postset request");
+//           console->log("Handling download postset request");
            PostSet *set = request->postset();
            set->tick = config->tick;
            Job *new_job = new PostsetJob(set);
@@ -72,7 +72,7 @@ void WebServer::handle_request(WebRequest *request)
            return;
        }
        if(0 == request->filename.compare("downloadpostfile")) {
-           console->log("Handling download postfile request");
+//           console->log("Handling download postfile request");
            PostFile *file = request->postfile();
            file->tick = config->tick;
            Job *new_job = new PostfileJob(file);
@@ -82,7 +82,7 @@ void WebServer::handle_request(WebRequest *request)
            return;
        }
        if(0 == request->filename.compare("change_file_status")){
-           console->log("Changing file status");
+//           console->log("Changing file status");
            PostFile*file = request->postfile();
            file->tick = config->tick;
            if(0 == file->status.compare("Finished")){
@@ -90,7 +90,7 @@ void WebServer::handle_request(WebRequest *request)
            }
        }
        if(0 == request->filename.compare("update_newsgroup")) {
-           console->log("Handling update newsgroup request");
+//           console->log("Handling update newsgroup request");
            Job *new_job = new GroupUpdater(request->newsgroup());
            //high_priority_jobs->add_job(new_job);
            netcentral->add_job(new_job);
@@ -101,7 +101,7 @@ void WebServer::handle_request(WebRequest *request)
    }
 
    string filename = web_root + request->path + request->filename;
-   console->log("Sending file: " + filename);
+//   console->log("Sending file: " + filename);
 
    handlers.push_back(new WebFileFetcher(request, filename));
 }

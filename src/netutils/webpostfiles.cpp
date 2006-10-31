@@ -13,7 +13,7 @@ using std::setprecision;
 WebPostFiles::WebPostFiles(WebRequest *request) : WebDataFetcher(request)
 {
     output_lines.push_back("");
-    output_lines.push_back("|full|cmd|num|num");
+    output_lines.push_back("|full|cmd|num|num|num");
 
     set = request->postset();
     set->needs_full_info();

@@ -3,6 +3,7 @@
 #include "console.hpp"
 #include <sstream>
 #include "webrequest.hpp"
+#include "config.hpp"
 
 using std::stringstream;
 
@@ -45,7 +46,11 @@ string WebNewsGroups::status(NewsGroup *group, Uint32 index)
 string WebNewsGroups::info_update_string(void)
 {
     stringstream out;
+    WebRequest r(request->get_uri());
+    r.param("tick", config->tick);
+
     out << WebDataFetcher::info_update_string()
+        << "ui.last_url=\""<< r.get_uri() << "\""
         << " ui.update_heading('Newsgroups');";
     return out.str();
 }
