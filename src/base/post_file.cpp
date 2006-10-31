@@ -35,15 +35,19 @@ PostFile::~PostFile()
 string PostFile::status_string(void)
 {
     stringstream mystatus;
-    mystatus << human_readable_bytes(num_bytes()) << " " << filename << " - " << status << " - ";
-    mystatus << num_downloaded_pieces() << "/"  << num_pieces() << " pieces downloaded  ";
+    mystatus << human_readable_bytes(num_bytes());
+    mystatus << " " << filename;
+    mystatus << " - " << status << " - ";
+    mystatus << num_downloaded_pieces();
+    mystatus << "/"  << num_pieces() << " pieces downloaded  ";
+
     if(num_pieces() == num_downloaded_pieces()){
         mystatus << "100%";
-   }else{
-        if(num_pieces())
-           mystatus << setprecision(3) 
-                  << ((double)num_downloaded_pieces() / (double)num_pieces()) * (double) 100
-                  << "%";
+    }else{
+        if(num_pieces()) {
+            double num =  ((double)num_downloaded_pieces() / (double)num_pieces()) * (double) 100;
+            mystatus << setprecision(3) << num << "%";
+        }
     }
     return mystatus.str();
 }
@@ -223,14 +227,17 @@ string PostFile::par_mangled_filename()
 FileHandle *PostFile::open_file()
 {
     if(is_base_par(filename)) {
-        if(!post_set)
-            return NULL;
+        if(!post_set) return NULL;
+
         string dirname = config->blackbeard_data_dir;
         ensure_directory_presence(dirname, "Creating blackbeard data dir..");
+
         dirname += "/" + post_set->group->name;
         ensure_directory_presence(dirname, "Creating blackbeard data dir for newsgroup..");
+
         dirname += "/par2";
         ensure_directory_presence(dirname, "Creating blackbeard par2 dir..");
+
         return open_filehandle(par_mangled_filename());
     }else {
         string dest_dir = config->blackbeard_dir + "/" + post_set->group->name;
