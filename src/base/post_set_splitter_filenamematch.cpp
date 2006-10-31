@@ -16,6 +16,10 @@ PostSetSplitterFilenameMatch::PostSetSplitterFilenameMatch(NewsGroup *group):Pos
 
 PostSetSplitterFilenameMatch::~PostSetSplitterFilenameMatch()
 {
+    vector<PSSFMPostFilesbyPoster *>::iterator i;
+    for(i = posters.begin(); i != posters.end(); ++i) {
+        delete *i;
+    }
 }
 
 void PostSetSplitterFilenameMatch::process_base_par_header(string filename, MessageHeader *header)
@@ -197,8 +201,6 @@ void PSSFMPostFilesbyPoster::log_info(void)
 
 }
 
-//---------------------------------------------------------------------------------
-
 PSSFMPostFilesbyPoster *PostSetSplitterFilenameMatch::get_poster(string poster)
 {
     vector<PSSFMPostFilesbyPoster *>::iterator i;
@@ -213,38 +215,37 @@ PSSFMPostFilesbyPoster *PostSetSplitterFilenameMatch::get_poster(string poster)
     return p;
 }
 
-PostFile *PSSFMPostFilesbyPoster::get_postfile(string filename)
+//-------------------------------------------------------------------------
+
+PSSFMPostFilesbyPoster::~PSSFMPostFilesbyPoster()
 {
-    if(_last_postfile) {
-        if(0 == _last_postfile->filename.compare(filename)) {
-            return _last_postfile;
-        }
-    }
-    if(_last_postset) {
-        vector<PostFile *>::iterator i;
-        for(i = _last_postset->files.begin(); i!=_last_postset->files.end(); ++i){
-            if((*i)->filename == filename) {
-                _last_postfile = *i;
-                return *i;
-            }
-        }
-    }
-    list<PostSet *>::iterator j;
-    if(is_par(filename)) {
-        string name = base_par_filename(filename);
-        for(j=postsets.begin(); j!=postsets.end(); ++j){
-            if((*j)->main_par){
-                string short_comp = base_par_filename((*j)->main_par->filename);
-                if(0 == name.compare(short_comp)){
-                    PostFile *file = (*j)->file(filename);
-                    _last_postfile = file;
-                    _last_postset  = *j;
-                    return file;
-                }
-             }
-        }
+    list<PostFile *>::iterator i;
+    for(i = postfiles.begin(); i!=postfiles.end(); ++i){
+        delete *i;
     }
 
+}
+
+PostFile *PSSFMPostFilesbyPoster::get_postfile_parfile(string filename)
+{
+    string name = base_par_filename(filename);
+    list<PostSet *>::iterator j;
+    for(j=postsets.begin(); j!=postsets.end(); ++j){
+        if((*j)->main_par){
+            string short_comp = base_par_filename((*j)->main_par->filename);
+            if(0 == name.compare(short_comp)){
+                PostFile *file = (*j)->file(filename);
+                _last_postfile = file;
+                _last_postset  = *j;
+                return file;
+            }
+         }
+    }
+    return NULL;
+}
+
+PostFile *PSSFMPostFilesbyPoster::get_postfile_postfiles(string filename)
+{
     list<PostFile *>::iterator i;
     for(i = postfiles.begin(); i!=postfiles.end(); ++i){
         if((*i)->filename == filename) {
@@ -252,7 +253,25 @@ PostFile *PSSFMPostFilesbyPoster::get_postfile(string filename)
             return *i;
         }
     }
+    return NULL;
+}
+
+PostFile *PSSFMPostFilesbyPoster::get_postfile_last_postset(string filename)
+{
+    vector<PostFile *>::iterator i;
+    for(i = _last_postset->files.begin(); i!=_last_postset->files.end(); ++i){
+        if((*i)->filename == filename) {
+            _last_postfile = *i;
+            return *i;
+        }
+    }
+    return NULL;
+}
+
+PostFile *PSSFMPostFilesbyPoster::get_postfile_postsets(string filename)
+{
     vector<PostFile *>::iterator k;
+    list<PostSet *>::iterator j;
     for(j=postsets.begin(); j!=postsets.end(); ++j){
         PostSet *set = *j;
         for(k = set->files.begin(); k!=set->files.end(); ++k){
@@ -263,9 +282,35 @@ PostFile *PSSFMPostFilesbyPoster::get_postfile(string filename)
             }
         }
     }
+    return NULL;
+}
 
+PostFile *PSSFMPostFilesbyPoster::get_postfile(string filename)
+{
+    if(_last_postfile) {
+        if(0 == _last_postfile->filename.compare(filename)) {
+            return _last_postfile;
+        }
+    }
+    PostFile *file;
 
-    PostFile *file = new PostFile(NULL);
+    if(_last_postset) {
+        file = get_postfile_last_postset(filename);
+        if(file) return file;
+    }
+
+    if(is_par(filename)) {
+        file = get_postfile_parfile(filename);
+        if(file) return file;
+    }
+
+    file = get_postfile_postsets(filename);
+    if(file) return file;
+
+    file = get_postfile_postfiles(filename);
+    if(file) return file;
+
+    file = new PostFile(NULL);
     file->filename = filename;
     postfiles.push_back(file);
     _last_postfile = file;

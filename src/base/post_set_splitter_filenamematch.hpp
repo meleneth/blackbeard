@@ -9,8 +9,13 @@
 class PSSFMPostFilesbyPoster {
     public:
         PSSFMPostFilesbyPoster(string poster);
+        ~PSSFMPostFilesbyPoster();
 
+        PostFile *get_postfile_parfile(string filename);
+        PostFile *get_postfile_last_postset(string filename);
+        PostFile *get_postfile_postsets(string filename);
         PostFile *get_postfile(string filename);
+        PostFile *get_postfile_postfiles(string filename);
         PostSet  *get_postset(string subject);
         void add_group(NewsGroup *group);
         void find_stray_slice_files(PostSet *set);
