@@ -119,7 +119,6 @@ XMLNode *mNZB::postfile_node(PostFile *file)
         segments->addChild(segment);
     }
 
-
     return node;
 }
 
@@ -175,7 +174,7 @@ void mNZB::load_postset(PostSet *set)
     while ( bzerror == BZ_OK ) {
       nBuf = BZ2_bzRead ( &bzerror, b, readbuf + got_bytes, MNZB_BUFFER_SIZE - got_bytes);
       got_bytes += nBuf;
-      if ( bzerror == BZ_OK ) {
+      if ( (bzerror == BZ_OK) || (bzerror == BZ_STREAM_END) ) {
         /* do something with buf[0 .. nBuf-1] */
         int i=0;
         int last_string = 0;
@@ -192,6 +191,9 @@ void mNZB::load_postset(PostSet *set)
         got_bytes -= last_string;
       }
     }
+    readbuf[got_bytes] = 0;
+    compressed_file_contents.append(readbuf);
+
     if ( bzerror != BZ_STREAM_END ) {
        BZ2_bzReadClose ( &bzerror, b );
       console->log("bzip2 read errror!!!");
@@ -224,26 +226,23 @@ void mNZB::restore_file(PostSet *set, XMLNode *file_node)
 {
 
     vector<XMLNode *> pieces;
+    vector<XMLNode *>::iterator i;
+
     file_node->find_for_tag_name(pieces, "segment");
 
     // If we are restoring, there are no pieces or anything already
     // so we can just slam info in there
     PostFile *file = set->file(file_node->get_attr("subject"));
     //console->log("Restoring file " + file->filename);
-    Uint32 num_pieces = 0;
 
-    Uint32 max_piece_no = pieces.size();
-    for(Uint32 i = 0; i<max_piece_no; ++i){
-        num_pieces++;
-        XMLNode *node = pieces[i];
+    for(i = pieces.begin(); i!=pieces.end(); ++i){
+        XMLNode *node = *i;
         Uint32 article_num = node->get_attr_num("article_no");
         Uint32 num_bytes = node->get_attr_num("bytes");
         string message_id = node->content;
-        FilePiece *piece = file->saw_message_id(article_num, message_id , num_bytes);
+        FilePiece *piece = file->saw_message_id(article_num, message_id, num_bytes);
+
         piece->status = (PIECE_STATUS)node->get_attr_num("status");
-        if(piece->status == 4) {
-            file->_num_downloaded_pieces++;
-        }
     }
     file->update_status_from_pieces();
 }

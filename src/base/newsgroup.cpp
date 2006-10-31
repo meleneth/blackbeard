@@ -125,11 +125,11 @@ void NewsGroup::expire_old_postsets(Uint32 low_article_no)
 
 NewsGroup *group_for_name(string groupname)
 {
-    Uint32 max_no = newsgroups.size();
+    vector<NewsGroup *>::iterator i;
 
-    for(Uint32 i=0; i<max_no; ++i){
-        if(0 == groupname.compare(newsgroups[i]->name)){
-            return newsgroups[i];
+    for(i=newsgroups.begin(); i!=newsgroups.end(); ++i){
+        if(0 == groupname.compare((*i)->name)){
+            return *i;
         }
     }
 
