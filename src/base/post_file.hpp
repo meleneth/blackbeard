@@ -12,6 +12,7 @@
 #include "filepiece.hpp"
 #include <sqlite3.h>
 #include "newsgroup.hpp"
+#include "md5_stuff.hpp"
 
 using std::string;
 using std::vector;
@@ -57,6 +58,8 @@ class PostFile {
 
         Uint32 db_index;
         Uint32 _num_downloaded_pieces;
+
+        md5 hash;
 
         list<FilePiece *> pieces;
     private:

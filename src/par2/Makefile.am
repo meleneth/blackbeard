@@ -5,5 +5,5 @@ libpar2_a_SOURCES = pararchive.cpp pararchive.hpp parpacket.cpp parpacket.hpp
 p2_SOURCES = libpar2.a p2.cpp
 
 AM_CXXFLAGS = -Wall -D_REENTRANT -I../utils
-p2_LDADD = ../utils/console.o ../utils/file_handle.o libpar2.a -lncurses -lcrypto
+p2_LDADD = ../utils/console.o ../utils/file_handle.o ../utils/md5_stuff.o libpar2.a -lncurses -lcrypto
 

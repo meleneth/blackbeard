@@ -19,6 +19,7 @@
 #include "webserver.hpp"
 #include "xmlnode.hpp"
 #include "xmlparser.hpp"
+#include "md5_stuff.hpp"
 
 #include<string>
 #include<sstream>
@@ -41,6 +42,7 @@ NetCentral *netcentral;
 JobQueue *high_priority_jobs;
 WebServer *webserver;
 
+void test_md5_stuff(void);
 void test_string_pattern(void);
 void test_strings(void);
 void test_bit_manipulations(void);
@@ -75,6 +77,7 @@ int main(int argc, char *argv[])
     newsgroup = new NewsGroup("misc.test");
 
     config->setup_test_config();
+    test_md5_stuff();
     test_xml_escape();
     //test_filehandle();
     test_xml_generation();
@@ -98,6 +101,14 @@ int main(int argc, char *argv[])
     delete config;
     delete console;
 	return 0;
+}
+
+void test_md5_stuff()
+{
+    console->log("Testing md5 stuff..");
+    unsigned char buf[16];
+    hex_to_hash(buf, "d41d8cd98f00b204e9800998ecf8427e");
+    assert(0 == hash_to_hex(buf).compare("d41d8cd98f00b204e9800998ecf8427e"));
 }
 
 void test_filehandle()

@@ -14,11 +14,13 @@ using std::endl;
 #include "nntpserver.hpp"
 #include "bodyretrieverjob.hpp"
 #include "headersforgroupjob.hpp"
+#include "verifypostfilejob.hpp"
 #include "strutil.hpp"
 #include "config.hpp"
 #include "console.hpp"
 #include "netcentral.hpp"
 #include "database.hpp"
+
 
 PostfileJob::PostfileJob(PostFile* post_file)
 {

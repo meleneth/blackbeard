@@ -2,14 +2,12 @@
 #include "file_handle.hpp"
 #include "parpacket.hpp"
 #include "console.hpp"
+#include "md5_stuff.hpp"
 
 #include <sstream>
-#include <openssl/md5.h>
 
 using std::string;
 using std::stringstream;
-
-#define CMP_MD5(a,b) (!memcmp((a), (b), sizeof(md5)))
 
 ParArchive::ParArchive(string filename)
 {
@@ -31,10 +29,8 @@ ParArchive::ParArchive(string filename)
         if(header.length > sizeof(header) && (header.length < 1000000)) {
             packet_size = header.length - sizeof(header);
             packet_body = (char *)malloc(packet_size);
-            //memset(packet_body, 0, packet_size);
         } else { 
             is_corrupt = 1;
-//            console->log("Corrupted out :/");
             packet_body = (char *)malloc(1);
         }
 
@@ -53,13 +49,10 @@ ParArchive::ParArchive(string filename)
 
             if(!CMP_MD5(digest, header.packet_hash)){
                 is_corrupt = 1;
-//                console->log("MD5 failure :/");
             }
         }
         if(!is_corrupt) { 
-
             if(0 == memcmp(header.magic_sequence, magic_packet_sequence, 8)) {
-    //            console->log("Magic sequence matches - this is a PAR packet!");
             } else {
                 console->log("Not a PAR packet??");
                 is_corrupt = 1;
@@ -67,20 +60,18 @@ ParArchive::ParArchive(string filename)
         }
         if(!is_corrupt) { 
             if(0 == memcmp(header.type, main_packet_sequence, 16)) {
-//                console->log("Main sequence matches - this is a Main PAR packet!");
             }
 
             if(0 == memcmp(header.type, filedesc_packet_sequence, 16)) {
-    //            console->log("fileDesc sequence matches - this is a file description PAR packet!");
                 Uint32 filename_length = header.length - sizeof(header) - 56;
-/*                s << "filename length: " << filename_length;
-                console->log(s.str());
-                s.str("");
-  */
                 char *name = (char *)malloc(filename_length +1);
                 memcpy(name, packet_body + 56, filename_length);
                 name[filename_length] = '\0';
-                add_parfile(name);
+                ParFileInfo *new_file = new ParFileInfo(name);
+                memcpy(new_file->hash, packet_body + 16, 16);
+//                console->log("File " + new_file->filename);
+//                console->log(" hash: " + hash_to_hex(new_file->hash));
+                par_files.push_back(new_file);
                 free(name);
             }
         }
@@ -90,23 +81,14 @@ ParArchive::ParArchive(string filename)
     file->close();
     close_finished_files();
 
-/*
-    if(is_corrupt) {
-        console->log("parfile is corrupt");
-    }else {
-        console->log("parfile is NOT corrupt");
-    }
-    */
-
 }
 
 ParArchive::~ParArchive()
 {
-}
-
-void ParArchive::add_parfile(string filename)
-{
-    par_filenames.push_back(filename);
+    vector<ParFileInfo *>::iterator i;
+    for(i=par_files.begin(); i!=par_files.end(); ++i){
+        delete *i;
+    }
 }
 
 Uint32 ParArchive::exists_in_par(string filename)
@@ -116,6 +98,19 @@ Uint32 ParArchive::exists_in_par(string filename)
 Uint32 ParArchive::file_is_corrupt(string filename)
 {
 }
+
+//----------------------------------------------------------------------------------------------
+
+ParFileInfo::ParFileInfo(string filename)
+{
+    this->filename = filename;
+}
+
+ParFileInfo::~ParFileInfo()
+{
+}
+
+//----------------------------------------------------------------------------------------------
 
 ParArchive *load_par_file(string filename)
 {

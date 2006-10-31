@@ -5,6 +5,7 @@
 #include "file_handle.hpp"
 #include "xmlparser.hpp"
 #include "console.hpp"
+#include "md5_stuff.hpp"
 
 #include <bzlib.h>
 
@@ -101,6 +102,7 @@ XMLNode *mNZB::postfile_node(PostFile *file)
     node->set_attr("subject", file->filename);
     // custom
     node->set_attr("status", file->status);
+    node->set_attr("hash", hash_to_hex(file->hash));
 
     Uint32 number = 1;
 
@@ -233,6 +235,7 @@ void mNZB::restore_file(PostSet *set, XMLNode *file_node)
     // If we are restoring, there are no pieces or anything already
     // so we can just slam info in there
     PostFile *file = set->file(file_node->get_attr("subject"));
+    hex_to_hash(file->hash, file_node->get_attr("hash"));
     //console->log("Restoring file " + file->filename);
 
     for(i = pieces.begin(); i!=pieces.end(); ++i){

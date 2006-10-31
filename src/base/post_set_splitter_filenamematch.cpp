@@ -116,9 +116,10 @@ void PostSetSplitterFilenameMatch::process_par2(PostFile *parfile)
     }
 
     PSSFMPostFilesbyPoster *poster = get_poster(parfile->post_set->poster);
-    vector<string>::iterator i;
-    for(i = pfile->par_filenames.begin(); i != pfile->par_filenames.end(); ++i) {
-        PostFile *file = poster->get_postfile(*i);
+    vector<ParFileInfo *>::iterator i;
+    for(i = pfile->par_files.begin(); i != pfile->par_files.end(); ++i) {
+        PostFile *file = poster->get_postfile((*i)->filename);
+        memcpy(file->hash, (*i)->hash, sizeof(md5));
         if(!file->post_set)
             parfile->post_set->add_file(file);
     }

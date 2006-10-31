@@ -3,7 +3,7 @@
 
 #include "SDL_types.h"
 
-typedef char md5[16];
+#include "md5_stuff.hpp"
 
 typedef struct {
     char magic_sequence[8];
