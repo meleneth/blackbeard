@@ -83,7 +83,7 @@ string UUDecoder::do_the_math(string line)
         return my_string;
     }
     size_t source = 1;
-    string output_line(num_encoded_chars, ' ');
+    string output_line(num_encoded_chars + 4, ' ');
 
     Uint32 output_no = 0;
     while(output_no < num_encoded_chars) {
@@ -94,6 +94,7 @@ string UUDecoder::do_the_math(string line)
         manipulation |= line[source++] << 6;
         manipulation |= line[source++];
         output_line[output_no++] = (manipulation & (255 << 16)) >> 16;
+
         output_line[output_no++] = (manipulation & (255 << 8 )) >> 8;
         output_line[output_no++] = (manipulation & 255);
     }

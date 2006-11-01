@@ -286,17 +286,17 @@ void test_filename_postsplit(void)
 {
     stringstream buf;
     console->log("Test filename postsplit");
-    NewsGroup group("net.fusion3.downloads");
-    delete group.splitter;
-    PostSetSplitterFilenameMatch *splitter = new PostSetSplitterFilenameMatch(&group);
-    group.splitter = splitter;
+    NewsGroup *group = new NewsGroup("net.fusion3.downloads");
+    delete group->splitter;
+    PostSetSplitterFilenameMatch *splitter = new PostSetSplitterFilenameMatch(group);
+    group->splitter = splitter;
 
     console->log("Parsing (Horny Peeps \"hornypeeps.rar\" yEnc (23/59))");
-    MessageHeader *header = new MessageHeader( &group, 31337, "xyz2300@yahoo.com", "Horny Peeps \"lodg2-dcn.vol035+31.PAR2\" yEnc (23/59)", "jim@bo.com", 500);
+    MessageHeader *header = new MessageHeader( group, 31337, "xyz2300@yahoo.com", "Horny Peeps \"lodg2-dcn.vol035+31.PAR2\" yEnc (23/59)", "jim@bo.com", 500);
     assert(0 == splitter->posters.size());
     splitter->process_header(header);
     assert(1 == splitter->posters.size());
-    assert(0 == group.postsets.size());
+    assert(0 == group->postsets.size());
 
     
     PostSet *set = new PostSet("Horny Peeps \"lodg2-dcn.vol035+31.PAR2\" yEnc (24/59)");
@@ -310,7 +310,7 @@ void test_filename_postsplit(void)
     splitter->log_info();
 
     console->log("Main par2 is set to " + set->main_par->filename);
-    header = new MessageHeader( &group, 31338, "xyz2300@yahoo.com", "Horny Peeps \"lodg2-dcn.vol036+31.PAR2\" yEnc (24/59)", "jim@bo.com", 500);
+    header = new MessageHeader( group, 31338, "xyz2300@yahoo.com", "Horny Peeps \"lodg2-dcn.vol036+31.PAR2\" yEnc (24/59)", "jim@bo.com", 500);
     console->log("Processing: lodg2-dcn.vol036+31.PAR2");
     splitter->process_header(header);
 
@@ -322,11 +322,13 @@ void test_filename_postsplit(void)
     set->add_file(rarfile);
 
     splitter->log_info();
-    header = new MessageHeader( &group, 31339, "xyz2300@yahoo.com", "Horny Peeps \"lodg2-dcn.part54.rar\" yEnc (24/59)", "jim@bo.com", 500);
+    header = new MessageHeader( group, 31339, "xyz2300@yahoo.com", "Horny Peeps \"lodg2-dcn.part54.rar\" yEnc (24/59)", "jim@bo.com", 500);
     splitter->process_header(header);
     splitter->log_info();
     assert(3 == set->files.size());
 
+    delete set;
+    delete group;
     console->log("Filename test done");
 
 }
@@ -442,11 +444,11 @@ void test_initial_header_match(void)
     string line1 = "35763813	(HERE'S DVD Chobits - The Empty City (Vol 2) * REQ:  MORE RANMA!! [095/112] - \"Chobits (vol 2 - The Empty City) .part092.rar\" yEnc (001/201)	Yenc@power-post.org (Yenc-PP-A&A)	Fri, 29 Jul 2005 19:09:58 GMT	<part1of201.gdBsOLiW6ktktveIiYr0@powerpost2000AA.local>		258660	1985	Xref: number1.nntp.dca.giganews.com alt.binaries.dvd.anime:35763813";
     string line2 = "35763816	(HERE'S DVD Chobits - The Empty City (Vol 2) * REQ:  MORE RANMA!! [095/112] - \"Chobits (vol 2 - The Empty City) .part092.rar\" yEnc (002/201)	Yenc@power-post.org (Yenc-PP-A&A)	Fri, 29 Jul 2005 19:10:01 GMT	<part2of201.gdBsOLiW6ktktveIiYr0@powerpost2000AA.local>		258473	1985	Xref: number1.nntp.dca.giganews.com alt.binaries.dvd.anime:35763816";
 
-    NewsGroup group("net.fusion.downloads");
-    group.header_scoop(line1);
-    group.header_scoop(line2);
+    NewsGroup *group = new NewsGroup("net.fusion.downloads");
+    group->header_scoop(line1);
+    group->header_scoop(line2);
 
-    PostSet *set = *(group.postsets.begin());
+    PostSet *set = *(group->postsets.begin());
     PostFile *file = *(set->files.begin());
     printf("%s\n", set->subject.c_str());
     printf("%s\n", file->filename.c_str());
@@ -454,6 +456,7 @@ void test_initial_header_match(void)
     printf("%d\n", piece->article_no);
     assert(2 == file->pieces.size());
     assert(2 == file->pieces.size());
+    delete group;
 }
 
 void test_xml_generation(void)
@@ -487,11 +490,14 @@ void test_xml_parse(void)
     console->log("Test XML Parse");
     XMLNode *node = parse_xml_doc("halud");
     assert(0 == node->as_text("").compare("<document>halud</document>"));
+    
+    delete node;
 
     node = parse_xml_doc("<foo>halud</foo>");
     printf("%s\n", (node->as_text("").c_str()));
 
     assert(0 == node->as_text("").compare("<document>\n  <foo>halud</foo>\n</document>"));
+    delete node;
 
     node = parse_xml_doc("<foo id=\"bar\" name=\"zoo\">halberd</foo>");
 
@@ -499,7 +505,7 @@ void test_xml_parse(void)
     node->find_for_tag_name(results, "foo");
     assert(0 == (*results[0]).get_attr("id").compare("bar"));
     assert(0 == (*results[0]).get_attr("name").compare("zoo"));
-
+    delete node;
 }
 
 void test_xml_escape(void)
@@ -513,5 +519,6 @@ void test_xml_escape(void)
 
     node->set_attr("number", "5533011");
     assert(5533011 == node->get_attr_num("number"));
+    delete node;
 }
 

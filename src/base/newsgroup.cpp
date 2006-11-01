@@ -39,9 +39,10 @@ NewsGroup::NewsGroup(string group_name) // Constructor
 NewsGroup::~NewsGroup() // Destructor
 {
     delete splitter;
-    Uint32 max_no = postsets.size();
-    for(Uint32 i=0; i<max_no; ++i){
-        delete postsets[i];
+
+    vector<PostSet *>::iterator ps;
+    for(ps = postsets.begin(); ps!=postsets.end(); ++ps){
+        delete *ps;
     }
     postsets.clear();
 }

@@ -29,9 +29,9 @@ PostSet::PostSet(string subject)
 
 PostSet::~PostSet()
 {
-    Uint32 max_no = files.size();
-    for(Uint32 i=0; i<max_no; ++i){
-        delete files[i];
+    vector<PostFile *>::iterator pf;
+    for(pf = files.begin(); pf!=files.end(); ++pf){
+        delete *pf;
     }
     files.clear();
 }
