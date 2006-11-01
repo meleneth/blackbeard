@@ -12,6 +12,7 @@ PostSetSplitterFilenameMatch::PostSetSplitterFilenameMatch(NewsGroup *group):Pos
     pattern = new StringPattern(3);
     pattern->add_breaker("\"");
     pattern->add_breaker("\"");
+    header_count = 0;
 }
 
 PostSetSplitterFilenameMatch::~PostSetSplitterFilenameMatch()
@@ -20,6 +21,7 @@ PostSetSplitterFilenameMatch::~PostSetSplitterFilenameMatch()
     for(i = posters.begin(); i != posters.end(); ++i) {
         delete *i;
     }
+    delete pattern;
 }
 
 void PostSetSplitterFilenameMatch::process_base_par_header(string filename, MessageHeader *header)
@@ -32,7 +34,9 @@ void PostSetSplitterFilenameMatch::process_base_par_header(string filename, Mess
             if(0 == (*p)->main_par->filename.compare(filename)){
                 (*p)->main_par->saw_message_id(header->article_no, header->msg_id, header->num_bytes);
                 (*p)->main_par->update_status_from_pieces();
-                netcentral->add_job(new PSSFMParJob((*p)->main_par, this));
+                if((*p)->main_par->pieces.size() < 20){
+                    netcentral->add_job(new PSSFMParJob((*p)->main_par, this));
+                }
                 delete header;
                 return;
             }
@@ -59,8 +63,18 @@ void PostSetSplitterFilenameMatch::process_par_header(string filename, MessageHe
 {
 }
 
+#define HALF_MIL 5000000
+
 void PostSetSplitterFilenameMatch::process_header(MessageHeader *header)
 {
+    header_count++;
+    if(header_count > HALF_MIL){
+        header_count = 0;
+        if(header->article_no > HALF_MIL){
+            clear_old_info(header->article_no - HALF_MIL);
+        }
+    }
+
     if(pattern->match(header->subject)) {
         string filename = pattern->results[1];
         // when we get a new base par2 file, fetch it.  The job we make will call us when it is finished downloading.
@@ -79,6 +93,15 @@ void PostSetSplitterFilenameMatch::process_header(MessageHeader *header)
 
     }
     delete header;
+}
+
+
+void PostSetSplitterFilenameMatch::clear_old_info(Uint32 oldest_article_no)
+{
+    vector<PSSFMPostFilesbyPoster *>::iterator i;
+    for(i = posters.begin(); i != posters.end(); ++i) {
+        (*i)->clear_old_info(oldest_article_no);
+    }
 }
 
 void PostSetSplitterFilenameMatch::log_info(void)
@@ -151,6 +174,33 @@ void PSSFMPostFilesbyPoster::add_group(NewsGroup *group)
                 }
             }
             postsets.push_back(set);
+        }
+    }
+
+}
+
+void PSSFMPostFilesbyPoster::clear_old_info(Uint32 oldest_article_no)
+{
+    // delete all postfiles that are older than oldest_article_no
+    list<PostFile *>::iterator pf;
+    for(pf = postfiles.begin(); pf!=postfiles.end(); ++pf){
+        if((*pf)->max_article_no() < oldest_article_no){
+            list<PostFile *>::iterator d = pf;
+            PostFile *f = *d;
+            // DESTROY >.<
+            delete f;
+            --pf;
+            postfiles.erase(d);
+        }
+    }
+
+    // remove all postsets from the list that are older than oldest_article_no
+    list<PostSet *>::iterator ps;
+    for(ps = postsets.begin(); ps!=postsets.end(); ++ps){
+        if((*ps)->max_article_no() < oldest_article_no){
+            list<PostSet *>::iterator d = ps;
+            --ps;
+            postsets.erase(d);
         }
     }
 
@@ -332,6 +382,8 @@ PostSet *PSSFMPostFilesbyPoster::get_postset(string subject)
     return set;
 }
 
+//-----------------------------------------------------------------------------------------------------------------
+
 PSSFMParJob::PSSFMParJob(PostFile *post_file, PostSetSplitterFilenameMatch *splitter) : PostfileJob(post_file)
 {
     this->splitter = splitter;
@@ -343,3 +395,10 @@ void PSSFMParJob::finish(void)
     splitter->process_par2(postfile);
 }
 
+void PSSFMParJob::process(void)
+{
+    if(postfile->pieces.size() > 20){
+        finish();
+    }
+    PostfileJob::process();
+}

@@ -17,6 +17,7 @@ class PSSFMPostFilesbyPoster {
         PostFile *get_postfile(string filename);
         PostFile *get_postfile_postfiles(string filename);
         PostSet  *get_postset(string subject);
+        void clear_old_info(Uint32 oldest_article_no);
         void add_group(NewsGroup *group);
         void find_stray_slice_files(PostSet *set);
         void log_info(void);
@@ -38,12 +39,14 @@ class PostSetSplitterFilenameMatch : public PostSetSplitter {
 
         void process_base_par_header(string filename, MessageHeader *header);
         void process_par_header(string filename, MessageHeader *header);
+        void clear_old_info(Uint32 oldest_article_no);
 
         void process_par2(PostFile *parfile);
         PSSFMPostFilesbyPoster *get_poster(string poster);
 
         vector<PSSFMPostFilesbyPoster *> posters;
         StringPattern *pattern;
+        Uint32 header_count;
         
     private:
     protected:
@@ -54,6 +57,7 @@ class PSSFMParJob : public PostfileJob {
         PSSFMParJob(PostFile* post_file, PostSetSplitterFilenameMatch *splitter);
         virtual void finish(void);
 
+        virtual void process();
         PostSetSplitterFilenameMatch *splitter;
 
 };
