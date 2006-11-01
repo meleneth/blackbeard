@@ -73,7 +73,7 @@ string WebPostSets::status(PostSet *set, Uint32 index)
         << "|| |" << setprecision(3) << set->completed_percent() << "%";
 
     r.filename = "postfiles";
-    s   << "||ui.open_screen_with_url_data('"<< r.get_uri() << "')|" << js_escape( replace_substrings(set->subject, "|", "").substr(0, 80));
+    s   << "||ui.open_screen_with_url_data('"<< r.get_uri() << "')|" << js_escape( replace_substrings(set->subject, "|", "").substr(0, 120));
 
     return s.str();
 }

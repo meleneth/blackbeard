@@ -27,6 +27,7 @@ class Decoder : public Job {
         virtual void decode_line(string line);
         virtual void open_file();
         virtual void close_file();
+        virtual string status_line();
 
         string filename;
 

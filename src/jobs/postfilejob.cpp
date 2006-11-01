@@ -48,29 +48,34 @@ Job* PostfileJob::get_next_job()
     }
 
     if(postfile){
-        PIECE_STATUS s = (*piece)->status;
-        postfile->status = "Downloading";
-        postfile->tick = config->tick;
-        postfile->post_set->tick = config->tick;
-        switch(s){
-            case DOWNLOADING:
-                (*piece)->change_status(FINISHED);
-                postfile->_num_downloaded_pieces++;
-            case MISSING:
-            case DECODING:
-            case FINISHED:
-                break;
-            case SEEN:
-                (*piece)->change_status(DOWNLOADING);
-                BodyRetrieverJob *new_job = new BodyRetrieverJob(postfile, *piece);
-                new_job->srv = srv;
-                return new_job;
-        }
-        ++piece;
-        if(piece == postfile->pieces.end()){
-            postfile->status = "Finished";
-            //console->log("Finished getting file " + postfile->filename); 
-            finish();
+        if(piece!=postfile->pieces.end()){
+            PIECE_STATUS s = (*piece)->status;
+            postfile->status = "Downloading";
+            postfile->tick = config->tick;
+            postfile->post_set->tick = config->tick;
+            switch(s){
+                case DOWNLOADING:
+                    (*piece)->change_status(FINISHED);
+                    postfile->_num_downloaded_pieces++;
+                case MISSING:
+                case DECODING:
+                case FINISHED:
+                    break;
+                case SEEN:
+                    (*piece)->change_status(DOWNLOADING);
+                    BodyRetrieverJob *new_job = new BodyRetrieverJob(postfile, *piece);
+                    new_job->srv = srv;
+                    return new_job;
+            }
+            ++piece;
+            if(piece == postfile->pieces.end()){
+                postfile->status = "Finished";
+                if(!is_par(postfile->filename)){
+                    jobqueue->add_job(new VerifyPostFileJob(postfile));
+                }
+                //console->log("Finished getting file " + postfile->filename); 
+                finish();
+            }
         }
     } else {
         finish();

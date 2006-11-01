@@ -15,6 +15,7 @@ class VerifyPostFileJob : public Job {
         VerifyPostFileJob(PostFile *file);
         ~VerifyPostFileJob();
 
+        virtual string status_line();
         virtual void process();
 
         PostFile *post_file;

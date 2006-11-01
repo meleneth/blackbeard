@@ -16,6 +16,7 @@ class yEncDecoder : public Decoder {
         virtual ~yEncDecoder(); 
 
         virtual void decode_line(string line);
+        virtual string status_line();
         string do_the_math(string line);
 
     private:

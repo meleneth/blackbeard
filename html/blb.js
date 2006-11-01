@@ -174,12 +174,12 @@ function ping_url(url) {
 function view_file_response(data)
 {
     data = data.responseText;
-    var thediv = $('content');
-    var pre = Builder.node('pre');
-    pre.appendChild(Builder.node(data));
-    var old = thediv.replaceChild(pre, thediv.firstChild);
-    old = undef;
-    return false;
+
+    var screen = new Object();
+    screen.div = Builder.node('pre', [data]);
+    ui.change_screen(screen);
+    ui.last_url = null;
+
 }
 
 function view_file(url)

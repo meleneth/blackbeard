@@ -21,11 +21,6 @@ void Job::process()
 {
 }
 
-string Job::status_line()
-{
-   return _status;
-}
-
 bool Job::has_more_fruit()
 {
     return 0;
@@ -50,3 +45,7 @@ bool Job::compare(const Job* a, const Job* b)
     return (a->priority < b->priority);
 }
 
+string Job::status_line()
+{
+    return "you should never see this";
+}

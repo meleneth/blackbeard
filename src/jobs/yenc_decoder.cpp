@@ -49,6 +49,14 @@ string yEncDecoder::do_the_math(string line)
     }
     return line;
 }
+
+string yEncDecoder::status_line()
+{
+    if(status == S_BODY)
+        return "yEnc: decoding";
+    return "yEnc: unknown status";
+}
+
 void yEncDecoder::decode_line(string line)
 {
     if(S_MESSAGE == status){

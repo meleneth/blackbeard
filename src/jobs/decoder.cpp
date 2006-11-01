@@ -77,5 +77,11 @@ void Decoder::decode_line(string line)
 {
 }
 
+
+string Decoder::status_line()
+{
+    return "base decoder status";
+}
+
 // Private members go here.
 // Protected members go here.

@@ -26,6 +26,7 @@ PostFile::PostFile(PostSet *postset)
     tick = 1;
     db_index = 0;
     _num_downloaded_pieces = 0;
+    memset(hash, 0, 16);
 }
     
 PostFile::~PostFile() 

@@ -1,4 +1,7 @@
 #include "verifypostfilejob.hpp"
+#include <sstream>
+
+using std::stringstream;
 
 VerifyPostFileJob::VerifyPostFileJob(PostFile *file)
 {
@@ -29,5 +32,12 @@ void VerifyPostFileJob::process(void)
         close_finished_files();
     }
 
+}
+
+string VerifyPostFileJob::status_line(void)
+{
+    stringstream s;
+    s << "VerifyPostFileJob: " << is_finished;
+    return s.str();
 }
 

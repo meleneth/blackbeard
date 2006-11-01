@@ -40,7 +40,7 @@ string WebJobList::line_for_job(Job *job)
         r.param("ngi", set->group->index());
         r.param("psi", set->index());
 
-        s << i << "|| fetch_data('" << r.get_uri() << "')|"  << file->filename;
+        s << i << "|| javascript:ui.open_screen_with_url_data('" << r.get_uri() << "')|"  << file->filename;
     } else {
         s << i << "|| return false" << "| " << job->status_line();
     }
