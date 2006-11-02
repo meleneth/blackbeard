@@ -188,6 +188,9 @@ void PSSFMPostFilesbyPoster::clear_old_info(Uint32 oldest_article_no)
             list<PostFile *>::iterator d = pf;
             PostFile *f = *d;
             // DESTROY >.<
+            if(_last_postfile == f){
+                _last_postfile = NULL;
+            }
             delete f;
             --pf;
             postfiles.erase(d);
@@ -309,6 +312,9 @@ PostFile *PSSFMPostFilesbyPoster::get_postfile_postfiles(string filename)
 
 PostFile *PSSFMPostFilesbyPoster::get_postfile_last_postset(string filename)
 {
+    if(!_last_postset)
+        return NULL;
+
     vector<PostFile *>::iterator i;
     for(i = _last_postset->files.begin(); i!=_last_postset->files.end(); ++i){
         if((*i)->filename == filename) {

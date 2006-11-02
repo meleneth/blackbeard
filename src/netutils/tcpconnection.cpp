@@ -29,6 +29,7 @@ TCPConnection::TCPConnection(string hostname, int port) // Constructor
     }
     connected = 1;
     gettimeofday(&last_time, NULL);
+    bytes_since_last_time = 0;
 }
 
 TCPConnection::TCPConnection()
@@ -97,6 +98,7 @@ void TCPConnection::sendall(string cmd)
     while(total < num_bytes) {
         n = send(sockfd, nbuf+total, bytesleft, 0);
         if (n == -1) { console->log("Network error on send?  Oh I'm so scared :/"); break; }
+        if(n == 0) { connected = 0; total = num_bytes + 1; }
         total += n;
         bytesleft -= n;
     }
@@ -129,6 +131,7 @@ Uint32 TCPConnection::read_packets(void)
         connected = 0;
         return 0;
     }
+    if(numbytes == 0) { connected = 0; return 0;}
     bytes_since_last_time +=  numbytes;
 
     buf_end_pos += numbytes;
