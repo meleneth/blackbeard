@@ -3,13 +3,14 @@
 #include "console.hpp"
 #include "strutil.hpp"
 #include "config.hpp"
+#include "webdefines.hpp"
+#include "webshared.hpp"
 
 #include<sstream>
 #include<iomanip>
 using std::stringstream;
 using std::setprecision;
 
-#define MAX_PER_REQUEST 30
 
 WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
 {
@@ -30,9 +31,9 @@ WebPostSets::WebPostSets(WebRequest *request) : WebDataFetcher(request)
         //if(set->num_files() > 10) {
             valid_num++;
             if(valid_num > got_num) {
-                if(valid_num < (got_num + MAX_PER_REQUEST)) {
+                if(valid_num < (got_num + MAX_ITEMS_PER_PAGE)) {
                     if(set->tick > request_tick) {
-                        output_lines.push_back(status(set, i));
+                        output_lines.push_back(status(set));
                         last_got_num = valid_num;
                     }
                 } else {
@@ -54,28 +55,10 @@ WebPostSets::~WebPostSets()
 {
 }
 
-string WebPostSets::status(PostSet *set, Uint32 index)
+string WebPostSets::status(PostSet *set)
 {
-    WebRequest r = WebRequest(request->get_uri());
 
-    r.delete_param("tick");
-    r.param("psi", index);
-    r.filename = "postfiles";
-
-    stringstream s;
-    s   << "ps_" << set->group->index() << "_" << index
-        << "|| |" << set->num_files()
-        << "|| |" << image_string(set)
-        << "|| |" << human_readable_bytes(set->num_bytes());
-
-    r.filename = "downloadpostset";
-    s   << "|| ping_url('" << r.get_uri() << "')| Download"
-        << "|| |" << setprecision(3) << set->completed_percent() << "%";
-
-    r.filename = "postfiles";
-    s   << "||ui.open_screen_with_url_data('"<< r.get_uri() << "')|" << js_escape( replace_substrings(set->subject, "|", "").substr(0, 120));
-
-    return s.str();
+    return postset_status_line(request, set);
 }
 
 string WebPostSets::info_update_string(void)
@@ -84,45 +67,11 @@ string WebPostSets::info_update_string(void)
     r.param("tick", config->tick);
 
     stringstream s;
-    s << "ui.last_url = \"" << r.get_uri() << "\"; "
+    s << "ui.enable_search_screen(\"search?ngi=" << request->paramn("ngi") << "\", \"" << group->name <<"\"); " 
+      << "ui.last_url = \"" << r.get_uri() << "\"; "
       <<  WebDataFetcher::info_update_string()
       << "ui.update_heading('" << group->name << "');";
 
     return s.str();
-}
-
-string WebPostSets::image_string(PostSet *set)
-{
-
-#define CD_BYTES 600000000ULL
-    unsigned long long int num_bytes = set->num_bytes();
-    if(num_bytes <  CD_BYTES)
-        return "img: floppy.png";
-
-    if(num_bytes < (2 * CD_BYTES))
-        return "img: one_cd.png";
-
-    if(num_bytes < (3 * CD_BYTES))
-        return "img: two_cds.png";
-
-    if(num_bytes < (4 * CD_BYTES))
-        return "img: three_cds.png";
-
-    if(num_bytes < (5 * CD_BYTES))
-        return "img: four_cds.png";
-
-    if(num_bytes < (6 * CD_BYTES))
-        return "img: five_cds.png";
-
-    if(num_bytes < (12 * CD_BYTES))
-        return "img: one_dvd.png";
-
-    if(num_bytes < (18 * CD_BYTES))
-        return "img: two_dvds.png";
-
-    if(num_bytes < (24 * CD_BYTES))
-        return "img: three_dvds.png";
-
-    return "";
 }
 

@@ -30,7 +30,6 @@ class PostSet {
         string status(void);
         void expire(void);
         Uint32 file_index(PostFile *file);
-        Uint32 index();
         Uint32 num_files();
         unsigned long long int num_bytes();
         void needs_full_info();
@@ -50,7 +49,7 @@ class PostSet {
         string pattern_name;
 
         NewsGroup *group;
-        Uint32 db_index;
+        Uint32 index;
 
         Uint32 has_pieces_loaded;
         Uint32 _num_files;

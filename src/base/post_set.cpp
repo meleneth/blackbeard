@@ -23,7 +23,7 @@ PostSet::PostSet(string subject)
     group = NULL;
     _last_file = NULL;
     tick = 1;
-    db_index = 0;
+    index = 0;
     main_par = NULL;
 }
 
@@ -180,18 +180,6 @@ Uint32 PostSet::file_index(PostFile *file)
     }
     return 0;
 }
-
-Uint32 PostSet::index()
-{
-    Uint32 max_no = group->postsets.size();
-    for(Uint32 i=0; i<max_no; ++i) {
-        if(group->postsets[i] == this){
-            return i;
-        }
-    }
-    exit(1);
-}
-
 
 void PostSet::expire(void)
 {

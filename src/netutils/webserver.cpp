@@ -13,6 +13,7 @@
 #include "postsetjob.hpp"
 #include "postfilejob.hpp"
 #include "webviewfile.hpp"
+#include "websearch.hpp"
 
 WebServer::WebServer(string web_root, int port_no)
 {
@@ -46,6 +47,11 @@ void WebServer::handle_request(WebRequest *request)
        if(0 == request->filename.compare("postfiles")) {
 //           console->log("Handling postfiles request:");
            handlers.push_back(new WebPostFiles(request));
+           return;
+       }
+       if(0 == request->filename.compare("search")) {
+//           console->log("Handling search request");
+           handlers.push_back(new WebSearch(request));
            return;
        }
        if(0 == request->filename.compare("viewfile")) {

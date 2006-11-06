@@ -90,6 +90,7 @@ PostSet *NewsGroup::postset_for_subject(string subject)
     }
     PostSet *new_post = new PostSet(subject);
     postsets.push_back(new_post);
+    new_post->index = postsets.size() - 1;
     new_post->group = this;
     return new_post;
 }
@@ -158,10 +159,6 @@ Uint32 NewsGroup::index()
 void NewsGroup::subscribe(void)
 {
     is_subscribed = 1;
-    if(db_index)
-        return;
-
-    //save_newsgroup_to_db(this);
 }
 
 void NewsGroup::unsubscribe(void)
@@ -191,3 +188,14 @@ Uint32 NewsGroup::num_postsets()
 
 }
 
+void NewsGroup::search(vector<PostSet *>& results, const string& needle)
+{
+    needs_postsets();
+
+    vector<PostSet *>::iterator ps;
+    for(ps = postsets.begin(); ps!=postsets.end(); ++ps){
+        if(string::npos != (*ps)->subject.find(needle, 0)){
+            results.push_back(*ps);
+        }
+    }
+}

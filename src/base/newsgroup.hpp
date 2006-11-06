@@ -36,6 +36,8 @@ class NewsGroup {
         void subscribe(void);
         void unsubscribe(void);
 
+        void search(vector<PostSet *>& results, const string& needle);
+
         void needs_postsets();
 
         PostSet *postset_for_subject(string subject);

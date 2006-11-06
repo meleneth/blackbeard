@@ -38,7 +38,7 @@ string WebJobList::line_for_job(Job *job)
         WebRequest r("/postfiles");
         r.filename = "postfiles";
         r.param("ngi", set->group->index());
-        r.param("psi", set->index());
+        r.param("psi", set->index);
 
         s << i << "|| javascript:ui.open_screen_with_url_data('" << r.get_uri() << "')|"  << file->filename;
     } else {

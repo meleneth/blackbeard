@@ -146,6 +146,14 @@ UserInterface.prototype = {
       while(debug_node.hasChildNodes()){
         debug_node.removeChild(debug_node.firstChild);
       }
+    },
+    enable_search_screen: function(search_url, name){
+      $('search_label').replaceChild(document.createTextNode(name), $('search_label').firstChild);
+      this.search_url = search_url;
+    },
+    search_url: "/search?ngi=15",
+    retsin: function(){
+      this.open_screen_with_url_data(this.search_url + ";q=" +  $('find_me').value);
     }
 };
 

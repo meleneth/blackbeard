@@ -36,6 +36,13 @@ text-decoration: underline;
     padding-left: 10px;
 }
 
+#search {
+    background-color: #666666;
+    border: 1px solid black;
+    float: right;
+    padding-left: 10px;
+}
+
 #pager {
     width: 150px;
     background-color: #666666;

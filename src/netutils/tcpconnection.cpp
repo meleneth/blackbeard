@@ -98,7 +98,7 @@ void TCPConnection::sendall(string cmd)
     while(total < num_bytes) {
         n = send(sockfd, nbuf+total, bytesleft, 0);
         if (n == -1) { console->log("Network error on send?  Oh I'm so scared :/"); break; }
-        if(n == 0) { connected = 0; total = num_bytes + 1; }
+        if(n == 0) { console->log("I'm pretty sure I used to crash here"); connected = 0; total = num_bytes + 1; }
         total += n;
         bytesleft -= n;
     }
