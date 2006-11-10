@@ -201,3 +201,15 @@ string human_readable_bytes(unsigned long long int num_bytes)
     
     return result.str();
 }
+
+string file_extension(string filename)
+{
+    if(filename.size() < 4)
+        return "";
+    vector<string> pieces;
+
+    Tokenize(filename, pieces, ".");
+    Uint32 num = pieces.size() -1;
+    return pieces[num];
+}
+

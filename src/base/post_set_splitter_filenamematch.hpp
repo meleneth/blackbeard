@@ -5,16 +5,17 @@
 #include "post_set_splitter.hpp"
 #include "stringpattern.hpp"
 #include "postfilejob.hpp"
+#include "messageheader.hpp"
 
 class PSSFMPostFilesbyPoster {
     public:
-        PSSFMPostFilesbyPoster(string poster);
+        PSSFMPostFilesbyPoster(string poster, NewsGroup *group);
         ~PSSFMPostFilesbyPoster();
 
         PostFile *get_postfile_parfile(string filename);
         PostFile *get_postfile_last_postset(string filename);
-        PostFile *get_postfile_postsets(string filename);
-        PostFile *get_postfile(string filename);
+        PostFile *get_postfile_postsets(string filename, MessageHeader *header);
+        PostFile *get_postfile(string filename, MessageHeader *header);
         PostFile *get_postfile_postfiles(string filename);
         PostSet  *get_postset(string subject);
         void clear_old_info(Uint32 oldest_article_no);
@@ -25,6 +26,7 @@ class PSSFMPostFilesbyPoster {
         string poster;
         PostFile *_last_postfile;
         PostSet *_last_postset;
+        NewsGroup *group;
         list<PostFile *> postfiles;
         list<PostSet *> postsets;
 };

@@ -107,8 +107,32 @@ void test_md5_stuff()
 {
     console->log("Testing md5 stuff..");
     unsigned char buf[16];
+
+    Uint32 i;
+    for(i=0;i<16;++i){
+        buf[i] = 255;
+    }
+    console->log(hash_to_hex(buf));
+    assert(CMP_MD5(buf, "ffffffffffffffffffffffffffffffff"));
+
     hex_to_hash(buf, "d41d8cd98f00b204e9800998ecf8427e");
+    console->log(hash_to_hex(buf));
     assert(0 == hash_to_hex(buf).compare("d41d8cd98f00b204e9800998ecf8427e"));
+    assert(CMP_MD5(buf, "d41d8cd98f00b204e9800998ecf8427e"));
+
+    hex_to_hash(buf, "898cf61946ac8376b3d2ba138d4a9a03");
+    console->log(hash_to_hex(buf));
+    assert(0 == hash_to_hex(buf).compare("898cf61946ac8376b3d2ba138d4a9a03"));
+
+    hex_to_hash(buf, "6d969cb05ad07ccef3779b9d16b9f5f5");
+    console->log(hash_to_hex(buf));
+    assert(0 == hash_to_hex(buf).compare("6d969cb05ad07ccef3779b9d16b9f5f5"));
+
+    hex_to_hash(buf, "6d969cb05ad07ccef3779b9d16b9f5");
+    console->log(hash_to_hex(buf));
+    assert(0 == hash_to_hex(buf).compare("6d969cb05ad07ccef3779b9d16b9f5"));
+
+
 }
 
 void test_filehandle()

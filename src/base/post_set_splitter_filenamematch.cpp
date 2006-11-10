@@ -2,6 +2,7 @@
 #include "console.hpp"
 #include "post_file.hpp"
 #include "netcentral.hpp"
+#include "strutil.hpp"
 
 #include <string>
 
@@ -87,7 +88,7 @@ void PostSetSplitterFilenameMatch::process_header(MessageHeader *header)
         }
         PSSFMPostFilesbyPoster *poster = get_poster(header->posted_by);
 
-        PostFile *file = poster->get_postfile(filename);
+        PostFile *file = poster->get_postfile(filename, header);
         file->saw_message_id(header->article_no, header->msg_id, header->num_bytes);
         file->update_status_from_pieces();
 
@@ -141,7 +142,7 @@ void PostSetSplitterFilenameMatch::process_par2(PostFile *parfile)
     PSSFMPostFilesbyPoster *poster = get_poster(parfile->post_set->poster);
     vector<ParFileInfo *>::iterator i;
     for(i = pfile->par_files.begin(); i != pfile->par_files.end(); ++i) {
-        PostFile *file = poster->get_postfile((*i)->filename);
+        PostFile *file = poster->get_postfile((*i)->filename, NULL);
         memcpy(file->hash, (*i)->hash, sizeof(md5));
         if(!file->post_set)
             parfile->post_set->add_file(file);
@@ -153,9 +154,10 @@ void PostSetSplitterFilenameMatch::process_par2(PostFile *parfile)
 
 //----------------------------------------------------------------------
 
-PSSFMPostFilesbyPoster::PSSFMPostFilesbyPoster(string poster)
+PSSFMPostFilesbyPoster::PSSFMPostFilesbyPoster(string poster, NewsGroup *group)
 {
     this->poster = poster;
+    this->group = group;
     _last_postfile = NULL;
     _last_postset = NULL;
 }
@@ -263,13 +265,13 @@ PSSFMPostFilesbyPoster *PostSetSplitterFilenameMatch::get_poster(string poster)
             return *i;
         }
     }
-    PSSFMPostFilesbyPoster *p = new PSSFMPostFilesbyPoster(poster);
+    PSSFMPostFilesbyPoster *p = new PSSFMPostFilesbyPoster(poster, group);
     p->add_group(group);
     posters.push_back(p);
     return p;
 }
 
-//-------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 PSSFMPostFilesbyPoster::~PSSFMPostFilesbyPoster()
 {
@@ -325,8 +327,22 @@ PostFile *PSSFMPostFilesbyPoster::get_postfile_last_postset(string filename)
     return NULL;
 }
 
-PostFile *PSSFMPostFilesbyPoster::get_postfile_postsets(string filename)
+PostFile *PSSFMPostFilesbyPoster::get_postfile_postsets(string filename, MessageHeader *header)
 {
+    // unclaimed .nfo files get their own postset, too bad it cant happen later
+
+    if(0==file_extension(filename).compare("nfo")){
+        if(!header)
+            return NULL;
+        console->log("Saw nfo file " + filename);
+        PostSet *set = get_postset(header->subject);
+
+        PostFile *file = new PostFile(set);
+        file->filename = filename;
+        set->add_file(file);
+        return file;
+    }
+
     vector<PostFile *>::iterator k;
     list<PostSet *>::iterator j;
     for(j=postsets.begin(); j!=postsets.end(); ++j){
@@ -342,7 +358,7 @@ PostFile *PSSFMPostFilesbyPoster::get_postfile_postsets(string filename)
     return NULL;
 }
 
-PostFile *PSSFMPostFilesbyPoster::get_postfile(string filename)
+PostFile *PSSFMPostFilesbyPoster::get_postfile(string filename, MessageHeader *header)
 {
     if(_last_postfile) {
         if(0 == _last_postfile->filename.compare(filename)) {
@@ -361,7 +377,7 @@ PostFile *PSSFMPostFilesbyPoster::get_postfile(string filename)
         if(file) return file;
     }
 
-    file = get_postfile_postsets(filename);
+    file = get_postfile_postsets(filename, header);
     if(file) return file;
 
     file = get_postfile_postfiles(filename);
@@ -378,11 +394,11 @@ PostSet *PSSFMPostFilesbyPoster::get_postset(string subject)
 {
     list<PostSet *>::iterator i;
     for(i = postsets.begin(); i!=postsets.end(); ++i){
-        if((*i)->subject == subject) {
+        if(0 == (*i)->subject.compare(subject)) {
             return *i;
         }
     }
-    PostSet *set = new PostSet(subject);
+    PostSet *set = group->postset_for_subject(subject);
     set->poster = poster;
     postsets.push_back(set);
     return set;

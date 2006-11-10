@@ -1,18 +1,35 @@
+Now that the web interface supports searching and the new splitter works (if not flawless, its damn useful) 
+I need a list of what this thing needs to be able to be released.
+
+Search improvements:
+    make search return only x items at a time, but don't page the results.  Terrible idea, tried it before.. spends too much time inserting nodes
+
+Release List:
+    Polish OOB experience.  Web source dir needs to be configable and follow whatever prefix 'make install' uses
+        make install doesn't work
+        Initial config (server, username, password, #net connections)
+        subscribe to newsgroups from the web interface
+        fix false alarms on md5 checks
+    Web interface (and ncurses?) needs to be able to see the queued jobs, at least the postsets and postfiles waiting
+    much better status for running jobs, html wise would be awesome.  Maybe a raw HTML block returned for the body of that job's div?
+        
+
+------------ OLD STUFF BELOW HERE ----------
 Short Term TODO:
-    store minimal filename info in main group .xml file (piece info will still be compressed, shouldnt be too big)
-    group the slice par2's with the postset
-    configure splitter via XML - is this needed?
-    fix web updates
-    new splitter needs to be able to continue with group parse, which entails the above and:
-        store posted_by on the postset
+    store minimal filename info in main group .xml file (piece info will still be compressed, shouldnt be too big) <- do we still need this?
+    *group the slice par2's with the postset
+    *configure splitter via XML - is this needed?
+    *fix web updates
+    *new splitter needs to be able to continue with group parse, which entails the above and:
+    *    store posted_by on the postset
 
 Web interface
-    Needs tabbed interface
+    --Needs tabbed interface <- nixed, it sucked
     *need to cut down on the max info that we send, can't handle sending megs worth of data in AJAX request in timely fashion
-    don't break the old interface until the new one works, moron
-    need a tab for the console
+    *don't break the old interface until the new one works, moron
+    --need a tab for the console <- nixed with console
     need to be able to flip a file's status, which should change status for all of it's pieces as well.  
-    Continuous update is broken.
+    *Continuous update is broken.
     New pager works, how could it be made better?
 
 Job:
@@ -27,6 +44,7 @@ MAD IDEA - be able to use blb as a proxy, anything it can match it doesn't show 
 
 File Grouping - for rar files and associated .par2 files, should only show one line in the file list.
 Par2 support - auto fix files, remove droppings
+    I havent seen it say a file was OK that was really corrupt yet, but it does give false alarms.
 fix download jobs:
     - Should have one job that manages the postset/file (depending on what was queued), show percent / time remaining / size
 Support NZB -
@@ -41,7 +59,7 @@ Support NZB -
 *    Bziping the files will save a LOT of disk space.  Every 5 gigs counts you know!
 
 Seg Faults
-    Web Server - cancelling a request kills blb.  oops, bad webserver.
+    Web Server - cancelling a request kills blb.  oops, bad webserver. <- may be fixed, need it to die again to be sure.
 
 Console
     With the reduced log spam this isn't as much of an issue, but old console messages are never removed.

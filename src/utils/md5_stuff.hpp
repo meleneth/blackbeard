@@ -8,7 +8,7 @@
 using std::string;
 
 typedef unsigned char md5[16];
-#define CMP_MD5(a,b) (!memcmp((a), (b), sizeof(md5)))
+#define CMP_MD5(a,b) (!memcmp((a), (b), 16))
 
 void hex_to_hash(unsigned char *hash, string hex);
 string hash_to_hex(unsigned char *hash);

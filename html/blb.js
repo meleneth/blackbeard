@@ -108,11 +108,13 @@ UserInterface.prototype = {
     initialize: function(){
     },
     open_screen_with_url_data: function(url){
+      this.last_url = null;
       var screen = new Screen(0);
       this.change_screen(screen);
       screen.update_url_data(url);
     },
     open_screen_with_paged_url_data: function(url){
+      this.last_url = null;
       var screen = new Screen(1);
       this.change_screen(screen);
       screen.update_url_data(url);

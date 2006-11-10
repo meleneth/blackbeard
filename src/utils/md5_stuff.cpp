@@ -25,17 +25,19 @@ void hex_to_hash(unsigned char *hash, string hex)
 
 string hash_to_hex(unsigned char *hash)
 {
-    stringstream result;
-    result << std::hex;
+    string result;
+    char buf[3];
+    buf[3] = '\0';
 
     Uint32 i;
     for(i=0; i<16; ++i){
-        unsigned char x = *(hash + i);
-        if(x < 10)
-            result << 0;
-        result << (unsigned short int)x;
+        stringstream s;
+        s << " Iter: " << i << " || " << result;
+//        console->log(s.str());
+        sprintf(buf, "%02x", *(hash+i));
+        result.append(buf);
     }
-    return result.str();
+    return result;
 }
 
 

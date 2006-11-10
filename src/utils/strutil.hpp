@@ -25,4 +25,6 @@ string js_escape(string escape_me);
 string safe_dirname(string unsafe);
 string human_readable_bytes(unsigned long long int num_bytes);
 
+string file_extension(string filename);
+
 #endif
