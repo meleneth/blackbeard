@@ -25,9 +25,7 @@ Config::Config(int argc, char *argv[]) // Constructor
     username="anonymous";
     password="guest";
     home_dir = getenv("HOME");
-    //blackbeard_dir = home_dir + "/blackbeard";
-    blackbeard_dir = "/mnt/blackbeard";
-    blackbeard_data_dir = blackbeard_dir + "/.control";
+    set_base_dir(home_dir + "/blackbeard");
     config_filename = home_dir + CONFIGFILENAME;
     news_port = 119;
     debug_mode = 0;
@@ -96,6 +94,12 @@ Config::~Config() // Destructor
 {
 }
 
+void Config::set_base_dir(string dirname)
+{
+    blackbeard_dir = dirname;
+    blackbeard_data_dir = blackbeard_dir + "/.control";
+}
+
 void Config::read_config_file(void)
 {
     struct stat my_stats;
@@ -134,6 +138,8 @@ void Config::read_config_file(void)
                 username = value;
             } else if(0 == cmd.compare("password")){
                 password = value;
+            } else if(0 == cmd.compare("base_dir")){
+                set_base_dir(value);
             } else if(0 == cmd.compare("max_net_connections")){
                 max_net_connections = atoi(value.c_str());
             } else {
@@ -162,7 +168,9 @@ void Config::setup_files(void)
     out << "#username=anonymous" << endl;
     out << "#max_krate=400" << endl;
     out << "#password=guest" << endl;
-    out << "#max_net_connections=4" << endl;
+    out << "#max_net_connections=4" << endl << endl;
+    out << "# if data dir is not set it defaults to ~/blackbeard" << endl;
+    out << "#data_dir=/mnt/blackbeard" << endl;
     out.close();
 }
 

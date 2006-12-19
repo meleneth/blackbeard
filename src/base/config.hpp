@@ -18,6 +18,7 @@ class Config {
 
         void read_config_file(void);
         void setup_files(void);
+        void set_base_dir(string path);
         void load_persistant_data(void);
         void setup_test_config();
         void save_persistent_data(void);
