@@ -1,20 +1,21 @@
 body { 
-    background-color: black;
-    color: white;
+    background-color: white;
+    color: #414141;
     padding: 0px;
     margin: 0px;
 }
 
 #header { 
-    background-color: #888888;
-padding-left: 0px;
-margin-left: 0px;
+    background-color: #eeeeee;
+    padding-left: 0px;
+    margin-left: 0px;
+    height: 40px;
 }
 
 #content {
     height: 90%;
     overflow: scroll;
-    background-color: #555555;
+    background-color: #eeeeee;
     padding: 0px;
     padding-left: 10px;
     margin: 0px;
@@ -30,30 +31,33 @@ text-decoration: underline;
 
 #ratebox {
     width: 150px;
-    background-color: #666666;
+    background-color: #eeeeee;
     border: 1px solid black;
     float: right;
     padding-left: 10px;
+    height: 40px;
 }
 
 #search {
-    background-color: #666666;
+    background-color: #eeeeee;
     border: 1px solid black;
     float: right;
     padding-left: 10px;
+    height: 40px;
 }
 
 #pager {
     width: 150px;
-    background-color: #666666;
+    background-color: #eeeeee;
     border: 1px solid black;
     float: right;
     padding-left: 10px;
+    height: 40px;
 }
 
 #heading {
     font-size: 1.5em;
-    background-color: #777777;
+    background-color: #dddddd;
     margin: 0px;
     padding: 0px;
     padding-left: 10px;
@@ -61,18 +65,18 @@ text-decoration: underline;
 
 table { 
     border-collapse: collapse;
-    margin-top: 10px;
     width: 100%;
 }
 
 td {
     border: 1px solid #888888;
-    background-color: #666666;
+    background-color: #eeeeee;
 }
 
 a {
-    color: #eeeeee;
+    color: #414141;
     white-space: nowrap;
+    text-decoration: none;
 }
 
 tr :hover {
