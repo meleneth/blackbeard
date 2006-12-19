@@ -96,6 +96,7 @@ Config::~Config() // Destructor
 
 void Config::set_base_dir(string dirname)
 {
+    console->log("Setting base dir name to [" + dirname + "]");
     blackbeard_dir = dirname;
     blackbeard_data_dir = blackbeard_dir + "/.control";
 }
@@ -138,7 +139,7 @@ void Config::read_config_file(void)
                 username = value;
             } else if(0 == cmd.compare("password")){
                 password = value;
-            } else if(0 == cmd.compare("base_dir")){
+            } else if(0 == cmd.compare("data_dir")){
                 set_base_dir(value);
             } else if(0 == cmd.compare("max_net_connections")){
                 max_net_connections = atoi(value.c_str());
