@@ -60,6 +60,7 @@ class PostSet {
         PostFile *main_par;
         Uint32 tick;
         Uint32 date;
+        Uint32 dirty;
 
         POSTSET_STATUS _status;
     private:

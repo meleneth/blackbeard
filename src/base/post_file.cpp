@@ -152,7 +152,6 @@ void PostFile::switch_seen_statuses(PIECE_STATUS new_status)
     for(p = pieces.begin() ; p != pieces.end() ; ++p){
         if((*p)->status != MISSING){
             (*p)->status = new_status;
-            return;
         }
     }
 

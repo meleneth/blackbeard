@@ -93,6 +93,7 @@ void WebServer::handle_request(WebRequest *request)
            file->tick = config->tick;
            if(0 == file->status.compare("Finished")){
                file->switch_seen_statuses(SEEN);
+               file->update_status_from_pieces();
            }
        }
        if(0 == request->filename.compare("update_newsgroup")) {

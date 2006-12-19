@@ -29,6 +29,9 @@ PostfileJob::PostfileJob(PostFile* post_file)
     postfile->status = "Queued";
     job_type = POSTFILE_DOWNLOAD;
     piece = postfile->pieces.begin();
+    if(postfile->pieces.size() == 0){
+        finish();
+    }
 }
 
 PostfileJob::~PostfileJob()
@@ -37,7 +40,6 @@ PostfileJob::~PostfileJob()
 
 Job* PostfileJob::get_next_job()
 {
-
     if(is_finished){
         return NULL;
     }
@@ -80,7 +82,6 @@ Job* PostfileJob::get_next_job()
     } else {
         finish();
     }
-
     return NULL;
 }
 

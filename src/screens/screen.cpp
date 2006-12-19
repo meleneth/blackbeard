@@ -44,13 +44,15 @@ void Screen::render(void)
         }
     }
 
-    stringstream buf;
-    buf << "(" << netcentral->jobs.size() << "/" 
-        << netcentral->active_jobs.size() << " - " 
-        << jobqueue->jobs.size() << "/"
-        << jobqueue->active_jobs.size()
-        << ") jobs " << netcentral->krate() << "k/sec "<< human_readable_bytes(netcentral->num_read_bytes) << " downloaded";
-    mvaddnstr(ypos + height, xpos + 2, (char*)buf.str().c_str(), -1);
+    if(netcentral && jobqueue) {
+        stringstream buf;
+        buf << "(" << netcentral->jobs.size() << "/"
+            << netcentral->active_jobs.size() << " - "
+            << jobqueue->jobs.size() << "/"
+            << jobqueue->active_jobs.size()
+            << ") jobs " << netcentral->krate() << "k/sec "<< human_readable_bytes(netcentral->num_read_bytes) << " downloaded";
+        mvaddnstr(ypos + height, xpos + 2, (char*)buf.str().c_str(), -1);
+    }
 }
 
 void Screen::render_help(void)

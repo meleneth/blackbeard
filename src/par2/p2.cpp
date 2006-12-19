@@ -17,5 +17,11 @@ int main(int argc, char *argv[])
     console->log("lodg2-dcn.vol102+36.PAR2 -- " + base_par_filename("lodg2-dcn.vol102+36.PAR2"));
     console->log("imts-tbh.vol177+36.PAR2 -- " + base_par_filename("imts-tbh.vol177+36.PAR2"));
     console->log("imts-tbh.par2 -- " + base_par_filename("imts-tbh.par2"));
-    load_par_file(argv[1]);
+    console->log("");
+    ParArchive *archive = load_par_file(argv[1]);
+
+    vector<ParFileInfo *>::iterator p;
+    for(p = archive->par_files.begin(); p != archive->par_files.end(); ++p){
+        console->log((*p)->filename);
+    }
 }

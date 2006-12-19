@@ -25,6 +25,7 @@ PostSet::PostSet(string subject)
     tick = 1;
     index = 0;
     main_par = NULL;
+    dirty = 0;
 }
 
 PostSet::~PostSet()
@@ -92,6 +93,7 @@ void PostSet::add_file(PostFile *file)
 
     files.push_back(file);
     file->post_set = this;
+    dirty = 1;
 }
 
 Uint32 PostSet::num_files(void)
@@ -165,6 +167,7 @@ unsigned long long int PostSet::num_bytes(void)
     }
     return _num_bytes;
 }
+
 bool PostSet::compare(const PostSet* a, const PostSet* b)
 {
     return (a->subject < b->subject);

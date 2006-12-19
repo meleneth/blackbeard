@@ -45,6 +45,7 @@ void PostSetSplitterFilenameMatch::process_base_par_header(string filename, Mess
     }
 
     PostSet *set = group->postset_for_subject(header->subject);
+    set->dirty = 1;
     poster->postsets.push_back(set);
     set->poster = header->posted_by;
     PostFile *file = set->file(filename);

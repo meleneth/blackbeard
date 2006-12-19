@@ -25,6 +25,8 @@ mNZB::~mNZB()
 
 void mNZB::save_postset(PostSet *set)
 {
+    if(!set->dirty)
+    return;
     this->set = set;
     XMLNode *head = new XMLNode("nzb");
     head->set_attr("xmlns", "http://www.newzbin.com/DTD/2003/nzb");

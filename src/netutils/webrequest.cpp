@@ -216,7 +216,9 @@ void WebRequest::delete_param(string name)
 
 PostSet *WebRequest::postset(void)
 {
-    return newsgroup()->postsets[paramn("psi")];
+    PostSet *set = newsgroup()->postsets[paramn("psi")];
+    set->needs_full_info();
+    return set;
 }
 
 PostFile *WebRequest::postfile(void)
@@ -226,7 +228,10 @@ PostFile *WebRequest::postfile(void)
 
 NewsGroup *WebRequest::newsgroup(void)
 {
-    return newsgroups[paramn("ngi")];
+    NewsGroup *group = newsgroups[paramn("ngi")];
+    group->needs_postsets();
+    return group;
+
 }
 
 
