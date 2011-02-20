@@ -2,6 +2,7 @@
 #include <iomanip>
 
 #include <sstream>
+#include <string.h>
 
 #include "console.hpp"
 
@@ -9,9 +10,9 @@ using std::stringstream;
 
 void hex_to_hash(unsigned char *hash, string hex)
 {
-    char buf[3];
-    buf[2] = 0;
     unsigned int r;
+    char buf[3];
+    buf[2] = '\0';
 
     Uint32 i;
     for(i=0; i<16; ++i){
@@ -27,7 +28,7 @@ string hash_to_hex(unsigned char *hash)
 {
     string result;
     char buf[3];
-    buf[3] = '\0';
+    buf[2] = '\0';
 
     Uint32 i;
     for(i=0; i<16; ++i){

@@ -1,6 +1,8 @@
 #include"stringpattern.hpp"
 #include"console.hpp"
 
+#include <stdlib.h>
+
 StringPattern::StringPattern(Uint32 max_part_no)
 {
     for(Uint32 i=0; i<max_part_no+2; i++){

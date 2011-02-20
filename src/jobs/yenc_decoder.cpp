@@ -3,6 +3,8 @@
 #include "yenc_decoder.hpp"
 #include"console.hpp"
 #include<stdio.h>
+#include <stdlib.h>
+
 
 #define ASCII_NULL  0x00
 #define ASCII_LF    0x0A

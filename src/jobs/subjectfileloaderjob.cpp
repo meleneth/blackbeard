@@ -9,6 +9,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include<iomanip>
+#include <stdlib.h>
+#include<string.h>
 
 #define MAX_SUBJECTS_PER_TICK 200
 

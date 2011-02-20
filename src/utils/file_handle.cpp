@@ -1,9 +1,11 @@
 #include "file_handle.hpp"
 
+#include <stdlib.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/stat.h>
 #include "console.hpp"
+
 
 vector <FileHandle *> open_files;
 

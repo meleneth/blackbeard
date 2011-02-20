@@ -1,9 +1,11 @@
 #include <sstream>
 
+#include<string.h>
 using std::stringstream;
 
 #include "console.hpp"
 #include "verifypostfilejob.hpp"
+
 
 VerifyPostFileJob::VerifyPostFileJob(PostFile *file)
 {

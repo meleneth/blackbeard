@@ -5,6 +5,8 @@
 #include "md5_stuff.hpp"
 
 #include <sstream>
+#include <stdlib.h>
+#include <string.h>
 
 using std::string;
 using std::stringstream;
@@ -93,10 +95,12 @@ ParArchive::~ParArchive()
 
 Uint32 ParArchive::exists_in_par(string filename)
 {
+    return false; // FIXME
 }
 
 Uint32 ParArchive::file_is_corrupt(string filename)
 {
+    return false; // FIXME
 }
 
 //----------------------------------------------------------------------------------------------

@@ -37,7 +37,7 @@ class Decoder : public Job {
         Uint32 num_bytes_written;
         Uint32 file_is_open;
 
-        enum DECODER_STATUS status;
+        DecoderStatus status;
 
         StringPattern *header_pattern;
         StringPattern *part_pattern;

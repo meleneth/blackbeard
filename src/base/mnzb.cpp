@@ -12,6 +12,8 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sstream>
+#include <string.h>
+
 
 using std::stringstream;
 
