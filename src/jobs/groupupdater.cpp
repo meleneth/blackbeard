@@ -41,6 +41,7 @@ void GroupUpdater::update_group(string line)
 
     if(match.match(line)){
         group->first_article_number = match.get_piecen(2);
-        high_priority_jobs->add_job(new HeadersForGroupJob(group, group->highest_seen_article_no(), 0));
+        int highest_article_no = group->highest_seen_article_no();
+        high_priority_jobs->add_job(new HeadersForGroupJob(group, highest_article_no, highest_article_no + 1000000));
     }
 }

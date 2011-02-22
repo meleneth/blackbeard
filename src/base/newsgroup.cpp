@@ -9,6 +9,7 @@
 #include <iostream>  // I/O 
 #include <fstream>   // file I/O
 #include <sstream>
+#include<string.h>
 
 
 using std::string;
@@ -58,7 +59,17 @@ void NewsGroup::needs_postsets()
 void NewsGroup::header_scoop(string xover_line)
 {
     vector<string> header_pieces;
-    vector<string>::iterator i;
+
+    // scrub upper ASCII out of xover_line
+    unsigned int i;
+
+    // Upper ASCII gets discarded, don't parse the message at all (segfaults)
+    for(i = 0; i < xover_line.length(); i++) {
+        char c = xover_line[i];
+//        console->log(s.str());
+        if (c < 0)
+            return;
+    }
 
     Tokenize(xover_line, header_pieces, "\t");
 

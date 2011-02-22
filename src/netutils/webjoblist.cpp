@@ -30,7 +30,7 @@ string WebJobList::line_for_job(Job *job)
 {
     stringstream s;
     static Uint32 i=0;
-
+// MISC, POSTSET_DOWNLOAD, POSTFILE_DOWNLOAD, BODY_DOWNLOAD
     if(job->job_type == POSTFILE_DOWNLOAD) {
         PostfileJob *j = (PostfileJob *)job;
         PostFile *file = j->postfile;

@@ -16,3 +16,4 @@ MessageHeader::MessageHeader(NewsGroup *group, Uint32 article_no, string msg_id,
 MessageHeader::~MessageHeader()
 {
 }
+

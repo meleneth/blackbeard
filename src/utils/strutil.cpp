@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <math.h>
 #include "strutil.hpp"
+#include "console.hpp"
 
 using std::string;
 using std::stringstream;
