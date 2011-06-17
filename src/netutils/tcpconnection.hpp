@@ -58,6 +58,7 @@ class TCPConnection {
         struct timeval last_time;
         Uint32 bytes_since_last_time;
         Uint32 krate;
+        time_t last_activity_at;
     private:
         // Private members go here.
     protected:
