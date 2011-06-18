@@ -10,6 +10,7 @@ AM_INIT_AUTOMAKE([silent-rules subdir-objects foreign])
 AM_CONFIG_HEADER(config.h)
 
 AC_CONFIG_MACRO_DIR([m4])
+AM_SILENT_RULES([yes])
 
 AC_CANONICAL_TARGET
 
